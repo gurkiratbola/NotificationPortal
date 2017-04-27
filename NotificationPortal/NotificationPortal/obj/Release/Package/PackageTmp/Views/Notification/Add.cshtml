@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Add Notification";
+}
+
+<h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
+
+<ol class="breadcrumb bg-faded">
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="~/Notification/Index" class="link-color">Notifications</a></li>
+    <li class="breadcrumb-item active">Add Notification</li>
+</ol>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="group_name" class="control-label">Select an Application</label>
+                <div class="">
+                    <select multiple class="form-control" required>
+                        <option>Task Management App</option>
+                        <option>Event Scheduling App</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group col-md-3">
+                <label for="group_name" class="control-label">Notification Type</label>
+                <div class="">
+                    <select multiple class="form-control" required>
+                        <option>Incident</option>
+                        <option>Maintainance</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group col-md-3">
+                <label for="group_name" class="control-label">Level of Impact</label>
+                <div class="">
+                    <select multiple class="form-control" required>
+                        <option>Service Impacting</option>
+                        <option>No Service Impact</option>
+                        <option>Loss of Redundancy</option>
+                        <option>Full Service Outage</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group col-md-3">
+                <label for="group_name" class="control-label">Status</label>
+                <div class="">
+                    <select multiple class="form-control" required>
+                        <option>Ongoing</option>
+                        <option>Complete</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="first_name" class="control-label">Heading</label>
+            <div class="">
+                <input type="text" class="form-control" placeholder="Enter heading" required />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="last_name" class="control-label">Notification Description</label>
+            <div class="">
+                <textarea></textarea>
+            </div>
+            <script>
+                $(function () {
+                    $('textarea').froalaEditor({
+                        toolbarButtons: ['bold', 'italic', 'underline', 'insertLink', 'formatOL', 'formatUL']
+                    });
+                });
+            </script>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="first_name" class="control-label">Start Date</label>
+                <div class="">
+                    <input type="datetime-local" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="first_name" class="control-label">End Date</label>
+                <div class="">
+                    <input type="datetime-local" class="form-control" required />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="">
+                <input type="submit" value="Save" class="btn btn-success" />
+                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+}
+
+@*<script src="~/Scripts/jquery-3.1.1.min.js"></script>*@
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

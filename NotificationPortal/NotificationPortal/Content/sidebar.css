@@ -1,0 +1,270 @@
+﻿/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+}
+
+/*
+ * Typography
+ */
+
+h1 {
+  margin-bottom: 20px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #eee;
+}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 51px;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  border-right: 1px solid #eee;
+}
+
+/* Sidebar navigation */
+.sidebar {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sidebar .nav {
+  margin-bottom: 20px;
+}
+
+.sidebar .nav-item {
+  width: 100%;
+}
+
+
+.email a{
+    color: #000;
+}
+
+
+.sidebar .nav-item + .nav-item {
+  margin-left: 0;
+}
+
+.sidebar .nav-link {
+  border-radius: 0;
+  color: #FFF;
+}
+
+/*
+ * Dashboard
+ */
+
+ /* Placeholders */
+.placeholders {
+  padding-bottom: 3rem;
+}
+
+.placeholder img {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+
+
+
+/*coverr video*/
+body.Home {
+    padding-top: 0;
+}
+
+.homepage-hero-module {
+    border-right: none;
+    border-left: none;
+    position: relative;
+}
+
+.no-video .video-container video,
+.touch .video-container video {
+    display: none;
+}
+
+.no-video .video-container .poster,
+.touch .video-container .poster {
+    display: block !important;
+}
+
+.video-container {
+    position: relative;
+    bottom: 0%;
+    left: 0%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+}
+
+    .video-container .poster img {
+        width: 100%;
+        bottom: 0;
+        position: absolute;
+    }
+
+    .video-container .filter {
+        z-index: 100;
+        position: absolute;
+        background: rgba(0, 0, 0, 0.4);
+        width: 100%;
+    }
+
+    .video-container video {
+        position: absolute;
+        z-index: 0;
+        bottom: 0;
+    }
+
+        .video-container video.fillWidth {
+            width: 100%;
+        }
+
+    .video-container .title-container {
+        z-index: 1000;
+        position: absolute;
+        top: 35%;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+    }
+
+    .video-container .text-thin {
+        font-weight: 100;
+    }
+
+    .video-container h1 {
+        border-bottom: 0;
+        font-size: 6rem;
+    }
+
+    .video-container h3 {
+        text-transform: uppercase;
+    }
+
+    .video-container .hidden {
+        display: none !important;
+    }
+
+.Home hr {
+    width: 40%;
+}
+.Home .feature-list {
+  margin-top: 5rem;
+}
+
+#custom-search-input{
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+#custom-search-input input{
+    border: 0;
+    box-shadow: none;
+}
+
+#custom-search-input button{
+    margin: 2px 0 0 0;
+    background: none;
+    box-shadow: none;
+    border: 0;
+    color: #666666;
+    padding: 0 8px 0 10px;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input button:hover{
+    border: 0;
+    box-shadow: none;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input .glyphicon-search{
+    font-size: 23px;
+}
+@media screen and (max-width: 800px) {
+
+    /* Force table to not be like tables anymore */
+    .container table,
+    .container thead,
+    .container tbody,
+    .container th,
+    .container td,
+    .container tr {
+        display: block;
+    }
+
+        /* Hide table headers (but not display: none;, for accessibility) */
+        .container thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+    .container tr {
+        border: 1px solid #ccc;
+    }
+
+    .container td {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align: left;
+    }
+
+        .container td:before {
+            /* Now like a table header */
+            position: absolute;
+            /* Top/left values mimic padding */
+            top: 6px;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        /*
+    Label the data
+    */
+        .container td:before {
+            content: attr(data-title);
+        }
+}
+
+
+@media screen and (max-width: 991px) {
+    header #navbarsExampleDefault > ul:nth-of-type(2) .nav-item:first-child {
+        order: 5;
+    }
+}
+@media screen and (min-width: 992px) {
+    header .nav-link {
+        padding-top: .7em;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    .Contact form .col-form-label {
+        text-align: right;
+    }
+}

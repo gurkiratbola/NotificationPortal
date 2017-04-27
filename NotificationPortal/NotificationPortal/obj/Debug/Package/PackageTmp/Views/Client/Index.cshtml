@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Clients";
+}
+
+<h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
+
+<ol class="breadcrumb bg-faded">
+    <li class="breadcrumb-item"><a href="~/Home/Dashboard" class="link-color">Home</a></li>
+    <li class="breadcrumb-item active">Clients</li>
+</ol>
+
+<div class="row">
+    <div class="col-md-6">
+        <form class="form-inline pb-3" method="get" action="~/">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" name="name" />
+            <input class="btn btn-secondary" type="submit" value="Search" />
+        </form>
+    </div>
+</div>
+
+<table class="table table-bordered">
+    <tr class="bg-inverse text-white text-center">
+        <th class="text-center">
+            Group
+        </th>
+        <th class="text-center">
+            First Name
+        </th>
+        <th class="text-center">
+            Last Name
+        </th>
+        <th class="text-center">
+            Email
+        </th>
+        <th class="text-center">
+            Business Number
+        </th>
+        <th class="text-center">
+            Mobile Number
+        </th>
+    </tr>
+    <tr class="text-center">
+        <td>
+            Bayleaf
+        </td>
+        <td>
+            John
+        </td>
+        <td>
+            Doe
+        </td>
+        <td>
+            johndoe@bayleaf.com
+        </td>
+        <td>
+            1234567890
+        </td>
+        <td>
+            0987654321
+        </td>
+    </tr>
+</table>

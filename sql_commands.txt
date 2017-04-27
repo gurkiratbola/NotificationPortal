@@ -1,0 +1,16 @@
+SELECT 'DROP TABLE [' + SCHEMA_NAME(schema_id) + '].[' + name + ']' FROM sys.tables
+
+DROP TABLE [dbo].[AspNetUserRoles]
+DROP TABLE [dbo].[AspNetUserClaims]
+DROP TABLE [dbo].[AspNetUserLogins]
+DROP TABLE [dbo].[__MigrationHistory]
+DROP TABLE [dbo].[AspNetRoles]
+DROP TABLE [dbo].[AspNetUsers]
+
+Update-Database –TargetMigration: $InitialDatabase
+
+
+git rm -r --cached .
+git add .
+git commit -am 'git cache cleared'
+git push

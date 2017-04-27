@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Confirm Email";
+}
+
+<h1 class="display-4 text-center pb-3">@ViewBag.Title.</h1>
+
+<div>
+    <p>
+        Thank you for confirming your email. Please @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "text-primary" })
+    </p>
+</div>
