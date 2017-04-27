@@ -50,7 +50,7 @@ textarea {
     margin-bottom: 30px !important;
 }
 
-.badge {
+#accordion .badge {
     background-color: grey;
     padding: 10px;
 }
