@@ -20,19 +20,17 @@
         <div class="form-group">
             <label for="group_name" class="control-label">Source Filter</label>
             <div class="">
-                <select multiple class="form-control" required>
-                    <option value="application">Sent by Application</option>
-                    <option value="server">Sent by Server</option>
+                <select multiple class="form-control" id="source" name="source" required>
+                    <option>Application</option>
+                    <option>Server</option>
                 </select>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="group_name" class="control-label">Select an Application</label>
+            <label for="group_name" class="control-label">Select source</label>
             <div class="">
-                <select multiple class="form-control" required>
-                    <option>Task Management App</option>
-                    <option>Event Scheduling App</option>
+                <select multiple class="form-control" id="source-item" name="source-item" required>
                 </select>
             </div>
         </div>
@@ -123,6 +121,23 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            $("#source").change(function() {
+
+                var el = $(this);
+
+                if (el.val() == "Application") {
+                    $("#source-item option").remove();
+                    $("#source-item").append("<option>Task Management App</option><option>Event Management App</option>");
+                }
+                else if (el.val() == "Server") {
+                    $("#source-item option").remove();
+                    $("#source-item").append("<option>Server 1</option><option>Server 2</option>");
+                }
+            });
+        });
+    </script>
 }
 
 @*<script src="~/Scripts/jquery-3.1.1.min.js"></script>*@

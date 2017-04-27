@@ -41,7 +41,7 @@ namespace NotificationPortal.ViewModels
             public int StatusID { get; set; }
         }
 
-        public class NotificationVM
+        public class NotificationViewModel
         {
             [Required]
             public int NotificationID { get; set; }
