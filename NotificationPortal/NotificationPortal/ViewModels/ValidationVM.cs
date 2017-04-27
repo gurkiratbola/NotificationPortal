@@ -25,7 +25,6 @@ namespace NotificationPortal.ViewModels
             [Required]
             public int StatusID { get; set; }
 
-            [Required]
             public int ClientID { get; set; }
         }
 
@@ -39,6 +38,9 @@ namespace NotificationPortal.ViewModels
 
             [Required]
             public int StatusID { get; set; }
+
+            [Required]
+            public string StatusName { get; set; }
         }
 
         public class NotificationViewModel
