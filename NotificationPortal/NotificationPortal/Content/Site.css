@@ -54,3 +54,9 @@ textarea {
     background-color: grey;
     padding: 10px;
 }
+
+#hidden-menu {
+    width: 100px;
+    height: 80px;
+    background-color: #ededed;
+}
