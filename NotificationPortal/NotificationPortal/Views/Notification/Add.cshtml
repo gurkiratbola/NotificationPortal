@@ -1,4 +1,6 @@
-﻿@{
+﻿@model NotificationPortal.ViewModels.NotificationVM
+
+@{
     ViewBag.Title = "Add Notification";
 }
 
@@ -10,13 +12,15 @@
     <li class="breadcrumb-item active">Add Notification</li>
 </ol>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-
+    
     <div class="form-horizontal">
+
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+        <!--choose source-->
         <div class="form-group">
             <label for="group_name" class="control-label">Source Filter</label>
             <div class="">
@@ -27,119 +31,116 @@
             </div>
         </div>
 
+        <!--source item selection-->
         <div class="form-group">
             <label for="group_name" class="control-label">Select source</label>
             <div class="">
-                <select multiple class="form-control" id="source-item" name="source-item" required>
-                </select>
+                <select multiple class="form-control" id="source-item" name="source-item" required></select>
             </div>
         </div>
 
-        <div class="row">
-            <div class="form-group col-md-3">
-                <label for="group_name" class="control-label">Notification Type</label>
-                <div class="">
-                    <select multiple class="form-control" required>
-                        <option>Incident</option>
-                        <option>Maintainance</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group col-md-3">
-                <label for="group_name" class="control-label">Level of Impact</label>
-                <div class="">
-                    <select multiple class="form-control" required>
-                        <option>Service Impacting</option>
-                        <option>No Service Impact</option>
-                        <option>Loss of Redundancy</option>
-                        <option>Full Service Outage</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group col-md-3">
-                <label for="group_name" class="control-label">Status</label>
-                <div class="">
-                    <select multiple class="form-control" required>
-                        <option>Ongoing</option>
-                        <option>Complete</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group col-md-3">
-                <label for="group_name" class="control-label">Priority</label>
-                <div class="">
-                    <select multiple class="form-control" required>
-                        <option>Normal</option>
-                        <option>High</option>
-                        <option>Low</option>
-                    </select>
-                </div>
-            </div>
-        </div>
+        <!--notification server ID-->
         <div class="form-group">
-            <label for="first_name" class="control-label">Heading</label>
-            <div class="">
-                <input type="text" class="form-control" placeholder="Enter heading" required />
+            @Html.LabelFor(model => model.ServerID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ServerID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ServerID, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <!--notification application ID-->
         <div class="form-group">
-            <label for="last_name" class="control-label">Notification Description</label>
-            <div id="editor">
-                <p>Notification Content goes here</p>
-                <p><br></p>
+            @Html.LabelFor(model => model.ApplicationID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ApplicationID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ApplicationID, "", new { @class = "text-danger" })
             </div>
-            <script src="https://cdn.quilljs.com/1.2.4/quill.js"></script>
-            <script>
-                var quill = new Quill('#editor', {
-                    theme: 'snow'
-                });
-            </script>
         </div>
         <div class="row">
-            <div class="form-group col-md-6">
-                <label for="first_name" class="control-label">Start Date</label>
-                <div class="">
-                    <input type="datetime-local" class="form-control" required />
+            <!--notification type-->
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.TypeList, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.NotificationTypeID, Model.TypeList, htmlAttributes: new { @class = "" })
                 </div>
             </div>
 
-            <div class="form-group col-md-6">
-                <label for="first_name" class="control-label">End Date</label>
-                <div class="">
-                    <input type="datetime-local" class="form-control" required />
+            <!--level of impact-->
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.LevelOfImpactList, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.LevelOfImpactID, Model.LevelOfImpactList, htmlAttributes: new { @class = "" })
+                </div>
+            </div>
+
+            <!--notification status-->
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.StatusList, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.StatusID, Model.StatusList, htmlAttributes: new { @class = "" })
                 </div>
             </div>
         </div>
+        <!--heading-->
         <div class="form-group">
-            <div class="">
-                <input type="submit" value="Save" class="btn btn-success" />
-                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
+            @Html.LabelFor(model => model.NotificaionHeading, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NotificaionHeading, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NotificaionHeading, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!--description-->
+        <div class="form-group">
+            @Html.LabelFor(model => model.NotificaionDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NotificaionDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NotificaionDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!--start time-->
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StartDateTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StartDateTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!--end time-->
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EndDateTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EndDateTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            $("#source").change(function() {
-
-                var el = $(this);
-
-                if (el.val() == "Application") {
-                    $("#source-item option").remove();
-                    $("#source-item").append("<option>Task Management App</option><option>Event Management App</option>");
-                }
-                else if (el.val() == "Server") {
-                    $("#source-item option").remove();
-                    $("#source-item").append("<option>Server 1</option><option>Server 2</option>");
-                }
-            });
-        });
-    </script>
 }
 
-@*<script src="~/Scripts/jquery-3.1.1.min.js"></script>*@
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#source").change(function() {
+            var el = $(this);
+            if (el.val() == "Application") {
+                $("#source-item option").remove();
+                $("#source-item").append("<option>Task Management App</option><option>Event Management App</option>");
+            }
+            else if (el.val() == "Server") {
+                $("#source-item option").remove();
+                $("#source-item").append("<option>Server 1</option><option>Server 2</option>");
+            }
+        });
+    });
+</script>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

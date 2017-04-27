@@ -292,10 +292,11 @@
     <Content Include="Views\Application\Index.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Home\Documentation.cshtml" />
-    <Content Include="Views\Notification\Add.cshtml" />
+    <Content Include="Views\Notification\withoutmodel\Add.cshtml" />
     <Content Include="Views\Notification\Delete.cshtml" />
     <Content Include="Views\Notification\Details.cshtml" />
     <Content Include="Views\Notification\Update.cshtml" />
+    <Content Include="Views\Notification\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

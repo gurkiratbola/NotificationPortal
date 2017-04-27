@@ -9,13 +9,10 @@ namespace NotificationPortal.ViewModels
 {
     public class NotificationVM
     {
-        [Required]
         public int NotificationID { get; set; }
 
-        [Required]
         public int ThreadID { get; set; }
 
-        [Required]
         public string ReferenceID { get; set; }
 
         [Required]
@@ -24,7 +21,6 @@ namespace NotificationPortal.ViewModels
         [Required]
         public string NotificaionDescription { get; set; }
 
-        [Required]
         public DateTime SentDateTime { get; set; }
 
         [Required]
@@ -48,10 +44,11 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int ServerID { get; set; }
 
-        //application is nullable, server isn't?
         public int? ApplicationID { get; set; }
 
         public IEnumerable<SelectListItem> ApplicationList { get; set; }
+
+        public IEnumerable<SelectListItem> ServerList { get; set; }
 
         public IEnumerable<SelectListItem> TypeList { get; set; }
 
@@ -59,7 +56,7 @@ namespace NotificationPortal.ViewModels
 
         public IEnumerable<SelectListItem> StatusList { get; set; }  
 
-        public IEnumerable<SelectListItem> ProirityList { get; set; }
+        //public IEnumerable<SelectListItem> ProirityList { get; set; }
 
     }
 }
