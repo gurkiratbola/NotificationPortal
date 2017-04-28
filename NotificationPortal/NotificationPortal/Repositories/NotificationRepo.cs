@@ -10,105 +10,73 @@ namespace NotificationPortal.Repositories
 {
     public class NotificationRepo
     {
-        private IEnumerable<ApplicationVM> GetApplicaitons()
-        {
-            ApplicationDbContext db = new ApplicationDbContext();
-            IEnumerable<ApplicationVM> appList = db.Application
-                    .Select(app => new ApplicationVM()
-                    {
-                        ApplicationID = app.ApplicationID,
-                        ApplicationName = app.ApplicationName,
-                        ClientID = app.ClientID,
-                        Description = app.Description,
-                        //StatusID = app.StatusID,
-                        URL = app.URL
-                    });
-            return appList;
-        }
-
         public IEnumerable<SelectListItem> GetApplicaitonList()
         {
-            var list = GetApplicaitons();
-            return new SelectList(list, "Value", "Text");
-        }
-
-        private IEnumerable<ServerVM> GetServers()
-        {
             ApplicationDbContext db = new ApplicationDbContext();
-            IEnumerable<ServerVM> serverList = db.Server
-                    .Select(sv => new ServerVM()
-                    {
-                        ServerID= sv.ServerID,
-                        ServerName = sv.ServerName,
-                        ServerStatusID = sv.StatusID,
-                    });
+            IEnumerable<SelectListItem> appList = db.Application
+                    .Select(app => 
+                                new SelectListItem
+                                {
+                                    Value = app.ApplicationID.ToString(),
+                                    Text = app.ApplicationName
+                                });
 
-            return serverList;
+            return new SelectList(appList, "Value", "Text");
         }
 
         public IEnumerable<SelectListItem> GetServerList()
         {
-            var list = GetServers();
-            return new SelectList(list, "Value", "Text");
-        }
-
-        private IEnumerable<NotificationTypeVM> GetTypes()
-        {
             ApplicationDbContext db = new ApplicationDbContext();
-            IEnumerable<NotificationTypeVM> typeList = db.NotificationType
-                    .Select(type => new NotificationTypeVM()
+            IEnumerable<SelectListItem> serverList = db.Server
+                    .Select(sv => new SelectListItem()
                     {
-                        NotificationTypeID = type.NotificationTypeID,
-                        NotificationTypeName = type.NotificationTypeName
+                        Value = sv.ServerID.ToString(),
+                        Text = sv.ServerName
                     });
 
-            return typeList;
+            return new SelectList(serverList, "Value", "Text");
         }
 
         public IEnumerable<SelectListItem> GetTypeList()
         {
-            var list = GetTypes();
-            return new SelectList(list, "Value", "Text");
-        }
-
-        private IEnumerable<LevelOfImpactVM> GetImpactLevels()
-        {
             ApplicationDbContext db = new ApplicationDbContext();
-            IEnumerable<LevelOfImpactVM> impactList = db.LevelOfImpact
-                    .Select(impact => new LevelOfImpactVM()
+            IEnumerable<SelectListItem> typeList = db.NotificationType
+                    .Select(type => new SelectListItem()
                     {
-                        LevelOfImpactID = impact.LevelOfImpactID,
-                        Type = impact.Type
+                        Value = type.NotificationTypeID.ToString(),
+                        Text = type.NotificationTypeName
                     });
 
-            return impactList;
+            return new SelectList(typeList, "Value", "Text");
         }
 
         public IEnumerable<SelectListItem> GetImpactLevelList()
         {
-            var list = GetImpactLevels();
-            return new SelectList(list, "Value", "Text");
-        }
-
-        private IEnumerable<StatusVM> GetNotificationStatus()
-        {
-            const int NOTIFICATION_STATUS_INDEX = 3;
             ApplicationDbContext db = new ApplicationDbContext();
-            IEnumerable<StatusVM> statusList = db.Status
-                    .Where(a=>a.StatusTypeID == NOTIFICATION_STATUS_INDEX)
-                    .Select(status => new StatusVM()
+            IEnumerable<SelectListItem> impactList = db.LevelOfImpact
+                    .Select(impact => new SelectListItem()
                     {
-                           StatusID = status.StatusID,
-                           StatusName = status.StatusName
+                        Value = impact.LevelOfImpactID.ToString(),
+                        Text = impact.Type
                     });
 
-            return statusList;
+            return new SelectList(impactList, "Value", "Text");
         }
 
         public IEnumerable<SelectListItem> GetNotificationSatusList()
         {
-            var list = GetNotificationStatus();
-            return new SelectList(list, "Value", "Text");
+            const int NOTIFICATION_STATUS_INDEX = 3;
+            ApplicationDbContext db = new ApplicationDbContext();
+            IEnumerable<SelectListItem> statusList = db.Status
+                    .Where(a=>a.StatusTypeID == NOTIFICATION_STATUS_INDEX)
+                    .Select(status => new SelectListItem()
+                    {
+                        Value = status.StatusID.ToString(),
+                        Text = status.StatusName
+                    });
+
+            return new SelectList(statusList, "Value", "Text");
         }
+
     }
 }

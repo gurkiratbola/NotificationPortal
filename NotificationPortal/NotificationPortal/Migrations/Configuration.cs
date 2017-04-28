@@ -228,13 +228,23 @@ namespace NotificationPortal.Migrations
         // Done SeedClient
         private void SeedClient(ApplicationDbContext context)
         {
-            var status = context.Status.Where(s => s.StatusName == "Disabled").FirstOrDefault();
-            var client = new Client()
+            var bcitStatus = context.Status.Where(s => s.StatusName == "Disabled").FirstOrDefault();
+            var bcitClient = new Client()
             {
                 ClientName = "BCIT"
             };
-            client.Status = status;
-            context.Client.Add(client);
+            bcitClient.Status = bcitStatus;
+            context.Client.Add(bcitClient);
+            context.SaveChanges();
+
+            var ubcStatus = context.Status.Where(s => s.StatusName == "Enabled").FirstOrDefault();
+            var ubcClient = new Client()
+            {
+                ClientName = "UBC"
+            };
+
+            ubcClient.Status = ubcStatus;
+            context.Client.Add(ubcClient);
             context.SaveChanges();
         }
         // Done bridging the UserDetail (detail info are still empty)
