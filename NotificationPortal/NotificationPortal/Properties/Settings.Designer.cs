@@ -12,7 +12,7 @@ namespace NotificationPortal.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.1.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,8 +26,8 @@ namespace NotificationPortal.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=s15.winhost.com;Initial Catalog=DB_110737_production;Persist Security" +
-            " Info=True;User ID=DB_110737_production_user;Password=password")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DESKTOP-5K1T6JL\\SQLEXPRESS;Initial Catalog=Industry;Integrated Securi" +
+            "ty=True")]
         public string Setting {
             get {
                 return ((string)(this["Setting"]));

@@ -50,5 +50,7 @@ namespace NotificationPortal.Models
         public DbSet<Status> Status { get; set; }
         public DbSet<StatusType> StatusType { get; set; }
         public DbSet<UserDetail> UserDetail { get; set; }
+
+        public System.Data.Entity.DbSet<NotificationPortal.ViewModels.ServerVM> ServerVMs { get; set; }
     }
 }

@@ -129,7 +129,7 @@ namespace NotificationPortal.Models
         [Key]
         public int ServerID { get; set; }
         public string ServerName { get; set; }
-        public string Discription { get; set; }
+        public string Description { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
         public virtual DataCenterLocation DataCenterLocation { get; set; }
         public virtual Status Status { get; set; }

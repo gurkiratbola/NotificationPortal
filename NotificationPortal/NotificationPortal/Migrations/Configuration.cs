@@ -324,7 +324,7 @@ namespace NotificationPortal.Migrations
             var server = new Server()
             {
                 ServerName = "DNS Server",
-                Discription = "Server for Domain Name System",
+                Description = "Server for Domain Name System",
                 LocationID = location.LocationID,
                 StatusID = serverOfflineStatus.StatusID
             };
@@ -405,10 +405,12 @@ namespace NotificationPortal.Migrations
 
             context.Database.ExecuteSqlCommand("DELETE FROM UserDetails");
 
-            context.Database.ExecuteSqlCommand("DELETE FROM AspNetUsers");
-            context.Database.ExecuteSqlCommand("DELETE FROM AspNetRoles");
+          
+         
             context.Database.ExecuteSqlCommand("DELETE FROM AspNetUserClaims");
             context.Database.ExecuteSqlCommand("DELETE FROM AspNetUserLogins");
+            context.Database.ExecuteSqlCommand("DELETE FROM AspNetRoles");
+            context.Database.ExecuteSqlCommand("DELETE FROM AspNetUsers");
 
 
             context.Database.ExecuteSqlCommand("DELETE FROM Clients");
