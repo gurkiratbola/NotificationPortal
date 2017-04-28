@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NotificationPortal.Repositories;
+using NotificationPortal.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,8 +17,22 @@ namespace NotificationPortal.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public ActionResult Add()
         {
+            NotificationRepo nRepo = new NotificationRepo();
+            var model = new NotificationVM
+            {
+                ApplicationList = nRepo.GetApplicaitonList(),
+                ServerList = nRepo.GetServerList(),
+                TypeList = nRepo.GetTypeList(),
+                LevelOfImpactList = nRepo.GetImpactLevelList(),
+                StatusList = nRepo.GetNotificationSatusList()
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Add(NotificationVM notification) {
             return View();
         }
 

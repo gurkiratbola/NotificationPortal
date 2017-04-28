@@ -25,7 +25,6 @@ namespace NotificationPortal.ViewModels
             [Required]
             public int StatusID { get; set; }
 
-            [Required]
             public int ClientID { get; set; }
         }
 
@@ -39,9 +38,12 @@ namespace NotificationPortal.ViewModels
 
             [Required]
             public int StatusID { get; set; }
+
+            [Required]
+            public string StatusName { get; set; }
         }
 
-        public class NotificationVM
+        public class NotificationViewModel
         {
             [Required]
             public int NotificationID { get; set; }
@@ -126,6 +128,29 @@ namespace NotificationPortal.ViewModels
 
             [Required]
             public int StatusID { get; set; }
+        }
+
+        public class NotificationTypeVM
+        {
+            [Required]
+            public int NotificationTypeID { get; set; }
+            [Required]
+            public string NotificationTypeName { get; set; }
+        }
+        public class LevelOfImpactVM
+        {
+            [Required]
+            public int LevelOfImpactID { get; set; }
+            [Required]
+            public string Type { get; set; }
+        }
+        public class StatusVM {
+            [Required]
+            public int StatusID { get; set; }
+            [Required]
+            public string StatusName { get; set; }
+            [Required]
+            public int StatusTypeID { get; set; }
         }
     }
 }
