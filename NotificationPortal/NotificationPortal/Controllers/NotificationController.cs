@@ -10,6 +10,14 @@ namespace NotificationPortal.Controllers
 {
     public class NotificationController : Controller
     {
+        public string GetTimeZoneOffset() {
+            string timeOffsetString = "0";
+            if (Request.Cookies["timezoneoffset"] != null)
+            {
+                timeOffsetString = Request.Cookies["timezoneoffset"].Value;
+            }
+            return timeOffsetString;
+        }
         [Authorize]
         public ActionResult Index()
         {
@@ -33,6 +41,16 @@ namespace NotificationPortal.Controllers
         }
         [HttpPost]
         public ActionResult Add(NotificationVM notification) {
+            string result = "";
+            if (ModelState.IsValid)
+            {
+                NotificationRepo nRepo = new NotificationRepo();
+                nRepo.CreateNotification(notification, out result);
+            }
+            else
+            {
+                ViewBag.ErrorMsg = "Cannot add Notification, model not valid.";
+            }
             return View();
         }
 

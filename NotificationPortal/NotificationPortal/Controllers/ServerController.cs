@@ -82,7 +82,7 @@ namespace NotificationPortal.Controllers
                 //server.LocationID = serverVM.location;
                 server.LocationID = serverVM.LocationID;
                 server.StatusID = serverVM.StatusID;
-                server.Discription = serverVM.Description;
+                server.Description = serverVM.Description;
                 server.ServerName = serverVM.ServerName;
                 server.ServerID = serverVM.ServerID;
                 serverRepo.Add(server);
@@ -105,7 +105,7 @@ namespace NotificationPortal.Controllers
             var status = context.Status.Where(e => e.StatusType.StatusTypeName == "server").ToList();
             Server server = serverRepo.FindBy(id);
             ServerVM serverVM = new ServerVM();
-            serverVM.Description = server.Discription;
+            serverVM.Description = server.Description;
             serverVM.ServerName = server.ServerName;
            // serverVM.locationList = location;
             //serverVM.statusID = status;
@@ -126,7 +126,7 @@ namespace NotificationPortal.Controllers
                 //server.LocationID = serverVM.location;
                 server.LocationID = location;
                 server.StatusID = status;
-                server.Discription = Description;
+                server.Description = Description;
                 server.ServerName = ServerName;
                 serverRepo.Edit(server);
                 serverRepo.Save();

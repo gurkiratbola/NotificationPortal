@@ -16,11 +16,11 @@ namespace NotificationPortal.ViewModels
         public string ReferenceID { get; set; }
 
         [Required]
-        public string NotificaionHeading { get; set; }
+        public string NotificationHeading { get; set; }
 
         [Required]
         [AllowHtml]
-        public string NotificaionDescription { get; set; }
+        public string NotificationDescription { get; set; }
 
         public DateTime SentDateTime { get; set; }
 
@@ -43,6 +43,9 @@ namespace NotificationPortal.ViewModels
         public int StatusID { get; set; }
 
         [Required]
+        public int ProirityID { get; set; }
+
+        [Required]
         public int ServerID { get; set; }
 
         public int? ApplicationID { get; set; }
@@ -57,7 +60,7 @@ namespace NotificationPortal.ViewModels
 
         public IEnumerable<SelectListItem> StatusList { get; set; }  
 
-        //public IEnumerable<SelectListItem> ProirityList { get; set; }
+        public IEnumerable<SelectListItem> ProirityList { get; set; }
 
     }
 }

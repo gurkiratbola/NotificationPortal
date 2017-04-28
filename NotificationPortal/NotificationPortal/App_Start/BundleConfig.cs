@@ -32,6 +32,8 @@ namespace NotificationPortal
             // For the rtf editor 
             bundles.Add(new ScriptBundle("~/bundles/summernote").Include(
                       "~/Scripts/summernote.js"));
+            // For the timezone
+            bundles.Add(new ScriptBundle("~/bundles/timezone").Include("~/Scripts/timezone.js"));
 
         }
     }
