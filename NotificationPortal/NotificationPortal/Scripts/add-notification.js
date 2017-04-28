@@ -3,7 +3,7 @@
         var $this = this;  
   
         function initialize() {  
-            $('#NotificaionDescription').summernote({  
+            $('#NotificationDescription').summernote({  
                 focus: true,  
                 height: 150,    
                 codemirror: {   
