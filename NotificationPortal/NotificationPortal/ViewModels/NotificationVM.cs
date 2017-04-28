@@ -43,6 +43,9 @@ namespace NotificationPortal.ViewModels
         public int StatusID { get; set; }
 
         [Required]
+        public int ProirityID { get; set; }
+
+        [Required]
         public int ServerID { get; set; }
 
         public int? ApplicationID { get; set; }
@@ -57,7 +60,7 @@ namespace NotificationPortal.ViewModels
 
         public IEnumerable<SelectListItem> StatusList { get; set; }  
 
-        //public IEnumerable<SelectListItem> ProirityList { get; set; }
+        public IEnumerable<SelectListItem> ProirityList { get; set; }
 
     }
 }
