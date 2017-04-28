@@ -59,7 +59,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr class="text-center clickable-row" data-href="/Notification/Details">
+        <tr class="text-center clickable-row notification-row" data-href="/Notification/Details">
             <td>
                 Task Management App
             </td>
@@ -90,13 +90,28 @@
         </tr>
     </tbody>
 </table>
+<div id="hidden-menu">
+    <a class="btn btn-default" href="~/Notification/Update">Update</a>
+    <a class="btn btn-default" href="~/Notification/Delete">Delete</a>
+</div>
 
 <script src="~/Scripts/jquery-3.1.1.min.js"></script>
 
 <script>
     jQuery(document).ready(function ($) {
+        const HIDDEN_MENU_WIDTH_OFFSET = 100;
+        const HIDDEN_MENU_HEIGHT_OFFSET = 40;
+        $("#hidden-menu").hide();
         $(".clickable-row").click(function () {
             window.location = $(this).data("href");
         });
+
+        $(".notification-row").contextmenu(function (e) {
+            $("#hidden-menu").css({ position: "absolute", top: e.pageY - HIDDEN_MENU_HEIGHT_OFFSET, left: e.pageX - HIDDEN_MENU_WIDTH_OFFSET });
+            $('#hidden-menu').toggle();
+            return false;
+        });
+
+
     });
 </script>

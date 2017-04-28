@@ -189,9 +189,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+
     <Compile Include="Migrations\201704280303150_reset.cs" />
     <Compile Include="Migrations\201704280303150_reset.Designer.cs">
       <DependentUpon>201704280303150_reset.cs</DependentUpon>
+
+    <Compile Include="Migrations\201704280500108_Reset.cs" />
+    <Compile Include="Migrations\201704280500108_Reset.Designer.cs">
+      <DependentUpon>201704280500108_Reset.cs</DependentUpon>
+
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationModels.cs" />
@@ -202,12 +208,21 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+
     <Compile Include="Repositories\IInterfaceRepo.cs" />
     <Compile Include="Repositories\ServerRepo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="ViewModels\TylersVM.cs" />
+
+    <Compile Include="Repositories\ClientRepo.cs" />
+    <Compile Include="Repositories\NotificationRepo.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\AccountViewModels.cs" />
+    <Compile Include="ViewModels\ManageViewModels.cs" />
+    <Compile Include="ViewModels\NotificationVM.cs" />
+
     <Compile Include="ViewModels\ValidationVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -217,8 +232,8 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\quill.snow.css" />
     <Content Include="Content\sidebar.css" />
+    <Content Include="Content\summernote.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -235,6 +250,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\add-notification.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -247,12 +263,13 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\quill.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\summernote.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="summernote.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -293,15 +310,20 @@
     <Content Include="Views\Application\Index.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Home\Documentation.cshtml" />
-    <Content Include="Views\Notification\Add.cshtml" />
+    <Content Include="Views\Notification\withoutmodel\Add.cshtml" />
     <Content Include="Views\Notification\Delete.cshtml" />
     <Content Include="Views\Notification\Details.cshtml" />
     <Content Include="Views\Notification\Update.cshtml" />
+
     <Content Include="Views\Server\Create.cshtml" />
     <Content Include="Views\Server\Index.cshtml" />
     <Content Include="Views\Server\Delete.cshtml" />
     <Content Include="Views\Server\Edit.cshtml" />
     <Content Include="Views\Server\Details.cshtml" />
+
+    <Content Include="Views\Notification\Add.cshtml" />
+    <Content Include="Views\Client\Add.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -314,8 +336,13 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+
     <EmbeddedResource Include="Migrations\201704280303150_reset.resx">
       <DependentUpon>201704280303150_reset.cs</DependentUpon>
+
+    <EmbeddedResource Include="Migrations\201704280500108_Reset.resx">
+      <DependentUpon>201704280500108_Reset.cs</DependentUpon>
+
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
