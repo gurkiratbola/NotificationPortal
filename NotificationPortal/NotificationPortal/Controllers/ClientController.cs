@@ -19,7 +19,6 @@ namespace NotificationPortal.Controllers
             var statusTypeClient = context.StatusType.Where(s => s.StatusTypeName == "Client").Select(c => c.StatusTypeID).FirstOrDefault();
             var statusId = context.Client.Select(c => c.Status.StatusID).FirstOrDefault();
             var statusName = context.Status.Where(s => s.StatusTypeID == statusTypeClient && s.StatusID == statusId).FirstOrDefault();
-
             var clients = context.Client.ToList();
 
             List<ClientVM> clientList = new List<ClientVM>();

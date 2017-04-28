@@ -11,12 +11,17 @@ namespace NotificationPortal.Repositories
     {
         private ApplicationDbContext context = new ApplicationDbContext();
 
-        //public IEnumerable<Client> GetAll()
+        //public IEnumerable<SelectListItem> GetCategories(string userId)
         //{
-        //    var statusTypeClient = context.StatusType.Where(s => s.StatusTypeName == "Client").FirstOrDefault();
+        //    var categories = context.ItemCategories
+        //                    .Where(a => a.UserID == userId)
+        //                    .Select(x => new SelectListItem
+        //                    {
+        //                        Value = x.ItemCategoryID.ToString(),
+        //                        Text = x.ItemCategoryName
+        //                    });
 
-
-        //    return;
+        //    return categories;
         //}
     }
 }
