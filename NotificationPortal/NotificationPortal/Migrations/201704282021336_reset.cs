@@ -3,7 +3,7 @@ namespace NotificationPortal.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Reset : DbMigration
+    public partial class reset : DbMigration
     {
         public override void Up()
         {
@@ -16,13 +16,13 @@ namespace NotificationPortal.Migrations
                         Description = c.String(),
                         URL = c.String(),
                         ClientID = c.Int(nullable: false),
-                        Status_StatusID = c.Int(),
+                        StatusID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ApplicationID)
-                .ForeignKey("dbo.Status", t => t.Status_StatusID)
                 .ForeignKey("dbo.Clients", t => t.ClientID, cascadeDelete: true)
+                .ForeignKey("dbo.Status", t => t.StatusID)
                 .Index(t => t.ClientID)
-                .Index(t => t.Status_StatusID);
+                .Index(t => t.StatusID);
             
             CreateTable(
                 "dbo.Clients",
@@ -30,11 +30,11 @@ namespace NotificationPortal.Migrations
                     {
                         ClientID = c.Int(nullable: false, identity: true),
                         ClientName = c.String(),
-                        Status_StatusID = c.Int(),
+                        StatusID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ClientID)
-                .ForeignKey("dbo.Status", t => t.Status_StatusID)
-                .Index(t => t.Status_StatusID);
+                .ForeignKey("dbo.Status", t => t.StatusID)
+                .Index(t => t.StatusID);
             
             CreateTable(
                 "dbo.Status",
@@ -52,38 +52,42 @@ namespace NotificationPortal.Migrations
                 "dbo.Notifications",
                 c => new
                     {
-                        NotificationID = c.Int(nullable: false),
-                        ReferenceID = c.String(nullable: false, maxLength: 128),
+                        NotificationID = c.Int(nullable: false, identity: true),
+                        ReferenceID = c.String(maxLength: 450),
                         ThreadID = c.Int(nullable: false),
                         NotificaionHeading = c.String(),
                         NotificaionDescription = c.String(),
                         SentDateTime = c.DateTime(nullable: false),
                         StartDateTime = c.DateTime(nullable: false),
                         EndDateTime = c.DateTime(nullable: false),
-                        Application_ApplicationID = c.Int(),
-                        LevelOfImpact_LevelOfImpactID = c.Int(),
-                        NotificationType_NotificationTypeID = c.Int(),
-                        SendMethod_SendMethodID = c.Int(),
-                        Status_StatusID = c.Int(),
+                        StatusID = c.Int(nullable: false),
+                        SendMethodID = c.Int(nullable: false),
+                        ServerID = c.Int(),
+                        LevelOfImpactID = c.Int(nullable: false),
+                        ApplicationID = c.Int(),
+                        NotificationTypeID = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => new { t.NotificationID, t.ReferenceID })
-                .ForeignKey("dbo.Applications", t => t.Application_ApplicationID)
-                .ForeignKey("dbo.LevelOfImpacts", t => t.LevelOfImpact_LevelOfImpactID)
-                .ForeignKey("dbo.NotificationTypes", t => t.NotificationType_NotificationTypeID)
-                .ForeignKey("dbo.SendMethods", t => t.SendMethod_SendMethodID)
-                .ForeignKey("dbo.Status", t => t.Status_StatusID)
-                .Index(t => t.Application_ApplicationID)
-                .Index(t => t.LevelOfImpact_LevelOfImpactID)
-                .Index(t => t.NotificationType_NotificationTypeID)
-                .Index(t => t.SendMethod_SendMethodID)
-                .Index(t => t.Status_StatusID);
+                .PrimaryKey(t => t.NotificationID)
+                .ForeignKey("dbo.Applications", t => t.ApplicationID)
+                .ForeignKey("dbo.LevelOfImpacts", t => t.LevelOfImpactID, cascadeDelete: true)
+                .ForeignKey("dbo.NotificationTypes", t => t.NotificationTypeID, cascadeDelete: true)
+                .ForeignKey("dbo.SendMethods", t => t.SendMethodID, cascadeDelete: true)
+                .ForeignKey("dbo.Servers", t => t.ServerID)
+                .ForeignKey("dbo.Status", t => t.StatusID)
+                .Index(t => t.ReferenceID, unique: true)
+                .Index(t => t.StatusID)
+                .Index(t => t.SendMethodID)
+                .Index(t => t.ServerID)
+                .Index(t => t.LevelOfImpactID)
+                .Index(t => t.ApplicationID)
+                .Index(t => t.NotificationTypeID);
             
             CreateTable(
                 "dbo.LevelOfImpacts",
                 c => new
                     {
                         LevelOfImpactID = c.Int(nullable: false, identity: true),
-                        Type = c.String(),
+                        Level = c.String(),
                     })
                 .PrimaryKey(t => t.LevelOfImpactID);
             
@@ -111,13 +115,13 @@ namespace NotificationPortal.Migrations
                     {
                         ServerID = c.Int(nullable: false, identity: true),
                         ServerName = c.String(),
-                        Discription = c.String(),
+                        Description = c.String(),
                         StatusID = c.Int(nullable: false),
                         LocationID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ServerID)
                 .ForeignKey("dbo.DataCenterLocations", t => t.LocationID, cascadeDelete: true)
-                .ForeignKey("dbo.Status", t => t.StatusID, cascadeDelete: true)
+                .ForeignKey("dbo.Status", t => t.StatusID)
                 .Index(t => t.StatusID)
                 .Index(t => t.LocationID);
             
@@ -155,7 +159,7 @@ namespace NotificationPortal.Migrations
                     })
                 .PrimaryKey(t => t.UserID)
                 .ForeignKey("dbo.Clients", t => t.ClientID)
-                .ForeignKey("dbo.Status", t => t.StatusID, cascadeDelete: true)
+                .ForeignKey("dbo.Status", t => t.StatusID)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserID)
                 .Index(t => t.UserID)
                 .Index(t => t.ClientID)
@@ -267,20 +271,6 @@ namespace NotificationPortal.Migrations
                 .Index(t => t.Application_ApplicationID);
             
             CreateTable(
-                "dbo.ServerNotifications",
-                c => new
-                    {
-                        Server_ServerID = c.Int(nullable: false),
-                        Notification_NotificationID = c.Int(nullable: false),
-                        Notification_ReferenceID = c.String(nullable: false, maxLength: 128),
-                    })
-                .PrimaryKey(t => new { t.Server_ServerID, t.Notification_NotificationID, t.Notification_ReferenceID })
-                .ForeignKey("dbo.Servers", t => t.Server_ServerID, cascadeDelete: true)
-                .ForeignKey("dbo.Notifications", t => new { t.Notification_NotificationID, t.Notification_ReferenceID }, cascadeDelete: true)
-                .Index(t => t.Server_ServerID)
-                .Index(t => new { t.Notification_NotificationID, t.Notification_ReferenceID });
-            
-            CreateTable(
                 "dbo.UserDetailApplications",
                 c => new
                     {
@@ -300,7 +290,9 @@ namespace NotificationPortal.Migrations
             DropForeignKey("dbo.RoleDetails", "RoleID", "dbo.AspNetRoles");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.RoleDetails", "GroupID", "dbo.Groups");
+            DropForeignKey("dbo.Applications", "StatusID", "dbo.Status");
             DropForeignKey("dbo.Applications", "ClientID", "dbo.Clients");
+            DropForeignKey("dbo.Clients", "StatusID", "dbo.Status");
             DropForeignKey("dbo.UserDetails", "UserID", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
@@ -310,23 +302,18 @@ namespace NotificationPortal.Migrations
             DropForeignKey("dbo.UserDetailApplications", "Application_ApplicationID", "dbo.Applications");
             DropForeignKey("dbo.UserDetailApplications", "UserDetail_UserID", "dbo.UserDetails");
             DropForeignKey("dbo.Status", "StatusTypeID", "dbo.StatusTypes");
-            DropForeignKey("dbo.Notifications", "Status_StatusID", "dbo.Status");
+            DropForeignKey("dbo.Notifications", "StatusID", "dbo.Status");
+            DropForeignKey("dbo.Notifications", "ServerID", "dbo.Servers");
             DropForeignKey("dbo.Servers", "StatusID", "dbo.Status");
-            DropForeignKey("dbo.ServerNotifications", new[] { "Notification_NotificationID", "Notification_ReferenceID" }, "dbo.Notifications");
-            DropForeignKey("dbo.ServerNotifications", "Server_ServerID", "dbo.Servers");
             DropForeignKey("dbo.Servers", "LocationID", "dbo.DataCenterLocations");
             DropForeignKey("dbo.ServerApplications", "Application_ApplicationID", "dbo.Applications");
             DropForeignKey("dbo.ServerApplications", "Server_ServerID", "dbo.Servers");
-            DropForeignKey("dbo.Notifications", "SendMethod_SendMethodID", "dbo.SendMethods");
-            DropForeignKey("dbo.Notifications", "NotificationType_NotificationTypeID", "dbo.NotificationTypes");
-            DropForeignKey("dbo.Notifications", "LevelOfImpact_LevelOfImpactID", "dbo.LevelOfImpacts");
-            DropForeignKey("dbo.Notifications", "Application_ApplicationID", "dbo.Applications");
-            DropForeignKey("dbo.Clients", "Status_StatusID", "dbo.Status");
-            DropForeignKey("dbo.Applications", "Status_StatusID", "dbo.Status");
+            DropForeignKey("dbo.Notifications", "SendMethodID", "dbo.SendMethods");
+            DropForeignKey("dbo.Notifications", "NotificationTypeID", "dbo.NotificationTypes");
+            DropForeignKey("dbo.Notifications", "LevelOfImpactID", "dbo.LevelOfImpacts");
+            DropForeignKey("dbo.Notifications", "ApplicationID", "dbo.Applications");
             DropIndex("dbo.UserDetailApplications", new[] { "Application_ApplicationID" });
             DropIndex("dbo.UserDetailApplications", new[] { "UserDetail_UserID" });
-            DropIndex("dbo.ServerNotifications", new[] { "Notification_NotificationID", "Notification_ReferenceID" });
-            DropIndex("dbo.ServerNotifications", new[] { "Server_ServerID" });
             DropIndex("dbo.ServerApplications", new[] { "Application_ApplicationID" });
             DropIndex("dbo.ServerApplications", new[] { "Server_ServerID" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
@@ -342,17 +329,18 @@ namespace NotificationPortal.Migrations
             DropIndex("dbo.UserDetails", new[] { "UserID" });
             DropIndex("dbo.Servers", new[] { "LocationID" });
             DropIndex("dbo.Servers", new[] { "StatusID" });
-            DropIndex("dbo.Notifications", new[] { "Status_StatusID" });
-            DropIndex("dbo.Notifications", new[] { "SendMethod_SendMethodID" });
-            DropIndex("dbo.Notifications", new[] { "NotificationType_NotificationTypeID" });
-            DropIndex("dbo.Notifications", new[] { "LevelOfImpact_LevelOfImpactID" });
-            DropIndex("dbo.Notifications", new[] { "Application_ApplicationID" });
+            DropIndex("dbo.Notifications", new[] { "NotificationTypeID" });
+            DropIndex("dbo.Notifications", new[] { "ApplicationID" });
+            DropIndex("dbo.Notifications", new[] { "LevelOfImpactID" });
+            DropIndex("dbo.Notifications", new[] { "ServerID" });
+            DropIndex("dbo.Notifications", new[] { "SendMethodID" });
+            DropIndex("dbo.Notifications", new[] { "StatusID" });
+            DropIndex("dbo.Notifications", new[] { "ReferenceID" });
             DropIndex("dbo.Status", new[] { "StatusTypeID" });
-            DropIndex("dbo.Clients", new[] { "Status_StatusID" });
-            DropIndex("dbo.Applications", new[] { "Status_StatusID" });
+            DropIndex("dbo.Clients", new[] { "StatusID" });
+            DropIndex("dbo.Applications", new[] { "StatusID" });
             DropIndex("dbo.Applications", new[] { "ClientID" });
             DropTable("dbo.UserDetailApplications");
-            DropTable("dbo.ServerNotifications");
             DropTable("dbo.ServerApplications");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.RoleDetails");

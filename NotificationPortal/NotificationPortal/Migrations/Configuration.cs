@@ -36,7 +36,7 @@ namespace NotificationPortal.Migrations
             SeedApplication(context);
             SeedNotification(context);
         }
-        // Done SeedSendMethod
+
         private void SeedSendMethod(ApplicationDbContext context)
         {
             string[] notificationTypes = new string[] { "Email", "SMS" };
@@ -50,7 +50,7 @@ namespace NotificationPortal.Migrations
             }
             context.SaveChanges();
         }
-        // Done SeedNotificationType
+
         private void SeedNotificationType(ApplicationDbContext context)
         {
             string[] notificationTypes = new string[] { "Incident", "Maintenance" };
@@ -64,21 +64,21 @@ namespace NotificationPortal.Migrations
             }
             context.SaveChanges();
         }
-        // Done SeedLevelOfImpact
+
         private void SeedLevelOfImpact(ApplicationDbContext context)
         {
-            string[] levelsOfImpact = new string[] { "Impacting", "Non-impacting", "Full service outage", "”Loss of redundancy" };
+            string[] levelsOfImpact = new string[] { "Impacting", "Non-impacting", "Full service outage", "Loss of redundancy" };
             foreach (string level in levelsOfImpact)
             {
                 context.LevelOfImpact.Add(
                     new LevelOfImpact()
                     {
-                        Type = level
+                        Level = level
                     });
             }
             context.SaveChanges();
         }
-        // Done SeedDataCenterLocation
+
         private void SeedDataCenterLocation(ApplicationDbContext context)
         {
             string[] locations = new string[] { "Toronto", "Vancouver" };
@@ -92,7 +92,7 @@ namespace NotificationPortal.Migrations
             }
             context.SaveChanges();
         }
-        // Done SeedGroups
+
         private void SeedGroups(ApplicationDbContext context)
         {
             string[] groups = new string[] { "Internal", "External" };
@@ -107,7 +107,7 @@ namespace NotificationPortal.Migrations
             }
             context.SaveChanges();
         }
-        // Done seed AspNetRoles
+
         private void SeedRoles(ApplicationDbContext context)
         {
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
@@ -119,7 +119,7 @@ namespace NotificationPortal.Migrations
                 roleManager.Create(iRole);
             }
         }
-        // Done SeedRoleDetail
+
         private void SeedRoleDetail(ApplicationDbContext context)
         {
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
@@ -160,7 +160,7 @@ namespace NotificationPortal.Migrations
             });
             context.SaveChanges();
         }
-        // Done SeedStatusType
+
         private void SeedStatusType(ApplicationDbContext context)
         {
             string[] statusTypes = new string[] {
@@ -175,7 +175,7 @@ namespace NotificationPortal.Migrations
             }
             context.SaveChanges();
         }
-        // Done SeedStatus
+
         private void SeedStatus(ApplicationDbContext context)
         {
             // Application Status
@@ -225,7 +225,7 @@ namespace NotificationPortal.Migrations
 
             context.SaveChanges();
         }
-        // Done SeedClient
+
         private void SeedClient(ApplicationDbContext context)
         {
             var bcitStatus = context.Status.Where(s => s.StatusName == "Disabled").FirstOrDefault();
@@ -247,7 +247,7 @@ namespace NotificationPortal.Migrations
             context.Client.Add(ubcClient);
             context.SaveChanges();
         }
-        // Done bridging the UserDetail (detail info are still empty)
+
         private void SeedUsers(ApplicationDbContext context)
         {
             // Get first client id
@@ -320,7 +320,7 @@ namespace NotificationPortal.Migrations
             userManager.AddToRoles(client.Id, "Client");
             userManager.AddToRoles(user.Id, "User");
         }
-        // Done SeedServer
+
         private void SeedServer(ApplicationDbContext context)
         {
             // get locationId
@@ -334,7 +334,7 @@ namespace NotificationPortal.Migrations
             var server = new Server()
             {
                 ServerName = "DNS Server",
-                Discription = "Server for Domain Name System",
+                Description = "Server for Domain Name System",
                 LocationID = location.LocationID,
                 StatusID = serverOfflineStatus.StatusID
             };
@@ -362,11 +362,11 @@ namespace NotificationPortal.Migrations
 
             var app = new Application()
             {
-                ApplicationName = "Quantum Portal",
-                Description = "Fundamental gateway to unlocking the mysteries of our universe.",
-                URL = "http://quantum-portal.com/",
+                ApplicationName = "Notification Portal",
+                Description = "Portal to manage all notifications",
+                URL = "http://notification-portal.com/",
                 ClientID = clientID,
-                //StatusID = appOfflineStatus.StatusID
+                StatusID = appOfflineStatus.StatusID
             };
             app.UserDetail = clientUserDetail.ToList();
             app.Servers = server.ToList();
@@ -376,53 +376,71 @@ namespace NotificationPortal.Migrations
 
         private void SeedNotification(ApplicationDbContext context)
         {
+            // Get app
+            var app = context.Application.Where(a => a.ApplicationName == "Notification Portal").FirstOrDefault();
+            // Get notification type
+            var notificationType = context.NotificationType.Where(t => t.NotificationTypeName == "Maintenance").FirstOrDefault();
+            // Get levelOfImpact
+            var levelOfImpact = context.LevelOfImpact.Where(l => l.Level == "Non-impacting").FirstOrDefault();
+            // Get server
+            var server = context.Server.Where(s => s.ServerName == "DNS Server").FirstOrDefault();
+            // Get server
+            var sendMethod = context.SendMethod.Where(s => s.SendMethodName == "Email").FirstOrDefault();
+            // Get status
+            var statusType = context.StatusType.Where(t => t.StatusTypeName == "Notification").FirstOrDefault();
+            var status = context.Status.Where(s => s.StatusTypeID == statusType.StatusTypeID && s.StatusName == "Incomplete").FirstOrDefault();
 
             var notification = new Notification()
             {
                 StartDateTime = DateTime.Now.AddMinutes(5),
                 EndDateTime = DateTime.Now.AddHours(1),
                 SentDateTime = DateTime.Now,
-                NotificaionHeading = "Application offline",
-                NotificaionDescription = "Application will be offline for maintenance",
+                NotificationHeading = "Application offline",
+                NotificationDescription = "Application will be offline for maintenance",
                 ThreadID = 0,
-                ReferenceID = "ref-0"
+                ReferenceID = "ref-0",
+                ApplicationID = app.ApplicationID,
+                NotificationTypeID = notificationType.NotificationTypeID,
+                LevelOfImpactID = levelOfImpact.LevelOfImpactID,
+                ServerID = server.ServerID,
+                SendMethodID = sendMethod.SendMethodID,
+                StatusID = status.StatusID
             };
             context.Notification.Add(notification);
             context.SaveChanges();
         }
+
         private void RemoveAll(ApplicationDbContext context)
         {
-            context.Database.ExecuteSqlCommand("DELETE FROM SendMethods");
-
-
-            context.Database.ExecuteSqlCommand("DELETE FROM Applications");
-            context.Database.ExecuteSqlCommand("DELETE FROM Notifications");
-            context.Database.ExecuteSqlCommand("DELETE FROM LevelOfImpacts");
-            context.Database.ExecuteSqlCommand("DELETE FROM NotificationTypes");
-            context.Database.ExecuteSqlCommand("DELETE FROM Servers");
-            context.Database.ExecuteSqlCommand("DELETE FROM DataCenterLocations");
+            // delete bridges first
             context.Database.ExecuteSqlCommand("DELETE FROM ServerApplications");
-            context.Database.ExecuteSqlCommand("DELETE FROM ServerNotifications");
-
-
-
-            context.Database.ExecuteSqlCommand("DELETE FROM RoleDetails");
-            context.Database.ExecuteSqlCommand("DELETE FROM Groups");
-            context.Database.ExecuteSqlCommand("DELETE FROM AspNetUserRoles");
-
-
             context.Database.ExecuteSqlCommand("DELETE FROM UserDetailApplications");
 
-            context.Database.ExecuteSqlCommand("DELETE FROM UserDetails");
+            context.Database.ExecuteSqlCommand("DELETE FROM Notifications");
+            context.Database.ExecuteSqlCommand("DELETE FROM Servers");
+            context.Database.ExecuteSqlCommand("DELETE FROM Applications");
 
+            // delete detail tables before AspNet tables
+            context.Database.ExecuteSqlCommand("DELETE FROM UserDetails");
+            context.Database.ExecuteSqlCommand("DELETE FROM RoleDetails");
+
+            // delete AspNet tables after detail tables
             context.Database.ExecuteSqlCommand("DELETE FROM AspNetUsers");
-            context.Database.ExecuteSqlCommand("DELETE FROM AspNetRoles");
             context.Database.ExecuteSqlCommand("DELETE FROM AspNetUserClaims");
             context.Database.ExecuteSqlCommand("DELETE FROM AspNetUserLogins");
+            context.Database.ExecuteSqlCommand("DELETE FROM AspNetUserRoles");
+            context.Database.ExecuteSqlCommand("DELETE FROM AspNetRoles");
 
-
+            // delete after delete users
             context.Database.ExecuteSqlCommand("DELETE FROM Clients");
+
+            // delete lookup tables
             context.Database.ExecuteSqlCommand("DELETE FROM Status");
+            context.Database.ExecuteSqlCommand("DELETE FROM Groups");
+            context.Database.ExecuteSqlCommand("DELETE FROM NotificationTypes");
+            context.Database.ExecuteSqlCommand("DELETE FROM SendMethods");
+            context.Database.ExecuteSqlCommand("DELETE FROM LevelOfImpacts");
+            context.Database.ExecuteSqlCommand("DELETE FROM DataCenterLocations");
             context.Database.ExecuteSqlCommand("DELETE FROM StatusTypes");
         }
     }
