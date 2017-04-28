@@ -189,9 +189,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201704282021336_reset.cs" />
-    <Compile Include="Migrations\201704282021336_reset.Designer.cs">
-      <DependentUpon>201704282021336_reset.cs</DependentUpon>
+    <Compile Include="Migrations\201704282056214_reset.cs" />
+    <Compile Include="Migrations\201704282056214_reset.Designer.cs">
+      <DependentUpon>201704282056214_reset.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationModels.cs" />
@@ -322,8 +322,8 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704282021336_reset.resx">
-      <DependentUpon>201704282021336_reset.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201704282056214_reset.resx">
+      <DependentUpon>201704282056214_reset.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
