@@ -16,22 +16,26 @@ namespace NotificationPortal.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            var statusTypeClient = context.StatusType.Where(s => s.StatusTypeName == "Client").Select(c => c.StatusTypeID).FirstOrDefault();
-            var statusId = context.Client.Select(c => c.Status.StatusID).FirstOrDefault();
-            var statusName = context.Status.Where(s => s.StatusTypeID == statusTypeClient && s.StatusID == statusId).FirstOrDefault();
             var clients = context.Client.ToList();
 
             List<ClientVM> clientList = new List<ClientVM>();
 
             foreach(var client in clients)
             {
-                var user = new ClientVM()
-                {
-                    ClientName = client.ClientName,
-                    StatusName = statusName.StatusName
-                };
+                var statusTypeClient = context.StatusType.Where(s => s.StatusTypeName == "Client").Select(c => c.StatusTypeID).FirstOrDefault();
+                var statusId = context.Client.Select(c => c.Status.StatusID).FirstOrDefault();
+                var statusName = context.Status.Where(s => s.StatusTypeID == statusTypeClient && s.StatusID == statusId).FirstOrDefault();
 
-                clientList.Add(user);
+                if (statusName != null)
+                {
+                    var user = new ClientVM()
+                    {
+                        ClientName = client.ClientName,
+                        StatusName = statusName.StatusName
+                    };
+
+                    clientList.Add(user);
+                }
             }
             
             return View(clientList);
