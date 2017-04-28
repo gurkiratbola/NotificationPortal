@@ -19,6 +19,7 @@ namespace NotificationPortal.ViewModels
         public string NotificaionHeading { get; set; }
 
         [Required]
+        [AllowHtml]
         public string NotificaionDescription { get; set; }
 
         public DateTime SentDateTime { get; set; }

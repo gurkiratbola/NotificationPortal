@@ -17,6 +17,7 @@ namespace NotificationPortal.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public ActionResult Add()
         {
             NotificationRepo nRepo = new NotificationRepo();
@@ -29,6 +30,10 @@ namespace NotificationPortal.Controllers
                 StatusList = nRepo.GetNotificationSatusList()
             };
             return View(model);
+        }
+        [HttpPost]
+        public ActionResult Add(NotificationVM notification) {
+            return View();
         }
 
         [Authorize]

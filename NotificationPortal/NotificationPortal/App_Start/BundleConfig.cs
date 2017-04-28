@@ -27,11 +27,11 @@ namespace NotificationPortal
                       "~/Content/bootstrap.css",
                       "~/Content/sidebar.css",
                       "~/Content/site.css",
-                      "~/Content/quill.snow.css"
+                      "~/Content/summernote.css"
                       ));
             // For the rtf editor 
-            bundles.Add(new ScriptBundle("~/bundles/quill").Include(
-                      "~/Scripts/quill.js"));
+            bundles.Add(new ScriptBundle("~/bundles/summernote").Include(
+                      "~/Scripts/summernote.js"));
 
         }
     }
