@@ -203,6 +203,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Repositories\ClientRepo.cs" />
+    <Compile Include="Repositories\NotificationRepo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
@@ -298,6 +299,7 @@
     <Content Include="Views\Notification\Details.cshtml" />
     <Content Include="Views\Notification\Update.cshtml" />
     <Content Include="Views\Notification\Add.cshtml" />
+    <Content Include="Views\Client\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
