@@ -22,8 +22,8 @@ namespace NotificationPortal.Models
         public virtual Status Status { get; set; }
         [ForeignKey("Client")]
         public int ClientID { get; set; }
-        //[ForeignKey("Status")]
-        //public int StatusID { get; set; }
+        [ForeignKey("Status")]
+        public int StatusID { get; set; }
     }
 
     public class Client
@@ -34,8 +34,8 @@ namespace NotificationPortal.Models
         public virtual ICollection<Application> Applications { get; set; }
         public virtual Status Status { get; set; }
         public virtual ICollection<UserDetail> UserDetail { get; set; }
-        //[ForeignKey("Status")]
-        //public int StatusID { get; set; }
+        [ForeignKey("Status")]
+        public int StatusID { get; set; }
     }
 
     public class DataCenterLocation
@@ -59,21 +59,20 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int LevelOfImpactID { get; set; }
-        public string Type { get; set; }
+        public string Level { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
     }
 
     public class Notification
     {
         [Key]
-        [Column(Order = 0)]
         public int NotificationID { get; set; }
-        public int ThreadID { get; set; }
-        [Key]
-        [Column(Order = 1)]
+        [StringLength(450)]
+        [Index(IsUnique = true)]
         public string ReferenceID { get; set; }
-        public string NotificaionHeading { get; set; }
-        public string NotificaionDescription { get; set; }
+        public int ThreadID { get; set; }
+        public string NotificationHeading { get; set; }
+        public string NotificationDescription { get; set; }
         public DateTime SentDateTime { get; set; }
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
@@ -81,20 +80,20 @@ namespace NotificationPortal.Models
         public virtual LevelOfImpact LevelOfImpact { get; set; }
         public virtual NotificationType NotificationType { get; set; }
         public virtual SendMethod SendMethod { get; set; }
-        public virtual ICollection<Server> Servers { get; set; }
+        public virtual Server Server { get; set; }
         public virtual Status Status { get; set; }
-        //[ForeignKey("Status")]
-        //public int StatusID { get; set; }
-        //[ForeignKey("SendMethod")]
-        //public int SendMethodID { get; set; }
-        //[ForeignKey("Servers")]
-        //public int ServerID { get; set; }
-        //[ForeignKey("LevelOfImpact")]
-        //public int LevelOfImpactID { get; set; }
-        //[ForeignKey("Application")]
-        //public int ApplicationID { get; set; }
-        //[ForeignKey("NotificationType")]
-        //public int NotificationTypeID { get; set; }
+        [ForeignKey("Status")]
+        public int StatusID { get; set; }
+        [ForeignKey("SendMethod")]
+        public int SendMethodID { get; set; }
+        [ForeignKey("Server")]
+        public int? ServerID { get; set; }
+        [ForeignKey("LevelOfImpact")]
+        public int LevelOfImpactID { get; set; }
+        [ForeignKey("Application")]
+        public int? ApplicationID { get; set; }
+        [ForeignKey("NotificationType")]
+        public int NotificationTypeID { get; set; }
     }
 
     public class NotificationType
@@ -129,7 +128,7 @@ namespace NotificationPortal.Models
         [Key]
         public int ServerID { get; set; }
         public string ServerName { get; set; }
-        public string Discription { get; set; }
+        public string Description { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
         public virtual DataCenterLocation DataCenterLocation { get; set; }
         public virtual Status Status { get; set; }
@@ -150,7 +149,7 @@ namespace NotificationPortal.Models
         public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Server> Servers { get; set; }
         public virtual StatusType StatusType { get; set; }
-        public virtual ICollection<UserDetail> UserDetail { get; set; }
+        public virtual ICollection<UserDetail> UserDetails { get; set; }
         [ForeignKey("StatusType")]
         public int StatusTypeID { get; set; }
     }

@@ -58,7 +58,7 @@ namespace NotificationPortal.Repositories
                     .Select(impact => new SelectListItem()
                     {
                         Value = impact.LevelOfImpactID.ToString(),
-                        Text = impact.Type
+                        Text = impact.Level
                     });
 
             return new SelectList(impactList, "Value", "Text");
@@ -92,8 +92,8 @@ namespace NotificationPortal.Repositories
                 //TO DO: convert input time to UTC time
                 newNotification.StartDateTime = notification.StartDateTime;
                 newNotification.EndDateTime = notification.EndDateTime;
-                newNotification.NotificaionHeading = notification.NotificaionHeading;
-                newNotification.NotificaionDescription = notification.NotificaionDescription;
+                newNotification.NotificationHeading = notification.NotificationHeading;
+                newNotification.NotificationDescription = notification.NotificationDescription;
                 //newNotification.StatusID = notification.StatusID;
                 //newNotfiication.SendMethodID = notification.SentMethodID;
                 //newNotification.NotificationTypeID = notification.NotificationTypeID;

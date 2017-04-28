@@ -16,11 +16,11 @@ namespace NotificationPortal.ViewModels
         public string ReferenceID { get; set; }
 
         [Required]
-        public string NotificaionHeading { get; set; }
+        public string NotificationHeading { get; set; }
 
         [Required]
         [AllowHtml]
-        public string NotificaionDescription { get; set; }
+        public string NotificationDescription { get; set; }
 
         public DateTime SentDateTime { get; set; }
 

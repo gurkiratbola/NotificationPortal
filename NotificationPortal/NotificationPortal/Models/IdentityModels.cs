@@ -35,6 +35,27 @@ namespace NotificationPortal.Models
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<IdentityRole>().ToTable("AspNetRoles");
+
+            modelBuilder.Entity<Application>()
+                .HasRequired(s => s.Status)
+                .WithMany(s => s.Applications)
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Client>()
+                .HasRequired(s => s.Status)
+                .WithMany(s => s.Clients)
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Notification>()
+                .HasRequired(s => s.Status)
+                .WithMany(s => s.Notifications)
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<UserDetail>()
+                .HasRequired(s => s.Status)
+                .WithMany(s => s.UserDetails)
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Server>()
+                .HasRequired(s => s.Status)
+                .WithMany(s => s.Servers)
+                .WillCascadeOnDelete(false);
         }
 
         public DbSet<Application> Application { get; set; }
