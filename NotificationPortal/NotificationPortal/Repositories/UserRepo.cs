@@ -115,5 +115,39 @@ namespace NotificationPortal.Repositories
                 return false;
             }
         }
+
+        public bool EditUser(UserVM model, out string msg)
+        {
+            try
+            {
+                UserDetail user = _context.UserDetail.FirstOrDefault(u => u.UserID == model.UserID);
+
+                if (user != null)
+                {
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.BusinessTitle = model.BusinessTitle;
+                    user.BusinessPhone = model.BusinessPhone;
+                    user.MobilePhone = model.MobilePhone;
+                    user.HomePhone = model.HomePhone;
+                    user.StatusID = model.StatusID;
+
+                    _context.SaveChanges();
+                    msg = "User information successfully updated!";
+
+                    return true;
+                }
+
+                msg = "Failed to update the user.";
+
+                return false;
+            }
+            catch
+            {
+                msg = "Failed to update the user.";
+
+                return false;
+            }
+        }
     }
 }

@@ -77,9 +77,10 @@ namespace NotificationPortal.Controllers
         // GET: UserDetails/Edit
         [Authorize]
         [HttpGet]
-        public ActionResult Edit()
+        public ActionResult Edit(string id)
         {
-            return View();
+            ViewBag.StatusNames = _userRepo.GetStatusList();
+            return View(_userRepo.GetUserDetails(id));
         }
 
         // POST: UserDetails/Edit
@@ -88,6 +89,26 @@ namespace NotificationPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(UserVM model)
         {
+            if (ModelState.IsValid)
+            {
+                string msg = "";
+
+                bool isUserUpdated = _userRepo.EditUser(model, out msg);
+
+                if (isUserUpdated)
+                {
+                    TempData["EditUserSuccess"] = "User information successfully updated!";
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["EditUserError"] = "Failed to update the user information.";
+
+                    return RedirectToAction("Index");
+                }
+            }
+            
             return View();
         }
 

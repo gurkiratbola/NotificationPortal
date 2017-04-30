@@ -43,7 +43,7 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Status")]
         public string StatusName { get; set; }
 
-        public IEnumerable<SelectListItem> StatusList { get; set; }
+        public SelectListItem StatusList { get; set; }
     }
 
     public class AddUserVM
@@ -69,6 +69,7 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Business Title")]
         public string BusinessTitle { get; set; }
 
+        [Display(Name = "Status")]
         public IEnumerable<SelectListItem> StatusList { get; set; }
     }
 }
