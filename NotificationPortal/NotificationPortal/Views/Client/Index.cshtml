@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NotificationPortal.ViewModels.ValidationVM.ClientVM>
+﻿@model IEnumerable<NotificationPortal.ViewModels.ClientVM>
 
 @{
     ViewBag.Title = "Clients";
@@ -27,7 +27,9 @@
         </div>
     </div>
 </div>
-
+<p>
+    @Html.Raw(ViewBag.ActionMsg)
+</p>
 <table class="table table-bordered">
     <tr class="bg-inverse text-white text-center">
         <th class="text-center">
@@ -36,8 +38,6 @@
         <th class="text-center">
             @Html.DisplayNameFor(model => model.StatusName)
         </th>
-        <th></th>
-        <th></th>
         <th></th>
     </tr>
 
@@ -48,25 +48,11 @@
             @Html.DisplayFor(modelItem => item.ClientName)
         </td>
         <td>
-            @{
-                if (item.StatusName == "Disabled")
-                {
-                    <span class="badge badge-danger">@Html.DisplayFor(modelItem => item.StatusName)</span>
-                }
-                else
-                {
-                    <span class="badge badge-success">@Html.DisplayFor(modelItem => item.StatusName)</span>
-                }
-            }
-            
+            <span class="">@Html.DisplayFor(modelItem => item.StatusName)</span>
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.ClientID } , new { @class = "btn btn-success btn-sm" })
-        </td>
-        <td>
             @Html.ActionLink("Details", "Details", new { id = item.ClientID }, new { @class = "btn btn-secondary text-muted btn-sm" })
-        </td>
-        <td>
             @Html.ActionLink("Delete", "Delete", new { id = item.ClientID }, new { @class = "btn btn-danger btn-sm" })
         </td>
     </tr>
