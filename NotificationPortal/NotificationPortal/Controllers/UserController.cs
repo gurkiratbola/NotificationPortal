@@ -21,7 +21,7 @@ namespace NotificationPortal.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            IEnumerable<UserVM> users = _userRepo.GetAll();
+            IEnumerable<UserVM> users = _userRepo.GetAllUsers();
 
             return View(users);
         }
@@ -55,30 +55,21 @@ namespace NotificationPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+                string msg = "";
 
-                var user = new ApplicationUser()
+                if (_userRepo.AddUser(model, out msg))
                 {
-                    UserName = model.Email,
-                    Email = model.Email
-                };
+                    TempData["AddUserSuccess"] = msg;
 
-                userManager.Create(user);
+                    return RedirectToAction("Index");
+                }
 
-                UserDetail details = new UserDetail()
-                {
-                    UserID = user.Id,
-                    BusinessTitle = model.BusinessTitle,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    StatusID = model.StatusID,
-                };
-
-                _context.UserDetail.Add(details);
-                _context.SaveChanges();
+                TempData["AddUserError"] = msg;
 
                 return RedirectToAction("Index");
             }
+
+            TempData["AddUserError"] = "Cannot add user at this time, please try again!";
 
             return View(model);
         }
