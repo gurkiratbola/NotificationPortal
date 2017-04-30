@@ -9,10 +9,8 @@ namespace NotificationPortal.ViewModels
 {
     public class UserVM
     {
-        [Required]
         public string UserID { get; set; }
 
-        [Required]
         public int? ClientID { get; set; }
 
         [Required]
@@ -44,6 +42,32 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name = "Status")]
         public string StatusName { get; set; }
+
+        public IEnumerable<SelectListItem> StatusList { get; set; }
+    }
+
+    public class AddUserVM
+    {
+        public string UserID { get; set; }
+
+        [Required]
+        public int StatusID { get; set; }
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [Display(Name = "Business Title")]
+        public string BusinessTitle { get; set; }
 
         public IEnumerable<SelectListItem> StatusList { get; set; }
     }
