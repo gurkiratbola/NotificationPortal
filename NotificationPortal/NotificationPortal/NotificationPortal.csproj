@@ -208,6 +208,7 @@
     <Compile Include="Repositories\ServerRepo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
+    <Compile Include="ViewModels\ClientVM.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="ViewModels\NotificationVM.cs" />
     <Compile Include="ViewModels\ServerAppViewModels.cs" />
@@ -258,7 +259,6 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\summernote.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="summernote.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -303,13 +303,16 @@
     <Content Include="Views\Notification\withoutmodel\Add.cshtml" />
     <Content Include="Views\Notification\Delete.cshtml" />
     <Content Include="Views\Notification\Details.cshtml" />
-    <Content Include="Views\Notification\Update.cshtml" />
+    <Content Include="Views\Notification\withoutmodel\Update.cshtml" />
     <Content Include="Views\Notification\Add.cshtml" />
-    <Content Include="Views\Client\Add.cshtml" />
     <Content Include="Views\Server\Details.cshtml" />
     <Content Include="Views\Server\Create.cshtml" />
     <Content Include="Views\Server\Edit.cshtml" />
     <Content Include="Views\Server\Delete.cshtml" />
+    <Content Include="Views\Client\Add.cshtml" />
+    <Content Include="Views\Client\Edit.cshtml" />
+    <Content Include="Views\Client\Details.cshtml" />
+    <Content Include="Views\Client\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
