@@ -43,7 +43,8 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Status")]
         public string StatusName { get; set; }
 
-        public SelectListItem StatusList { get; set; }
+        [Display(Name = "Status")]
+        public SelectList StatusList { get; set; }
     }
 
     public class AddUserVM

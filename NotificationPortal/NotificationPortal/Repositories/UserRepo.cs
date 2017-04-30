@@ -17,11 +17,11 @@ namespace NotificationPortal.Repositories
         public IEnumerable<SelectListItem> GetStatusList()
         {
             IEnumerable<SelectListItem> statusList = _context.Status.Where(s => s.StatusType.StatusTypeName == "User")
-                .Select(app => new SelectListItem
-                {
-                    Value = app.StatusID.ToString(),
-                    Text = app.StatusName
-                });
+                                                     .Select(app => new SelectListItem
+                                                     {
+                                                         Value = app.StatusID.ToString(),
+                                                         Text = app.StatusName
+                                                     });
 
             return new SelectList(statusList, "Value", "Text");
         }
@@ -65,6 +65,7 @@ namespace NotificationPortal.Repositories
                               HomePhone = user.HomePhone,
                               ClientID = user.ClientID,
                               StatusID = user.Status.StatusID,
+                              StatusName = user.Status.StatusName
                           }).FirstOrDefault();
 
             return details;
@@ -148,6 +149,39 @@ namespace NotificationPortal.Repositories
 
                 return false;
             }
+        }
+
+        public void DeleteUser(string id, int? clientId, out string msg)
+        {
+            Client clientToBeDeleted = _context.Client.FirstOrDefault(c => c.ClientID == clientId);
+            UserDetail userToBeDeleted = _context.UserDetail.FirstOrDefault(u => u.UserID == id);
+            ApplicationUser appUserTobeDeleted = _context.Users.FirstOrDefault(u => u.Id == id);
+
+            if (clientToBeDeleted != null)
+            {
+                msg = "User associated with application(s), cannot be deleted.";
+            }
+            else
+            {
+                if (userToBeDeleted != null)
+                {
+                    _context.UserDetail.Remove(userToBeDeleted);
+                    _context.SaveChanges();
+
+                    if (appUserTobeDeleted != null)
+                    {
+                        _context.Users.Remove(appUserTobeDeleted);
+                        _context.SaveChanges();
+                        msg = "User deleted successfully!";
+                    }
+                }
+                else
+                {
+                    msg = "Failed to delete user.";
+                }
+            }
+
+            msg = "User deleted successfully!";
         }
     }
 }

@@ -118,15 +118,16 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Details(string id)
         {
+            ViewBag.StatusNames = _userRepo.GetStatusList();
             return View(_userRepo.GetUserDetails(id));
         }
 
         // GET: UserDetails/Delete
         [Authorize]
         [HttpGet]
-        public ActionResult Delete()
+        public ActionResult Delete(string id, int? clientId)
         {
-            return View();
+            return View(_userRepo.GetUserDetails(id));
         }
 
         // POST: UserDetails/Delete
@@ -135,7 +136,11 @@ namespace NotificationPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(UserVM model)
         {
-            return View();
+            string msg = "";
+            _userRepo.DeleteUser(model.UserID, model.ClientID, out msg);
+            TempData["ActionResultMsg"] = msg;
+
+            return RedirectToAction("Index");
         }
 
         private void AddErrors(IdentityResult result)
