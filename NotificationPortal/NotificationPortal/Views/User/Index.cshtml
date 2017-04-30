@@ -37,6 +37,9 @@
 <table class="table table-bordered">
     <tr class="bg-inverse text-white text-center">
         <th class="text-center">
+            @Html.DisplayNameFor(model => model.ClientName)
+        </th>
+        <th class="text-center">
             @Html.DisplayNameFor(model => model.FirstName)
         </th>
         <th class="text-center">
@@ -66,6 +69,9 @@
 {
     <tr class="text-center">
         <td>
+            @Html.DisplayFor(modelItem => item.ClientName)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.FirstName)
         </td>
         <td>
@@ -90,13 +96,13 @@
             <span class="@className">@Html.DisplayFor(modelItem => item.StatusName)</span>
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.UserID }, new { @class = "btn btn-outline-success btn-sm" })
+            @Html.ActionLink("Edit", "Edit", new {id = item.UserID}, new {@class = "btn btn-outline-success btn-sm"})
         </td>
         <td>
-            @Html.ActionLink("Details", "Details", new { id = item.UserID }, new { @class = "btn btn-outline-secondary text-muted btn-sm" })
+            @Html.ActionLink("Details", "Details", new {id = item.UserID}, new {@class = "btn btn-outline-secondary text-muted btn-sm"})
         </td>
         <td>
-            @Html.ActionLink("Delete", "Delete", new { id = item.UserID, clientId = item.ClientID }, new { @class = "btn btn-outline-danger btn-sm" })
+            @Html.ActionLink("Delete", "Delete", new {id = item.UserID}, new {@class = "btn btn-outline-danger btn-sm"})
         </td>
     </tr>
 }

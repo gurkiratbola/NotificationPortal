@@ -26,6 +26,17 @@ namespace NotificationPortal.Repositories
             return new SelectList(statusList, "Value", "Text");
         }
 
+        public IEnumerable<SelectListItem> GetClientList()
+        {
+            IEnumerable<SelectListItem> clientList = _context.Client.Select(app => new SelectListItem
+                                                     {
+                                                         Value = app.ClientID.ToString(),
+                                                         Text = app.ClientName
+                                                     });
+
+            return new SelectList(clientList, "Value", "Text");
+        }
+
         public IEnumerable<UserVM> GetAllUsers()
         {
             IEnumerable<UserVM> users = _context.UserDetail.Where(u => u.Status.StatusID == u.StatusID)
@@ -39,6 +50,7 @@ namespace NotificationPortal.Repositories
                                             MobilePhone = user.MobilePhone,
                                             HomePhone = user.HomePhone,
                                             ClientID = user.ClientID,
+                                            ClientName = user.Client.ClientName,
                                             StatusID = user.Status.StatusID,
                                             StatusName = user.Status.StatusName
                                         });
@@ -64,6 +76,7 @@ namespace NotificationPortal.Repositories
                               MobilePhone = user.MobilePhone,
                               HomePhone = user.HomePhone,
                               ClientID = user.ClientID,
+                              ClientName = user.Client.ClientName,
                               StatusID = user.Status.StatusID,
                               StatusName = user.Status.StatusName
                           }).FirstOrDefault();
@@ -95,6 +108,7 @@ namespace NotificationPortal.Repositories
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         StatusID = model.StatusID,
+                        ClientID = model.ClientId
                     };
 
                     _context.UserDetail.Add(details);
@@ -131,6 +145,7 @@ namespace NotificationPortal.Repositories
                     user.BusinessPhone = model.BusinessPhone;
                     user.MobilePhone = model.MobilePhone;
                     user.HomePhone = model.HomePhone;
+                    user.ClientID = model.ClientID;
                     user.StatusID = model.StatusID;
 
                     _context.SaveChanges();
@@ -154,25 +169,34 @@ namespace NotificationPortal.Repositories
         public void DeleteUser(string id, int? clientId, out string msg)
         {
             Client clientToBeDeleted = _context.Client.FirstOrDefault(c => c.ClientID == clientId);
+            Application clientApplication = _context.Application.FirstOrDefault(a => a.ClientID == clientId);
+
             UserDetail userToBeDeleted = _context.UserDetail.FirstOrDefault(u => u.UserID == id);
             ApplicationUser appUserTobeDeleted = _context.Users.FirstOrDefault(u => u.Id == id);
 
-            if (clientToBeDeleted != null)
+            if (clientApplication != null)
             {
                 msg = "User associated with application(s), cannot be deleted.";
             }
             else
             {
-                if (userToBeDeleted != null)
+                if (clientToBeDeleted != null)
                 {
-                    _context.UserDetail.Remove(userToBeDeleted);
-                    _context.SaveChanges();
+                    msg = "User deleted successfully!";
 
-                    if (appUserTobeDeleted != null)
+                    if (userToBeDeleted != null)
                     {
-                        _context.Users.Remove(appUserTobeDeleted);
+                        _context.UserDetail.Remove(userToBeDeleted);
                         _context.SaveChanges();
+
                         msg = "User deleted successfully!";
+
+                        if (appUserTobeDeleted != null)
+                        {
+                            _context.Users.Remove(appUserTobeDeleted);
+                            _context.SaveChanges();
+                            msg = "User deleted successfully!";
+                        }
                     }
                 }
                 else
@@ -180,8 +204,6 @@ namespace NotificationPortal.Repositories
                     msg = "Failed to delete user.";
                 }
             }
-
-            msg = "User deleted successfully!";
         }
     }
 }

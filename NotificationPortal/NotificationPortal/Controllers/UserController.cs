@@ -14,7 +14,6 @@ namespace NotificationPortal.Controllers
 {
     public class UserController : Controller
     {
-        private readonly ApplicationDbContext _context = new ApplicationDbContext();
         private readonly UserRepo _userRepo = new UserRepo();
 
         // GET: UserDetails/Index
@@ -42,6 +41,7 @@ namespace NotificationPortal.Controllers
             var model = new AddUserVM()
             {
                 StatusList = _userRepo.GetStatusList(),
+                ClientList = _userRepo.GetClientList(),
             };
 
             return View(model);
@@ -80,6 +80,8 @@ namespace NotificationPortal.Controllers
         public ActionResult Edit(string id)
         {
             ViewBag.StatusNames = _userRepo.GetStatusList();
+            ViewBag.ClientNames = _userRepo.GetClientList();
+
             return View(_userRepo.GetUserDetails(id));
         }
 
@@ -119,6 +121,8 @@ namespace NotificationPortal.Controllers
         public ActionResult Details(string id)
         {
             ViewBag.StatusNames = _userRepo.GetStatusList();
+            ViewBag.ClientNames = _userRepo.GetClientList();
+
             return View(_userRepo.GetUserDetails(id));
         }
 

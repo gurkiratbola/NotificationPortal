@@ -11,6 +11,7 @@ namespace NotificationPortal.ViewModels
     {
         public string UserID { get; set; }
 
+        [Required]
         public int? ClientID { get; set; }
 
         [Required]
@@ -40,11 +41,17 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Home Phone")]
         public string HomePhone { get; set; }
 
+        [Display(Name = "Client")]
+        public string ClientName { get; set; }
+
         [Display(Name = "Status")]
         public string StatusName { get; set; }
 
         [Display(Name = "Status")]
         public SelectList StatusList { get; set; }
+
+        [Display(Name = "Client")]
+        public SelectList ClientList { get; set; }
     }
 
     public class AddUserVM
@@ -53,6 +60,9 @@ namespace NotificationPortal.ViewModels
 
         [Required]
         public int StatusID { get; set; }
+
+        [Required]
+        public int? ClientId { get; set; }
 
         [Required]
         [EmailAddress]
@@ -72,5 +82,8 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name = "Status")]
         public IEnumerable<SelectListItem> StatusList { get; set; }
+
+        [Display(Name = "Client")]
+        public IEnumerable<SelectListItem> ClientList { get; set; }
     }
 }
