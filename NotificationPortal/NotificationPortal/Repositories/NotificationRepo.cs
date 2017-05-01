@@ -11,9 +11,9 @@ namespace NotificationPortal.Repositories
 {
     public class NotificationRepo
     {
-        public IEnumerable<SelectListItem> GetApplicaitonList()
+        ApplicationDbContext db = new ApplicationDbContext();
+        public SelectList GetApplicaitonList()
         {
-            ApplicationDbContext db = new ApplicationDbContext();
             IEnumerable<SelectListItem> appList = db.Application
                     .Select(app => 
                                 new SelectListItem
@@ -25,9 +25,8 @@ namespace NotificationPortal.Repositories
             return new SelectList(appList, "Value", "Text");
         }
 
-        public IEnumerable<SelectListItem> GetServerList()
+        public SelectList GetServerList()
         {
-            ApplicationDbContext db = new ApplicationDbContext();
             IEnumerable<SelectListItem> serverList = db.Server
                     .Select(sv => new SelectListItem()
                     {
@@ -38,9 +37,8 @@ namespace NotificationPortal.Repositories
             return new SelectList(serverList, "Value", "Text");
         }
 
-        public IEnumerable<SelectListItem> GetTypeList()
+        public SelectList GetTypeList()
         {
-            ApplicationDbContext db = new ApplicationDbContext();
             IEnumerable<SelectListItem> typeList = db.NotificationType
                     .Select(type => new SelectListItem()
                     {
@@ -51,9 +49,8 @@ namespace NotificationPortal.Repositories
             return new SelectList(typeList, "Value", "Text");
         }
 
-        public IEnumerable<SelectListItem> GetImpactLevelList()
+        public SelectList GetImpactLevelList()
         {
-            ApplicationDbContext db = new ApplicationDbContext();
             IEnumerable<SelectListItem> impactList = db.LevelOfImpact
                     .Select(impact => new SelectListItem()
                     {
@@ -64,12 +61,11 @@ namespace NotificationPortal.Repositories
             return new SelectList(impactList, "Value", "Text");
         }
 
-        public IEnumerable<SelectListItem> GetNotificationSatusList()
+        public SelectList GetNotificationSatusList()
         {
-            const int NOTIFICATION_STATUS_INDEX = 3;
-            ApplicationDbContext db = new ApplicationDbContext();
+            const int NOTIFICATION_STATUS_INDEX = 23;
             IEnumerable<SelectListItem> statusList = db.Status
-                    .Where(a=>a.StatusTypeID == NOTIFICATION_STATUS_INDEX)
+                    .Where(a => a.StatusTypeID == NOTIFICATION_STATUS_INDEX)
                     .Select(status => new SelectListItem()
                     {
                         Value = status.StatusID.ToString(),
@@ -78,29 +74,94 @@ namespace NotificationPortal.Repositories
 
             return new SelectList(statusList, "Value", "Text");
         }
+        
+        public SelectList GetSendMethodList()
+        {
+            IEnumerable<SelectListItem> sendMethodList = db.SendMethod
+                    .Select(sendMethod => new SelectListItem()
+                    {
+                        Value = sendMethod.SendMethodID.ToString(),
+                        Text = sendMethod.SendMethodName
+                    });
 
-        public bool CreateNotification(NotificationVM notification, out string msg)
+            return new SelectList(sendMethodList, "Value", "Text");
+        }
+
+        public IEnumerable<NotificationIndexVM> GetAllNotifications()
         {
 
             try
             {
                 ApplicationDbContext db = new ApplicationDbContext();
-                Notification newNotification = new Notification();
-                newNotification.SentDateTime = DateTime.Now;
-                //TO DO: discuss how referenceID is generated
+                return db.Notification.Select(
+                    n=>new NotificationIndexVM(){
+                        ApplicationName = n.Application.ApplicationName,
+                        NotificationType = n.NotificationType.NotificationTypeName,
+                        LevelOfImpact = n.LevelOfImpact.Level,
+                        NotificationHeading = n.NotificationHeading,
+                        Status = n.Status.StatusName,
+                        SentDateTime = n.SentDateTime,
+                        StartDateTime = n.StartDateTime,
+                        EndDateTime = n.EndDateTime,
+                        Client = n.Application.Client.ClientName
+                    }
+                );
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
 
-                //TO DO: convert input time to UTC time
-                newNotification.StartDateTime = notification.StartDateTime;
-                newNotification.EndDateTime = notification.EndDateTime;
-                newNotification.NotificationHeading = notification.NotificationHeading;
-                newNotification.NotificationDescription = notification.NotificationDescription;
-                //newNotification.StatusID = notification.StatusID;
-                //newNotfiication.SendMethodID = notification.SentMethodID;
-                //newNotification.NotificationTypeID = notification.NotificationTypeID;
+        }
+
+        public NotificationCreateVM createAddModel(NotificationCreateVM model = null)
+        {
+            if (model == null)
+            {
+                model = new NotificationCreateVM();
+            }
+            model.ApplicationList = GetApplicaitonList();
+            model.SendMethodList = GetSendMethodList();
+            model.ServerList = GetServerList();
+            model.NotificationTypeList = GetTypeList();
+            model.LevelOfImpactList = GetImpactLevelList();
+            model.StatusList = GetNotificationSatusList();
+            return model;
+        }
+        public bool CreateNotification(NotificationCreateVM notification, out string msg)
+        {
+
+            try
+            {
+                if(notification.ThreadID == null){
+                    notification.ThreadID = NewThreadID();
+                }
+                Notification newNotification = new Notification()
+                {
+                    LevelOfImpactID = notification.LevelOfImpactID,
+                    NotificationTypeID = notification.NotificationTypeID,
+                    NotificationHeading = notification.NotificationHeading,
+                    NotificationDescription = notification.NotificationDescription,
+                    StatusID = notification.StatusID,
+                    SendMethodID = notification.SentMethodID,
+                    ServerID = notification.ServerID,
+                    ApplicationID = notification.ApplicationID,
+                    //TO DO: discuss how referenceID is generated
+                    ReferenceID = Guid.NewGuid().ToString(),
+                    ThreadID = (int) notification.ThreadID,
+                    //TO DO: convert input time to UTC time
+                    SentDateTime = DateTime.Now,
+                    StartDateTime = notification.StartDateTime,
+                    EndDateTime = notification.EndDateTime,
+                };
+
 
                 //TO DO: check if it's by server or by Application
-                //newNotification.ServerID = notification.ServerID;
-                //newNotification.ApplicationID = notification.ApplicationID;
+                if (notification.ServerID==null && notification.ApplicationID==null)
+                {
+                    msg = "Must choose a Application or Server";
+                    return false;
+                }
 
                 db.Notification.Add(newNotification);
                 db.SaveChanges();
@@ -113,6 +174,12 @@ namespace NotificationPortal.Repositories
                 return false;
             }
 
+        }
+
+        public int NewThreadID()
+        {
+            var lastThreadID = db.Notification.OrderByDescending(n => n.ThreadID).FirstOrDefault().ThreadID;
+            return lastThreadID + 1;
         }
     }
 }

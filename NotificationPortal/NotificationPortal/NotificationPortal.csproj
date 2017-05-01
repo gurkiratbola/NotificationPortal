@@ -295,7 +295,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Server\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
-    <Content Include="Views\Notification\Index.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Application\Index.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
@@ -304,16 +303,18 @@
     <Content Include="Views\Notification\Delete.cshtml" />
     <Content Include="Views\Notification\Details.cshtml" />
     <Content Include="Views\Notification\Update.cshtml" />
-    <Content Include="Views\Notification\Add.cshtml" />
     <Content Include="Views\Client\Add.cshtml" />
     <Content Include="Views\Server\Details.cshtml" />
     <Content Include="Views\Server\Create.cshtml" />
     <Content Include="Views\Server\Edit.cshtml" />
     <Content Include="Views\Server\Delete.cshtml" />
+    <Content Include="Views\Notification\Add.cshtml" />
+    <Content Include="Views\Notification\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\fonts\" />
+    <Folder Include="Service\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
