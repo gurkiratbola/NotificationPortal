@@ -1,7 +1,7 @@
 ﻿@model NotificationPortal.ViewModels.UserVM
 
 @{
-    ViewBag.Title = "User Details";
+    ViewBag.Title = "Delete User";
 }
 
 <h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
@@ -11,6 +11,8 @@
     <li class="breadcrumb-item"><a href="~/User/Index">User Management</a></li>
     <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
+
+<h3 class="text-danger pb-2">Are you sure you want to delete this?</h3>
 
 <dl class="row">
     <dt class="col-sm-2">
@@ -70,5 +72,15 @@
     </dd>
 </dl>
 
-@Html.ActionLink("Edit", "Edit", new { id = Model.UserID }, new { @class = "btn btn-success" })
-@Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.UserID)
+    @Html.HiddenFor(model => model.ClientID)
+
+    <div class="form-group">
+        <input type="submit" value="Delete" class="btn btn-success" /> 
+        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
+    </div>
+}

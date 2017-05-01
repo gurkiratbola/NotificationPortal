@@ -14,14 +14,13 @@ namespace NotificationPortal.Controllers
 {
     public class UserController : Controller
     {
-        private readonly ApplicationDbContext _context = new ApplicationDbContext();
         private readonly UserRepo _userRepo = new UserRepo();
 
         // GET: UserDetails/Index
         [Authorize]
         public ActionResult Index()
         {
-            IEnumerable<UserVM> users = _userRepo.GetAll();
+            IEnumerable<UserVM> users = _userRepo.GetAllUsers();
 
             return View(users);
         }
@@ -42,6 +41,7 @@ namespace NotificationPortal.Controllers
             var model = new AddUserVM()
             {
                 StatusList = _userRepo.GetStatusList(),
+                ClientList = _userRepo.GetClientList(),
             };
 
             return View(model);
@@ -55,30 +55,21 @@ namespace NotificationPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+                string msg = "";
 
-                var user = new ApplicationUser()
+                if (_userRepo.AddUser(model, out msg))
                 {
-                    UserName = model.Email,
-                    Email = model.Email
-                };
+                    TempData["AddUserSuccess"] = msg;
 
-                userManager.Create(user);
+                    return RedirectToAction("Index");
+                }
 
-                UserDetail details = new UserDetail()
-                {
-                    UserID = user.Id,
-                    BusinessTitle = model.BusinessTitle,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    StatusID = model.StatusID,
-                };
-
-                _context.UserDetail.Add(details);
-                _context.SaveChanges();
+                TempData["AddUserError"] = msg;
 
                 return RedirectToAction("Index");
             }
+
+            TempData["AddUserError"] = "Cannot add user at this time, please try again!";
 
             return View(model);
         }
@@ -86,9 +77,12 @@ namespace NotificationPortal.Controllers
         // GET: UserDetails/Edit
         [Authorize]
         [HttpGet]
-        public ActionResult Edit()
+        public ActionResult Edit(string id)
         {
-            return View();
+            ViewBag.StatusNames = _userRepo.GetStatusList();
+            ViewBag.ClientNames = _userRepo.GetClientList();
+
+            return View(_userRepo.GetUserDetails(id));
         }
 
         // POST: UserDetails/Edit
@@ -97,6 +91,26 @@ namespace NotificationPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(UserVM model)
         {
+            if (ModelState.IsValid)
+            {
+                string msg = "";
+
+                bool isUserUpdated = _userRepo.EditUser(model, out msg);
+
+                if (isUserUpdated)
+                {
+                    TempData["EditUserSuccess"] = "User information successfully updated!";
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["EditUserError"] = "Failed to update the user information.";
+
+                    return RedirectToAction("Index");
+                }
+            }
+            
             return View();
         }
 
@@ -106,15 +120,18 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Details(string id)
         {
+            ViewBag.StatusNames = _userRepo.GetStatusList();
+            ViewBag.ClientNames = _userRepo.GetClientList();
+
             return View(_userRepo.GetUserDetails(id));
         }
 
         // GET: UserDetails/Delete
         [Authorize]
         [HttpGet]
-        public ActionResult Delete()
+        public ActionResult Delete(string id, int? clientId)
         {
-            return View();
+            return View(_userRepo.GetUserDetails(id));
         }
 
         // POST: UserDetails/Delete
@@ -123,7 +140,11 @@ namespace NotificationPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(UserVM model)
         {
-            return View();
+            string msg = "";
+            _userRepo.DeleteUser(model.UserID, model.ClientID, out msg);
+            TempData["ActionResultMsg"] = msg;
+
+            return RedirectToAction("Index");
         }
 
         private void AddErrors(IdentityResult result)

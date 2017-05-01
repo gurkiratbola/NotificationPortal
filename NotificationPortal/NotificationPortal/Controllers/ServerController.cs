@@ -53,12 +53,6 @@ namespace NotificationPortal.Controllers
             };
             return View(model);
 
-            //var location = context.DataCenterLocation.ToList();
-            //var status = context.Status.Where(e => e.StatusType.StatusTypeName == "server").ToList();
-            //var vModel = new ServerVM { status = status, location = location };
-            //vModel.status = status;
-            //vModel.location = location;
-            //return View(vModel);
         }
 
         [HttpPost]
@@ -101,37 +95,45 @@ namespace NotificationPortal.Controllers
 
         public ActionResult Edit(int id)
         {
-            var location = context.DataCenterLocation.ToList();
-            var status = context.Status.Where(e => e.StatusType.StatusTypeName == "server").ToList();
+
+            ServerRepo serverRepo = new ServerRepo(new ApplicationDbContext());
             Server server = serverRepo.FindBy(id);
-            ServerVM serverVM = new ServerVM();
-            serverVM.Description = server.Description;
-            serverVM.ServerName = server.ServerName;
-           // serverVM.locationList = location;
-            //serverVM.statusID = status;
-            serverVM.ServerID = server.ServerID;
-            return View(serverVM);
+            var model = new ServerVM
+            {
+                StatusList = serverRepo.GetStatusList(),
+                LocationList = serverRepo.GetLocationList(),
+            };
+            model.Description = server.Description;
+            model.ServerName = server.ServerName;
+          // serverVM.LocationList = location;
+           //serverVM.StatusList = status;
+            model.ServerID = server.ServerID;
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int ServerID, string ServerName, string Description, int location, int status)
+        public ActionResult Edit(ServerVM serverVM)
         {
             try
             {
-                //if (ModelState.IsValid)
-                //{
-                ///get the location ID and status ID from here
-                Server server = serverRepo.FindBy(ServerID);
-                //server.LocationID = serverVM.location;
-                server.LocationID = location;
-                server.StatusID = status;
-                server.Description = Description;
-                server.ServerName = ServerName;
-                serverRepo.Edit(server);
-                serverRepo.Save();
-                return RedirectToAction("Index");
-                // }
+                if (ModelState.IsValid)
+                {
+                    ApplicationDbContext context = new ApplicationDbContext();
+                    ///get the location ID and status ID from here
+
+                    Server server = serverRepo.FindBy(serverVM.ServerID);
+                    //server.LocationID = serverVM.location;
+                    server.LocationID = serverVM.LocationID;
+                    server.StatusID = serverVM.StatusID;
+                    server.Description = serverVM.Description;
+                    server.ServerName = serverVM.ServerName;
+                    server.ServerID = serverVM.ServerID;
+                    serverRepo.Edit(server);
+                    serverRepo.Save();
+                    return RedirectToAction("Index");
+                }
+            
             }
             catch (DataException)
             {

@@ -9,7 +9,7 @@
 
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
-    <li class="breadcrumb-item active">User Management</li>
+    <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
 
 <div class="row">
@@ -28,8 +28,17 @@
     </div>
 </div>
 
+<p class="text-success">@TempData["AddUserSuccess"]</p>
+<p class="text-danger">@TempData["AddUserError"]</p>
+<p class="text-success">@TempData["EditUserSuccess"]</p>
+<p class="text-danger">@TempData["EditUserError"]</p>
+<p>@TempData["ActionResultMsg"]</p>
+
 <table class="table table-bordered">
     <tr class="bg-inverse text-white text-center">
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.ClientName)
+        </th>
         <th class="text-center">
             @Html.DisplayNameFor(model => model.FirstName)
         </th>
@@ -60,6 +69,9 @@
 {
     <tr class="text-center">
         <td>
+            @Html.DisplayFor(modelItem => item.ClientName)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.FirstName)
         </td>
         <td>
@@ -84,13 +96,13 @@
             <span class="@className">@Html.DisplayFor(modelItem => item.StatusName)</span>
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.UserID }, new { @class = "btn btn-outline-success btn-sm" })
+            @Html.ActionLink("Edit", "Edit", new {id = item.UserID}, new {@class = "btn btn-outline-success btn-sm"})
         </td>
         <td>
-            @Html.ActionLink("Details", "Details", new { id = item.UserID }, new { @class = "btn btn-outline-secondary text-muted btn-sm" })
+            @Html.ActionLink("Details", "Details", new {id = item.UserID}, new {@class = "btn btn-outline-secondary text-muted btn-sm"})
         </td>
         <td>
-            @Html.ActionLink("Delete", "Delete", new { id = item.UserID }, new { @class = "btn btn-outline-danger btn-sm" })
+            @Html.ActionLink("Delete", "Delete", new {id = item.UserID}, new {@class = "btn btn-outline-danger btn-sm"})
         </td>
     </tr>
 }
