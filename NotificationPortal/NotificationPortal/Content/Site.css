@@ -42,7 +42,7 @@ textarea {
 
 /* jQuery table row notifications */
 .clickable-row:hover {
-    background: #D3D3D3;
+    background: #f7f7f7;
     cursor: pointer;
 }
 

@@ -28,19 +28,12 @@ namespace NotificationPortal.ViewModels
         public int LevelOfImpactID { get; set; }
 
         [Required]
-        public int NotificationTypeID { get; set; }
-
-        [Required]
-        public int SentMethodID { get; set; }
-
-        [Required]
-        public int ProirityID { get; set; }
-
-        [Required]
         public int ServerID { get; set; }
 
-        [Required]
-        [Display(Name =  "Application Name")]
+        [Display(Name = "Notification")]
+        public string NotificationTypeName { get; set; }
+
+        [Display(Name =  "Application")]
         public string ApplicationName { get; set; }
 
         [Display(Name = "Client")]
@@ -49,15 +42,18 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Status")]
         public string StatusName { get; set; }
 
-        [Required]
-        [Display(Name = "Description")]
-        public string Description { get; set; }
+        [Display(Name = "Server")]
+        public string ServerName { get; set; }
+
+        [Display(Name = "Level of Impact")]
+        public string LevelOfImpactName { get; set; }
 
         [Required]
         [Display(Name = "Website")]
         public string URL { get; set; }
 
         [Required]
+        [Display(Name = "Heading")]
         public string NotificationHeading { get; set; }
 
         [Required]
@@ -67,9 +63,11 @@ namespace NotificationPortal.ViewModels
         public DateTime SentDateTime { get; set; }
 
         [Required]
+        [Display(Name = "Start Time")]
         public DateTime StartDateTime { get; set; }
 
         [Required]
+        [Display(Name = "End Time")]
         public DateTime EndDateTime { get; set; }
 
         public IEnumerable<SelectListItem> ApplicationList { get; set; }
