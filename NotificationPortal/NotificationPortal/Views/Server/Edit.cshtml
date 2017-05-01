@@ -33,19 +33,19 @@
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
+        
         <div class="form-group">
-            @Html.LabelFor(model => model.location, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.location, new SelectList(Model.location, "LocationID", "Location"), "Location")
-                @Html.ValidationMessageFor(model => model.ServerName, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(m => m.LocationID, Model.LocationList, htmlAttributes: new { @class = "" })
+
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.StatusID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.status, new SelectList(Model.status, "StatusID", "StatusName"), "Status")
-                @Html.ValidationMessageFor(model => model.ServerName, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(m => m.StatusID, Model.StatusList, htmlAttributes: new { @class = "" })
+
             </div>
         </div>
 
