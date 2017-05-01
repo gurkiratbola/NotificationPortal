@@ -270,7 +270,14 @@ namespace NotificationPortal.Migrations
             admin.UserDetail = new UserDetail()
             {
                 UserID = admin.Id,
-                StatusID = userEnabledStatus.StatusID
+                StatusID = userEnabledStatus.StatusID,
+                FirstName = "John",
+                LastName = "White",
+                BusinessPhone = "604-778-9909",
+                MobilePhone = "778-990-2234",
+                HomePhone = "604-773-9908",
+                BusinessTitle = "Network Administrator",
+                
             };
 
             var staff = new ApplicationUser()
@@ -282,7 +289,13 @@ namespace NotificationPortal.Migrations
             staff.UserDetail = new UserDetail()
             {
                 UserID = staff.Id,
-                StatusID = userDisabledStatus.StatusID
+                StatusID = userDisabledStatus.StatusID,
+                FirstName = "Amy",
+                LastName = "Lang",
+                BusinessPhone = "604-756-1239",
+                MobilePhone = "778-230-2349",
+                HomePhone = "604-433-9945",
+                BusinessTitle = "Client Manager",
             };
 
             var client = new ApplicationUser()
@@ -295,7 +308,13 @@ namespace NotificationPortal.Migrations
             {
                 UserID = client.Id,
                 StatusID = userDisabledStatus.StatusID,
-                ClientID = clientID
+                ClientID = clientID,
+                FirstName = "Roland",
+                LastName = "Tang",
+                BusinessPhone = "604-223-2445",
+                MobilePhone = "778-223-4456",
+                HomePhone = "604-253-5567",
+                BusinessTitle = "Technical Director",
             };
 
             var user = new ApplicationUser()
@@ -307,7 +326,13 @@ namespace NotificationPortal.Migrations
             user.UserDetail = new UserDetail()
             {
                 UserID = user.Id,
-                StatusID = userDisabledStatus.StatusID
+                StatusID = userDisabledStatus.StatusID,
+                FirstName = "Patrick",
+                LastName = "McDonald",
+                BusinessPhone = "604-447-2356",
+                MobilePhone = "604-456-0090",
+                HomePhone = "778-123-2445",
+                BusinessTitle = "Project Manager",
             };
 
             userManager.Create(admin, "password");
