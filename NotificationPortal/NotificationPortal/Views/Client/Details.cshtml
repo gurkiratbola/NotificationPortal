@@ -4,13 +4,14 @@
     ViewBag.Title = "Client Details";
 }
 
+<h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
+
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="~/Client/Index" class="link-color">Client</a></li>
+    <li class="breadcrumb-item"><a href="~/Client/Index" class="link-color">Clients</a></li>
     <li class="breadcrumb-item active">Client Detail</li>
 </ol>
 
-<h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
 <p>
     @Html.Raw(ViewBag.ActionMsg)
 </p>
@@ -34,7 +35,6 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.ClientID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+@Html.ActionLink("Edit", "Edit", new { id=Model.ClientID }, new { @class = "btn btn-success" })
+@Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })

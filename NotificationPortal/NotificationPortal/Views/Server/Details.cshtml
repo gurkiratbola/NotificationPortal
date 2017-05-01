@@ -1,15 +1,18 @@
 ﻿@model NotificationPortal.Models.Server
 
 @{
-    ViewBag.Title = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Server Details";
 }
 
-<h2>Details</h2>
+<h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
+
+<ol class="breadcrumb bg-faded">
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
+    <li class="breadcrumb-item"><a href="~/Servers/Index">Servers</a></li>
+    <li class="breadcrumb-item active">@ViewBag.Title</li>
+</ol>
 
 <div>
-    <h4>Server</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.DataCenterLocation.Location)
@@ -45,7 +48,6 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ServerID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+@Html.ActionLink("Edit", "Edit", new { id = Model.ServerID }, new { @class = "btn btn-success" }) 
+@Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
