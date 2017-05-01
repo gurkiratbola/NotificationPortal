@@ -30,7 +30,7 @@
 <p>
     @Html.Raw(ViewBag.ActionMsg)
 </p>
-<table class="table table-bordered">
+<table class="table table-bordered" style="position:relative;">
     <tr class="bg-inverse text-white text-center">
         <th class="text-center">
             @Html.DisplayNameFor(model => model.ClientName)
@@ -38,23 +38,23 @@
         <th class="text-center">
             @Html.DisplayNameFor(model => model.StatusName)
         </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model)
 {
-    <tr class="text-center">
+    <tr class="text-center clickable-row" id="@item.ClientID" data-href="/Details/@item.ClientID">
         <td>
             @Html.DisplayFor(modelItem => item.ClientName)
         </td>
         <td>
             <span class="">@Html.DisplayFor(modelItem => item.StatusName)</span>
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.ClientID } , new { @class = "btn btn-success btn-sm" })
-            @Html.ActionLink("Details", "Details", new { id = item.ClientID }, new { @class = "btn btn-secondary text-muted btn-sm" })
-            @Html.ActionLink("Delete", "Delete", new { id = item.ClientID }, new { @class = "btn btn-danger btn-sm" })
-        </td>
     </tr>
 }
 </table>
+<div class="hidden-menu">
+    <ul>
+        <li><a href="/Edit/" class="btn btn-sm">Edit</a></li>
+        <li><a href="/Delete/" class="btn btn-sm">Delete</a></li>
+    </ul>
+</div>
