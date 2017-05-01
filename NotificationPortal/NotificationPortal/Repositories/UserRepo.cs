@@ -28,11 +28,14 @@ namespace NotificationPortal.Repositories
 
         public IEnumerable<SelectListItem> GetClientList()
         {
-            IEnumerable<SelectListItem> clientList = _context.Client.Select(app => new SelectListItem
+            List<SelectListItem> clientList = _context.Client.Select(app => new SelectListItem
                                                      {
                                                          Value = app.ClientID.ToString(),
                                                          Text = app.ClientName
-                                                     });
+                                                     }).ToList();
+
+            clientList.Add(new SelectListItem { Value = "-1", Text = "" });
+            //clientList.OrderBy();
 
             return new SelectList(clientList, "Value", "Text");
         }

@@ -33,13 +33,13 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Notification")]
         public string NotificationTypeName { get; set; }
 
-        [Display(Name =  "Application")]
+        [Display(Name =  "Application Name")]
         public string ApplicationName { get; set; }
 
         [Display(Name = "Client")]
         public string ClientName { get; set; }
 
-        [Display(Name = "Status")]
+        [Display(Name = "Application Status")]
         public string StatusName { get; set; }
 
         [Display(Name = "Server")]
