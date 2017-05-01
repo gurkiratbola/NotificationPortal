@@ -1,23 +1,23 @@
-﻿@model NotificationPortal.Models.Server
+﻿@model NotificationPortal.Models.Application
 
 @{
     ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete Server</h2>
+<h2>Delete</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Server</h4>
+    <h4>Application</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.DataCenterLocation.Location)
+            @Html.DisplayNameFor(model => model.Client.ClientName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DataCenterLocation.Location)
+            @Html.DisplayFor(model => model.Client.ClientName)
         </dd>
 
         <dt>
@@ -29,11 +29,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ServerName)
+            @Html.DisplayNameFor(model => model.ApplicationName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ServerName)
+            @Html.DisplayFor(model => model.ApplicationName)
         </dd>
 
         <dt>
@@ -44,10 +44,17 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.URL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.URL)
+        </dd>
+
     </dl>
 
-    @using (Html.BeginForm())
-    {
+    @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">

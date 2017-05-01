@@ -1,4 +1,4 @@
-﻿@model NotificationPortal.Models.Server
+﻿@model NotificationPortal.Models.Application
 
 @{
     ViewBag.Title = "Details";
@@ -8,15 +8,15 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Server</h4>
+    <h4>Application</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.DataCenterLocation.Location)
+            @Html.DisplayNameFor(model => model.Client.ClientName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DataCenterLocation.Location)
+            @Html.DisplayFor(model => model.Client.ClientName)
         </dd>
 
         <dt>
@@ -28,11 +28,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ServerName)
+            @Html.DisplayNameFor(model => model.ApplicationName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ServerName)
+            @Html.DisplayFor(model => model.ApplicationName)
         </dd>
 
         <dt>
@@ -43,9 +43,17 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.URL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.URL)
+        </dd>
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ServerID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ApplicationID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

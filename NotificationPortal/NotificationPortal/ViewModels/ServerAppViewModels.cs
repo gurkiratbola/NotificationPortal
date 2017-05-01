@@ -38,16 +38,47 @@ namespace NotificationPortal.ViewModels
         public IEnumerable<SelectListItem> LocationList { get; set; }
 
     }
-        public class ServerEditVM
+        public class StatusVM
         {
+            [Key]
             [Required]
-            public int ServerID { get; set; }
+            public int StatusID { get; set; }
 
             [Required]
-            public int ServerStatusID { get; set; }
+            public string StatusName { get; set; }
 
             [Required]
-            public string ServerName { get; set; }
-        }
-  
+            public int StatusTypeID { get; set; }
+
+            public IEnumerable<SelectListItem> StatusTypeList { get; set; }
+    }
+
+    public class ApplicationVM
+    {
+        [Key]
+        [Required]
+        public int ApplicationID { get; set; }
+
+        [Required]
+        public string ApplicationName { get; set; }
+
+        [Required]
+        public string Description { get; set; }
+
+
+        [Required]
+        public string URL { get; set; }
+
+
+        [Required]
+        public int StatusID { get; set; }
+
+
+        [Required]
+        public int ClientID { get; set; }
+
+        public IEnumerable<SelectListItem> StatusList { get; set; }
+        public IEnumerable<SelectListItem> ClientList { get; set; }
+    }
+
 }
