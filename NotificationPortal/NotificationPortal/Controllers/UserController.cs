@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using NotificationPortal.Models;
 using NotificationPortal.Repositories;
 using NotificationPortal.ViewModels;
+using System.Net.Mail;
+using System.Net;
 
 namespace NotificationPortal.Controllers
 {
@@ -61,6 +63,7 @@ namespace NotificationPortal.Controllers
                 {
                     TempData["AddUserSuccess"] = msg;
 
+                  
                     return RedirectToAction("Index");
                 }
 

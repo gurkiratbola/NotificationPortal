@@ -42,7 +42,7 @@
 
 @foreach (var item in Model)
 {
-    <tr class="text-center clickable-row" id="@item.ClientID" data-href="/Client/Details/@item.ClientID">
+    <tr class="text-center clickable-row" id="@item.ClientID" data-href="/Details/@item.ClientID">
         <td>
             @Html.DisplayFor(modelItem => item.ClientName)
         </td>
@@ -54,9 +54,7 @@
 </table>
 <div class="hidden-menu">
     <ul>
-        <li><a href="~/Client/Edit/" class="btn btn-sm">Edit</a></li>
-        <li><a href="~/Client/Delete/" class="btn btn-sm">Delete</a></li>
+        <li><a href="/Edit/" class="btn btn-sm">Edit</a></li>
+        <li><a href="/Delete/" class="btn btn-sm">Delete</a></li>
     </ul>
 </div>
-<!-- for right click-->
-<script src="~/Scripts/script.js" type="text/javascript"></script>
