@@ -52,5 +52,33 @@ namespace NotificationPortal.ViewModels
 
             public IEnumerable<SelectListItem> StatusTypeList { get; set; }
     }
-  
+
+    public class ApplicationVM
+    {
+        [Key]
+        [Required]
+        public int ApplicationID { get; set; }
+
+        [Required]
+        public string ApplicationName { get; set; }
+
+        [Required]
+        public string Description { get; set; }
+
+
+        [Required]
+        public string URL { get; set; }
+
+
+        [Required]
+        public int StatusID { get; set; }
+
+
+        [Required]
+        public int ClientID { get; set; }
+
+        public IEnumerable<SelectListItem> StatusList { get; set; }
+        public IEnumerable<SelectListItem> ClientList { get; set; }
+    }
+
 }

@@ -34,14 +34,14 @@ namespace NotificationPortal.Controllers
             return View(status.ToList());
         }
 
-        ///Get /Server/Detials/4
+        ///Get /Status/Detials/4
         public ViewResult Details(int ID)
         {
 
             Status status = statusRepo.FindBy(ID);
             return View(status);
         }
-        //Get: /Server/Create
+        //Get: /Status/Create
         public ActionResult Create()
         {
 
@@ -125,7 +125,7 @@ namespace NotificationPortal.Controllers
             return View(statusVM);
         }
 
-        // Get /Server/Delete
+        // Get /Status/Delete
         public ActionResult Delete(bool? saveChangesError = false, int ID = 0)
         {
             if (saveChangesError.GetValueOrDefault())
@@ -136,7 +136,7 @@ namespace NotificationPortal.Controllers
             return View(status);
 
         }
-        //POST: /Server/Delete/3
+        //POST: /Status/Delete/3
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int ID)
