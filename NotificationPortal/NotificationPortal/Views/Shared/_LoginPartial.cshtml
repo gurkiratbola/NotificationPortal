@@ -9,18 +9,25 @@
             <li class="nav-item">
                 @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
             </li>
-            @{if (Request.IsAuthenticated && HttpContext.Current.User.IsInRole("Admin"))
-                {
-                    <li class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            Admin
-                            <span class="caret"></span>
-                        </button>
+            @{if (Request.IsAuthenticated && !HttpContext.Current.User.IsInRole("User"))
+                  {
+                    <li class="dropdown nav-item">
+                        <a class="btn btn-default" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                            @*<span class="caret"></span>*@
+                        </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <li>@Html.ActionLink("Servers", "Index", "Server", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Clients", "Index", "Client", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Applications", "Index", "Application", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("User Management", "Index", "User", null, new { @class = "nav-link" })</li>
+                            @if (HttpContext.Current.User.IsInRole("Client"))
+                            {
+                                <li>@Html.ActionLink("User Management", "Index", "User", null, new { @class = "nav-link" })</li>
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink("User Management", "Index", "User", null, new { @class = "nav-link" })</li>
+                                <li>@Html.ActionLink("Servers", "Index", "Server", null, new { @class = "nav-link" })</li>
+                                <li>@Html.ActionLink("Clients", "Index", "Client", null, new { @class = "nav-link" })</li>
+                                <li>@Html.ActionLink("Applications", "Index", "Application", null, new { @class = "nav-link" })</li>
+                            }
                         </ul>
                     </li>
                 }

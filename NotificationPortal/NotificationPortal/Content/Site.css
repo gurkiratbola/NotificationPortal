@@ -75,7 +75,15 @@ textarea {
     outline: 1px solid grey;
 }
 
-/* ------------- style for right click -------------*/
+/* ------------- style for dropdown-------------*/
 .dropdown-menu .nav-link {
     color: black !important;
+}
+
+.dropdown i {
+    font-size: 1.2em;
+    cursor: pointer;
+}
+.dropdown-menu {
+    left: -50px;
 }
