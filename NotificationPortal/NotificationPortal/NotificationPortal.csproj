@@ -203,6 +203,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\ApplicationRepo.cs" />
     <Compile Include="Repositories\ClientRepo.cs" />
     <Compile Include="Repositories\DashboardRepo.cs" />
     <Compile Include="Repositories\IInterfaceRepo.cs" />
@@ -245,6 +246,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\script.js" />
     <Content Include="Scripts\timezone.js" />
     <Content Include="Scripts\add-notification.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -303,7 +305,6 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Notification\Index.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
-    <Content Include="Views\Application\Index.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Home\Documentation.cshtml" />
     <Content Include="Views\Notification\withoutmodel\Add.cshtml" />
@@ -319,6 +320,12 @@
     <Content Include="Views\Status\Details.cshtml" />
     <Content Include="Views\Status\Create.cshtml" />
     <Content Include="Views\Status\Edit.cshtml" />
+    <Content Include="Views\Application\Index.cshtml" />
+    <Content Include="Views\Status\Delete.cshtml" />
+    <Content Include="Views\Application\Details.cshtml" />
+    <Content Include="Views\Application\Create.cshtml" />
+    <Content Include="Views\Application\Edit.cshtml" />
+    <Content Include="Views\Application\Delete.cshtml" />
     <Content Include="Views\Client\Add.cshtml" />
     <Content Include="Views\Client\Edit.cshtml" />
     <Content Include="Views\Client\Details.cshtml" />
