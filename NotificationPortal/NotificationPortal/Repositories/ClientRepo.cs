@@ -40,7 +40,12 @@ namespace NotificationPortal.Repositories
 
         public bool AddClient(ClientVM client, out string msg)
         {
-
+            Client c = db.Client.Where(a => a.ClientName == client.ClientName)
+                            .FirstOrDefault();
+            if (c != null) {
+                msg = "Client name already exist.";
+                return false;
+            }
             try
             {
                 Client newClient = new Client();
@@ -73,6 +78,12 @@ namespace NotificationPortal.Repositories
 
         public bool EditClient(ClientVM client, out string msg)
         {
+            Client c = db.Client.Where(a => a.ClientName == client.ClientName).FirstOrDefault();
+            if (c != null)
+            {
+                msg = "Client name already exist.";
+                return false;
+            }
             try
             {
                 Client clientUpdated= db.Client
