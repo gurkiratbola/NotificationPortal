@@ -49,8 +49,6 @@ namespace NotificationPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Add(ClientVM model)
         {
-            //TO DO, cannot add client with the same name
-            ViewBag.ActionMsg = TempData["ActionResultMsg"];
             string msg = "";
             if (ModelState.IsValid)
             {
@@ -62,8 +60,9 @@ namespace NotificationPortal.Controllers
             else {
                 TempData["ActionResultMsg"] = "Client cannot be added at this time.";
             }
-
-            return View();
+            ViewBag.ActionMsg = TempData["ActionResultMsg"];
+            model.StatusList = cRepo.GetStatusList();
+            return View(model);
         }
 
         [Authorize]
@@ -78,8 +77,7 @@ namespace NotificationPortal.Controllers
         [Authorize]
         [HttpPost]
         public ActionResult Edit(ClientVM model) {
-            //TO DO, cannot add client with the same name
-            ViewBag.ActionMsg = TempData["ActionResultMsg"];
+            
             bool isClientUpdated;
             string userID = FindUserID();
             string msg = "";
@@ -93,9 +91,10 @@ namespace NotificationPortal.Controllers
                 }
                 else
                 {
-                    TempData["ActionResultMsg"] = "Failed to update client information at this time.";
+                    TempData["ActionResultMsg"] = msg;
                 }
             }
+            ViewBag.ActionMsg = TempData["ActionResultMsg"];
             ClientVM client = cRepo.GetClient(model.ClientID, userID);
             ViewBag.StatusNames = cRepo.GetStatusList();
             return View(client);

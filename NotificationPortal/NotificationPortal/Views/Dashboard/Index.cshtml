@@ -34,7 +34,7 @@
 <div class="card-deck">
     @foreach (var item in Model)
     {
-        <div class="card clickable-row notification-row" data-href="/Notification/Details">
+        <div class="card clickable-row" data-href="/Notification/Details">
             <div class="card-header card-inverse card-primary">
                 <div class="row">
                     <div class="col-md-12">
@@ -43,8 +43,8 @@
                     </div>
 
                     <div class="col-md-12">
-                        <div class="float-left text-white"><h3>@Html.DisplayFor(modelItem => item.ApplicationName)</h3></div>
-                        <div class="float-right text-white"><h3>@Html.DisplayFor(modelItem => item.ClientName)</h3></div>
+                        <div class="float-left text-white"><span class="h4">@Html.DisplayFor(modelItem => item.ApplicationName)</span></div>
+                        <div class="float-right text-white"><span class="h4">@Html.DisplayFor(modelItem => item.ClientName)</span></div>
                     </div>
                 </div>
             </div>
@@ -65,35 +65,35 @@
                                 <span class="@impactClass float-right">@Html.DisplayFor(modelItem => item.LevelOfImpactName)</span>
                             </div>
                             
-                            <div class="col-md-12">
+                            @*<div class="col-md-12">
                                 <small class="text-muted float-left text-uppercase pt-3">@Html.DisplayNameFor(model => model.ServerName)</small>
                                 <small class="text-muted float-right text-uppercase pt-3">@Html.DisplayNameFor(model => model.URL)</small>
                             </div>
                             <div class="col-md-12">
                                 <p class="float-left">@Html.DisplayFor(modelItem => item.ServerName)</p>
                                 <p class="float-right"><a href="@Html.DisplayFor(modelItem => item.URL)" target="_blank">@Html.DisplayFor(modelItem => item.URL)</a></p>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
 
                     <div class="offset-md-2 col-md-5">
                         <div class="row">
-                            <div class="col-md-12">
+                            @*<div class="col-md-12">
                                 <small class="text-muted float-left text-uppercase">@Html.DisplayNameFor(model => model.NotificationTypeName)</small>
                                 <small class="text-muted float-right text-uppercase">@Html.DisplayNameFor(model => model.NotificationHeading)</small>
                             </div>
                             <div class="col-md-12">
                                 <p class="float-left">@Html.DisplayFor(modelItem => item.NotificationTypeName)</p>
                                 <p class="float-right">@Html.DisplayFor(modelItem => item.NotificationHeading)</p>
-                            </div>
+                            </div>*@
 
                             <div class="col-md-12">
                                 <small class="text-muted float-left text-uppercase">@Html.DisplayNameFor(model => model.StartDateTime)</small>
                                 <small class="text-muted float-right text-uppercase">@Html.DisplayNameFor(model => model.EndDateTime)</small>
                             </div>
                             <div class="col-md-12">
-                                <p class="float-left">@DateTime.Parse(@Html.DisplayFor(modelItem => item.StartDateTime).ToString()).ToLocalTime().ToString("dd MMM yyyy - h:mm tt")</p>
-                                <p class="float-right">@DateTime.Parse(@Html.DisplayFor(modelItem => item.EndDateTime).ToString()).ToLocalTime().ToString("dd MMM yyyy - h:mm tt")</p>
+                                <span class="float-left">@DateTime.Parse(@Html.DisplayFor(modelItem => item.StartDateTime).ToString()).ToLocalTime().ToString("dd MMM yyyy - h:mm tt")</span>
+                                <span class="float-right">@DateTime.Parse(@Html.DisplayFor(modelItem => item.EndDateTime).ToString()).ToLocalTime().ToString("dd MMM yyyy - h:mm tt")</span>
                             </div>
                         </div>
                     </div>

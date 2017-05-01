@@ -185,6 +185,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
+    <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -207,6 +208,7 @@
     <Compile Include="Repositories\IInterfaceRepo.cs" />
     <Compile Include="Repositories\NotificationRepo.cs" />
     <Compile Include="Repositories\ServerRepo.cs" />
+    <Compile Include="Repositories\StatusRepo.cs" />
     <Compile Include="Repositories\UserRepo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
@@ -313,6 +315,10 @@
     <Content Include="Views\Server\Create.cshtml" />
     <Content Include="Views\Server\Edit.cshtml" />
     <Content Include="Views\Server\Delete.cshtml" />
+    <Content Include="Views\Status\Index.cshtml" />
+    <Content Include="Views\Status\Details.cshtml" />
+    <Content Include="Views\Status\Create.cshtml" />
+    <Content Include="Views\Status\Edit.cshtml" />
     <Content Include="Views\Client\Add.cshtml" />
     <Content Include="Views\Client\Edit.cshtml" />
     <Content Include="Views\Client\Details.cshtml" />
