@@ -1,6 +1,67 @@
-﻿@{
+﻿@model IEnumerable<NotificationPortal.ViewModels.DashboardVM>
+
+
+@{
     ViewBag.Title = "Dashboard";
 }
 
 <h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
 
+<ol class="breadcrumb bg-faded">
+    <li class="breadcrumb-item">@ViewBag.Title</li>
+</ol>
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="btn-group" role="group">
+            <button id="filter-btn" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sort
+            </button>
+            <div class="dropdown-menu" aria-labelledby="filter-btn">
+                <a class="dropdown-item" href="#">Name</a>
+                <a class="dropdown-item" href="#">Status</a>
+                <a class="dropdown-item" href="#">Client</a>
+            </div>
+        </div>
+    </div>
+    <div class="offset-md-4 col-md-6">
+        <div style="float: right">
+            <form class="form-inline pb-3" method="get" action="~/Dashboard/Search">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" name="name" />
+                <input class="btn btn-secondary" type="submit" value="Search" />
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="card-deck">
+@foreach (var item in Model)
+{
+    <div class="card">
+        <div class="card-block">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="card-title">@Html.DisplayFor(modelItem => item.ClientName)</h4>
+                </div>
+
+                <div class="offset-2 col-md-3">
+                    <h4 class="card-title">@Html.DisplayFor(modelItem => item.ApplicationName)</h4>
+                </div>
+
+                <div class="col-md-1">
+                    @{
+                        var className = item.StatusName == "Offline" ? "badge badge-danger" : "badge badge-success";
+                    }
+
+                    <span class="@className">@Html.DisplayFor(modelItem => item.StatusName)</span>
+                </div>
+            </div>
+            <p class="card-text">@Html.DisplayFor(modelItem => item.URL)</p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Last updated 3 mins ago</small>
+        </div>
+    </div>
+}
+</div>
