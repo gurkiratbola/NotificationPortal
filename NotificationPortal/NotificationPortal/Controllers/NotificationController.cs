@@ -30,7 +30,7 @@ namespace NotificationPortal.Controllers
         public ActionResult Add()
         {
             NotificationRepo nRepo = new NotificationRepo();
-            var model = nRepo.createAddModel();
+            var model = nRepo.CreateAddModel();
             return View(model);
         }
         [HttpPost]
@@ -49,20 +49,43 @@ namespace NotificationPortal.Controllers
             {
                 ViewBag.ErrorMsg = "Cannot add Notification, model not valid.";
             }
-            model = nRepo.createAddModel(model);
+            model = nRepo.CreateAddModel(model);
             return View(model);
         }
         
         public ActionResult Details(int id)
         {
             NotificationRepo nRepo = new NotificationRepo();
-            var model = nRepo.createDetailModel(id);
+            var model = nRepo.CreateDetailModel(id);
             return View(model);
         }
 
+        [HttpGet]
         public ActionResult Update(int id)
         {
-            return View();
+            NotificationRepo nRepo = new NotificationRepo();
+            var model = nRepo.CreateUpdateModel(id);
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Update(NotificationCreateVM model)
+        {
+            string result = "";
+            NotificationRepo nRepo = new NotificationRepo();
+            if (ModelState.IsValid)
+            {
+                bool success = nRepo.CreateNotification(model, out result);
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                ViewBag.ErrorMsg = "Cannot update Notification, model not valid.";
+            }
+            model = nRepo.CreateUpdateModel(model.ThreadID,model);
+            return View(model);
         }
 
         public ActionResult Delete()

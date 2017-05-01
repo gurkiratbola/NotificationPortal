@@ -63,9 +63,9 @@ namespace NotificationPortal.Repositories
 
         public SelectList GetNotificationSatusList()
         {
-            const int NOTIFICATION_STATUS_INDEX = 23;
+            int notificationStatusTypeID = db.StatusType.Where(t=>t.StatusTypeName=="Notification").FirstOrDefault().StatusTypeID;
             IEnumerable<SelectListItem> statusList = db.Status
-                    .Where(a => a.StatusTypeID == NOTIFICATION_STATUS_INDEX)
+                    .Where(a => a.StatusTypeID == notificationStatusTypeID)
                     .Select(status => new SelectListItem()
                     {
                         Value = status.StatusID.ToString(),
@@ -116,12 +116,13 @@ namespace NotificationPortal.Repositories
 
         }
 
-        public NotificationCreateVM createAddModel(NotificationCreateVM model = null)
+        public NotificationCreateVM CreateAddModel(NotificationCreateVM model = null)
         {
             if (model == null)
             {
                 model = new NotificationCreateVM();
             }
+            model.ThreadID = NewThreadID();
             model.ApplicationList = GetApplicaitonList();
             model.SendMethodList = GetSendMethodList();
             model.ServerList = GetServerList();
@@ -130,14 +131,12 @@ namespace NotificationPortal.Repositories
             model.StatusList = GetNotificationSatusList();
             return model;
         }
+
         public bool CreateNotification(NotificationCreateVM notification, out string msg)
         {
 
             try
             {
-                if(notification.ThreadID == null){
-                    notification.ThreadID = NewThreadID();
-                }
                 if(notification.Source == "Application")
                 {
                     notification.ServerID = null;
@@ -192,7 +191,7 @@ namespace NotificationPortal.Repositories
             return lastThreadID + 1;
         }
 
-        public NotificationDetailVM createDetailModel(int threadID)
+        public NotificationDetailVM CreateDetailModel(int threadID)
         {
             IEnumerable<Notification> notifications =
                 db.Notification.Where(n => n.ThreadID == threadID)
@@ -221,6 +220,39 @@ namespace NotificationPortal.Repositories
                 Client = lastestNotification.Application.Client.ClientName,
                 Thread = thread
             };
+            return model;
+        }
+
+        public NotificationCreateVM CreateUpdateModel(int? threadID, NotificationCreateVM model = null)
+        {
+            var lastestNotification = 
+                db.Notification.Where(n => n.ThreadID == threadID)
+                .OrderByDescending(n => n.SentDateTime).FirstOrDefault();
+
+            if (model == null)
+            {
+                model = new NotificationCreateVM() {
+                    ThreadID = threadID,
+                    StartDateTime = lastestNotification.StartDateTime,
+                    EndDateTime = lastestNotification.EndDateTime,
+                    Source = lastestNotification.ApplicationID == null ? "Application":"Server",
+                    ServerID = lastestNotification.ServerID,
+                    ApplicationID = lastestNotification.ApplicationID,
+                    LevelOfImpactID = lastestNotification.LevelOfImpactID,
+                    NotificationTypeID = lastestNotification.NotificationTypeID,
+                    SentMethodID = lastestNotification.SendMethodID,
+                    StatusID = lastestNotification.StatusID,
+                    NotificationDescription = lastestNotification.NotificationDescription,
+                    NotificationHeading = lastestNotification.NotificationHeading,
+
+                    ApplicationList = GetApplicaitonList(),
+                    SendMethodList = GetSendMethodList(),
+                    ServerList = GetServerList(),
+                    NotificationTypeList = GetTypeList(),
+                    LevelOfImpactList = GetImpactLevelList(),
+                    StatusList = GetNotificationSatusList(),
+                };
+            }
             return model;
         }
     }
