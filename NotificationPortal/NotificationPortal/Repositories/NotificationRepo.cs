@@ -95,7 +95,8 @@ namespace NotificationPortal.Repositories
                 ApplicationDbContext db = new ApplicationDbContext();
                 return db.Notification.Select(
                     n=>new NotificationIndexVM(){
-                        ApplicationName = n.Application.ApplicationName,
+                        Source = n.Server.ServerName == null ? "Application":"Server",
+                        ApplicationServerName = n.Server.ServerName == null ? n.Application.ApplicationName:n.Server.ServerName,
                         NotificationType = n.NotificationType.NotificationTypeName,
                         LevelOfImpact = n.LevelOfImpact.Level,
                         NotificationHeading = n.NotificationHeading,
@@ -135,6 +136,14 @@ namespace NotificationPortal.Repositories
             {
                 if(notification.ThreadID == null){
                     notification.ThreadID = NewThreadID();
+                }
+                if(notification.Source == "Application")
+                {
+                    notification.ServerID = null;
+                }
+                else
+                {
+                    notification.ApplicationID = null;
                 }
                 Notification newNotification = new Notification()
                 {

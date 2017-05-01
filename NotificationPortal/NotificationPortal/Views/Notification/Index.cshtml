@@ -32,7 +32,10 @@
     <thead>
         <tr class="bg-inverse text-white text-center">
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.ApplicationName)
+                @Html.DisplayNameFor(model => model.Source)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.ApplicationServerName)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.NotificationType)
@@ -66,7 +69,10 @@
         {
             <tr class="text-center clickable-row notification-row" data-href="/Notification/Details">
                 <td>
-                    @Html.DisplayFor(modelItem => item.ApplicationName)
+                    @Html.DisplayFor(modelItem => item.Source)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationServerName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.NotificationType)

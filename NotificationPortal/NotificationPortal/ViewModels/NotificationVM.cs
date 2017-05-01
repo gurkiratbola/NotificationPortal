@@ -11,8 +11,10 @@ namespace NotificationPortal.ViewModels
 
     public class NotificationIndexVM
     {
-        [Display(Name = "Application")]
-        public string ApplicationName { get; set; }
+        [Display(Name = "Source")]
+        public string Source { get; set; }
+        [Display(Name = "Application/Server")]
+        public string ApplicationServerName { get; set; }
         [Display(Name = "Type")]
         public string NotificationType { get; set; }
         [Display(Name = "Level of Impact")]
@@ -64,7 +66,9 @@ namespace NotificationPortal.ViewModels
 
         [Required]
         public int ProirityID { get; set; }
-        
+
+        public string Source { get; set; }
+
         public int? ServerID { get; set; }
 
         public int? ApplicationID { get; set; }
