@@ -67,7 +67,7 @@
 
         @foreach (var item in Model)
         {
-            <tr class="text-center clickable-row notification-row" data-href="/Notification/Details">
+            <tr class="text-center clickable-row notification-row" data-href="/Notification/Details/@item.ThreadID">
                 <td>
                     @Html.DisplayFor(modelItem => item.Source)
                 </td>

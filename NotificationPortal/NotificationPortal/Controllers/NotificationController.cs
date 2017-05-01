@@ -53,16 +53,18 @@ namespace NotificationPortal.Controllers
             return View(model);
         }
         
-        public ActionResult Update()
+        public ActionResult Details(int id)
+        {
+            NotificationRepo nRepo = new NotificationRepo();
+            var model = nRepo.createDetailModel(id);
+            return View(model);
+        }
+
+        public ActionResult Update(int id)
         {
             return View();
         }
-        
-        public ActionResult Details()
-        {
-            return View();
-        }
-        
+
         public ActionResult Delete()
         {
             return View();

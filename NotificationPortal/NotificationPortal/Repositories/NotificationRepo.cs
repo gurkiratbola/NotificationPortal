@@ -95,6 +95,7 @@ namespace NotificationPortal.Repositories
                 ApplicationDbContext db = new ApplicationDbContext();
                 return db.Notification.Select(
                     n=>new NotificationIndexVM(){
+                        ThreadID = n.ThreadID,
                         Source = n.Server.ServerName == null ? "Application":"Server",
                         ApplicationServerName = n.Server.ServerName == null ? n.Application.ApplicationName:n.Server.ServerName,
                         NotificationType = n.NotificationType.NotificationTypeName,
@@ -189,6 +190,38 @@ namespace NotificationPortal.Repositories
         {
             var lastThreadID = db.Notification.OrderByDescending(n => n.ThreadID).FirstOrDefault().ThreadID;
             return lastThreadID + 1;
+        }
+
+        public NotificationDetailVM createDetailModel(int threadID)
+        {
+            IEnumerable<Notification> notifications =
+                db.Notification.Where(n => n.ThreadID == threadID)
+                .OrderBy(n => n.SentDateTime);
+
+            IEnumerable<NotificationSpecificDetailVM> thread =
+                notifications.Select(
+                    n=> new NotificationSpecificDetailVM
+                    {
+                        NotificationHeading = n.NotificationHeading,
+                        NotificationDescription = n.NotificationDescription,
+                        SentDateTime = n.SentDateTime
+                    });
+
+            Notification lastestNotification = notifications.LastOrDefault();
+            NotificationDetailVM model = new NotificationDetailVM()
+            {
+                Source = lastestNotification.Server.ServerName == null ? "Application" : "Server",
+                ApplicationServerName = lastestNotification.Server.ServerName == null ? lastestNotification.Application.ApplicationName : lastestNotification.Server.ServerName,
+                NotificationType = lastestNotification.NotificationType.NotificationTypeName,
+                LevelOfImpact = lastestNotification.LevelOfImpact.Level,
+                Status = lastestNotification.Status.StatusName,
+                StartDateTime = lastestNotification.StartDateTime,
+                EndDateTime = lastestNotification.EndDateTime,
+                // TODO: query list of Clients
+                Client = lastestNotification.Application.Client.ClientName,
+                Thread = thread
+            };
+            return model;
         }
     }
 }
