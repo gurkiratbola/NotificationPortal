@@ -19,7 +19,36 @@ namespace NotificationPortal
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            //return Task.FromResult(0);
+
+            // Credentials:
+            string sendGridUserName = "Gurkirat_Bola";
+            string sentFrom = "noreply@notificationportal.com";
+            string sendGridPassword = "qwerty123456789";
+
+            // Configure the client
+            var client = new System.Net.Mail.SmtpClient("smtp.sendgrid.net", 587)
+            {
+                Port = 587,
+                DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false
+            };
+
+            // Create the credentials:
+            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(sendGridUserName, sendGridPassword);
+
+            //client.EnableSsl = true;
+            client.Credentials = credentials;
+
+            // Create the message:
+            var mail = new System.Net.Mail.MailMessage(sentFrom, message.Destination);
+            mail.IsBodyHtml = true;
+
+            mail.Subject = message.Subject;
+            mail.Body = message.Body;
+
+            // Send:
+            return client.SendMailAsync(mail);
         }
     }
 
