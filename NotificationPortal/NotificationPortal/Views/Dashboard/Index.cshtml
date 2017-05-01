@@ -1,6 +1,121 @@
-﻿@{
+﻿@model IEnumerable<NotificationPortal.ViewModels.DashboardVM>
+
+
+@{
     ViewBag.Title = "Dashboard";
 }
 
 <h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
 
+<div class="row">
+    <div class="col-md-2">
+        <div class="btn-group" role="group">
+            <button id="filter-btn" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sort
+            </button>
+            <div class="dropdown-menu" aria-labelledby="filter-btn">
+                <a class="dropdown-item" href="#">Name</a>
+                <a class="dropdown-item" href="#">Status</a>
+                <a class="dropdown-item" href="#">Client</a>
+            </div>
+        </div>
+    </div>
+    <div class="offset-md-4 col-md-6">
+        <div style="float: right">
+            <form class="form-inline pb-3" method="get" action="~/Dashboard/Search">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" name="name" />
+                <input class="btn btn-secondary" type="submit" value="Search" />
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="card-deck">
+    @foreach (var item in Model)
+    {
+        <div class="card clickable-row notification-row" data-href="/Notification/Details">
+            <div class="card-header card-inverse card-primary">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="float-left text-white text-uppercase"><small>@Html.DisplayNameFor(model => model.ApplicationName)</small></div>
+                        <div class="float-right text-white text-uppercase"><small>@Html.DisplayNameFor(model => model.ClientName)</small></div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="float-left text-white"><h3>@Html.DisplayFor(modelItem => item.ApplicationName)</h3></div>
+                        <div class="float-right text-white"><h3>@Html.DisplayFor(modelItem => item.ClientName)</h3></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-md-5">
+                        @{
+                            var statusClass = item.StatusName == "Offline" ? "badge badge-danger" : "badge badge-success";
+                            var impactClass = item.LevelOfImpactName == "Non-impacting" ? "badge badge-success" : "badge badge-danger";
+                        }
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small class="text-muted float-left text-uppercase pb-1">@Html.DisplayNameFor(model => model.StatusName)</small>
+                                <small class="text-muted float-right text-uppercase pb-1">@Html.DisplayNameFor(model => model.LevelOfImpactName)</small>
+                            </div>
+                            <div class="col-md-12">
+                                <span class="@statusClass float-left">@Html.DisplayFor(modelItem => item.StatusName)</span>
+                                <span class="@impactClass float-right">@Html.DisplayFor(modelItem => item.LevelOfImpactName)</span>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <small class="text-muted float-left text-uppercase pt-3">@Html.DisplayNameFor(model => model.ServerName)</small>
+                                <small class="text-muted float-right text-uppercase pt-3">@Html.DisplayNameFor(model => model.URL)</small>
+                            </div>
+                            <div class="col-md-12">
+                                <p class="float-left">@Html.DisplayFor(modelItem => item.ServerName)</p>
+                                <p class="float-right"><a href="@Html.DisplayFor(modelItem => item.URL)" target="_blank">@Html.DisplayFor(modelItem => item.URL)</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="offset-md-2 col-md-5">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small class="text-muted float-left text-uppercase">@Html.DisplayNameFor(model => model.NotificationTypeName)</small>
+                                <small class="text-muted float-right text-uppercase">@Html.DisplayNameFor(model => model.NotificationHeading)</small>
+                            </div>
+                            <div class="col-md-12">
+                                <p class="float-left">@Html.DisplayFor(modelItem => item.NotificationTypeName)</p>
+                                <p class="float-right">@Html.DisplayFor(modelItem => item.NotificationHeading)</p>
+                            </div>
+
+                            <div class="col-md-12">
+                                <small class="text-muted float-left text-uppercase">@Html.DisplayNameFor(model => model.StartDateTime)</small>
+                                <small class="text-muted float-right text-uppercase">@Html.DisplayNameFor(model => model.EndDateTime)</small>
+                            </div>
+                            <div class="col-md-12">
+                                <p class="float-left">@DateTime.Parse(@Html.DisplayFor(modelItem => item.StartDateTime).ToString()).ToLocalTime().ToString("dd MMM yyyy - h:mm tt")</p>
+                                <p class="float-right">@DateTime.Parse(@Html.DisplayFor(modelItem => item.EndDateTime).ToString()).ToLocalTime().ToString("dd MMM yyyy - h:mm tt")</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    jQuery(document).ready(function ($) {
+        const HIDDEN_MENU_WIDTH_OFFSET = 100;
+        const HIDDEN_MENU_HEIGHT_OFFSET = 40;
+        $("#hidden-menu").hide();
+        $(".clickable-row").click(function () {
+            window.location = $(this).data("href");
+        });
+
+        $(".notification-row").contextmenu(function (e) {
+            $("#hidden-menu").css({ position: "absolute", top: e.pageY - HIDDEN_MENU_HEIGHT_OFFSET, left: e.pageX - HIDDEN_MENU_WIDTH_OFFSET });
+            $('#hidden-menu').toggle();
+            return false;
+        });
+    });
+</script>
