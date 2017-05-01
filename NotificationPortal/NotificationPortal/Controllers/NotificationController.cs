@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.Controllers
 {
+    [Authorize]
     public class NotificationController : Controller
     {
         public string GetTimeZoneOffset() {
@@ -18,55 +19,50 @@ namespace NotificationPortal.Controllers
             }
             return timeOffsetString;
         }
-        [Authorize]
         public ActionResult Index()
         {
-            return View();
+            NotificationRepo nRepo = new NotificationRepo();
+            var n = nRepo.GetAllNotifications();
+            return View(n);
         }
-
-        [Authorize]
+        
         [HttpGet]
         public ActionResult Add()
         {
             NotificationRepo nRepo = new NotificationRepo();
-            var model = new NotificationVM
-            {
-                ApplicationList = nRepo.GetApplicaitonList(),
-                ServerList = nRepo.GetServerList(),
-                TypeList = nRepo.GetTypeList(),
-                LevelOfImpactList = nRepo.GetImpactLevelList(),
-                StatusList = nRepo.GetNotificationSatusList()
-            };
+            var model = nRepo.createAddModel();
             return View(model);
         }
         [HttpPost]
-        public ActionResult Add(NotificationVM notification) {
+        public ActionResult Add(NotificationCreateVM model) {
             string result = "";
+            NotificationRepo nRepo = new NotificationRepo();
             if (ModelState.IsValid)
             {
-                NotificationRepo nRepo = new NotificationRepo();
-                nRepo.CreateNotification(notification, out result);
+                bool success = nRepo.CreateNotification(model, out result);
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
                 ViewBag.ErrorMsg = "Cannot add Notification, model not valid.";
             }
-            return View();
+            model = nRepo.createAddModel(model);
+            return View(model);
         }
-
-        [Authorize]
+        
         public ActionResult Update()
         {
             return View();
         }
-
-        [Authorize]
+        
         public ActionResult Details()
         {
             return View();
         }
-
-        [Authorize]
+        
         public ActionResult Delete()
         {
             return View();

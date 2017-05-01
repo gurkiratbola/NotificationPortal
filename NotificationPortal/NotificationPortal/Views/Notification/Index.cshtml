@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<NotificationPortal.ViewModels.NotificationIndexVM>
+
+@{
     ViewBag.Title = "Notifications";
 }
 
@@ -30,65 +32,76 @@
     <thead>
         <tr class="bg-inverse text-white text-center">
             <th class="text-center">
-                Application Name
+                @Html.DisplayNameFor(model => model.Source)
             </th>
             <th class="text-center">
-                Type
+                @Html.DisplayNameFor(model => model.ApplicationServerName)
             </th>
             <th class="text-center">
-                Level of Impact
+                @Html.DisplayNameFor(model => model.NotificationType)
             </th>
             <th class="text-center">
-                Heading
+                @Html.DisplayNameFor(model => model.LevelOfImpact)
             </th>
             <th class="text-center">
-                Status
+                @Html.DisplayNameFor(model => model.NotificationHeading)
             </th>
             <th class="text-center">
-                Start Date
+                @Html.DisplayNameFor(model => model.Status)
             </th>
             <th class="text-center">
-                End Date
+                @Html.DisplayNameFor(model => model.SentDateTime)
             </th>
             <th class="text-center">
-                Sent Date
+                @Html.DisplayNameFor(model => model.StartDateTime)
             </th>
             <th class="text-center">
-                Client
+                @Html.DisplayNameFor(model => model.EndDateTime)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Client)
             </th>
         </tr>
     </thead>
     <tbody>
-        <tr class="text-center clickable-row notification-row" data-href="/Notification/Details">
-            <td>
-                Task Management App
-            </td>
-            <td>
-                Maintainance
-            </td>
-            <td>
-                Service Impacting
-            </td>
-            <td>
-                Upcoming Maintainance Notice - May 2
-            </td>
-            <td>
-                Ongoing
-            </td>
-            <td>
-                2017/05/01 11:00PM
-            </td>
-            <td>
-                2017/05/02 04:00AM
-            </td>
-            <td>
-                2017/04/27 12:39PM
-            </td>
-            <td>
-                National Bank
-            </td>
-        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr class="text-center clickable-row notification-row" data-href="/Notification/Details">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Source)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationServerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NotificationType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LevelOfImpact)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NotificationHeading)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SentDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client)
+                </td>
+            </tr>
+        }
     </tbody>
+
 </table>
 <div id="hidden-menu">
     <a class="btn btn-default" href="~/Notification/Update">Update</a>
@@ -115,3 +128,4 @@
 
     });
 </script>
+
