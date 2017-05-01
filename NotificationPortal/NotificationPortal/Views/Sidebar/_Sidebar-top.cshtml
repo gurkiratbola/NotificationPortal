@@ -22,41 +22,6 @@
                     }
                 </li>
             </ul>
-
-            <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
-                    @{
-                        if (Request.IsAuthenticated)
-                        {
-                            @Html.ActionLink("Servers", "Index", "Server", null, new { @class = "nav-link" })
-                        }
-                    }
-                </li>
-                <li class="nav-item">
-                    @{
-                        if (Request.IsAuthenticated)
-                        {
-                            @Html.ActionLink("Clients", "Index", "Client", null, new { @class = "nav-link" })
-                        }
-                    }
-                </li>
-                <li class="nav-item">
-                    @{
-                        if (Request.IsAuthenticated)
-                        {
-                            @Html.ActionLink("Applications", "Index", "Application", null, new { @class = "nav-link" })
-                        }
-                    }
-                </li>
-                <li class="nav-item">
-                    @{
-                        if (Request.IsAuthenticated)
-                        {
-                            @Html.ActionLink("User Management", "Index", "User", null, new { @class = "nav-link" })
-                        }
-                    }
-                </li>
-            </ul>
         </nav>
 
         <main class="col-sm-9 offset-sm-3 offset-md-0 col-md-12 offset-md-0 pt-3">
