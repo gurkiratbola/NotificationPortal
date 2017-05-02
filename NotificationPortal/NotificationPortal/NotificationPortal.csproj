@@ -190,9 +190,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201704282056214_reset.cs" />
-    <Compile Include="Migrations\201704282056214_reset.Designer.cs">
-      <DependentUpon>201704282056214_reset.cs</DependentUpon>
+    <Compile Include="Migrations\201705022253159_init.cs" />
+    <Compile Include="Migrations\201705022253159_init.Designer.cs">
+      <DependentUpon>201705022253159_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationModels.cs" />
@@ -348,12 +348,12 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704282056214_reset.resx">
-      <DependentUpon>201704282056214_reset.cs</DependentUpon>
-    </EmbeddedResource>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <EmbeddedResource Include="Migrations\201705022253159_init.resx">
+      <DependentUpon>201705022253159_init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
