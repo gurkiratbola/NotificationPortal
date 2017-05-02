@@ -79,7 +79,7 @@ namespace NotificationPortal.Models
         public DateTime SentDateTime { get; set; }
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
-        public virtual Application Application { get; set; }
+        public virtual ICollection<Application> Applications { get; set; }
         public virtual LevelOfImpact LevelOfImpact { get; set; }
         public virtual NotificationType NotificationType { get; set; }
         public virtual SendMethod SendMethod { get; set; }
@@ -91,8 +91,6 @@ namespace NotificationPortal.Models
         public int SendMethodID { get; set; }
         [ForeignKey("LevelOfImpact")]
         public int LevelOfImpactID { get; set; }
-        [ForeignKey("Application")]
-        public int? ApplicationID { get; set; }
         [ForeignKey("NotificationType")]
         public int NotificationTypeID { get; set; }
         [StringLength(100)]

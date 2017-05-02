@@ -401,7 +401,7 @@ namespace NotificationPortal.Migrations
                 StatusID = appOfflineStatus.StatusID,
                 ReferenceID = Guid.NewGuid().ToString()
             };
-            app.UserDetail = clientUserDetail.ToList();
+            app.UserDetails = clientUserDetail.ToList();
             app.Servers = server.ToList();
             context.Application.Add(app);
             context.SaveChanges();
@@ -410,7 +410,7 @@ namespace NotificationPortal.Migrations
         private void SeedNotification(ApplicationDbContext context)
         {
             // Get app
-            var app = context.Application.Where(a => a.ApplicationName == "Notification Portal").FirstOrDefault();
+            var apps = context.Application.Where(a => a.ApplicationName == "Notification Portal");
             // Get notification type
             var notificationType = context.NotificationType.Where(t => t.NotificationTypeName == "Maintenance").FirstOrDefault();
             // Get levelOfImpact
@@ -429,9 +429,8 @@ namespace NotificationPortal.Migrations
                 StartDateTime = DateTime.Now.AddMinutes(5),
                 EndDateTime = DateTime.Now.AddHours(1),
                 SentDateTime = DateTime.Now,
-                NotificationHeading = "Application offline",
-                NotificationDescription = "Application will be offline for maintenance",
-                ApplicationID = app.ApplicationID,
+                NotificationHeading = "Server offline",
+                NotificationDescription = "Server will be offline for maintenance",
                 NotificationTypeID = notificationType.NotificationTypeID,
                 LevelOfImpactID = levelOfImpact.LevelOfImpactID,
                 SendMethodID = sendMethod.SendMethodID,
@@ -446,9 +445,8 @@ namespace NotificationPortal.Migrations
                 StartDateTime = DateTime.Now.AddMinutes(5),
                 EndDateTime = DateTime.Now.AddHours(1),
                 SentDateTime = DateTime.Now.AddHours(1),
-                NotificationHeading = "Application back online",
+                NotificationHeading = "Server back online",
                 NotificationDescription = "Maintenance complete",
-                ApplicationID = app.ApplicationID,
                 NotificationTypeID = notificationType.NotificationTypeID,
                 LevelOfImpactID = levelOfImpact.LevelOfImpactID,
                 SendMethodID = sendMethod.SendMethodID,
@@ -464,6 +462,7 @@ namespace NotificationPortal.Migrations
         private void RemoveAll(ApplicationDbContext context)
         {
             // delete bridges first
+            context.Database.ExecuteSqlCommand("DELETE FROM NotificationApplications");
             context.Database.ExecuteSqlCommand("DELETE FROM ServerApplications");
             context.Database.ExecuteSqlCommand("DELETE FROM ServerNotifications");
             context.Database.ExecuteSqlCommand("DELETE FROM UserDetailApplications");
