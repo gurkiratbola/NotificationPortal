@@ -51,6 +51,7 @@ namespace NotificationPortal.Repositories
                 Client newClient = new Client();
                 newClient.ClientName = client.ClientName;
                 newClient.StatusID = client.StatusID;
+                newClient.ReferenceID = Guid.NewGuid().ToString();
                 _context.Client.Add(newClient);
                 _context.SaveChanges();
                 msg = "Client successfully added";
@@ -111,10 +112,6 @@ namespace NotificationPortal.Repositories
             var clientApplications = _context.Application
                                        .Where(a => a.ClientID == clientID)
                                        .FirstOrDefault();
-            // check notifications associated with client
-            var clientNotifications = _context.Notification
-                                 .Where(a => a.Application.ClientID == clientID)
-                                 .FirstOrDefault();
             if (clientToBeDeleted == null)
             {
                 msg = "Client could not be deleted.";
@@ -123,11 +120,6 @@ namespace NotificationPortal.Repositories
             if (clientApplications != null)
             {
                 msg = "Client has application(s) associated, cannot be deleted";
-                return false;
-            }
-            if (clientNotifications != null)
-            {
-                msg = "Client associated with notification, cannot be deleted";
                 return false;
             }
 

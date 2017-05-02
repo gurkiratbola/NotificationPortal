@@ -10,6 +10,8 @@ namespace NotificationPortal.ViewModels
 {
     public class ClientVM
     {
+        [Key]
+        [Required]
         public int ClientID { get; set; }
 
         [Required]

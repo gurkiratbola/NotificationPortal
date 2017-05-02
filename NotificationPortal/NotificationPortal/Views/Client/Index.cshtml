@@ -26,9 +26,12 @@
         </div>
     </div>
 
-    <p class="text-success">
-        @Html.Raw(TempData["SuccessMsg"])
-    </p>
+    @if (TempData["SuccessMsg"] != null)
+    {
+        <p class="alert alert-success offset-md-3 col-md-6 offset-md-3">
+            @Html.Raw(TempData["SuccessMsg"])
+        </p>
+    }
 
     <table class="table table-bordered" style="position:relative;">
         <tr class="bg-inverse text-white text-center">

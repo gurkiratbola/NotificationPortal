@@ -12,7 +12,7 @@
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.ClientName)</li>
 </ol>
 
-<p class="text-danger">
+<p class="text-danger offset-md-3 col-md-6 offset-md-3">
     @Html.Raw(TempData["ErrorMsg"])
 </p>
 
@@ -22,6 +22,12 @@
     
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @if (TempData["ErrorMsg"] != null)
+        {
+            <p class="text-danger offset-md-3 col-md-6 offset-md-3">
+                @Html.Raw(TempData["ErrorMsg"])
+            </p>
+        }
         @Html.HiddenFor(model => model.ClientID)
 
         <div class="form-group">
