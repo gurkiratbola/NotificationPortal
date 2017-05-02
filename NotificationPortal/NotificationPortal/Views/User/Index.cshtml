@@ -12,105 +12,75 @@
     <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
 
-<div class="row">
-    <div class="col-md-2">
-        <p>
-            @Html.ActionLink("Create New", "Add", null, new { @class = "btn btn-primary btn-lg" })
-        </p>
-    </div>
-    <div class="offset-md-4 col-md-6">
-        <div style="float: right">
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
             <form class="form-inline pb-3" method="get" action="~/User/Search">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search" name="name" />
                 <input class="btn btn-secondary" type="submit" value="Search" />
             </form>
         </div>
+        <div class="offset-md-4 col-md-2">
+            <div class="float-create">
+                @Html.ActionLink("Create New", "Add", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
     </div>
-</div>
 
-<p class="text-success">@TempData["AddUserSuccess"]</p>
-<p class="text-danger">@TempData["AddUserError"]</p>
-<p class="text-success">@TempData["EditUserSuccess"]</p>
-<p class="text-danger">@TempData["EditUserError"]</p>
-<p>@TempData["ActionResultMsg"]</p>
+    <p class="text-success">@TempData["AddUserSuccess"]</p>
+    <p class="text-danger">@TempData["AddUserError"]</p>
+    <p class="text-success">@TempData["EditUserSuccess"]</p>
+    <p class="text-danger">@TempData["EditUserError"]</p>
+    <p>@TempData["ActionResultMsg"]</p>
 
-<table class="table table-bordered">
-    <tr class="bg-inverse text-white text-center">
-        <th class="text-center">
-            @Html.DisplayNameFor(model => model.ClientName)
-        </th>
-        <th class="text-center">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th class="text-center">
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th class="text-center">
-            @Html.DisplayNameFor(model => model.BusinessTitle)
-        </th>
-        <th class="text-center">
-            @Html.DisplayNameFor(model => model.BusinessPhone)
-        </th>
-        <th class="text-center">
-            @Html.DisplayNameFor(model => model.MobilePhone)
-        </th>
-        <th class="text-center">
-            @Html.DisplayNameFor(model => model.HomePhone)
-        </th>
-        <th class="text-center">
-            @Html.DisplayNameFor(model => model.StatusName)
-        </th>
-        <th class="hidden-md-up hidden-xs-up"></th>
-        <th class="hidden-md-up hidden-xs-up"></th>
-        <th class="hidden-md-up hidden-xs-up"></th>
-    </tr>
+    <table class="table table-bordered">
+        <tr class="bg-inverse text-white text-center">
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.ClientName)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.BusinessTitle)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.StatusName)
+            </th>
+        </tr>
 
-@foreach (var item in Model)
-{
-    <tr class="text-center clickable-row" id="@item.UserID" data-href="/Details/@item.UserID">
-        <td>
-            @Html.DisplayFor(modelItem => item.ClientName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BusinessTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BusinessPhone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MobilePhone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HomePhone)
-        </td>
-        @{
-            var className = item.StatusName == "Disabled" ? "badge badge-danger" : "badge badge-success";
+        @foreach (var item in Model)
+        {
+            <tr class="text-center clickable-row" id="@item.UserID" data-href="/Details/@item.UserID">
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinessTitle)
+                </td>
+                @{
+                    var className = item.StatusName == "Disabled" ? "badge badge-danger" : "badge badge-success";
+                }
+                <td>
+                    <span class="@className">@Html.DisplayFor(modelItem => item.StatusName)</span>
+                </td>
+            </tr>
         }
-        <td>
-            <span class="@className">@Html.DisplayFor(modelItem => item.StatusName)</span>
-        </td>
-        @*<td>
-            @Html.ActionLink("Edit", "Edit", new {id = item.UserID}, new {@class = "btn btn-outline-success btn-sm"})
-        </td>
-        <td>
-            @Html.ActionLink("Details", "Details", new {id = item.UserID}, new {@class = "btn btn-outline-secondary text-muted btn-sm"})
-        </td>
-        <td>
-            @Html.ActionLink("Delete", "Delete", new {id = item.UserID}, new {@class = "btn btn-outline-danger btn-sm"})
-        </td>*@
-    </tr>
-}
-</table>
+    </table>
 
-<div class="hidden-menu">
-    <ul>
-        <li><a href="/Edit/" class="btn btn-sm">Edit</a></li>
-        <li><a href="/Delete/" class="btn btn-sm">Delete</a></li>
-    </ul>
+    <div class="hidden-menu">
+        <ul>
+            <li><a href="/Edit/" class="btn btn-sm">Edit</a></li>
+            <li><a href="/Delete/" class="btn btn-sm">Delete</a></li>
+        </ul>
+    </div>
 </div>

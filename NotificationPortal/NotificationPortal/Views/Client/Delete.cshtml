@@ -9,13 +9,13 @@
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
     <li class="breadcrumb-item"><a href="~/Client/Index">Clients</a></li>
-    <li class="breadcrumb-item active">@ViewBag.Title</li>
+    <li class="breadcrumb-item active">@Html.DisplayFor(model => model.ClientName)</li>
 </ol>
 
 <h3 class="text-danger pb-2">Are you sure you want to delete this?</h3>
 
-<p>
-    @Html.Raw(ViewBag.ActionMsg)
+<p class="text-danger">
+    @Html.Raw(TempData["ErrorMsg"])
 </p>
 
 <div>
@@ -41,7 +41,9 @@
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.ClientName)
         @Html.HiddenFor(model => model.ClientID)
+        @Html.HiddenFor(model => model.StatusID)
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-success" /> 
             @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })

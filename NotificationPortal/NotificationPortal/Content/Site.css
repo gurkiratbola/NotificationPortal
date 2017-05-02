@@ -46,6 +46,10 @@ textarea {
     cursor: pointer;
 }
 
+.float-create {
+    float: right !important;
+}
+
 #accordion {
     margin-bottom: 30px !important;
 }

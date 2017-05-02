@@ -10,117 +10,112 @@ using static NotificationPortal.ViewModels.ValidationVM;
 
 namespace NotificationPortal.Controllers
 {
+    [Authorize(Roles="Admin, Staff")]
     public class ClientController : Controller
     {
-        private ApplicationDbContext context = new ApplicationDbContext();
-        private ClientRepo cRepo = new ClientRepo();
+        private readonly ClientRepo _cRepo = new ClientRepo();
 
-        public string FindUserID()
-        {
-            string name = User.Identity.Name;
-            UserDetail user = context.UserDetail
-                    .Where(u => u.User.UserName == name).FirstOrDefault();
-            string userId = user.UserID;
-            return userId;
-        }
-
-        [Authorize]
         [HttpGet]
         public ActionResult Index()
         {
-            ViewBag.ActionMsg = TempData["ActionResultMsg"];
-            IEnumerable<ClientVM> clientList = cRepo.GetClientList();
+            IEnumerable<ClientVM> clientList = _cRepo.GetClientList();
             return View(clientList);
         }
 
-        [Authorize]
         [HttpGet]
-        public ActionResult Add()
+        public ActionResult Create()
         {
+            // To be modified: global method for status in development
             var model = new ClientVM
             {
-                StatusList = cRepo.GetStatusList()
+                StatusList = _cRepo.GetStatusList()
             };
             return View(model);
         }
 
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add(ClientVM model)
+        public ActionResult Create(ClientVM model)
         {
             string msg = "";
             if (ModelState.IsValid)
             {
-                if (cRepo.AddClient(model, out msg)) {
+                bool success = _cRepo.AddClient(model, out msg);
+                if (success)
+                {
+                    TempData["SuccessMsg"] = msg;
                     return RedirectToAction("index");
                 }
-                TempData["ActionResultMsg"] = msg;
+                else {
+                    TempData["ErrorMsg"] = msg;
+                }
             }
             else {
-                TempData["ActionResultMsg"] = "Client cannot be added at this time.";
+                TempData["ErrorMsg"] = "Client cannot be added at this time.";
             }
-            ViewBag.ActionMsg = TempData["ActionResultMsg"];
-            model.StatusList = cRepo.GetStatusList();
+            model.StatusList = _cRepo.GetStatusList();
             return View(model);
         }
 
-        [Authorize]
         [HttpGet]
         public ActionResult Edit(int id) {
-            string userID = FindUserID();
-            ClientVM client = cRepo.GetClient(id, userID);
-            ViewBag.StatusNames = cRepo.GetStatusList();
+            ClientVM client = _cRepo.GetClient(id);
+            // To be modified: global method for status in development
+            ViewBag.StatusNames = _cRepo.GetStatusList();
             return View(client);
         }
 
-        [Authorize]
         [HttpPost]
         public ActionResult Edit(ClientVM model) {
-            
-            bool isClientUpdated;
-            string userID = FindUserID();
             string msg = "";
             if (ModelState.IsValid)
             {
-                isClientUpdated = cRepo.EditClient(model, out msg);
-                if (isClientUpdated)
+                bool success = _cRepo.EditClient(model, out msg);
+                if (success)
                 {
-                    TempData["ActionResultMsg"] = "Client information updated.";
+                    TempData["SuccessMsg"] = msg;
                     return RedirectToAction("Details", new { id = model.ClientID });
                 }
                 else
                 {
-                    TempData["ActionResultMsg"] = msg;
+                    TempData["ErrorMsg"] = msg;
                 }
             }
-            ViewBag.ActionMsg = TempData["ActionResultMsg"];
-            ClientVM client = cRepo.GetClient(model.ClientID, userID);
-            ViewBag.StatusNames = cRepo.GetStatusList();
+            ClientVM client = _cRepo.GetClient(model.ClientID);
+            ViewBag.StatusNames = _cRepo.GetStatusList();
             return View(client);
         }
 
-        [Authorize]
         [HttpGet]
         public ActionResult Details(int id) {
-            string userID = FindUserID();
-            return View(cRepo.GetClient(id, userID));
+            return View(_cRepo.GetClient(id));
         }
 
-        [Authorize]
         [HttpGet]
         public ActionResult Delete(int id) {
-            string userID = FindUserID();
-            return View(cRepo.GetClient(id, userID));
+            return View(_cRepo.GetClient(id));
         }
 
-        [Authorize]
         [HttpPost]
         public ActionResult Delete(ClientVM client) {
             string msg = "";
-            cRepo.DeleteClient(client.ClientID, out msg);
-            TempData["ActionResultMsg"] = msg;
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                bool success = _cRepo.DeleteClient(client.ClientID, out msg);
+                if (success)
+                {
+                    TempData["SuccessMsg"] = msg;
+                    return RedirectToAction("index");
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = msg;
+                }
+            } else {
+                TempData["ErrorMsg"] = "Client cannot be deleted at this time.";
+            }
+
+            return View(client);
         }
     }
 }
