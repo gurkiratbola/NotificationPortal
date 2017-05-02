@@ -326,7 +326,7 @@
     <Content Include="Views\Application\Create.cshtml" />
     <Content Include="Views\Application\Edit.cshtml" />
     <Content Include="Views\Application\Delete.cshtml" />
-    <Content Include="Views\Client\Add.cshtml" />
+    <Content Include="Views\Client\Create.cshtml" />
     <Content Include="Views\Client\Edit.cshtml" />
     <Content Include="Views\Client\Details.cshtml" />
     <Content Include="Views\Client\Delete.cshtml" />

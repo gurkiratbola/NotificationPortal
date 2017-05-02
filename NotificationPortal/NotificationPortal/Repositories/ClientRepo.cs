@@ -12,10 +12,10 @@ namespace NotificationPortal.Repositories
     public class ClientRepo
     {
         const string APP_STATUS_TYPE_NAME = "Client";
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
         public IEnumerable<ClientVM> GetClientList(){
-            IEnumerable<ClientVM> clientList = db.Client
+            IEnumerable<ClientVM> clientList = _context.Client
                                                 .Select(c => new ClientVM
                                                 {
                                                     ClientID = c.ClientID,
@@ -27,7 +27,7 @@ namespace NotificationPortal.Repositories
         }
 
         public SelectList GetStatusList() {
-            IEnumerable<SelectListItem> statusList = db.Status
+            IEnumerable<SelectListItem> statusList = _context.Status
                                     .Where(a=>a.StatusType.StatusTypeName == APP_STATUS_TYPE_NAME)
                                     .Select(sv => new SelectListItem()
                                     {
@@ -40,7 +40,7 @@ namespace NotificationPortal.Repositories
 
         public bool AddClient(ClientVM client, out string msg)
         {
-            Client c = db.Client.Where(a => a.ClientName == client.ClientName)
+            Client c = _context.Client.Where(a => a.ClientName == client.ClientName)
                             .FirstOrDefault();
             if (c != null) {
                 msg = "Client name already exist.";
@@ -51,9 +51,9 @@ namespace NotificationPortal.Repositories
                 Client newClient = new Client();
                 newClient.ClientName = client.ClientName;
                 newClient.StatusID = client.StatusID;
-                db.Client.Add(newClient);
-                db.SaveChanges();
-                msg = "Client added.";
+                _context.Client.Add(newClient);
+                _context.SaveChanges();
+                msg = "Client successfully added";
                 return true;
             }
             catch
@@ -63,8 +63,8 @@ namespace NotificationPortal.Repositories
             }
         }
 
-        public ClientVM GetClient(int clientID, string userID) {
-            ClientVM client = db.Client
+        public ClientVM GetClient(int clientID) {
+            ClientVM client = _context.Client
                             .Where(a => a.ClientID == clientID)
                             .Select(b => new ClientVM
                             {
@@ -78,7 +78,7 @@ namespace NotificationPortal.Repositories
 
         public bool EditClient(ClientVM client, out string msg)
         {
-            Client c = db.Client.Where(a => a.ClientName == client.ClientName).FirstOrDefault();
+            Client c = _context.Client.Where(a => a.ClientName == client.ClientName).FirstOrDefault();
             if (c != null)
             {
                 msg = "Client name already exist.";
@@ -86,12 +86,12 @@ namespace NotificationPortal.Repositories
             }
             try
             {
-                Client clientUpdated= db.Client
+                Client clientUpdated= _context.Client
                                         .Where(a => a.ClientID == client.ClientID)
                                         .FirstOrDefault();
                 clientUpdated.ClientName = client.ClientName;
                 clientUpdated.StatusID = client.StatusID;
-                db.SaveChanges();
+                _context.SaveChanges();
                 msg = "Client information succesfully updated.";
                 return true;
             }
@@ -102,44 +102,47 @@ namespace NotificationPortal.Repositories
             }
         }
 
-        public void DeleteClient(int clientID, out string msg) {
-            // check client
-            Client clientToBeDeleted = db.Client
+        public bool DeleteClient(int clientID, out string msg) {
+            // check if client exists
+            Client clientToBeDeleted = _context.Client
                                     .Where(a => a.ClientID == clientID)
                                     .FirstOrDefault();
-            // check applications
-            var clientApplications = db.Application
+            // check applications associated with client
+            var clientApplications = _context.Application
                                        .Where(a => a.ClientID == clientID)
                                        .FirstOrDefault();
-            // check notifications
-            var clientNotifications = db.Notification
+            // check notifications associated with client
+            var clientNotifications = _context.Notification
                                  .Where(a => a.Application.ClientID == clientID)
                                  .FirstOrDefault();
+            if (clientToBeDeleted == null)
+            {
+                msg = "Client could not be deleted.";
+                return false;
+            }
+            if (clientApplications != null)
+            {
+                msg = "Client has application(s) associated, cannot be deleted";
+                return false;
+            }
             if (clientNotifications != null)
             {
                 msg = "Client associated with notification, cannot be deleted";
+                return false;
             }
-            else
-            {
-                if (clientToBeDeleted != null)
-                {
-                    // check if there are application with this client
-                    if (clientNotifications != null)
-                    {
-                        msg = "Client has application(s) associated, cannot be deleted";
-                    }
-                    else
-                    {
-                        db.Client.Remove(clientToBeDeleted);
-                        db.SaveChanges();
-                        msg = "Client Successfully Deleted";
-                    }
-                }
-                else
-                {
-                    msg = "Client could not be deleted.";
-                }
-            }
+
+            _context.Client.Remove(clientToBeDeleted);
+            _context.SaveChanges();
+            msg = "Client Successfully Deleted";
+            return true;
         }
     }
+        //public string FindUserID()
+        //{
+        //    string name = User.Identity.Name;
+        //    UserDetail user = _context.UserDetail
+        //            .Where(u => u.User.UserName == name).FirstOrDefault();
+        //    string userId = user.UserID;
+        //    return userId;
+        //}
 }

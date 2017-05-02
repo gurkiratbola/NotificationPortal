@@ -19,10 +19,10 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int StatusID { get; set; }
 
-
         [DisplayName("Status Name")]
         public string StatusName { get; set; }
 
         public SelectList StatusList { get; set; }
     }
+
 }
