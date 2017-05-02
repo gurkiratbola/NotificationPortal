@@ -11,6 +11,8 @@ namespace NotificationPortal.ViewModels
 
     public class NotificationIndexVM
     {
+        public int ThreadID { get; set; }
+
         [Display(Name = "Source")]
         public string Source { get; set; }
         [Display(Name = "Application/Server")]
@@ -87,5 +89,33 @@ namespace NotificationPortal.ViewModels
 
         public SelectList ProirityList { get; set; }
 
+    }
+
+    public class NotificationDetailVM
+    {
+        public int ThreadID { get; set; }
+        [Display(Name = "Source")]
+        public string Source { get; set; }
+        [Display(Name = "Application/Server")]
+        public string ApplicationServerName { get; set; }
+        [Display(Name = "Type")]
+        public string NotificationType { get; set; }
+        [Display(Name = "Level of Impact")]
+        public string LevelOfImpact { get; set; }
+        [Display(Name = "Status")]
+        public string Status { get; set; }
+        [Display(Name = "Start Time")]
+        public DateTime StartDateTime { get; set; }
+        [Display(Name = "End Time")]
+        public DateTime EndDateTime { get; set; }
+        [Display(Name = "Client")]
+        public string Client { get; set; }
+        public IEnumerable<NotificationSpecificDetailVM> Thread { get; set; }
+    }
+    public class NotificationSpecificDetailVM
+    {
+        public string NotificationHeading { get; set; }
+        public string NotificationDescription { get; set; }
+        public DateTime SentDateTime { get; set; }
     }
 }

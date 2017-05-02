@@ -7,8 +7,42 @@
 
         <ul class="navbar-nav">
             <li class="nav-item">
-                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
+                <a href="@Url.Action("Index", "Manage")" class="nav-link">
+                    <span class="hidden-lg-down" id="username">
+                        Hello, @Html.Raw(User.Identity.GetUserName())!
+                    </span>
+                    <span class=" hidden-lg-up">
+                        My Profile
+                    </span>
+                </a>
             </li>
+            @{if (Request.IsAuthenticated && !HttpContext.Current.User.IsInRole("User"))
+                  {
+                    <li class="dropdown nav-item">
+                        <a class="nav-link" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="hidden-lg-down" id="username">
+                                <i class="fa fa-cog" aria-hidden="true"></i>
+                            </span>
+                            <span class=" hidden-lg-up">
+                                Settings
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            @if (HttpContext.Current.User.IsInRole("Client"))
+                            {
+                                <li>@Html.ActionLink("User Management", "Index", "User", null, new { @class = "nav-link" })</li>
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink("User Management", "Index", "User", null, new { @class = "nav-link" })</li>
+                                <li>@Html.ActionLink("Servers", "Index", "Server", null, new { @class = "nav-link" })</li>
+                                <li>@Html.ActionLink("Clients", "Index", "Client", null, new { @class = "nav-link" })</li>
+                                <li>@Html.ActionLink("Applications", "Index", "Application", null, new { @class = "nav-link" })</li>
+                            }
+                        </ul>
+                    </li>
+                }
+            }
             <li class="nav-item"><a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">Log off</a></li>
         </ul>
     }

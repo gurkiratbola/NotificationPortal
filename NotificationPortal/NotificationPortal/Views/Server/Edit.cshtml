@@ -1,65 +1,65 @@
 ﻿@model NotificationPortal.ViewModels.ServerVM
 
 @{
-    ViewBag.Title = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Edit Severs";
 }
 
-<h2>Edit Servers</h2>
+<h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
 
+<ol class="breadcrumb bg-faded">
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
+    <li class="breadcrumb-item"><a href="~/Server/Index">Servers</a></li>
+    <li class="breadcrumb-item active">@ViewBag.Title</li>
+</ol>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>ServerVM</h4>
-        <hr />
+
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ServerID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ServerName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.ServerName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.ServerName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ServerName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
         
         <div class="form-group">
-            @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(m => m.LocationID, Model.LocationList, htmlAttributes: new { @class = "" })
+            @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
+                @Html.DropDownListFor(m => m.LocationID, Model.LocationList, htmlAttributes: new { @class = "form-control" })
 
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.StatusID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(m => m.StatusID, Model.StatusList, htmlAttributes: new { @class = "" })
+            @Html.LabelFor(model => model.StatusID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
+                @Html.DropDownListFor(m => m.StatusID, Model.StatusList, htmlAttributes: new { @class = "form-control" })
 
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="offset-md-3 col-md-6 offset-md-3">
+                <input type="submit" value="Save" class="btn btn-success" />
+                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

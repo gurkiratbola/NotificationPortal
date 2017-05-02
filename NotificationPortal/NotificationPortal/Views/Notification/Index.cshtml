@@ -67,7 +67,7 @@
 
         @foreach (var item in Model)
         {
-            <tr class="text-center clickable-row notification-row" data-href="/Notification/Details">
+            <tr class="text-center clickable-row" id="@item.ThreadID" data-href="/Details/@item.ThreadID">
                 <td>
                     @Html.DisplayFor(modelItem => item.Source)
                 </td>
@@ -103,29 +103,9 @@
     </tbody>
 
 </table>
-<div id="hidden-menu">
-    <a class="btn btn-default" href="~/Notification/Update">Update</a>
-    <a class="btn btn-default" href="~/Notification/Delete">Delete</a>
+<div class="hidden-menu">
+    <ul>
+        <li><a href="/Update/" class="btn btn-sm">Update</a></li>
+        <li><a href="/Delete/" class="btn btn-sm">Delete</a></li>
+    </ul>
 </div>
-
-<script src="~/Scripts/jquery-3.1.1.min.js"></script>
-
-<script>
-    jQuery(document).ready(function ($) {
-        const HIDDEN_MENU_WIDTH_OFFSET = 100;
-        const HIDDEN_MENU_HEIGHT_OFFSET = 40;
-        $("#hidden-menu").hide();
-        $(".clickable-row").click(function () {
-            window.location = $(this).data("href");
-        });
-
-        $(".notification-row").contextmenu(function (e) {
-            $("#hidden-menu").css({ position: "absolute", top: e.pageY - HIDDEN_MENU_HEIGHT_OFFSET, left: e.pageX - HIDDEN_MENU_WIDTH_OFFSET });
-            $('#hidden-menu').toggle();
-            return false;
-        });
-
-
-    });
-</script>
-

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model NotificationPortal.ViewModels.NotificationDetailVM
+
+@{
     ViewBag.Title = "Notification Details";
 }
 
@@ -11,90 +13,53 @@
 </ol>
 
 <dl class="row">
-    <dt class="col-sm-2">Applicaion Name</dt>
-    <dd class="col-sm-10">Task Management App</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Source)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.Source)</dd>
 
-    <dt class="col-sm-2">Notification Type</dt>
-    <dd class="col-sm-10">Incident</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NotificationType)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.NotificationType)</dd>
 
-    <dt class="col-sm-2">Level of Impact</dt>
-    <dd class="col-sm-10">Service Impacting</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.LevelOfImpact)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.LevelOfImpact)</dd>
 
-    <dt class="col-sm-2">Notification Status</dt>
-    <dd class="col-sm-10">Ongoing</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Status)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.Status)</dd>
 
-    <dt class="col-sm-2">Start Date</dt>
-    <dd class="col-sm-10">2017/05/01 11:00PM</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.StartDateTime)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.StartDateTime)</dd>
 
-    <dt class="col-sm-2">End Date</dt>
-    <dd class="col-sm-10">2017/05/02 04:00AM</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.EndDateTime)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.EndDateTime)</dd>
 
-    <dt class="col-sm-2">Sent Date</dt>
-    <dd class="col-sm-10">2017/04/27 12:39PM</dd>
-
-    <dt class="col-sm-2">Client Name</dt>
-    <dd class="col-sm-10">National Bank</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Client)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.Client)</dd>
 </dl>
 <!-- list of threads-->
 <div id="accordion" role="tablist" aria-multiselectable="true">
-    <div class="card">
-        <div class="card-header" role="tab" id="headingOne">
-            <h5 class="mb-0">
-                <div data-toggle="collapse" class="d-flex justify-content-between bd-highlight md-3" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    <span class="p-2 bd-highlight">Upcoming Maintainance Notice - May 2</span>
-                    <span class="badge bd-highlight">Thursday 2017/04/27 12:39PM</span>
-                </div>
-            </h5>
-        </div>
 
-        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
-            <div class="card-block">
-                To increase overall redundancy and ensure the least impact on your services, all maintenance will be performed between 11 PM and 4 AM PST. 
-                We are not expecting more than 15 minutes of degraded service during the maintenance.
-                We appreciate your patience and understanding as we continue to bring enhancements to our network and improve your experience. 
+    @foreach (var item in Model.Thread)
+    {
+        <div class="card">
+            <div class="card-header" role="tab" id="headingOne">
+                <h5 class="mb-0">
+                    <div data-toggle="collapse" class="d-flex justify-content-between bd-highlight md-3" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <span class="p-2 bd-highlight">@Html.DisplayFor(modelItem => item.NotificationHeading)</span>
+                        <span class="badge bd-highlight">@Html.DisplayFor(modelItem => item.SentDateTime)</span>
+                    </div>
+                </h5>
             </div>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-header" role="tab" id="headingTwo">
-            <h5 class="mb-0">
-                <div class="collapsed d-flex justify-content-between bd-highlight md-3" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    <span class="p-2 bd-highlight">
-                        <i class="fa fa-minus" aria-hidden="true"></i>
-                        &nbsp;&nbsp;Status Update
-                    </span>
-                    <span class="badge bd-highlight">Friday 2017/04/29 12:39PM</span>
+
+            <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block">
+                    @Html.DisplayFor(modelItem => item.NotificationDescription)
                 </div>
-            </h5>
-        </div>
-        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-            <div class="card-block">
-              Scheduled update may affect service for less than 1 hour between 11PM and 4AM.
             </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card-header" role="tab" id="headingThree">
-            <h5 class="mb-0">
-                <div class="collapsed d-flex justify-content-between bd-highlight md-3" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    <span class="p-2 bd-highlight">
-                        <i class="fa fa-minus" aria-hidden="true"></i>
-                        &nbsp;&nbsp;Status Update
-                    </span>
-                    <span class="badge bd-highlight">Saturday 2017/04/30 12:39PM</span>
-                </div>
-            </h5>
-        </div>
-        <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
-            <div class="card-block">
-                Scheduled maintainance may be delayed until further notice. We enticipate no maintainance being conducted for the next week or two. Another email will be sent to confirm the new maintainance time. If you have any concerns or questions, please contact our Support Center.
-            </div>
-        </div>
-    </div>
+    }
 </div>
 
 <div>
-    @Html.ActionLink("Update", "Update", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Update", "Update", new { id = Model.ThreadID }, new { @class = "btn btn-primary" })
     @Html.ActionLink("Go Back", "Index", null, new { @class = "btn btn-primary" })
 </div>
 
