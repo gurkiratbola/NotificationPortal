@@ -67,7 +67,7 @@ namespace NotificationPortal.Migrations
 
         private void SeedLevelOfImpact(ApplicationDbContext context)
         {
-            string[] levelsOfImpact = new string[] { "Impacting", "Non-impacting", "Full service outage", "Loss of redundancy" };
+            string[] levelsOfImpact = new string[] { "Impacting", "Non-Impacting", "Full service outage", "Loss of redundancy" };
             foreach (string level in levelsOfImpact)
             {
                 context.LevelOfImpact.Add(
@@ -231,7 +231,8 @@ namespace NotificationPortal.Migrations
             var bcitStatus = context.Status.Where(s => s.StatusName == "Disabled").FirstOrDefault();
             var bcitClient = new Client()
             {
-                ClientName = "BCIT"
+                ClientName = "BCIT",
+                ReferenceID = Guid.NewGuid().ToString()
             };
             bcitClient.Status = bcitStatus;
             context.Client.Add(bcitClient);
@@ -240,7 +241,8 @@ namespace NotificationPortal.Migrations
             var ubcStatus = context.Status.Where(s => s.StatusName == "Enabled").FirstOrDefault();
             var ubcClient = new Client()
             {
-                ClientName = "UBC"
+                ClientName = "UBC",
+                ReferenceID = Guid.NewGuid().ToString()
             };
 
             ubcClient.Status = ubcStatus;
@@ -277,7 +279,8 @@ namespace NotificationPortal.Migrations
                 MobilePhone = "778-990-2234",
                 HomePhone = "604-773-9908",
                 BusinessTitle = "Network Administrator",
-                
+                ReferenceID = Guid.NewGuid().ToString()
+
             };
 
             var staff = new ApplicationUser()
@@ -296,6 +299,7 @@ namespace NotificationPortal.Migrations
                 MobilePhone = "778-230-2349",
                 HomePhone = "604-433-9945",
                 BusinessTitle = "Client Manager",
+                ReferenceID = Guid.NewGuid().ToString()
             };
 
             var client = new ApplicationUser()
@@ -315,6 +319,7 @@ namespace NotificationPortal.Migrations
                 MobilePhone = "778-223-4456",
                 HomePhone = "604-253-5567",
                 BusinessTitle = "Technical Director",
+                ReferenceID = Guid.NewGuid().ToString()
             };
 
             var user = new ApplicationUser()
@@ -333,6 +338,7 @@ namespace NotificationPortal.Migrations
                 MobilePhone = "604-456-0090",
                 HomePhone = "778-123-2445",
                 BusinessTitle = "Project Manager",
+                ReferenceID = Guid.NewGuid().ToString()
             };
 
             userManager.Create(admin, "password");
@@ -361,7 +367,8 @@ namespace NotificationPortal.Migrations
                 ServerName = "DNS Server",
                 Description = "Server for Domain Name System",
                 LocationID = location.LocationID,
-                StatusID = serverOfflineStatus.StatusID
+                StatusID = serverOfflineStatus.StatusID,
+                ReferenceID = Guid.NewGuid().ToString()
             };
             context.Server.Add(server);
             context.SaveChanges();
@@ -391,7 +398,8 @@ namespace NotificationPortal.Migrations
                 Description = "Portal to manage all notifications",
                 URL = "http://notification-portal.com/",
                 ClientID = clientID,
-                StatusID = appOfflineStatus.StatusID
+                StatusID = appOfflineStatus.StatusID,
+                ReferenceID = Guid.NewGuid().ToString()
             };
             app.UserDetail = clientUserDetail.ToList();
             app.Servers = server.ToList();
@@ -406,14 +414,15 @@ namespace NotificationPortal.Migrations
             // Get notification type
             var notificationType = context.NotificationType.Where(t => t.NotificationTypeName == "Maintenance").FirstOrDefault();
             // Get levelOfImpact
-            var levelOfImpact = context.LevelOfImpact.Where(l => l.Level == "Non-impacting").FirstOrDefault();
+            var levelOfImpact = context.LevelOfImpact.Where(l => l.Level == "Non-Impacting").FirstOrDefault();
             // Get server
-            var server = context.Server.Where(s => s.ServerName == "DNS Server").FirstOrDefault();
+            var servers = context.Server.Where(s => s.ServerName == "DNS Server");
             // Get server
             var sendMethod = context.SendMethod.Where(s => s.SendMethodName == "Email").FirstOrDefault();
             // Get status
             var statusType = context.StatusType.Where(t => t.StatusTypeName == "Notification").FirstOrDefault();
-            var status = context.Status.Where(s => s.StatusTypeID == statusType.StatusTypeID && s.StatusName == "Incomplete").FirstOrDefault();
+            var statusIncomplete = context.Status.Where(s => s.StatusTypeID == statusType.StatusTypeID && s.StatusName == "Incomplete").FirstOrDefault();
+            var statusComplete = context.Status.Where(s => s.StatusTypeID == statusType.StatusTypeID && s.StatusName == "Complete").FirstOrDefault();
 
             var notification = new Notification()
             {
@@ -422,16 +431,33 @@ namespace NotificationPortal.Migrations
                 SentDateTime = DateTime.Now,
                 NotificationHeading = "Application offline",
                 NotificationDescription = "Application will be offline for maintenance",
-                ThreadID = 0,
-                ReferenceID = "ref-0",
                 ApplicationID = app.ApplicationID,
                 NotificationTypeID = notificationType.NotificationTypeID,
                 LevelOfImpactID = levelOfImpact.LevelOfImpactID,
-                ServerID = server.ServerID,
                 SendMethodID = sendMethod.SendMethodID,
-                StatusID = status.StatusID
+                StatusID = statusIncomplete.StatusID,
+                ReferenceID = Guid.NewGuid().ToString()
             };
+            notification.Servers = servers.ToList();
             context.Notification.Add(notification);
+
+            notification = new Notification()
+            {
+                StartDateTime = DateTime.Now.AddMinutes(5),
+                EndDateTime = DateTime.Now.AddHours(1),
+                SentDateTime = DateTime.Now.AddHours(1),
+                NotificationHeading = "Application back online",
+                NotificationDescription = "Maintenance complete",
+                ApplicationID = app.ApplicationID,
+                NotificationTypeID = notificationType.NotificationTypeID,
+                LevelOfImpactID = levelOfImpact.LevelOfImpactID,
+                SendMethodID = sendMethod.SendMethodID,
+                StatusID = statusComplete.StatusID,
+                ReferenceID = Guid.NewGuid().ToString()
+            };
+            notification.Servers = servers.ToList();
+            context.Notification.Add(notification);
+
             context.SaveChanges();
         }
 
@@ -439,6 +465,7 @@ namespace NotificationPortal.Migrations
         {
             // delete bridges first
             context.Database.ExecuteSqlCommand("DELETE FROM ServerApplications");
+            context.Database.ExecuteSqlCommand("DELETE FROM ServerNotifications");
             context.Database.ExecuteSqlCommand("DELETE FROM UserDetailApplications");
 
             context.Database.ExecuteSqlCommand("DELETE FROM Notifications");

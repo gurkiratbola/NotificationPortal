@@ -17,13 +17,16 @@ namespace NotificationPortal.Models
         public string URL { get; set; }
         public virtual Client Client { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
-        public virtual ICollection<UserDetail> UserDetail { get; set; }
+        public virtual ICollection<UserDetail> UserDetails { get; set; }
         public virtual ICollection<Server> Servers { get; set; }
         public virtual Status Status { get; set; }
         [ForeignKey("Client")]
         public int ClientID { get; set; }
         [ForeignKey("Status")]
         public int StatusID { get; set; }
+        [StringLength(100)]
+        [Index(IsUnique = true)]
+        public string ReferenceID { get; set; }
     }
 
     public class Client
@@ -33,9 +36,12 @@ namespace NotificationPortal.Models
         public string ClientName { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
         public virtual Status Status { get; set; }
-        public virtual ICollection<UserDetail> UserDetail { get; set; }
+        public virtual ICollection<UserDetail> UserDetails { get; set; }
         [ForeignKey("Status")]
         public int StatusID { get; set; }
+        [StringLength(100)]
+        [Index(IsUnique = true)]
+        public string ReferenceID { get; set; }
     }
 
     public class DataCenterLocation
@@ -52,7 +58,7 @@ namespace NotificationPortal.Models
         public int GroupID { get; set; }
         public string GroupName { get; set; }
         public string GroupDescription { get; set; }
-        public virtual ICollection<RoleDetail> RoleDetail { get; set; }
+        public virtual ICollection<RoleDetail> RoleDetails { get; set; }
     }
 
     public class LevelOfImpact
@@ -67,10 +73,7 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int NotificationID { get; set; }
-        [StringLength(450)]
-        [Index(IsUnique = true)]
-        public string ReferenceID { get; set; }
-        public int ThreadID { get; set; }
+        public string ThreadID { get; set; }
         public string NotificationHeading { get; set; }
         public string NotificationDescription { get; set; }
         public DateTime SentDateTime { get; set; }
@@ -80,20 +83,21 @@ namespace NotificationPortal.Models
         public virtual LevelOfImpact LevelOfImpact { get; set; }
         public virtual NotificationType NotificationType { get; set; }
         public virtual SendMethod SendMethod { get; set; }
-        public virtual Server Server { get; set; }
+        public virtual ICollection<Server> Servers { get; set; }
         public virtual Status Status { get; set; }
         [ForeignKey("Status")]
         public int StatusID { get; set; }
         [ForeignKey("SendMethod")]
         public int SendMethodID { get; set; }
-        [ForeignKey("Server")]
-        public int? ServerID { get; set; }
         [ForeignKey("LevelOfImpact")]
         public int LevelOfImpactID { get; set; }
         [ForeignKey("Application")]
         public int? ApplicationID { get; set; }
         [ForeignKey("NotificationType")]
         public int NotificationTypeID { get; set; }
+        [StringLength(100)]
+        [Index(IsUnique = true)]
+        public string ReferenceID { get; set; }
     }
 
     public class NotificationType
@@ -137,6 +141,9 @@ namespace NotificationPortal.Models
         public int StatusID { get; set; }
         [ForeignKey("DataCenterLocation")]
         public int LocationID { get; set; }
+        [StringLength(100)]
+        [Index(IsUnique = true)]
+        public string ReferenceID { get; set; }
     }
 
     public class Status
@@ -180,5 +187,8 @@ namespace NotificationPortal.Models
         public int? ClientID { get; set; }
         [ForeignKey("Status")]
         public int StatusID { get; set; }
+        [StringLength(100)]
+        [Index(IsUnique = true)]
+        public string ReferenceID { get; set; }
     }
 }
