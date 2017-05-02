@@ -9,11 +9,11 @@
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="~/Client/Index" class="link-color">Clients</a></li>
-    <li class="breadcrumb-item active">Add Client</li>
+    <li class="breadcrumb-item active">Create Client</li>
 </ol>
 
-<p>
-    @Html.Raw(ViewBag.ActionMsg)
+<p class="text-danger">
+    @Html.Raw(TempData["ErrorMsg"])
 </p>
 @using (Html.BeginForm()) 
 {
