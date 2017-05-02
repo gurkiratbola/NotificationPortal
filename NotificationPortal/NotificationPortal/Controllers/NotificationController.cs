@@ -53,7 +53,7 @@ namespace NotificationPortal.Controllers
             return View(model);
         }
         
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
             NotificationRepo nRepo = new NotificationRepo();
             var model = nRepo.CreateDetailModel(id);
@@ -61,7 +61,7 @@ namespace NotificationPortal.Controllers
         }
 
         [HttpGet]
-        public ActionResult Update(int id)
+        public ActionResult Update(string id)
         {
             NotificationRepo nRepo = new NotificationRepo();
             var model = nRepo.CreateUpdateModel(id);

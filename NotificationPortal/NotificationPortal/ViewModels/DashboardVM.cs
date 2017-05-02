@@ -14,15 +14,12 @@ namespace NotificationPortal.ViewModels
 
         public int NotificationID { get; set; }
 
-        public int ThreadID { get; set; }
+        public string ThreadID { get; set; }
 
         public string ReferenceID { get; set; }
 
         [Required]
         public int StatusID { get; set; }
-
-        [Required]
-        public int ClientID { get; set; }
 
         [Required]
         public int LevelOfImpactID { get; set; }
@@ -35,9 +32,6 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name =  "Application Name")]
         public string ApplicationName { get; set; }
-
-        [Display(Name = "Client")]
-        public string ClientName { get; set; }
 
         [Display(Name = "Application Status")]
         public string StatusName { get; set; }

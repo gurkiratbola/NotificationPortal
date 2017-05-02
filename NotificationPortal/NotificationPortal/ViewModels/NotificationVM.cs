@@ -11,7 +11,7 @@ namespace NotificationPortal.ViewModels
 
     public class NotificationIndexVM
     {
-        public int ThreadID { get; set; }
+        public string ThreadID { get; set; }
 
         [Display(Name = "Source")]
         public string Source { get; set; }
@@ -32,14 +32,11 @@ namespace NotificationPortal.ViewModels
         public DateTime StartDateTime { get; set; }
         [Display(Name = "End Time")]
         public DateTime EndDateTime { get; set; }
-
-        [Display(Name = "Client")]
-        public string Client { get; set; }
     }
 
     public class NotificationCreateVM
     {
-        public int? ThreadID { get; set; }
+        public string ThreadID { get; set; }
 
         [Required]
         public string NotificationHeading { get; set; }
@@ -93,7 +90,7 @@ namespace NotificationPortal.ViewModels
 
     public class NotificationDetailVM
     {
-        public int ThreadID { get; set; }
+        public string ThreadID { get; set; }
         [Display(Name = "Source")]
         public string Source { get; set; }
         [Display(Name = "Application/Server")]
@@ -108,8 +105,6 @@ namespace NotificationPortal.ViewModels
         public DateTime StartDateTime { get; set; }
         [Display(Name = "End Time")]
         public DateTime EndDateTime { get; set; }
-        [Display(Name = "Client")]
-        public string Client { get; set; }
         public IEnumerable<NotificationSpecificDetailVM> Thread { get; set; }
     }
     public class NotificationSpecificDetailVM

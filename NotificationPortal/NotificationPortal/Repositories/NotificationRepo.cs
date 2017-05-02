@@ -96,16 +96,16 @@ namespace NotificationPortal.Repositories
                 return db.Notification.Select(
                     n=>new NotificationIndexVM(){
                         ThreadID = n.ThreadID,
-                        Source = n.Server.ServerName == null ? "Application":"Server",
-                        ApplicationServerName = n.Server.ServerName == null ? n.Application.ApplicationName:n.Server.ServerName,
+                        Source = n.Servers.Count == 0 ? "Application":"Server",
+                        // TODO
+                        // ApplicationServerName = n.Server.ServerName == null ? n.Application.ApplicationName:n.Server.ServerName,
                         NotificationType = n.NotificationType.NotificationTypeName,
                         LevelOfImpact = n.LevelOfImpact.Level,
                         NotificationHeading = n.NotificationHeading,
                         Status = n.Status.StatusName,
                         SentDateTime = n.SentDateTime,
                         StartDateTime = n.StartDateTime,
-                        EndDateTime = n.EndDateTime,
-                        Client = n.Application.Client.ClientName
+                        EndDateTime = n.EndDateTime
                     }
                 );
             }
@@ -122,7 +122,7 @@ namespace NotificationPortal.Repositories
             {
                 model = new NotificationCreateVM();
             }
-            model.ThreadID = NewThreadID();
+            model.ThreadID = Guid.NewGuid().ToString();
             model.ApplicationList = GetApplicaitonList();
             model.SendMethodList = GetSendMethodList();
             model.ServerList = GetServerList();
@@ -153,11 +153,9 @@ namespace NotificationPortal.Repositories
                     NotificationDescription = notification.NotificationDescription,
                     StatusID = notification.StatusID,
                     SendMethodID = notification.SentMethodID,
-                    ServerID = notification.ServerID,
-                    ApplicationID = notification.ApplicationID,
                     //TO DO: discuss how referenceID is generated
                     ReferenceID = Guid.NewGuid().ToString(),
-                    ThreadID = (int) notification.ThreadID,
+                    ThreadID = Guid.NewGuid().ToString(),
                     //TO DO: convert input time to UTC time
                     SentDateTime = DateTime.Now,
                     StartDateTime = notification.StartDateTime,
@@ -185,13 +183,7 @@ namespace NotificationPortal.Repositories
 
         }
 
-        public int NewThreadID()
-        {
-            var lastThreadID = db.Notification.OrderByDescending(n => n.ThreadID).FirstOrDefault().ThreadID;
-            return lastThreadID + 1;
-        }
-
-        public NotificationDetailVM CreateDetailModel(int threadID)
+        public NotificationDetailVM CreateDetailModel(string threadID)
         {
             IEnumerable<Notification> notifications =
                 db.Notification.Where(n => n.ThreadID == threadID)
@@ -209,21 +201,21 @@ namespace NotificationPortal.Repositories
             Notification lastestNotification = notifications.LastOrDefault();
             NotificationDetailVM model = new NotificationDetailVM()
             {
-                Source = lastestNotification.Server.ServerName == null ? "Application" : "Server",
-                ApplicationServerName = lastestNotification.Server.ServerName == null ? lastestNotification.Application.ApplicationName : lastestNotification.Server.ServerName,
+                ThreadID = threadID,
+                Source = lastestNotification.Servers.Count == 0 ? "Application" : "Server",
+                // TODO
+                //ApplicationServerName = lastestNotification.Servers.Count == 0 ? lastestNotification.Application.ApplicationName : lastestNotification.Server.ServerName,
                 NotificationType = lastestNotification.NotificationType.NotificationTypeName,
                 LevelOfImpact = lastestNotification.LevelOfImpact.Level,
                 Status = lastestNotification.Status.StatusName,
                 StartDateTime = lastestNotification.StartDateTime,
                 EndDateTime = lastestNotification.EndDateTime,
-                // TODO: query list of Clients
-                Client = lastestNotification.Application.Client.ClientName,
                 Thread = thread
             };
             return model;
         }
 
-        public NotificationCreateVM CreateUpdateModel(int? threadID, NotificationCreateVM model = null)
+        public NotificationCreateVM CreateUpdateModel(string threadID, NotificationCreateVM model = null)
         {
             var lastestNotification = 
                 db.Notification.Where(n => n.ThreadID == threadID)
@@ -235,24 +227,22 @@ namespace NotificationPortal.Repositories
                     ThreadID = threadID,
                     StartDateTime = lastestNotification.StartDateTime,
                     EndDateTime = lastestNotification.EndDateTime,
-                    Source = lastestNotification.ApplicationID == null ? "Application":"Server",
-                    ServerID = lastestNotification.ServerID,
-                    ApplicationID = lastestNotification.ApplicationID,
+                    Source = lastestNotification.Applications == null ? "Application":"Server",
                     LevelOfImpactID = lastestNotification.LevelOfImpactID,
                     NotificationTypeID = lastestNotification.NotificationTypeID,
                     SentMethodID = lastestNotification.SendMethodID,
                     StatusID = lastestNotification.StatusID,
                     NotificationDescription = lastestNotification.NotificationDescription,
-                    NotificationHeading = lastestNotification.NotificationHeading,
-
-                    ApplicationList = GetApplicaitonList(),
-                    SendMethodList = GetSendMethodList(),
-                    ServerList = GetServerList(),
-                    NotificationTypeList = GetTypeList(),
-                    LevelOfImpactList = GetImpactLevelList(),
-                    StatusList = GetNotificationSatusList(),
+                    NotificationHeading = lastestNotification.NotificationHeading
                 };
             }
+            model.ThreadID = Guid.NewGuid().ToString();
+            model.ApplicationList = GetApplicaitonList();
+            model.SendMethodList = GetSendMethodList();
+            model.ServerList = GetServerList();
+            model.NotificationTypeList = GetTypeList();
+            model.LevelOfImpactList = GetImpactLevelList();
+            model.StatusList = GetNotificationSatusList();
             return model;
         }
     }
