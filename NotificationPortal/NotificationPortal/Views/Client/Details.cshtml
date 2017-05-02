@@ -15,7 +15,7 @@
 <div class="container">
     @if (TempData["SuccessMsg"] != null)
     {
-        <p class="alert alert-success offset-md-3 col-md-6 offset-md-3">
+        <p class="alert alert-success">
             @Html.Raw(TempData["SuccessMsg"])
         </p>
     }
@@ -40,6 +40,6 @@
         </dl>
     </div>
 
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ClientID }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-success" })
     @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
 </div>

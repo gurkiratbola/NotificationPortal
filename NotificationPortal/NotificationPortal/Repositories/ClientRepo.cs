@@ -18,10 +18,10 @@ namespace NotificationPortal.Repositories
             IEnumerable<ClientVM> clientList = _context.Client
                                                 .Select(c => new ClientVM
                                                 {
-                                                    ClientID = c.ClientID,
                                                     ClientName = c.ClientName,
                                                     StatusID = c.StatusID,
-                                                    StatusName = c.Status.StatusName
+                                                    StatusName = c.Status.StatusName,
+                                                    ReferenceID = c.ReferenceID
                                                 });
             return clientList;
         }
@@ -64,15 +64,29 @@ namespace NotificationPortal.Repositories
             }
         }
 
-        public ClientVM GetClient(int clientID) {
+        public ClientVM GetClient(string referenceID) {
             ClientVM client = _context.Client
-                            .Where(a => a.ClientID == clientID)
+                            .Where(a => a.ReferenceID == referenceID)
                             .Select(b => new ClientVM
                             {
-                                ClientID = b.ClientID,
                                 ClientName = b.ClientName,
                                 StatusID = b.StatusID,
-                                StatusName =b.Status.StatusName
+                                StatusName = b.Status.StatusName,
+                                ReferenceID = b.ReferenceID
+                            }).FirstOrDefault();
+            return client;
+        }
+
+        public ClientDeleteVM GetDeleteClient(string referenceID)
+        {
+            ClientDeleteVM client = _context.Client
+                            .Where(a => a.ReferenceID == referenceID)
+                            .Select(b => new ClientDeleteVM
+                            {
+                                ClientName = b.ClientName,
+                                StatusID = b.StatusID,
+                                StatusName = b.Status.StatusName,
+                                ReferenceID = b.ReferenceID
                             }).FirstOrDefault();
             return client;
         }
@@ -88,10 +102,11 @@ namespace NotificationPortal.Repositories
             try
             {
                 Client clientUpdated= _context.Client
-                                        .Where(a => a.ClientID == client.ClientID)
+                                        .Where(a => a.ReferenceID == client.ReferenceID)
                                         .FirstOrDefault();
                 clientUpdated.ClientName = client.ClientName;
                 clientUpdated.StatusID = client.StatusID;
+                clientUpdated.ReferenceID = client.ReferenceID;
                 _context.SaveChanges();
                 msg = "Client information succesfully updated.";
                 return true;
@@ -103,14 +118,14 @@ namespace NotificationPortal.Repositories
             }
         }
 
-        public bool DeleteClient(int clientID, out string msg) {
+        public bool DeleteClient(string referenceID, out string msg) {
             // check if client exists
             Client clientToBeDeleted = _context.Client
-                                    .Where(a => a.ClientID == clientID)
+                                    .Where(a => a.ReferenceID == referenceID)
                                     .FirstOrDefault();
             // check applications associated with client
             var clientApplications = _context.Application
-                                       .Where(a => a.ClientID == clientID)
+                                       .Where(a => a.ReferenceID == referenceID)
                                        .FirstOrDefault();
             if (clientToBeDeleted == null)
             {
@@ -123,10 +138,16 @@ namespace NotificationPortal.Repositories
                 return false;
             }
 
-            _context.Client.Remove(clientToBeDeleted);
-            _context.SaveChanges();
-            msg = "Client Successfully Deleted";
-            return true;
+            try {
+                _context.Client.Remove(clientToBeDeleted);
+                _context.SaveChanges();
+                msg = "Client Successfully Deleted";
+                return true;
+            } catch {
+                msg = "Failed to update client.";
+                return false;
+            }
+
         }
     }
         //public string FindUserID()

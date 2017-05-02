@@ -1,4 +1,4 @@
-﻿@model NotificationPortal.ViewModels.ClientVM
+﻿@model NotificationPortal.ViewModels.ClientDeleteVM
 
 @{
     ViewBag.Title = "Delete Client";
@@ -17,7 +17,7 @@
 
     @if (TempData["ErrorMsg"] != null)
     {
-        <p class="text-danger offset-md-3 col-md-6 offset-md-3">
+        <p class="alert alert-danger">
             @Html.Raw(TempData["ErrorMsg"])
         </p>
     }
@@ -46,9 +46,11 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.ReferenceID)
             @Html.HiddenFor(model => model.ClientName)
-            @Html.HiddenFor(model => model.ClientID)
             @Html.HiddenFor(model => model.StatusID)
+            @Html.HiddenFor(model => model.StatusName)
+
             <div class="form-actions no-color">
                 <input type="submit" value="Delete" class="btn btn-success" />
                 @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })

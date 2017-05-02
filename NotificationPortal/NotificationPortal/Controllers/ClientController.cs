@@ -58,7 +58,7 @@ namespace NotificationPortal.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(int id) {
+        public ActionResult Edit(string id) {
             ClientVM client = _cRepo.GetClient(id);
             // To be modified: global method for status in development
             ViewBag.StatusNames = _cRepo.GetStatusList();
@@ -74,34 +74,34 @@ namespace NotificationPortal.Controllers
                 if (success)
                 {
                     TempData["SuccessMsg"] = msg;
-                    return RedirectToAction("Details", new { id = model.ClientID });
+                    return RedirectToAction("Details", new { id = model.ReferenceID });
                 }
                 else
                 {
                     TempData["ErrorMsg"] = msg;
                 }
             }
-            ClientVM client = _cRepo.GetClient(model.ClientID);
+            ClientVM client = _cRepo.GetClient(model.ReferenceID);
             ViewBag.StatusNames = _cRepo.GetStatusList();
             return View(client);
         }
 
         [HttpGet]
-        public ActionResult Details(int id) {
+        public ActionResult Details(string id) {
             return View(_cRepo.GetClient(id));
         }
 
         [HttpGet]
-        public ActionResult Delete(int id) {
-            return View(_cRepo.GetClient(id));
+        public ActionResult Delete(string id) {
+            return View(_cRepo.GetDeleteClient(id));
         }
 
         [HttpPost]
-        public ActionResult Delete(ClientVM client) {
+        public ActionResult Delete(ClientDeleteVM client) {
             string msg = "";
             if (ModelState.IsValid)
             {
-                bool success = _cRepo.DeleteClient(client.ClientID, out msg);
+                bool success = _cRepo.DeleteClient(client.ReferenceID, out msg);
                 if (success)
                 {
                     TempData["SuccessMsg"] = msg;
