@@ -91,8 +91,23 @@
                                     <small class="text-muted float-right text-uppercase">@Html.DisplayNameFor(model => model.EndDateTime)</small>
                                 </div>
                                 <div class="col-md-12">
-                                    <span class="float-left">@DateTime.Parse(@Html.DisplayFor(modelItem => item.StartDateTime).ToString()).ToLocalTime().ToString("dd MMM yyyy - h:mm tt")</span>
-                                    <span class="float-right">@DateTime.Parse(@Html.DisplayFor(modelItem => item.EndDateTime).ToString()).ToLocalTime().ToString("dd MMM yyyy - h:mm tt")</span>
+                                    @if (item.StartDateTime != null)
+                                    {
+                                        <span class="float-left">@DateTime.Parse(@Html.DisplayFor(modelItem => item.StartDateTime).ToString()).ToLocalTime().ToString("dd MMM yyyy - h:mm tt")</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="float-left">TBA</span>
+                                    }
+
+                                    @if (item.EndDateTime != null)
+                                    {
+                                        <span class="float-right">@DateTime.Parse(@Html.DisplayFor(modelItem => item.EndDateTime).ToString()).ToLocalTime().ToString("dd MMM yyyy - h:mm tt")</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="float-right">TBA</span>
+                                    }
                                 </div>
                             </div>
                         </div>
