@@ -10,7 +10,7 @@ namespace NotificationPortal.Repositories
     public class SelectListRepo
     {
         ApplicationDbContext _context = new ApplicationDbContext();
-        public SelectList GetSatusList(string statusType)
+        public SelectList GetStatusList(string statusType)
         {
             IEnumerable<SelectListItem> statusList = _context.Status
                     .Where(s => s.StatusType.StatusTypeName == statusType)
