@@ -7,70 +7,48 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using NotificationPortal.ViewModels;
 
 namespace NotificationPortal.Repositories
 {
 
-    public class ServerRepo : IInterfaceRepo<Server>, IDisposable
+    public class ServerRepo
     {
-        ApplicationDbContext context = new ApplicationDbContext();
-        public ServerRepo(ApplicationDbContext context)
-        {
-            this.context = context;
-        }
-        public IQueryable<Server> GetAll()
-        {
-            IQueryable<Server> query = context.Server;
-            return query;
+        const string APP_STATUS_TYPE_NAME = "Server";
+        private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
-        }
-        public Server FindBy(int ServerID)
+        public IEnumerable<ServerVM> GetServerList()
         {
-
-            var query = this.GetAll().FirstOrDefault(x => x.ServerID == ServerID);
-            return query;
-        }
-        public void Add(Server server)
-        {
-
-            context.Server.Add(server);
+            IEnumerable<ServerVM> serverList = _context.Server
+                                                .Select(c => new ServerVM
+                                                {
+                                                    ServerName = c.ServerName,
+                                                    ReferenceID = c.ReferenceID,
+                                                    StatusID = c.StatusID,
+                                                    LocationID = c.LocationID,
+                                                    Description = c.Description
+                                                });
+            return serverList;
         }
 
-        public void Delete(Server server)
+        public SelectList GetStatusList()
         {
-
-            context.Server.Remove(server);
-        }
-
-        public void Edit(Server server)
-        {
-
-            context.Entry<Server>(server).State = System.Data.Entity.EntityState.Modified;
-        }
-        public void Save()
-        {
-
-            context.SaveChanges();
-        }
-
-        public IEnumerable<SelectListItem> GetStatusList()
-        {
-            ApplicationDbContext db = new ApplicationDbContext();
-            IEnumerable<SelectListItem> statusList = db.Status
-                    .Select(app =>
-                                new SelectListItem
-                                {
-                                    Value = app.StatusID.ToString(),
-                                    Text = app.StatusName
-                                });
+            IEnumerable<SelectListItem> statusList = _context.Status
+                                    .Where(a => a.StatusType.StatusTypeName == APP_STATUS_TYPE_NAME)
+                                    .Select(sv => new SelectListItem()
+                                    {
+                                        Value = sv.StatusID.ToString(),
+                                        Text = sv.StatusName
+                                    });
 
             return new SelectList(statusList, "Value", "Text");
         }
 
-        public IEnumerable<SelectListItem> GetLocationList()
+
+        public SelectList GetLocationList()
         {
             ApplicationDbContext db = new ApplicationDbContext();
-            IEnumerable<SelectListItem> locationList = db.DataCenterLocation
+            IEnumerable<SelectListItem> locationList = _context.DataCenterLocation
                     .Select(app =>
                                 new SelectListItem
                                 {
@@ -81,30 +59,154 @@ namespace NotificationPortal.Repositories
             return new SelectList(locationList, "Value", "Text");
         }
 
-        private bool disposed = false;
 
-        protected virtual void Dispose(bool disposing)
+
+        //public SelectList GetLocationList()
+        //{
+        //    IEnumerable<SelectListItem> locationList = _context.DataCenterLocation
+        //                            .Where(a => a.StatusType.StatusTypeName == APP_STATUS_TYPE_NAME)
+        //                            .Select(sv => new SelectListItem()
+        //                            {
+        //                                Value = sv.StatusID.ToString(),
+        //                                Text = sv.StatusName
+        //                            });
+
+        //    return new SelectList(locationList, "Value", "Text");
+        //}
+
+
+        public bool AddServer(ServerVM server, out string msg)
         {
-            if (!this.disposed)
+            Server s = _context.Server.Where(a => a.ServerName == server.ServerName)
+                            .FirstOrDefault();
+            if (s != null)
             {
-                if (disposing)
-                {
-                    context.Dispose();
-
-                }
+                msg = "Server name already exist.";
+                return false;
             }
-            this.disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            try
+            {
+                Server newServer = new Server();
+                newServer.ServerName = server.ServerName;
+                newServer.StatusID = server.StatusID;
+                newServer.ReferenceID = Guid.NewGuid().ToString();
+                _context.Server.Add(newServer);
+                _context.SaveChanges();
+                msg = "Server successfully added";
+                return true;
+            }
+            catch
+            {
+                msg = "Failed to add server.";
+                return false;
+            }
         }
 
-        public IQueryable<Server> FindBy(Expression<Func<Server, bool>> predicate)
+        public ServerVM GetServer(string referenceID)
         {
-            throw new NotImplementedException();
+            ServerVM server = _context.Server
+                            .Where(a => a.ReferenceID == referenceID)
+                            .Select(b => new ServerVM
+                            {
+                                ServerName = b.ServerName,
+                                ReferenceID = b.ReferenceID,
+                                Description = b.Description,
+                                StatusID = b.StatusID,
+                                LocationID = b.LocationID,
+
+                            }).FirstOrDefault();
+            return server;
+        }
+
+        public ServerVM GetDeleteServer(string referenceID)
+        {
+            ServerVM server = _context.Server
+                            .Where(a => a.ReferenceID == referenceID)
+                            .Select(b => new ServerVM
+                            {
+                                ServerName = b.ServerName,
+                                ReferenceID = b.ReferenceID,
+                                Description = b.Description,
+                                StatusID = b.StatusID,
+                                LocationID = b.LocationID,
+
+                            }).FirstOrDefault();
+            return server;
+        }
+
+        public bool EditServer(ServerVM server, out string msg)
+        {
+            Server s = _context.Server.Where(a => a.ServerName == server.ServerName).FirstOrDefault();
+            if (s != null)
+            {
+                msg = "Server name already exist.";
+                return false;
+            }
+            try
+            {
+                Server serverUpdated = _context.Server
+                                        .Where(a => a.ReferenceID == server.ReferenceID)
+                                        .FirstOrDefault();
+                serverUpdated.ServerName = server.ServerName;
+                serverUpdated.StatusID = server.StatusID;
+                serverUpdated.LocationID = server.LocationID;
+                serverUpdated.Description = server.Description;
+                serverUpdated.ReferenceID = server.ReferenceID;
+                _context.SaveChanges();
+                msg = "Server information succesfully updated.";
+                return true;
+            }
+            catch
+            {
+                msg = "Failed to update server.";
+                return false;
+            }
+        }
+
+        public bool DeleteServer(string referenceID, out string msg)
+        {
+            // check if server exists
+            Server serverToBeDeleted = _context.Server
+                                    .Where(a => a.ReferenceID == referenceID)
+                                    .FirstOrDefault();
+            // check applications associated with client
+            var serverApplications = _context.Application
+                                       .Where(a => a.ReferenceID == referenceID)
+                                       .FirstOrDefault();
+            var serverNotifications = _context.Notification
+                                      .Where(a => a.ReferenceID == referenceID)
+                                      .FirstOrDefault();
+            if (serverToBeDeleted == null)
+            {
+                msg = "Server could not be deleted.";
+                return false;
+            }
+            if (serverApplications != null)
+            {
+                msg = "Server has application(s) associated, cannot be deleted";
+                return false;
+            }
+            if (serverNotifications != null)
+            {
+                msg = "Server has application(s) associated, cannot be deleted";
+                return false;
+            }
+
+            try
+            {
+                _context.Server.Remove(serverToBeDeleted);
+                _context.SaveChanges();
+                msg = "Server Successfully Deleted";
+                return true;
+            }
+            catch
+            {
+                msg = "Failed to update server.";
+                return false;
+            }
+
         }
     }
-
 }
+
+    
