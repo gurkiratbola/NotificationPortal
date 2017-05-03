@@ -10,169 +10,125 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.Controllers
 {
+    [Authorize(Roles = "Admin, Staff")]
     public class ApplicationController : Controller
     {
-        ApplicationDbContext context = new ApplicationDbContext();
+        private readonly ApplicationRepo _aRepo = new ApplicationRepo();
 
-        private IInterfaceRepo<Application> applicationRepo;
-        //[Authorize]
-        public ApplicationController()
-        {
-            this.applicationRepo = new ApplicationRepo(new ApplicationDbContext());
-        }
-
-        public ApplicationController(IInterfaceRepo<Application> applicationRepo)
-        {
-            this.applicationRepo = applicationRepo;
-        }
-
-
-        [Authorize]
+        [HttpGet]
         public ActionResult Index()
         {
-            var applications = from s in applicationRepo.GetAll()
-                          select s;
-            return View(applications.ToList());
+            IEnumerable<ApplicationVM> applicationList = _aRepo.GetApplicationList();
+            return View(applicationList);
         }
 
-        ///Get /Application/Detials/4
-        public ViewResult Details(int ID)
-        {
-
-            Application application = applicationRepo.FindBy(ID);
-            return View(application);
-        }
-
-        //Get: /Applicatoin/Create
+        [HttpGet]
         public ActionResult Create()
         {
-
-            ApplicationRepo applicationRepo = new ApplicationRepo(new ApplicationDbContext());
+            // To be modified: global method for status in development
             var model = new ApplicationVM
             {
-                StatusList = applicationRepo.GetStatusList(),
-                ClientList = applicationRepo.GetClientList(),
+                StatusList = _aRepo.GetStatusList(),
+                ClientList = _aRepo.GetClientList(),
             };
-            return View(model);
-
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "ServerName, Description,status,location")] ServerVM serverVM) {
-        public ActionResult Create(ApplicationVM applicationVM)
-        {
-            try
-            {
-                //test variables
-                if (ModelState.IsValid)
-                {
-                    ApplicationDbContext context = new ApplicationDbContext();
-                    ///get the location ID and status ID from here
-
-                    Application application = new Application();
-                    //server.LocationID = serverVM.location;
-                    application.ApplicationName = applicationVM.ApplicationName;
-                    application.ApplicationID = applicationVM.StatusID;
-                    application.Description = applicationVM.Description;
-                    application.URL = applicationVM.URL;
-                    application.ClientID = applicationVM.ClientID;
-                    application.StatusID = applicationVM.StatusID;
-                    applicationRepo.Add(application);
-                    applicationRepo.Save();
-                    return RedirectToAction("Index");
-                }
-            }
-            catch (DataException)
-            {
-                ModelState.AddModelError(string.Empty, "Unable to save changes. Contact Admin");
-            }
-            return View(applicationVM);
-        }
-
-        public ActionResult Edit(int id)
-        {
-
-            ApplicationRepo applicationRepo = new ApplicationRepo(new ApplicationDbContext());
-            Application application = applicationRepo.FindBy(id);
-            var model = new ApplicationVM
-            {
-                StatusList = applicationRepo.GetStatusList(),
-                ClientList = applicationRepo.GetClientList(),
-            };
-            model.Description = application.Description;
-            model.ApplicationName = application.ApplicationName;
-            model.URL = application.URL;
-            model.ApplicationID = application.ApplicationID;
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ApplicationVM applicationVM)
+        public ActionResult Create(ApplicationVM model)
         {
-            try
+            string msg = "";
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                bool success = _aRepo.AddApplication(model, out msg);
+                if (success)
                 {
-                    ApplicationDbContext context = new ApplicationDbContext();
-                    ///get the location ID and status ID from here
-
-                    Application application = applicationRepo.FindBy(applicationVM.ApplicationID);
-                    //server.LocationID = serverVM.location;
-                    application.ApplicationID = applicationVM.ApplicationID;
-                    application.StatusID = applicationVM.StatusID;
-                    application.ClientID = applicationVM.ClientID;
-                    application.Description = applicationVM.Description;
-                    application.URL = applicationVM.URL;
-                    application.ApplicationName = applicationVM.ApplicationName;
-                   // application.ServerID = serverVM.ServerID;
-                    applicationRepo.Edit(application);
-                    applicationRepo.Save();
-                    return RedirectToAction("Index");
+                    TempData["SuccessMsg"] = msg;
+                    return RedirectToAction("index");
                 }
-
+                else
+                {
+                    TempData["ErrorMsg"] = msg;
+                }
             }
-            catch (DataException)
+            else
             {
-                ModelState.AddModelError(string.Empty, "Unable to save changes. Contact Admin");
+                TempData["ErrorMsg"] = "Application cannot be added at this time.";
             }
-            return View(applicationVM);
+            model.StatusList = _aRepo.GetStatusList();
+            model.ClientList = _aRepo.GetClientList();
+            return View(model);
         }
 
-        // Get /Application/Delete
-        public ActionResult Delete(bool? saveChangesError = false, int ID = 0)
+        [HttpGet]
+        public ActionResult Edit(string id)
         {
-            if (saveChangesError.GetValueOrDefault())
-            {
-                ViewBag.ErrorMessage = "Delete Failed, Try Again";
-            }
-            Application application = applicationRepo.FindBy(ID);
+            ApplicationVM application = _aRepo.GetApplication(id);
+            // To be modified: global method for status in development
+            ViewBag.StatusNames = _aRepo.GetStatusList();
+            ViewBag.ClientNames = _aRepo.GetClientList();
             return View(application);
-
         }
-        //POST: /Application/Delete/3
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int ID)
+        public ActionResult Edit(ApplicationVM model)
         {
-            try
+            string msg = "";
+            if (ModelState.IsValid)
             {
-                Application application = applicationRepo.FindBy(ID);
-                applicationRepo.Delete(application);
-                applicationRepo.Save();
+                bool success = _aRepo.EditApplication(model, out msg);
+                if (success)
+                {
+                    TempData["SuccessMsg"] = msg;
+                    return RedirectToAction("Details", new { id = model.ReferenceID });
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = msg;
+                }
             }
-            catch (DataException)
-            {
-                return RedirectToAction("Delete", new { ID = ID, saveChangesError = true });
-            }
-            return RedirectToAction("Index");
+            ApplicationVM application = _aRepo.GetApplication(model.ReferenceID);
+            ViewBag.StatusNames = _aRepo.GetStatusList();
+            ViewBag.ClientNames = _aRepo.GetClientList();
+            return View(application);
         }
 
-        protected override void Dispose(bool disposing)
+        [HttpGet]
+        public ActionResult Details(string id)
         {
-            applicationRepo.Dispose();
-            base.Dispose(disposing);
+            return View(_aRepo.GetApplication(id));
+        }
+
+        [HttpGet]
+        public ActionResult Delete(string id)
+        {
+            return View(_aRepo.GetApplication(id));
+        }
+
+        [HttpPost]
+        public ActionResult Delete(ApplicationVM application)
+        {
+            string msg = "";
+            if (ModelState.IsValid)
+            {
+                bool success = _aRepo.DeleteApplication(application.ReferenceID, out msg);
+                if (success)
+                {
+                    TempData["SuccessMsg"] = msg;
+                    return RedirectToAction("index");
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = msg;
+                }
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Application cannot be deleted at this time.";
+            }
+
+            return View(application);
         }
 
 
