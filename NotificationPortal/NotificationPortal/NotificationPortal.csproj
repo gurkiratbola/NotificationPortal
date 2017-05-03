@@ -195,7 +195,7 @@
       <DependentUpon>201705031805182_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Constant.cs" />
+    <Compile Include="Models\Key.cs" />
     <Compile Include="Models\ApplicationModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
