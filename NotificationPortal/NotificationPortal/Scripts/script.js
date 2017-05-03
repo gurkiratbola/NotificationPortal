@@ -23,4 +23,18 @@ $(document).ready(function ($) {
         $(".hidden-menu").toggle();
         return false;
     });
+
+    // for sidebar dropdown
+    $(".sidebar-dropdown").hide();
+    var sidebarVisible;
+    $(".sidebar-dropdown-button").click(function () {
+        //$(".sidebar-dropdown").slideToggle();
+        if (sidebarVisible) {
+            $(".sidebar-dropdown").hide();
+            sidebarVisible = false;
+        } else {
+            $(".sidebar-dropdown").show();
+            sidebarVisible = true;
+        }
+    })
 });
