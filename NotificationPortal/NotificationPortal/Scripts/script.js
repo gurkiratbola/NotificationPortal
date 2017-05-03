@@ -27,7 +27,7 @@ $(document).ready(function ($) {
     // for sidebar dropdown
     if (localStorage.getItem("isDropdownVisible") == null) {
         localStorage.setItem("isDropdownVisible", false);
-        $(".sidebar-dropdown").hide();
+        //$(".sidebar-dropdown").hide();
     }
     
     $(".sidebar-dropdown-button").click(function() {
@@ -35,7 +35,6 @@ $(document).ready(function ($) {
             localStorage.setItem("isDropdownVisible", true);
             $(".sidebar-dropdown").slideDown();
         } else {
-            localStorage.setItem("isDropdownVisible", false);
             $(".sidebar-dropdown").slideUp();
             localStorage.removeItem("isDropdownVisible");
         }

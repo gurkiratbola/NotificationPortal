@@ -115,6 +115,7 @@ li.dropdown.nav-item {
     margin: 0;
     padding: 0;
     background-color: #555;
+    display: none;
 }
 
 .sidebar-dropdown .nav-link {

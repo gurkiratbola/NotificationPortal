@@ -9,7 +9,7 @@
             <li class="nav-item">
                 <a href="@Url.Action("Index", "Manage")" class="nav-link">
                     <span class="hidden-lg-down" id="username">
-                        Hello, @Html.Raw(User.Identity.GetUserName())!
+                        Hello, @Html.Raw(Session["FullName"].ToString())!
                     </span>
                     <span class=" hidden-lg-up">
                         My Profile

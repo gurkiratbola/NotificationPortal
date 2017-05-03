@@ -97,7 +97,7 @@ namespace NotificationPortal.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(ClientDeleteVM client) {
+        public ActionResult Delete(ClientVM client) {
             string msg = "";
             if (ModelState.IsValid)
             {

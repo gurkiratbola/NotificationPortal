@@ -400,6 +400,8 @@ namespace NotificationPortal.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            //remove session for fullname
+            Session.Remove("FullName");
             return RedirectToAction("Index", "Home");
         }
 

@@ -77,11 +77,11 @@ namespace NotificationPortal.Repositories
             return client;
         }
 
-        public ClientDeleteVM GetDeleteClient(string referenceID)
+        public ClientVM GetDeleteClient(string referenceID)
         {
-            ClientDeleteVM client = _context.Client
+            ClientVM client = _context.Client
                             .Where(a => a.ReferenceID == referenceID)
-                            .Select(b => new ClientDeleteVM
+                            .Select(b => new ClientVM
                             {
                                 ClientName = b.ClientName,
                                 StatusID = b.StatusID,
