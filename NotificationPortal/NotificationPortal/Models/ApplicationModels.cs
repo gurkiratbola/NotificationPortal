@@ -77,8 +77,8 @@ namespace NotificationPortal.Models
         public string NotificationHeading { get; set; }
         public string NotificationDescription { get; set; }
         public DateTime SentDateTime { get; set; }
-        public DateTime StartDateTime { get; set; }
-        public DateTime EndDateTime { get; set; }
+        public DateTime? StartDateTime { get; set; }
+        public DateTime? EndDateTime { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
         public virtual LevelOfImpact LevelOfImpact { get; set; }
         public virtual NotificationType NotificationType { get; set; }
@@ -134,14 +134,25 @@ namespace NotificationPortal.Models
         public virtual ICollection<Application> Applications { get; set; }
         public virtual DataCenterLocation DataCenterLocation { get; set; }
         public virtual Status Status { get; set; }
+        public virtual ServerType ServerType { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
         [ForeignKey("Status")]
         public int StatusID { get; set; }
         [ForeignKey("DataCenterLocation")]
         public int LocationID { get; set; }
+        [ForeignKey("ServerType")]
+        public int ServerTypeID { get; set; }
         [StringLength(100)]
         [Index(IsUnique = true)]
         public string ReferenceID { get; set; }
+    }
+
+    public class ServerType
+    {
+        [Key]
+        public int ServerTypeID { get; set; }
+        public string ServerTypeName { get; set; }
+        public virtual ICollection<Server> Servers { get; set; }
     }
 
     public class Status

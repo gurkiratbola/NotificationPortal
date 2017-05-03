@@ -190,11 +190,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705022253159_init.cs" />
-    <Compile Include="Migrations\201705022253159_init.Designer.cs">
-      <DependentUpon>201705022253159_init.cs</DependentUpon>
+    <Compile Include="Migrations\201705031805182_init.cs" />
+    <Compile Include="Migrations\201705031805182_init.Designer.cs">
+      <DependentUpon>201705031805182_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Constant.cs" />
     <Compile Include="Models\ApplicationModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -340,6 +341,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\fonts\" />
+    <Folder Include="Service\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -351,8 +353,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705022253159_init.resx">
-      <DependentUpon>201705022253159_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705031805182_init.resx">
+      <DependentUpon>201705031805182_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -13,7 +13,7 @@ namespace NotificationPortal.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201705022253159_init"; }
+            get { return "201705031805182_init"; }
         }
         
         string IMigrationMetadata.Source

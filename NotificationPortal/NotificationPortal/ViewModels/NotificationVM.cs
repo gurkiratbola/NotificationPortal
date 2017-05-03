@@ -29,9 +29,9 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Sent Time")]
         public DateTime SentDateTime { get; set; }
         [Display(Name = "Start Time")]
-        public DateTime StartDateTime { get; set; }
+        public DateTime? StartDateTime { get; set; }
         [Display(Name = "End Time")]
-        public DateTime EndDateTime { get; set; }
+        public DateTime? EndDateTime { get; set; }
     }
 
     public class NotificationCreateVM
@@ -46,10 +46,10 @@ namespace NotificationPortal.ViewModels
         public string NotificationDescription { get; set; }
 
         [Required]
-        public DateTime StartDateTime { get; set; }
+        public DateTime? StartDateTime { get; set; }
 
         [Required]
-        public DateTime EndDateTime { get; set; }
+        public DateTime? EndDateTime { get; set; }
 
         [Required]
         public int LevelOfImpactID { get; set; }
@@ -102,9 +102,9 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Status")]
         public string Status { get; set; }
         [Display(Name = "Start Time")]
-        public DateTime StartDateTime { get; set; }
+        public DateTime? StartDateTime { get; set; }
         [Display(Name = "End Time")]
-        public DateTime EndDateTime { get; set; }
+        public DateTime? EndDateTime { get; set; }
         public IEnumerable<NotificationSpecificDetailVM> Thread { get; set; }
     }
     public class NotificationSpecificDetailVM
