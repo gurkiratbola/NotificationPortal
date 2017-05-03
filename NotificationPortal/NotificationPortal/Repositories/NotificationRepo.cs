@@ -11,89 +11,15 @@ namespace NotificationPortal.Repositories
 {
     public class NotificationRepo
     {
-        ApplicationDbContext db = new ApplicationDbContext();
-        public SelectList GetApplicaitonList()
-        {
-            IEnumerable<SelectListItem> appList = db.Application
-                    .Select(app => 
-                                new SelectListItem
-                                {
-                                    Value = app.ApplicationID.ToString(),
-                                    Text = app.ApplicationName
-                                });
-
-            return new SelectList(appList, "Value", "Text");
-        }
-
-        public SelectList GetServerList()
-        {
-            IEnumerable<SelectListItem> serverList = db.Server
-                    .Select(sv => new SelectListItem()
-                    {
-                        Value = sv.ServerID.ToString(),
-                        Text = sv.ServerName
-                    });
-
-            return new SelectList(serverList, "Value", "Text");
-        }
-
-        public SelectList GetTypeList()
-        {
-            IEnumerable<SelectListItem> typeList = db.NotificationType
-                    .Select(type => new SelectListItem()
-                    {
-                        Value = type.NotificationTypeID.ToString(),
-                        Text = type.NotificationTypeName
-                    });
-
-            return new SelectList(typeList, "Value", "Text");
-        }
-
-        public SelectList GetImpactLevelList()
-        {
-            IEnumerable<SelectListItem> impactList = db.LevelOfImpact
-                    .Select(impact => new SelectListItem()
-                    {
-                        Value = impact.LevelOfImpactID.ToString(),
-                        Text = impact.Level
-                    });
-
-            return new SelectList(impactList, "Value", "Text");
-        }
-
-        public SelectList GetNotificationSatusList()
-        {
-            int notificationStatusTypeID = db.StatusType.Where(t=>t.StatusTypeName=="Notification").FirstOrDefault().StatusTypeID;
-            IEnumerable<SelectListItem> statusList = db.Status
-                    .Where(a => a.StatusTypeID == notificationStatusTypeID)
-                    .Select(status => new SelectListItem()
-                    {
-                        Value = status.StatusID.ToString(),
-                        Text = status.StatusName
-                    });
-
-            return new SelectList(statusList, "Value", "Text");
-        }
-        
-        public SelectList GetSendMethodList()
-        {
-            IEnumerable<SelectListItem> sendMethodList = db.SendMethod
-                    .Select(sendMethod => new SelectListItem()
-                    {
-                        Value = sendMethod.SendMethodID.ToString(),
-                        Text = sendMethod.SendMethodName
-                    });
-
-            return new SelectList(sendMethodList, "Value", "Text");
-        }
+        ApplicationDbContext _context = new ApplicationDbContext();
+        SelectListRepo _slRepo = new SelectListRepo();
 
         public IEnumerable<NotificationIndexVM> GetAllNotifications()
         {
 
             try
             {
-                ApplicationDbContext db = new ApplicationDbContext();
-                return db.Notification.Select(
+                return _context.Notification.Select(
                     n=>new NotificationIndexVM(){
                         ThreadID = n.ThreadID,
                         Source = n.Servers.Count == 0 ? "Application":"Server",
@@ -123,12 +49,12 @@ namespace NotificationPortal.Repositories
                 model = new NotificationCreateVM();
             }
             model.ThreadID = Guid.NewGuid().ToString();
-            model.ApplicationList = GetApplicaitonList();
-            model.SendMethodList = GetSendMethodList();
-            model.ServerList = GetServerList();
-            model.NotificationTypeList = GetTypeList();
-            model.LevelOfImpactList = GetImpactLevelList();
-            model.StatusList = GetNotificationSatusList();
+            model.ApplicationList = _slRepo.GetApplicaitonList();
+            model.SendMethodList = _slRepo.GetSendMethodList();
+            model.ServerList = _slRepo.GetServerList();
+            model.NotificationTypeList = _slRepo.GetTypeList();
+            model.LevelOfImpactList = _slRepo.GetImpactLevelList();
+            model.StatusList = _slRepo.GetSatusList(Key.STATUS_TYPE_NOTIFICATION);
             return model;
         }
 
@@ -170,8 +96,8 @@ namespace NotificationPortal.Repositories
                     return false;
                 }
 
-                db.Notification.Add(newNotification);
-                db.SaveChanges();
+                _context.Notification.Add(newNotification);
+                _context.SaveChanges();
                 //TO DO: send the emails here, use levelOfImpactID here
 
                 msg = "Notification Sent";
@@ -186,7 +112,7 @@ namespace NotificationPortal.Repositories
         public NotificationDetailVM CreateDetailModel(string threadID)
         {
             IEnumerable<Notification> notifications =
-                db.Notification.Where(n => n.ThreadID == threadID)
+                _context.Notification.Where(n => n.ThreadID == threadID)
                 .OrderBy(n => n.SentDateTime);
 
             IEnumerable<NotificationSpecificDetailVM> thread =
@@ -218,7 +144,7 @@ namespace NotificationPortal.Repositories
         public NotificationCreateVM CreateUpdateModel(string threadID, NotificationCreateVM model = null)
         {
             var lastestNotification = 
-                db.Notification.Where(n => n.ThreadID == threadID)
+                _context.Notification.Where(n => n.ThreadID == threadID)
                 .OrderByDescending(n => n.SentDateTime).FirstOrDefault();
 
             if (model == null)
@@ -237,12 +163,12 @@ namespace NotificationPortal.Repositories
                 };
             }
             model.ThreadID = Guid.NewGuid().ToString();
-            model.ApplicationList = GetApplicaitonList();
-            model.SendMethodList = GetSendMethodList();
-            model.ServerList = GetServerList();
-            model.NotificationTypeList = GetTypeList();
-            model.LevelOfImpactList = GetImpactLevelList();
-            model.StatusList = GetNotificationSatusList();
+            model.ApplicationList = _slRepo.GetApplicaitonList();
+            model.SendMethodList = _slRepo.GetSendMethodList();
+            model.ServerList = _slRepo.GetServerList();
+            model.NotificationTypeList = _slRepo.GetTypeList();
+            model.LevelOfImpactList = _slRepo.GetImpactLevelList();
+            model.StatusList = _slRepo.GetSatusList(Key.STATUS_TYPE_NOTIFICATION);
             return model;
         }
     }

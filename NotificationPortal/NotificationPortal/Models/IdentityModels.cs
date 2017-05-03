@@ -68,6 +68,7 @@ namespace NotificationPortal.Models
         public DbSet<RoleDetail> RoleDetail { get; set; }
         public DbSet<SendMethod> SendMethod { get; set; }
         public DbSet<Server> Server { get; set; }
+        public DbSet<ServerType> ServerType { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<StatusType> StatusType { get; set; }
         public DbSet<UserDetail> UserDetail { get; set; }

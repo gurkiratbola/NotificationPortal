@@ -23,4 +23,21 @@ $(document).ready(function ($) {
         $(".hidden-menu").toggle();
         return false;
     });
+
+    // for sidebar dropdown
+    if (localStorage.getItem("isDropdownVisible") == null) {
+        localStorage.setItem("isDropdownVisible", false);
+        $(".sidebar-dropdown").hide();
+    }
+    
+    $(".sidebar-dropdown-button").click(function() {
+        if ($(".sidebar-dropdown").is(":hidden")){
+            localStorage.setItem("isDropdownVisible", true);
+            $(".sidebar-dropdown").slideDown();
+        } else {
+            localStorage.setItem("isDropdownVisible", false);
+            $(".sidebar-dropdown").slideUp();
+            localStorage.removeItem("isDropdownVisible");
+        }
+    })
 });

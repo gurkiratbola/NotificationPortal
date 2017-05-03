@@ -10,6 +10,10 @@ namespace NotificationPortal.Migrations
 
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
+        private string sampleClientEmail = "client@portal.com";
+        private string sampleApplicationName = "Notification Portal";
+        private string sampleServerName = "DNS Server";
+
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
@@ -26,6 +30,7 @@ namespace NotificationPortal.Migrations
             SeedDataCenterLocation(context);
             SeedGroups(context);
             SeedStatusType(context);
+            SeedServerType(context);
 
             SeedRoles(context);
             SeedRoleDetail(context);
@@ -39,7 +44,10 @@ namespace NotificationPortal.Migrations
 
         private void SeedSendMethod(ApplicationDbContext context)
         {
-            string[] notificationTypes = new string[] { "Email", "SMS" };
+            string[] notificationTypes = new string[] {
+                Key.SEND_METHOD_EMAIL,
+                Key.SEND_METHOD_SMS
+            };
             foreach (string type in notificationTypes)
             {
                 context.SendMethod.Add(
@@ -53,7 +61,10 @@ namespace NotificationPortal.Migrations
 
         private void SeedNotificationType(ApplicationDbContext context)
         {
-            string[] notificationTypes = new string[] { "Incident", "Maintenance" };
+            string[] notificationTypes = new string[] {
+                Key.NOTIFICATION_TYPE_INCIDENT,
+                Key.NOTIFICATION_TYPE_MAINTENANCE
+            };
             foreach (string type in notificationTypes)
             {
                 context.NotificationType.Add(
@@ -67,7 +78,13 @@ namespace NotificationPortal.Migrations
 
         private void SeedLevelOfImpact(ApplicationDbContext context)
         {
-            string[] levelsOfImpact = new string[] { "Impacting", "Non-Impacting", "Full service outage", "Loss of redundancy" };
+            string[] levelsOfImpact = new string[] {
+                Key.LEVEL_OF_IMPACT_IMPACTING,
+                Key.LEVEL_OF_IMPACT_NON_IMPACTING,
+                Key.LEVEL_OF_IMPACT_OUTAGE,
+                Key.LEVEL_OF_IMPACT_REDUNDANCY
+            };
+
             foreach (string level in levelsOfImpact)
             {
                 context.LevelOfImpact.Add(
@@ -81,7 +98,10 @@ namespace NotificationPortal.Migrations
 
         private void SeedDataCenterLocation(ApplicationDbContext context)
         {
-            string[] locations = new string[] { "Toronto", "Vancouver" };
+            string[] locations = new string[] {
+                Key.DATA_CENTER_LOCATION_TORONTO,
+                Key.DATA_CENTER_LOCATION_VANCOUVER
+            };
             foreach (string location in locations)
             {
                 context.DataCenterLocation.Add(
@@ -95,14 +115,19 @@ namespace NotificationPortal.Migrations
 
         private void SeedGroups(ApplicationDbContext context)
         {
-            string[] groups = new string[] { "Internal", "External" };
+            string[] groups = new string[] {
+                Key.GROUP_INTERNAL,
+                Key.GROUP_EXTERNAL
+            };
             foreach (string group in groups)
             {
                 context.Group.Add(
                     new Group()
                     {
                         GroupName = group,
-                        GroupDescription = group == "Internal" ? "Admin, Staff" : "Client, User"
+                        GroupDescription = group == Key.GROUP_INTERNAL ?
+                        Key.ROLE_ADMIN + "," + Key.ROLE_STAFF :
+                        Key.ROLE_CLIENT + "," + Key.ROLE_USER
                     });
             }
             context.SaveChanges();
@@ -112,7 +137,11 @@ namespace NotificationPortal.Migrations
         {
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             string[] roles = new string[] {
-                "Admin","Staff", "Client", "User"};
+                Key.ROLE_ADMIN,
+                Key.ROLE_STAFF,
+                Key.ROLE_CLIENT,
+                Key.ROLE_USER
+            };
             foreach (var role in roles)
             {
                 var iRole = new IdentityRole() { Name = role };
@@ -123,40 +152,40 @@ namespace NotificationPortal.Migrations
         private void SeedRoleDetail(ApplicationDbContext context)
         {
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            var adminRole = roleManager.FindByName("Admin");
-            var staffRole = roleManager.FindByName("Staff");
-            var clientRole = roleManager.FindByName("Client");
-            var userRole = roleManager.FindByName("User");
+            var adminRole = roleManager.FindByName(Key.ROLE_ADMIN);
+            var staffRole = roleManager.FindByName(Key.ROLE_STAFF);
+            var clientRole = roleManager.FindByName(Key.ROLE_CLIENT);
+            var userRole = roleManager.FindByName(Key.ROLE_USER);
             var groups = context.Group;
-            var internalGroup = groups.Where(g => g.GroupName == "Internal").FirstOrDefault();
-            var externalGroup = groups.Where(g => g.GroupName == "External").FirstOrDefault();
+            var internalGroup = groups.Where(g => g.GroupName == Key.GROUP_INTERNAL).FirstOrDefault();
+            var externalGroup = groups.Where(g => g.GroupName == Key.GROUP_EXTERNAL).FirstOrDefault();
 
             context.RoleDetail.Add(new RoleDetail()
             {
                 RoleID = adminRole.Id,
                 GroupID = internalGroup.GroupID,
-                RoleDescription = "Internal Administrator"
+                RoleDescription = Key.GROUP_INTERNAL + " " + Key.ROLE_ADMIN
             });
 
             context.RoleDetail.Add(new RoleDetail()
             {
                 RoleID = staffRole.Id,
                 GroupID = internalGroup.GroupID,
-                RoleDescription = "Internal Staff"
+                RoleDescription = Key.GROUP_INTERNAL + " " + Key.ROLE_STAFF
             });
 
             context.RoleDetail.Add(new RoleDetail()
             {
                 RoleID = clientRole.Id,
                 GroupID = externalGroup.GroupID,
-                RoleDescription = "External Client Administrator"
+                RoleDescription = Key.GROUP_EXTERNAL + " " + Key.ROLE_CLIENT
             });
 
             context.RoleDetail.Add(new RoleDetail()
             {
                 RoleID = userRole.Id,
                 GroupID = externalGroup.GroupID,
-                RoleDescription = "External User"
+                RoleDescription = Key.GROUP_EXTERNAL + " " + Key.ROLE_USER
             });
             context.SaveChanges();
         }
@@ -164,7 +193,12 @@ namespace NotificationPortal.Migrations
         private void SeedStatusType(ApplicationDbContext context)
         {
             string[] statusTypes = new string[] {
-                "Application","Client", "Notification", "Server", "User"};
+                Key.STATUS_TYPE_APPLICATION,
+                Key.STATUS_TYPE_CLIENT,
+                Key.STATUS_TYPE_NOTIFICATION,
+                Key.STATUS_TYPE_SERVER,
+                Key.STATUS_TYPE_USER
+            };
             foreach (string statusType in statusTypes)
             {
                 context.StatusType.Add(
@@ -176,50 +210,78 @@ namespace NotificationPortal.Migrations
             context.SaveChanges();
         }
 
+        private void SeedServerType(ApplicationDbContext context)
+        {
+            string[] serverTypes = new string[] {
+                Key.SERVER_TYPE_APPLICATION,
+                Key.SERVER_TYPE_DATABASE,
+                Key.SERVER_TYPE_DIRECTORY
+            };
+            foreach (string serverType in serverTypes)
+            {
+                context.ServerType.Add(
+                    new ServerType()
+                    {
+                        ServerTypeName = serverType
+                    });
+            }
+            context.SaveChanges();
+        }
+
         private void SeedStatus(ApplicationDbContext context)
         {
             // Application Status
-            var statusTypeApplication = context.StatusType.Where(s => s.StatusTypeName == "Application").FirstOrDefault();
-            var status = new Status() { StatusName = "Offline" };
+            var statusTypeApplication = context.StatusType
+                .Where(s => s.StatusTypeName == Key.STATUS_TYPE_APPLICATION)
+                .FirstOrDefault();
+            var status = new Status() { StatusName = Key.STATUS_APPLICATION_OFFLINE };
             status.StatusType = statusTypeApplication;
             context.Status.Add(status);
-            status = new Status() { StatusName = "Online" };
+            status = new Status() { StatusName = Key.STATUS_APPLICATION_ONLINE };
             status.StatusType = statusTypeApplication;
             context.Status.Add(status);
 
             // Client Satatus
-            var statusTypeClient = context.StatusType.Where(s => s.StatusTypeName == "Client").FirstOrDefault();
-            status = new Status() { StatusName = "Disabled" };
+            var statusTypeClient = context.StatusType
+                .Where(s => s.StatusTypeName == Key.STATUS_TYPE_CLIENT)
+                .FirstOrDefault();
+            status = new Status() { StatusName = Key.STATUS_CLIENT_DISABLED };
             status.StatusType = statusTypeClient;
             context.Status.Add(status);
-            status = new Status() { StatusName = "Enabled" };
+            status = new Status() { StatusName = Key.STATUS_CLIENT_ENABLED };
             status.StatusType = statusTypeClient;
             context.Status.Add(status);
 
             // Notification Satatus
-            var statusTypeNotification = context.StatusType.Where(s => s.StatusTypeName == "Notification").FirstOrDefault();
-            status = new Status() { StatusName = "Incomplete" };
+            var statusTypeNotification = context.StatusType
+                .Where(s => s.StatusTypeName == Key.STATUS_TYPE_NOTIFICATION)
+                .FirstOrDefault();
+            status = new Status() { StatusName = Key.STATUS_NOTIFICATION_INCOMPLETE };
             status.StatusType = statusTypeNotification;
             context.Status.Add(status);
-            status = new Status() { StatusName = "Complete" };
+            status = new Status() { StatusName = Key.STATUS_NOTIFICATION_COMPLETE };
             status.StatusType = statusTypeNotification;
             context.Status.Add(status);
 
             // Server Satatus
-            var statusTypeServer = context.StatusType.Where(s => s.StatusTypeName == "Server").FirstOrDefault();
-            status = new Status() { StatusName = "Offline" };
+            var statusTypeServer = context.StatusType
+                .Where(s => s.StatusTypeName == Key.STATUS_TYPE_SERVER)
+                .FirstOrDefault();
+            status = new Status() { StatusName = Key.STATUS_SERVER_OFFLINE };
             status.StatusType = statusTypeServer;
             context.Status.Add(status);
-            status = new Status() { StatusName = "Online" };
+            status = new Status() { StatusName = Key.STATUS_SERVER_ONLINE };
             status.StatusType = statusTypeServer;
             context.Status.Add(status);
 
             // User Satatus
-            var statusTypeUser = context.StatusType.Where(s => s.StatusTypeName == "User").FirstOrDefault();
-            status = new Status() { StatusName = "Disabled" };
+            var statusTypeUser = context.StatusType
+                .Where(s => s.StatusTypeName == Key.STATUS_TYPE_USER)
+                .FirstOrDefault();
+            status = new Status() { StatusName = Key.STATUS_USER_DISABLED };
             status.StatusType = statusTypeUser;
             context.Status.Add(status);
-            status = new Status() { StatusName = "Enabled" };
+            status = new Status() { StatusName = Key.STATUS_USER_ENABLED };
             status.StatusType = statusTypeUser;
             context.Status.Add(status);
 
@@ -228,7 +290,10 @@ namespace NotificationPortal.Migrations
 
         private void SeedClient(ApplicationDbContext context)
         {
-            var bcitStatus = context.Status.Where(s => s.StatusName == "Disabled").FirstOrDefault();
+            var bcitStatus = context.Status
+                .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_CLIENT
+                && s.StatusName == Key.STATUS_CLIENT_DISABLED)
+                .FirstOrDefault();
             var bcitClient = new Client()
             {
                 ClientName = "BCIT",
@@ -238,7 +303,10 @@ namespace NotificationPortal.Migrations
             context.Client.Add(bcitClient);
             context.SaveChanges();
 
-            var ubcStatus = context.Status.Where(s => s.StatusName == "Enabled").FirstOrDefault();
+            var ubcStatus = context.Status
+                .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_CLIENT
+                && s.StatusName == Key.STATUS_CLIENT_ENABLED)
+                .FirstOrDefault();
             var ubcClient = new Client()
             {
                 ClientName = "UBC",
@@ -256,10 +324,14 @@ namespace NotificationPortal.Migrations
             var clientID = context.Client.FirstOrDefault().ClientID;
 
             // Get user Statuses
-            var userStatusTypes = context.StatusType.Where(t => t.StatusTypeName == "User").FirstOrDefault();
-            var userStatuses = context.Status.Where(s => s.StatusTypeID == userStatusTypes.StatusTypeID);
-            var userEnabledStatus = userStatuses.Where(s => s.StatusName == "Enabled").FirstOrDefault();
-            var userDisabledStatus = userStatuses.Where(s => s.StatusName == "Disabled").FirstOrDefault();
+            var userEnabledStatus = context.Status
+                .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_USER
+                && s.StatusName == Key.STATUS_USER_ENABLED)
+                .FirstOrDefault();
+            var userDisabledStatus = context.Status
+                .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_USER
+                && s.StatusName == Key.STATUS_USER_DISABLED)
+                .FirstOrDefault();
 
             // Create a user on start
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
@@ -304,8 +376,8 @@ namespace NotificationPortal.Migrations
 
             var client = new ApplicationUser()
             {
-                UserName = "client@portal.com",
-                Email = "client@portal.com",
+                UserName = sampleClientEmail,
+                Email = sampleClientEmail,
                 EmailConfirmed = true,
             };
             client.UserDetail = new UserDetail()
@@ -346,28 +418,35 @@ namespace NotificationPortal.Migrations
             userManager.Create(client, "password");
             userManager.Create(user, "password");
 
-            userManager.AddToRoles(admin.Id, "Admin");
-            userManager.AddToRoles(staff.Id, "Staff");
-            userManager.AddToRoles(client.Id, "Client");
-            userManager.AddToRoles(user.Id, "User");
+            userManager.AddToRoles(admin.Id, Key.ROLE_ADMIN);
+            userManager.AddToRoles(staff.Id, Key.ROLE_STAFF);
+            userManager.AddToRoles(client.Id, Key.ROLE_CLIENT);
+            userManager.AddToRoles(user.Id, Key.ROLE_USER);
         }
 
         private void SeedServer(ApplicationDbContext context)
         {
             // get locationId
-            var location = context.DataCenterLocation.Where(l => l.Location == "Vancouver").FirstOrDefault();
+            var location = context.DataCenterLocation
+                .Where(l => l.Location == Key.DATA_CENTER_LOCATION_VANCOUVER)
+                .FirstOrDefault();
 
             // Get server Status
-            var serverStatusType = context.StatusType.Where(t => t.StatusTypeName == "Server").FirstOrDefault();
-            var serverStatuses = context.Status.Where(s => s.StatusTypeID == serverStatusType.StatusTypeID);
-            var serverOfflineStatus = serverStatuses.Where(s => s.StatusName == "Offline").FirstOrDefault();
+            var serverOfflineStatus = context.Status
+                .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_SERVER
+                && s.StatusName == Key.STATUS_SERVER_OFFLINE).FirstOrDefault();
 
+            // Get server types
+            var serverTypeApplication = context.ServerType
+                .Where(t => t.ServerTypeName == Key.SERVER_TYPE_APPLICATION)
+                .FirstOrDefault();
             var server = new Server()
             {
-                ServerName = "DNS Server",
-                Description = "Server for Domain Name System",
+                ServerName = sampleServerName,
+                Description = "Server for Applications",
                 LocationID = location.LocationID,
                 StatusID = serverOfflineStatus.StatusID,
+                ServerTypeID = serverTypeApplication.ServerTypeID,
                 ReferenceID = Guid.NewGuid().ToString()
             };
             context.Server.Add(server);
@@ -378,23 +457,23 @@ namespace NotificationPortal.Migrations
         {
             // Get client userDetail
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            var clientUser = userManager.FindByName("client@portal.com");
+            var clientUser = userManager.FindByName(sampleClientEmail);
             var clientUserDetail = context.UserDetail.Where(u => u.UserID == clientUser.Id);
 
             // Get first client id
             var clientID = context.Client.FirstOrDefault().ClientID;
 
             // Get app Status
-            var appStatusType = context.StatusType.Where(t => t.StatusTypeName == "Application").FirstOrDefault();
-            var appStatuses = context.Status.Where(s => s.StatusTypeID == appStatusType.StatusTypeID);
-            var appOfflineStatus = appStatuses.Where(s => s.StatusName == "Offline").FirstOrDefault();
+            var appOfflineStatus = context.Status
+                .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_APPLICATION
+                && s.StatusName == Key.STATUS_APPLICATION_OFFLINE).FirstOrDefault();
 
             // Get server
             var server = context.Server;
 
             var app = new Application()
             {
-                ApplicationName = "Notification Portal",
+                ApplicationName = sampleApplicationName,
                 Description = "Portal to manage all notifications",
                 URL = "http://notification-portal.com/",
                 ClientID = clientID,
@@ -410,31 +489,51 @@ namespace NotificationPortal.Migrations
         private void SeedNotification(ApplicationDbContext context)
         {
             // Get app
-            var apps = context.Application.Where(a => a.ApplicationName == "Notification Portal");
+            var apps = context.Application
+                .Where(a => a.ApplicationName == sampleApplicationName);
             // Get notification type
-            var notificationType = context.NotificationType.Where(t => t.NotificationTypeName == "Maintenance").FirstOrDefault();
+            var notificationTypeMaintenance = context.NotificationType
+                .Where(t => t.NotificationTypeName == Key.NOTIFICATION_TYPE_MAINTENANCE)
+                .FirstOrDefault();
+            var notificationTypeIncident = context.NotificationType
+                .Where(t => t.NotificationTypeName == Key.NOTIFICATION_TYPE_INCIDENT)
+                .FirstOrDefault();
             // Get levelOfImpact
-            var levelOfImpact = context.LevelOfImpact.Where(l => l.Level == "Non-Impacting").FirstOrDefault();
+            var levelOfImpactNonImpacting = context.LevelOfImpact
+                .Where(l => l.Level == Key.LEVEL_OF_IMPACT_NON_IMPACTING)
+                .FirstOrDefault();
+            var levelOfImpactImpacting = context.LevelOfImpact
+                .Where(l => l.Level == Key.LEVEL_OF_IMPACT_IMPACTING)
+                .FirstOrDefault();
             // Get server
-            var servers = context.Server.Where(s => s.ServerName == "DNS Server");
+            var servers = context.Server.Where(s => s.ServerName == sampleServerName);
             // Get server
-            var sendMethod = context.SendMethod.Where(s => s.SendMethodName == "Email").FirstOrDefault();
+            var sendMethod = context.SendMethod
+                .Where(s => s.SendMethodName == Key.SEND_METHOD_EMAIL)
+                .FirstOrDefault();
             // Get status
-            var statusType = context.StatusType.Where(t => t.StatusTypeName == "Notification").FirstOrDefault();
-            var statusIncomplete = context.Status.Where(s => s.StatusTypeID == statusType.StatusTypeID && s.StatusName == "Incomplete").FirstOrDefault();
-            var statusComplete = context.Status.Where(s => s.StatusTypeID == statusType.StatusTypeID && s.StatusName == "Complete").FirstOrDefault();
+            var statusIncomplete = context.Status
+                .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_NOTIFICATION
+                && s.StatusName == Key.STATUS_NOTIFICATION_INCOMPLETE)
+                .FirstOrDefault();
+            var statusComplete = context.Status
+                .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_NOTIFICATION
+                && s.StatusName == Key.STATUS_NOTIFICATION_COMPLETE)
+                .FirstOrDefault();
 
+            string sampleThread1 = Guid.NewGuid().ToString();
             var notification = new Notification()
             {
-                StartDateTime = DateTime.Now.AddMinutes(5),
-                EndDateTime = DateTime.Now.AddHours(1),
-                SentDateTime = DateTime.Now,
+                StartDateTime = DateTime.Now.AddHours(-1),
+                EndDateTime = DateTime.Now,
+                SentDateTime = DateTime.Now.AddHours(-2),
                 NotificationHeading = "Server offline",
                 NotificationDescription = "Server will be offline for maintenance",
-                NotificationTypeID = notificationType.NotificationTypeID,
-                LevelOfImpactID = levelOfImpact.LevelOfImpactID,
+                NotificationTypeID = notificationTypeMaintenance.NotificationTypeID,
+                LevelOfImpactID = levelOfImpactNonImpacting.LevelOfImpactID,
                 SendMethodID = sendMethod.SendMethodID,
                 StatusID = statusIncomplete.StatusID,
+                ThreadID = sampleThread1,
                 ReferenceID = Guid.NewGuid().ToString()
             };
             notification.Servers = servers.ToList();
@@ -442,17 +541,34 @@ namespace NotificationPortal.Migrations
 
             notification = new Notification()
             {
-                StartDateTime = DateTime.Now.AddMinutes(5),
-                EndDateTime = DateTime.Now.AddHours(1),
-                SentDateTime = DateTime.Now.AddHours(1),
+                StartDateTime = DateTime.Now.AddHours(-1),
+                EndDateTime = DateTime.Now,
+                SentDateTime = DateTime.Now,
                 NotificationHeading = "Server back online",
                 NotificationDescription = "Maintenance complete",
-                NotificationTypeID = notificationType.NotificationTypeID,
-                LevelOfImpactID = levelOfImpact.LevelOfImpactID,
+                NotificationTypeID = notificationTypeMaintenance.NotificationTypeID,
+                LevelOfImpactID = levelOfImpactNonImpacting.LevelOfImpactID,
                 SendMethodID = sendMethod.SendMethodID,
                 StatusID = statusComplete.StatusID,
+                ThreadID = sampleThread1,
                 ReferenceID = Guid.NewGuid().ToString()
             };
+            notification.Servers = servers.ToList();
+            context.Notification.Add(notification);
+
+            notification = new Notification()
+            {
+                SentDateTime = DateTime.Now,
+                NotificationHeading = "Crashed Application",
+                NotificationDescription = "Application has crashed",
+                NotificationTypeID = notificationTypeIncident.NotificationTypeID,
+                LevelOfImpactID = levelOfImpactImpacting.LevelOfImpactID,
+                SendMethodID = sendMethod.SendMethodID,
+                StatusID = statusIncomplete.StatusID,
+                ThreadID = Guid.NewGuid().ToString(),
+                ReferenceID = Guid.NewGuid().ToString()
+            };
+            notification.Applications = apps.ToList();
             notification.Servers = servers.ToList();
             context.Notification.Add(notification);
 

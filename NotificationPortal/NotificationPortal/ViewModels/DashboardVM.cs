@@ -58,11 +58,11 @@ namespace NotificationPortal.ViewModels
 
         [Required]
         [Display(Name = "Start Time")]
-        public DateTime StartDateTime { get; set; }
+        public DateTime? StartDateTime { get; set; }
 
         [Required]
         [Display(Name = "End Time")]
-        public DateTime EndDateTime { get; set; }
+        public DateTime? EndDateTime { get; set; }
 
         public IEnumerable<SelectListItem> ApplicationList { get; set; }
 

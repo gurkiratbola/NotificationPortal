@@ -81,6 +81,11 @@ textarea {
 }
 
 /* ------------- style for dropdown-------------*/
+li.dropdown.nav-item {
+    color: white;
+}
+
+
 .dropdown-menu .nav-link {
     color: black !important;
 }
@@ -90,5 +95,28 @@ textarea {
     cursor: pointer;
 }
 .dropdown-menu {
-    left: -50px;
+    margin: 0;
+    border-radius: none;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.sidebar-dropdown-button {
+    color: white;
+    background-color: #292b2c;
+    width: 100%;
+    box-shadow: none;
+    border: none;
+    text-align: left;
+    padding: 0.5em 1em;
+    cursor: pointer;
+}
+.sidebar-dropdown {
+    margin: 0;
+    padding: 0;
+    background-color: #555;
+}
+
+.sidebar-dropdown .nav-link {
+    border-bottom: 1px solid grey;
 }
