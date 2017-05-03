@@ -16,22 +16,16 @@ namespace NotificationPortal.Repositories
 
         public IEnumerable<NotificationIndexVM> GetAllNotifications()
         {
-
             try
             {
                 return _context.Notification.Select(
                     n=>new NotificationIndexVM(){
                         ThreadID = n.ThreadID,
-                        Source = n.Servers.Count == 0 ? "Application":"Server",
-                        // TODO
-                        // ApplicationServerName = n.Server.ServerName == null ? n.Application.ApplicationName:n.Server.ServerName,
+                        ReferenceID = n.ReferenceID,
                         NotificationType = n.NotificationType.NotificationTypeName,
                         LevelOfImpact = n.LevelOfImpact.Level,
                         NotificationHeading = n.NotificationHeading,
-                        Status = n.Status.StatusName,
-                        SentDateTime = n.SentDateTime,
-                        StartDateTime = n.StartDateTime,
-                        EndDateTime = n.EndDateTime
+                        Status = n.Status.StatusName
                     }
                 );
             }
@@ -39,7 +33,6 @@ namespace NotificationPortal.Repositories
             {
                 return null;
             }
-
         }
 
         public NotificationCreateVM CreateAddModel(NotificationCreateVM model = null)
@@ -47,14 +40,14 @@ namespace NotificationPortal.Repositories
             if (model == null)
             {
                 model = new NotificationCreateVM();
+                model.ThreadID = Guid.NewGuid().ToString();
             }
-            model.ThreadID = Guid.NewGuid().ToString();
             model.ApplicationList = _slRepo.GetApplicaitonList();
             model.SendMethodList = _slRepo.GetSendMethodList();
             model.ServerList = _slRepo.GetServerList();
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
-            model.StatusList = _slRepo.GetSatusList(Key.STATUS_TYPE_NOTIFICATION);
+            model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
             return model;
         }
 
@@ -162,13 +155,7 @@ namespace NotificationPortal.Repositories
                     NotificationHeading = lastestNotification.NotificationHeading
                 };
             }
-            model.ThreadID = Guid.NewGuid().ToString();
-            model.ApplicationList = _slRepo.GetApplicaitonList();
-            model.SendMethodList = _slRepo.GetSendMethodList();
-            model.ServerList = _slRepo.GetServerList();
-            model.NotificationTypeList = _slRepo.GetTypeList();
-            model.LevelOfImpactList = _slRepo.GetImpactLevelList();
-            model.StatusList = _slRepo.GetSatusList(Key.STATUS_TYPE_NOTIFICATION);
+            model = CreateAddModel(model);
             return model;
         }
     }

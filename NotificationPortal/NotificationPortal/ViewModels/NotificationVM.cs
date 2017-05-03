@@ -13,10 +13,8 @@ namespace NotificationPortal.ViewModels
     {
         public string ThreadID { get; set; }
 
-        [Display(Name = "Source")]
-        public string Source { get; set; }
-        [Display(Name = "Application/Server")]
-        public string ApplicationServerName { get; set; }
+        [Display(Name = "Reference ID")]
+        public string ReferenceID { get; set; }
         [Display(Name = "Type")]
         public string NotificationType { get; set; }
         [Display(Name = "Level of Impact")]
@@ -25,13 +23,6 @@ namespace NotificationPortal.ViewModels
         public string NotificationHeading { get; set; }
         [Display(Name = "Status")]
         public string Status { get; set; }
-
-        [Display(Name = "Sent Time")]
-        public DateTime SentDateTime { get; set; }
-        [Display(Name = "Start Time")]
-        public DateTime? StartDateTime { get; set; }
-        [Display(Name = "End Time")]
-        public DateTime? EndDateTime { get; set; }
     }
 
     public class NotificationCreateVM
