@@ -564,7 +564,7 @@ namespace NotificationPortal.Migrations
                 NotificationTypeID = notificationTypeIncident.NotificationTypeID,
                 LevelOfImpactID = levelOfImpactImpacting.LevelOfImpactID,
                 SendMethodID = sendMethod.SendMethodID,
-                StatusID = statusComplete.StatusID,
+                StatusID = statusIncomplete.StatusID,
                 ThreadID = Guid.NewGuid().ToString(),
                 ReferenceID = Guid.NewGuid().ToString()
             };
