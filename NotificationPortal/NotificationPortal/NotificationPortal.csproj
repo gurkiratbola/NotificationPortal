@@ -208,6 +208,7 @@
     <Compile Include="Repositories\ClientRepo.cs" />
     <Compile Include="Repositories\DashboardRepo.cs" />
     <Compile Include="Repositories\IInterfaceRepo.cs" />
+    <Compile Include="Repositories\SelectListRepo.cs" />
     <Compile Include="Repositories\NotificationRepo.cs" />
     <Compile Include="Repositories\ServerRepo.cs" />
     <Compile Include="Repositories\StatusRepo.cs" />
