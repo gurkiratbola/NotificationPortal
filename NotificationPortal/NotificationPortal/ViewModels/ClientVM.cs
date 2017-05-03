@@ -8,6 +8,21 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.ViewModels
 {
+    public class ClientCreateVM
+    {
+        [Required]
+        [DisplayName("Client Name")]
+        public string ClientName { get; set; }
+
+        [Required]
+        public int StatusID { get; set; }
+
+        [DisplayName("Status Name")]
+        public string StatusName { get; set; }
+
+        public SelectList StatusList { get; set; }
+    }
+
     public class ClientVM
     {
         [Required]

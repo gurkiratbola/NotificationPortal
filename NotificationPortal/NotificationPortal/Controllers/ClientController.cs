@@ -10,10 +10,11 @@ using static NotificationPortal.ViewModels.ValidationVM;
 
 namespace NotificationPortal.Controllers
 {
-    [Authorize(Roles="Admin, Staff")]
+    [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
     public class ClientController : Controller
     {
         private readonly ClientRepo _cRepo = new ClientRepo();
+        private readonly SelectListRepo _sRepo = new SelectListRepo();
 
         [HttpGet]
         public ActionResult Index()
@@ -25,17 +26,16 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            // To be modified: global method for status in development
-            var model = new ClientVM
+            var model = new ClientCreateVM
             {
-                StatusList = _cRepo.GetStatusList()
+                StatusList = _sRepo.GetStatusList(Key.ROLE_CLIENT)
             };
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ClientVM model)
+        public ActionResult Create(ClientCreateVM model)
         {
             string msg = "";
             if (ModelState.IsValid)
@@ -60,8 +60,7 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Edit(string id) {
             ClientVM client = _cRepo.GetClient(id);
-            // To be modified: global method for status in development
-            ViewBag.StatusNames = _cRepo.GetStatusList();
+            ViewBag.StatusNames = _sRepo.GetStatusList(Key.ROLE_CLIENT);
             return View(client);
         }
 

@@ -80,26 +80,7 @@ textarea {
     outline: 1px solid grey;
 }
 
-/* ------------- style for dropdown-------------*/
-li.dropdown.nav-item {
-    color: white;
-}
-
-
-.dropdown-menu .nav-link {
-    color: black !important;
-}
-
-.dropdown i {
-    font-size: 1.2em;
-    cursor: pointer;
-}
-.dropdown-menu {
-    margin: 0;
-    border-radius: none;
-    padding-top: 0;
-    padding-bottom: 0;
-}
+/* ------------- style for sidebar dropdown -------------*/
 
 .sidebar-dropdown-button {
     color: white;
@@ -121,3 +102,40 @@ li.dropdown.nav-item {
 .sidebar-dropdown .nav-link {
     border-bottom: 1px solid grey;
 }
+
+
+/* ------------- style for top nav hover dropdown -------------*/
+.drop-btn {
+    border: none;
+    cursor: pointer;
+}
+
+.hover-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.hover-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.hover-dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.hover-dropdown-content a:hover {
+    background-color: #f1f1f1
+}
+
+.hover-dropdown:hover .hover-dropdown-content {
+    display: block;
+}
+

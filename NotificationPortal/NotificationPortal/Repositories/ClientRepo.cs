@@ -38,7 +38,7 @@ namespace NotificationPortal.Repositories
             return new SelectList(statusList, "Value", "Text");
         }
 
-        public bool AddClient(ClientVM client, out string msg)
+        public bool AddClient(ClientCreateVM client, out string msg)
         {
             Client c = _context.Client.Where(a => a.ClientName == client.ClientName)
                             .FirstOrDefault();

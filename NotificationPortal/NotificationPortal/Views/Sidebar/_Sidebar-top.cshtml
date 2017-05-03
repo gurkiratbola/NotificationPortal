@@ -29,7 +29,7 @@
                             <ul class="sidebar-dropdown" >
                                 @if (HttpContext.Current.User.IsInRole("Client"))
                                 {
-                                    <li>@Html.ActionLink("User Management", "Index", "User", null, new { @class = "nav-link" })</li>
+                                    <li>@Html.ActionLink("User Control", "Index", "User", null, new { @class = "nav-link" })</li>
                                 }
                                 else
                                 {
