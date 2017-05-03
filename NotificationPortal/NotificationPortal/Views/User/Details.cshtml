@@ -9,6 +9,7 @@
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
     <li class="breadcrumb-item"><a href="~/User/Index">User Management</a></li>
+    <li class="breadcrumb-item active">@ViewBag.Title</li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.FirstName)</li>
 </ol>
 
@@ -72,5 +73,5 @@
     </dl>
 
     @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-success" })
-    @Html.ActionLink("Go Back", "Index", null, new { @class = "btn btn-danger" })
+    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
 </div>

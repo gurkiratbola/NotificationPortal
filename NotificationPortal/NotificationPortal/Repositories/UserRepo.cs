@@ -30,10 +30,10 @@ namespace NotificationPortal.Repositories
         public IEnumerable<SelectListItem> GetClientList()
         {
             List<SelectListItem> clientList = _context.Client.Select(app => new SelectListItem
-                                                     {
-                                                         Value = app.ClientID.ToString(),
-                                                         Text = app.ClientName
-                                                     }).ToList();
+            {
+                Value = app.ClientID.ToString(),
+                Text = app.ClientName
+            }).ToList();
 
             clientList.Add(new SelectListItem { Value = "-1", Text = "" });
             //clientList.OrderByDescending(x => x.Value);
@@ -176,43 +176,58 @@ namespace NotificationPortal.Repositories
             }
         }
 
-        public void DeleteUser(string id, int? clientId, out string msg)
+        public UserDeleteVM GetDeleteUser(string referenceId)
         {
-            Client clientToBeDeleted = _context.Client.FirstOrDefault(c => c.ClientID == clientId);
-            Application clientApplication = _context.Application.FirstOrDefault(a => a.ClientID == clientId);
+            UserDeleteVM userToBeDeleted = _context.UserDetail.Where(u => u.ReferenceID == referenceId)
+                                           .Select(user => new UserDeleteVM()
+                                           {
+                                               ReferenceID = user.ReferenceID,
+                                               ClientName = user.Client.ClientName
+                                           }).FirstOrDefault();
 
-            UserDetail userToBeDeleted = _context.UserDetail.FirstOrDefault(u => u.UserID == id);
-            ApplicationUser appUserTobeDeleted = _context.Users.FirstOrDefault(u => u.Id == id);
+            return userToBeDeleted;
+        }
+
+        public bool DeleteUser(string referenceId, out string msg)
+        {
+            UserDetail userToBeDeleted = _context.UserDetail.FirstOrDefault(u => u.ReferenceID == referenceId);
+
+            var appUserTobeDeleted = _context.Users.FirstOrDefault(u => u.Id == userToBeDeleted.UserID);
+
+            Client clientToBeDeleted = _context.Client.FirstOrDefault(c => c.ReferenceID == referenceId);
+            Application clientApplication = _context.Application.FirstOrDefault(a => a.ReferenceID == referenceId);
+
+            if (userToBeDeleted == null && appUserTobeDeleted == null && clientToBeDeleted == null)
+            {
+                msg = "User cannot be deleted.";
+
+                return false;
+            }
 
             if (clientApplication != null)
             {
                 msg = "User associated with application(s), cannot be deleted.";
+
+                return false;
             }
-            else
+
+            try
             {
-                if (clientToBeDeleted != null)
-                {
-                    msg = "User deleted successfully!";
+                _context.UserDetail.Remove(userToBeDeleted);
+                _context.SaveChanges();
 
-                    if (userToBeDeleted != null)
-                    {
-                        _context.UserDetail.Remove(userToBeDeleted);
-                        _context.SaveChanges();
+                _context.Users.Remove(appUserTobeDeleted);
+                _context.SaveChanges();
 
-                        msg = "User deleted successfully!";
+                msg = "User deleted successfully!";
 
-                        if (appUserTobeDeleted != null)
-                        {
-                            _context.Users.Remove(appUserTobeDeleted);
-                            _context.SaveChanges();
-                            msg = "User deleted successfully!";
-                        }
-                    }
-                }
-                else
-                {
-                    msg = "Failed to delete user.";
-                }
+                return true;
+            }
+            catch
+            {
+                msg = "Failed to delete user.";
+
+                return false;
             }
         }
     }
