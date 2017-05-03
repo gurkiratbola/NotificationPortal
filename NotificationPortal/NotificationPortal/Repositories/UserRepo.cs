@@ -12,11 +12,12 @@ namespace NotificationPortal.Repositories
 {
     public class UserRepo
     {
+        const string APP_STATUS_TYPE_NAME = "User";
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
         public IEnumerable<SelectListItem> GetStatusList()
         {
-            IEnumerable<SelectListItem> statusList = _context.Status.Where(s => s.StatusType.StatusTypeName == "User")
+            IEnumerable<SelectListItem> statusList = _context.Status.Where(s => s.StatusType.StatusTypeName == APP_STATUS_TYPE_NAME)
                                                      .Select(app => new SelectListItem
                                                      {
                                                          Value = app.StatusID.ToString(),
@@ -35,43 +36,48 @@ namespace NotificationPortal.Repositories
                                                      }).ToList();
 
             clientList.Add(new SelectListItem { Value = "-1", Text = "" });
-            //clientList.OrderBy();
+            //clientList.OrderByDescending(x => x.Value);
 
             return new SelectList(clientList, "Value", "Text");
         }
 
         public IEnumerable<UserVM> GetAllUsers()
         {
-            IEnumerable<UserVM> users = _context.UserDetail.Where(u => u.Status.StatusID == u.StatusID)
-                                        .Select(user => new UserVM()
-                                        {
-                                            UserID = user.UserID,
-                                            FirstName = user.FirstName,
-                                            LastName = user.LastName,
-                                            BusinessTitle = user.BusinessTitle,
-                                            BusinessPhone = user.BusinessPhone,
-                                            MobilePhone = user.MobilePhone,
-                                            HomePhone = user.HomePhone,
-                                            ClientID = user.ClientID,
-                                            ClientName = user.Client.ClientName,
-                                            StatusID = user.Status.StatusID,
-                                            StatusName = user.Status.StatusName
-                                        });
-
-            return users;
+            try
+            {
+                return _context.UserDetail.Where(u => u.Status.StatusID == u.StatusID)
+                       .Select(user => new UserVM()
+                       {
+                           ReferenceID = user.ReferenceID,
+                           FirstName = user.FirstName,
+                           LastName = user.LastName,
+                           BusinessTitle = user.BusinessTitle,
+                           BusinessPhone = user.BusinessPhone,
+                           MobilePhone = user.MobilePhone,
+                           HomePhone = user.HomePhone,
+                           ClientID = user.ClientID,
+                           ClientName = user.Client.ClientName,
+                           StatusID = user.Status.StatusID,
+                           StatusName = user.Status.StatusName
+                       }).OrderByDescending(s => s.StatusID);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public UserVM GetUserDetails(string id)
         {
-            if (!_context.UserDetail.Any(o => o.UserID == id))
+            if (!_context.UserDetail.Any(o => o.ReferenceID == id))
             {
                 throw new HttpException(404, "Page Not Found");
             }
 
-            var details = _context.UserDetail.Where(u => u.UserID == id)
+            var details = _context.UserDetail.Where(u => u.ReferenceID == id)
                           .Select(user => new UserVM()
                           {
-                              UserID = user.UserID,
+                              ReferenceID = user.ReferenceID,
                               FirstName = user.FirstName,
                               LastName = user.LastName,
                               BusinessTitle = user.BusinessTitle,
@@ -107,6 +113,7 @@ namespace NotificationPortal.Repositories
                     UserDetail details = new UserDetail()
                     {
                         UserID = user.Id,
+                        ReferenceID = Guid.NewGuid().ToString(),
                         BusinessTitle = model.BusinessTitle,
                         FirstName = model.FirstName,
                         LastName = model.LastName,
@@ -138,7 +145,7 @@ namespace NotificationPortal.Repositories
         {
             try
             {
-                UserDetail user = _context.UserDetail.FirstOrDefault(u => u.UserID == model.UserID);
+                UserDetail user = _context.UserDetail.FirstOrDefault(u => u.ReferenceID == model.ReferenceID);
 
                 if (user != null)
                 {

@@ -12,6 +12,9 @@ namespace NotificationPortal.ViewModels
         public string UserID { get; set; }
 
         [Required]
+        public string ReferenceID { get; set; }
+
+        [Required]
         public int? ClientID { get; set; }
 
         [Required]
@@ -57,6 +60,9 @@ namespace NotificationPortal.ViewModels
     public class AddUserVM
     {
         public string UserID { get; set; }
+
+        [Required]
+        public string ReferenceID { get; set; }
 
         [Required]
         public int StatusID { get; set; }
