@@ -26,9 +26,12 @@
         </div>
     </div>
 
-    <p class="text-success">
-        @Html.Raw(TempData["SuccessMsg"])
-    </p>
+    @if (TempData["SuccessMsg"] != null)
+    {
+        <p class="alert alert-success">
+            @Html.Raw(TempData["SuccessMsg"])
+        </p>
+    }
 
     <table class="table table-bordered" style="position:relative;">
         <tr class="bg-inverse text-white text-center">
@@ -42,7 +45,7 @@
 
         @foreach (var item in Model)
         {
-            <tr class="text-center clickable-row" id="@item.ClientID" data-href="/Details/@item.ClientID">
+            <tr class="text-center clickable-row" id="@item.ReferenceID" data-href="/Details/@item.ReferenceID">
                 <td>
                     @Html.DisplayFor(modelItem => item.ClientName)
                 </td>

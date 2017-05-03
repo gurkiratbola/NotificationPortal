@@ -10,7 +10,8 @@ namespace NotificationPortal.ViewModels
 {
     public class ClientVM
     {
-        public int ClientID { get; set; }
+        [Required]
+        public string ReferenceID { get; set; }
 
         [Required]
         [DisplayName("Client Name")]
@@ -23,6 +24,22 @@ namespace NotificationPortal.ViewModels
         public string StatusName { get; set; }
 
         public SelectList StatusList { get; set; }
+    }
+
+    public class ClientDeleteVM
+    {
+        [Required]
+        public string ReferenceID { get; set; }
+
+        [Required]
+        [DisplayName("Client Name")]
+        public string ClientName { get; set; }
+
+        [Required]
+        public int StatusID { get; set; }
+
+        [DisplayName("Status Name")]
+        public string StatusName { get; set; }
     }
 
 }

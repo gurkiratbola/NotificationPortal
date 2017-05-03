@@ -12,15 +12,19 @@
     <li class="breadcrumb-item active">Create Client</li>
 </ol>
 
-<p class="text-danger">
-    @Html.Raw(TempData["ErrorMsg"])
-</p>
+
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger offset-md-3 col-md-6 offset-md-3" })
+        @if (TempData["ErrorMsg"] != null)
+        {
+            <p class="alert alert-danger offset-md-3 col-md-6 offset-md-3">
+                @Html.Raw(TempData["ErrorMsg"])
+            </p>
+        }
 
         <div class="form-group">
             @Html.LabelFor(model => model.ClientName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })

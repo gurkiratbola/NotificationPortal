@@ -13,27 +13,23 @@ namespace NotificationPortal.Repositories
 
         public IEnumerable<DashboardVM> GetDashBoard()
         {
-            IEnumerable<DashboardVM> dashboard = from app in _context.Application
-                                                 from notif in _context.Notification
-                                                 where app.ApplicationID == notif.ApplicationID
+            IEnumerable<DashboardVM> dashboard = from notif in _context.Notification
                                                  select new DashboardVM()
                                                  {
-                                                     ApplicationID = app.ApplicationID,
-                                                     ApplicationName = app.ApplicationName,
+                                                     //ApplicationID = app.ApplicationID,
+                                                     //ApplicationName = notif.Applications.ToString(),
                                                      NotificationID = notif.NotificationID,
                                                      NotificationTypeName = notif.NotificationType.NotificationTypeName,
                                                      NotificationHeading = notif.NotificationHeading,
                                                      ThreadID = notif.ThreadID,
                                                      ReferenceID = notif.ReferenceID,
-                                                     StatusID = app.Status.StatusID,
-                                                     StatusName = app.Status.StatusName,
-                                                     ClientID = app.Client.ClientID,
-                                                     ClientName = app.Client.ClientName,
-                                                     ServerID = notif.Server.ServerID,
-                                                     ServerName = notif.Server.ServerName,
+                                                     StatusID = notif.Status.StatusID,
+                                                     StatusName = notif.Status.StatusName,
+                                                     //ServerID = notif.Server.ServerID,
+                                                     //ServerName = notif.Servers.Tostring(),
                                                      LevelOfImpactID = notif.LevelOfImpact.LevelOfImpactID,
                                                      LevelOfImpactName = notif.LevelOfImpact.Level,
-                                                     URL = app.URL,
+                                                     //URL = app.URL,
                                                      StartDateTime = notif.StartDateTime,
                                                      EndDateTime = notif.EndDateTime
                                                  };
