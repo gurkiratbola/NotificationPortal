@@ -9,6 +9,9 @@ $(document).ready(function ($) {
     $(".clickable-row").click(function () {
         window.location = domain + $(this).data("href");
     });
+    $(".clickable-row-dashboard").click(function () {
+        window.location = window.location.origin + $(this).data("href");
+    });
     $('*').click(function (e) {
         if (e.target.className != 'clickable-row') {
             $(".hidden-menu").hide();

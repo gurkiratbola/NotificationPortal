@@ -62,7 +62,6 @@ namespace NotificationPortal.ViewModels
     {
         public string UserID { get; set; }
 
-        [Required]
         public string ReferenceID { get; set; }
 
         [Required]

@@ -27,52 +27,62 @@
         </div>
     </div>
 
-    <p class="text-success">@TempData["SuccessMsg"]</p>
-    <p class="text-danger">@TempData["ErrorMsg"]</p>
-
-    <table class="table table-bordered">
-        <tr class="bg-inverse text-white text-center">
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.ClientName)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.BusinessTitle)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.StatusName)
-            </th>
-        </tr>
-
-        @foreach (var item in Model)
+    @{  if (Model.Count() > 0)
         {
-            <tr class="text-center clickable-row" id="@item.ReferenceID" data-href="/Details/@item.ReferenceID">
-                <td>
-                    @Html.DisplayFor(modelItem => item.ClientName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BusinessTitle)
-                </td>
-                @{
-                    var className = item.StatusName == "Disabled" ? "badge badge-danger" : "badge badge-success";
+            if (TempData["SuccessMsg"] != null)
+            {
+                <p class="alert alert-success">@TempData["SuccessMsg"]</p>
+            }
+
+            <table class="table table-bordered">
+                <tr class="bg-inverse text-white text-center">
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.ClientName)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.BusinessTitle)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.StatusName)
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr class="text-center clickable-row" id="@item.ReferenceID" data-href="/Details/@item.ReferenceID">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClientName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BusinessTitle)
+                        </td>
+                        @{
+                            var className = item.StatusName == "Disabled" ? "badge badge-danger" : "badge badge-success";
+                        }
+                        <td>
+                            <span class="@className">@Html.DisplayFor(modelItem => item.StatusName)</span>
+                        </td>
+                    </tr>
                 }
-                <td>
-                    <span class="@className">@Html.DisplayFor(modelItem => item.StatusName)</span>
-                </td>
-            </tr>
+            </table>                     
         }
-    </table>
+        else
+        {
+            <p>There are no users at the moment.</p>
+        }
+    }
 </div>
 
 <div class="hidden-menu">

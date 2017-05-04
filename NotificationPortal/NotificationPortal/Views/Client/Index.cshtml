@@ -1,4 +1,7 @@
-﻿@model IEnumerable<NotificationPortal.ViewModels.ClientVM>
+﻿@model PagedList.IPagedList<NotificationPortal.ViewModels.ClientVM>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Clients";
@@ -7,17 +10,19 @@
 <h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
 
 <ol class="breadcrumb bg-faded">
-    <li class="breadcrumb-item"><a href="~/Home/Dashboard" class="link-color">Home</a></li>
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
 
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <form class="form-inline pb-3" method="get" action="~/User/Search">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" name="name" />
+            @using (Html.BeginForm("Index", "Client", FormMethod.Get, new { @class = "form-inline pb-3" }))
+            {
+                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control mr-sm-2" })
                 <input class="btn btn-secondary" type="submit" value="Search" />
-            </form>
+            }
+
         </div>
         <div class="offset-md-4 col-md-2">
             <div class="float-create">
@@ -37,10 +42,10 @@
         <table class="table table-bordered" style="position:relative;">
             <tr class="bg-inverse text-white text-center">
                 <th class="text-center">
-                    @Html.DisplayNameFor(model => model.ClientName)
+                    @Html.ActionLink("Client Name", "Index", new { sortOrder = ViewBag.ClientNameSort, currentFilter = ViewBag.CurrentFilter })
                 </th>
                 <th class="text-center">
-                    @Html.DisplayNameFor(model => model.StatusName)
+                    @Html.ActionLink("Current Status", "Index", new { sortOrder = ViewBag.StatusNameSort, currentFilter = ViewBag.CurrentFilter })
                 </th>
             </tr>
 
@@ -56,10 +61,21 @@
                 </tr>
             }
         </table>
+
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+            new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
     }
     else
     {
-        <p> There are no clients at the moment.</p>
+        if (Model == null)
+        {
+            <p> Something went wrong, client database not available.</p>
+        }
+        else
+        {
+            <p> There are no such clients in the database at the moment.</p>
+        }
+
     }
 </div>
 

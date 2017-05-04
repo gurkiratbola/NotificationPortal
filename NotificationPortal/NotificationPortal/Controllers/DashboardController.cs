@@ -22,8 +22,10 @@ namespace NotificationPortal.Controllers
             string name = User.Identity.Name;
             UserDetail user = _context.UserDetail
                     .Where(u => u.User.UserName == name).FirstOrDefault();
-            string userFullName = user.FirstName + " " + user.LastName;
-            Session["FullName"] = userFullName;
+            if (user != null) {
+                string userFullName = user.FirstName + " " + user.LastName;
+                Session["FullName"] = userFullName;
+            }
             return View(dashboard);
         }
     }

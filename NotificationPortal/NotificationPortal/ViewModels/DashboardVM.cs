@@ -10,13 +10,15 @@ namespace NotificationPortal.ViewModels
     public class DashboardVM
     {
         [Required]
+        public string ThreadID { get; set; }
+
         public int ApplicationID { get; set; }
 
         public int NotificationID { get; set; }
 
-        public string ThreadID { get; set; }
-
         public string ReferenceID { get; set; }
+
+        //server status 
 
         [Required]
         public int StatusID { get; set; }
@@ -27,13 +29,13 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int ServerID { get; set; }
 
-        [Display(Name = "Notification")]
+        [Display(Name = "Type")]
         public string NotificationTypeName { get; set; }
 
         [Display(Name =  "Application Name")]
         public string ApplicationName { get; set; }
 
-        [Display(Name = "Application Status")]
+        [Display(Name = "Status")]
         public string StatusName { get; set; }
 
         [Display(Name = "Server")]
@@ -41,10 +43,6 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name = "Level of Impact")]
         public string LevelOfImpactName { get; set; }
-
-        [Required]
-        [Display(Name = "Website")]
-        public string URL { get; set; }
 
         [Required]
         [Display(Name = "Heading")]
@@ -59,10 +57,6 @@ namespace NotificationPortal.ViewModels
         [Required]
         [Display(Name = "Start Time")]
         public DateTime? StartDateTime { get; set; }
-
-        [Required]
-        [Display(Name = "End Time")]
-        public DateTime? EndDateTime { get; set; }
 
         public IEnumerable<SelectListItem> ApplicationList { get; set; }
 

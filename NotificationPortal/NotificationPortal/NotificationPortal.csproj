@@ -93,6 +93,12 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -206,6 +212,7 @@
     </Compile>
     <Compile Include="Repositories\ApplicationRepo.cs" />
     <Compile Include="Repositories\ClientRepo.cs" />
+    <Compile Include="Repositories\ConstantsRepo.cs" />
     <Compile Include="Repositories\DashboardRepo.cs" />
     <Compile Include="Repositories\DataCenterRepo.cs" />
     <Compile Include="Repositories\IInterfaceRepo.cs" />
@@ -234,6 +241,7 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\sidebar.css" />
     <Content Include="Content\summernote.css" />
     <Content Include="favicon.ico" />
@@ -336,12 +344,12 @@
     <Content Include="Views\Client\Edit.cshtml" />
     <Content Include="Views\Client\Details.cshtml" />
     <Content Include="Views\Client\Delete.cshtml" />
-    <Content Include="Views\User\Search.cshtml" />
     <Content Include="Views\User\Add.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />
     <Content Include="Views\Notification\Update.cshtml" />
+    <Content Include="Views\Dashboard\OldIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
