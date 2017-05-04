@@ -27,11 +27,8 @@
         </div>
     </div>
 
-    <p class="text-success">@TempData["AddUserSuccess"]</p>
-    <p class="text-danger">@TempData["AddUserError"]</p>
-    <p class="text-success">@TempData["EditUserSuccess"]</p>
-    <p class="text-danger">@TempData["EditUserError"]</p>
-    <p>@TempData["ActionResultMsg"]</p>
+    <p class="text-success">@TempData["SuccessMsg"]</p>
+    <p class="text-danger">@TempData["ErrorMsg"]</p>
 
     <table class="table table-bordered">
         <tr class="bg-inverse text-white text-center">
@@ -54,7 +51,7 @@
 
         @foreach (var item in Model)
         {
-            <tr class="text-center clickable-row" id="@item.UserID" data-href="/Details/@item.UserID">
+            <tr class="text-center clickable-row" id="@item.ReferenceID" data-href="/Details/@item.ReferenceID">
                 <td>
                     @Html.DisplayFor(modelItem => item.ClientName)
                 </td>
@@ -76,11 +73,11 @@
             </tr>
         }
     </table>
+</div>
 
-    <div class="hidden-menu">
-        <ul>
-            <li><a href="/Edit/" class="btn btn-sm">Edit</a></li>
-            <li><a href="/Delete/" class="btn btn-sm">Delete</a></li>
-        </ul>
-    </div>
+<div class="hidden-menu">
+    <ul>
+        <li><a href="/Edit/" class="btn btn-sm">Edit</a></li>
+        <li><a href="/Delete/" class="btn btn-sm">Delete</a></li>
+    </ul>
 </div>

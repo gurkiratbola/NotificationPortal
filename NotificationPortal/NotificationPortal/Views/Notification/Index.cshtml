@@ -32,12 +32,6 @@
     <thead>
         <tr class="bg-inverse text-white text-center">
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.Source)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.ApplicationServerName)
-            </th>
-            <th class="text-center">
                 @Html.DisplayNameFor(model => model.NotificationType)
             </th>
             <th class="text-center">
@@ -49,15 +43,6 @@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.Status)
             </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.SentDateTime)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.StartDateTime)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.EndDateTime)
-            </th>
         </tr>
     </thead>
     <tbody>
@@ -65,12 +50,6 @@
         @foreach (var item in Model)
         {
             <tr class="text-center clickable-row" id="@item.ThreadID" data-href="/Details/@item.ThreadID">
-                <td>
-                    @Html.DisplayFor(modelItem => item.Source)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ApplicationServerName)
-                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.NotificationType)
                 </td>
@@ -82,15 +61,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SentDateTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDateTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDateTime)
                 </td>
             </tr>
         }

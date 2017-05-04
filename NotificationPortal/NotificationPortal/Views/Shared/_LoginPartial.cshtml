@@ -6,15 +6,19 @@
         @Html.AntiForgeryToken()
 
         <ul class="navbar-nav">
-            <li class="nav-item">
-                <a href="@Url.Action("Index", "Manage")" class="nav-link">
+            <li class="nav-item hover-dropdown">
+                <a href="@Url.Action("Index", "Manage")" class="nav-link drop-btn">
                     <span class="hidden-lg-down" id="username">
-                        Hello, @Html.Raw(User.Identity.GetUserName())!
+                        Hello, @Html.Raw(Session["FullName"].ToString())!
                     </span>
-                    <span class=" hidden-lg-up">
+                    <span class="hidden-lg-up">
                         My Profile
                     </span>
                 </a>
+                <div class="hover-dropdown-content">
+                    <a href="@Url.Action("Index", "Manage")">Edit Profile</a>
+                    <a href="@Url.Action("ChangePassword", "Manage")">Reset Password</a>
+                </div>
             </li>
 
             <li class="nav-item"><a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">Log off</a></li>

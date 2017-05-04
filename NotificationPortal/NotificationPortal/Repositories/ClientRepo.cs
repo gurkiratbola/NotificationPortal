@@ -38,7 +38,7 @@ namespace NotificationPortal.Repositories
             return new SelectList(statusList, "Value", "Text");
         }
 
-        public bool AddClient(ClientVM client, out string msg)
+        public bool AddClient(ClientCreateVM client, out string msg)
         {
             Client c = _context.Client.Where(a => a.ClientName == client.ClientName)
                             .FirstOrDefault();
@@ -77,11 +77,11 @@ namespace NotificationPortal.Repositories
             return client;
         }
 
-        public ClientDeleteVM GetDeleteClient(string referenceID)
+        public ClientVM GetDeleteClient(string referenceID)
         {
-            ClientDeleteVM client = _context.Client
+            ClientVM client = _context.Client
                             .Where(a => a.ReferenceID == referenceID)
-                            .Select(b => new ClientDeleteVM
+                            .Select(b => new ClientVM
                             {
                                 ClientName = b.ClientName,
                                 StatusID = b.StatusID,

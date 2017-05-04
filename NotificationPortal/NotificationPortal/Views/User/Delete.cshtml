@@ -1,4 +1,4 @@
-﻿@model NotificationPortal.ViewModels.UserVM
+﻿@model NotificationPortal.ViewModels.UserDeleteVM
 
 @{
     ViewBag.Title = "Delete User";
@@ -77,8 +77,8 @@
     {
         @Html.AntiForgeryToken()
 
-        @Html.HiddenFor(model => model.UserID)
-        @Html.HiddenFor(model => model.ClientID)
+        @Html.HiddenFor(model => model.ReferenceID)
+        @Html.HiddenFor(model => model.ClientName)
 
         <div class="form-group">
             <input type="submit" value="Delete" class="btn btn-success"/>
