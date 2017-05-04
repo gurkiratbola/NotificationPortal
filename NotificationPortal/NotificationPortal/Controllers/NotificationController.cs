@@ -27,14 +27,14 @@ namespace NotificationPortal.Controllers
         }
         
         [HttpGet]
-        public ActionResult Add()
+        public ActionResult Create()
         {
             NotificationRepo nRepo = new NotificationRepo();
             var model = nRepo.CreateAddModel();
             return View(model);
         }
         [HttpPost]
-        public ActionResult Add(NotificationCreateVM model) {
+        public ActionResult Create(NotificationCreateVM model) {
             string result = "";
             NotificationRepo nRepo = new NotificationRepo();
             if (ModelState.IsValid)

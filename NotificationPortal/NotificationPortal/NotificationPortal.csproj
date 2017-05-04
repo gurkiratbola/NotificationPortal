@@ -327,7 +327,7 @@
     <Content Include="Views\Home\Documentation.cshtml" />
     <Content Include="Views\Notification\Delete.cshtml" />
     <Content Include="Views\Notification\Details.cshtml" />
-    <Content Include="Views\Notification\Add.cshtml" />
+    <Content Include="Views\Notification\Create.cshtml" />
     <Content Include="Views\Server\Details.cshtml" />
     <Content Include="Views\Server\Create.cshtml" />
     <Content Include="Views\Server\Edit.cshtml" />
