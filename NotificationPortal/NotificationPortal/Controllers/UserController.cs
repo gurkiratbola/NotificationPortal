@@ -17,22 +17,27 @@ namespace NotificationPortal.Controllers
     public class UserController : Controller
     {
         private readonly UserRepo _userRepo = new UserRepo();
+        private readonly SelectListRepo _selectRepo = new SelectListRepo();
 
         // GET: UserDetails/Index
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            if (searchString != null)
+            {
+                page = 1;
+            }
+
+            searchString = currentFilter;
+
+            ViewBag.CurrentFilter = searchString;
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.ClientNameSort = string.IsNullOrEmpty(sortOrder) ? ConstantsRepo.SORT_CLIENT_BY_NAME_DESC : "";
+            ViewBag.StatusNameSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC;
+
             IEnumerable<UserVM> users = _userRepo.GetAllUsers();
 
             return View(users);
-        }
-
-        // POST: UserDetails/Search
-        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
-        [HttpPost]
-        public ActionResult Search()
-        {
-            return View();
         }
 
         // GET: UserDetails/Add
@@ -42,8 +47,8 @@ namespace NotificationPortal.Controllers
         {
             var model = new AddUserVM()
             {
-                StatusList = _userRepo.GetStatusList(),
-                ClientList = _userRepo.GetClientList(),
+                StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER),
+                ClientList = _selectRepo.GetClientList(),
             };
 
             return View(model);
@@ -71,8 +76,8 @@ namespace NotificationPortal.Controllers
 
             TempData["ErrorMsg"] = "Cannot add user at this time, please try again!";
 
-            model.StatusList = _userRepo.GetStatusList();
-            model.ClientList = _userRepo.GetClientList();
+            model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
+            model.ClientList = _selectRepo.GetClientList();
 
             return View(model);
         }
@@ -82,8 +87,8 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Edit(string id)
         {
-            ViewBag.StatusNames = _userRepo.GetStatusList();
-            ViewBag.ClientNames = _userRepo.GetClientList();
+            ViewBag.StatusNames = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
+            ViewBag.ClientNames = _selectRepo.GetClientList();
 
             return View(_userRepo.GetUserDetails(id));
         }
@@ -98,9 +103,7 @@ namespace NotificationPortal.Controllers
             {
                 string msg = "";
 
-                bool isUserUpdated = _userRepo.EditUser(model, out msg);
-
-                if (isUserUpdated)
+                if (_userRepo.EditUser(model, out msg))
                 {
                     TempData["SuccessMsg"] = "User information successfully updated!";
 
@@ -115,14 +118,13 @@ namespace NotificationPortal.Controllers
             return View();
         }
 
-
         // GET: UserDetails/Details
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpGet]
         public ActionResult Details(string id)
         {
-            ViewBag.StatusNames = _userRepo.GetStatusList();
-            ViewBag.ClientNames = _userRepo.GetClientList();
+            ViewBag.StatusNames = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
+            ViewBag.ClientNames = _selectRepo.GetClientList();
 
             return View(_userRepo.GetUserDetails(id));
         }
@@ -141,10 +143,9 @@ namespace NotificationPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(UserDeleteVM model)
         {
-            string msg = "";
-
             if (ModelState.IsValid)
             {
+                var msg = "";
                 if (_userRepo.DeleteUser(model.ReferenceID, model.ClientName, out msg))
                 {
                     TempData["SuccessMsg"] = msg;

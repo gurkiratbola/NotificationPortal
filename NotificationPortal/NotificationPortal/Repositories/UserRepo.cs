@@ -12,34 +12,7 @@ namespace NotificationPortal.Repositories
 {
     public class UserRepo
     {
-        const string APP_STATUS_TYPE_NAME = "User";
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
-
-        public IEnumerable<SelectListItem> GetStatusList()
-        {
-            IEnumerable<SelectListItem> statusList = _context.Status.Where(s => s.StatusType.StatusTypeName == APP_STATUS_TYPE_NAME)
-                                                     .Select(app => new SelectListItem
-                                                     {
-                                                         Value = app.StatusID.ToString(),
-                                                         Text = app.StatusName
-                                                     });
-
-            return new SelectList(statusList, "Value", "Text");
-        }
-
-        public IEnumerable<SelectListItem> GetClientList()
-        {
-            List<SelectListItem> clientList = _context.Client.Select(app => new SelectListItem
-                                              {
-                                                  Value = app.ClientID.ToString(),
-                                                  Text = app.ClientName
-                                              }).ToList();
-
-            clientList.Add(new SelectListItem { Value = "-1", Text = "" });
-            //clientList.OrderByDescending(x => x.Value);
-
-            return new SelectList(clientList, "Value", "Text");
-        }
 
         public IEnumerable<UserVM> GetAllUsers()
         {
