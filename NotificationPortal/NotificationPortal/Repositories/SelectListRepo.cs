@@ -11,11 +11,11 @@ namespace NotificationPortal.Repositories
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
-        public IEnumerable<SelectListItem> GetClientList()
+        public SelectList GetClientList()
         {
             List<SelectListItem> clientList = _context.Client.Select(app => new SelectListItem
                                               {
-                                                  Value = app.ClientID.ToString(),
+                                                  Value = app.ReferenceID.ToString(),
                                                   Text = app.ClientName
                                               }).ToList();
 
@@ -42,7 +42,7 @@ namespace NotificationPortal.Repositories
             IEnumerable<SelectListItem> appList = _context.Application.Select(app =>
                                                   new SelectListItem
                                                   {
-                                                      Value = app.ApplicationID.ToString(),
+                                                      Value = app.ReferenceID.ToString(),
                                                       Text = app.ApplicationName
                                                   });
 
@@ -53,7 +53,7 @@ namespace NotificationPortal.Repositories
         {
             IEnumerable<SelectListItem> serverList = _context.Server.Select(sv => new SelectListItem()
                                                      {
-                                                         Value = sv.ServerID.ToString(),
+                                                         Value = sv.ReferenceID.ToString(),
                                                          Text = sv.ServerName
                                                      });
 
