@@ -12,7 +12,9 @@ namespace NotificationPortal.Migrations
     {
         private string sampleClientEmail = "client@portal.com";
         private string sampleApplicationName = "Notification Portal";
-        private string sampleServerName = "DNS Server";
+        private string sampleServerName1 = "DNS Server";
+        private string sampleServerName2 = "App Serve";
+        private string sampleServerName3 = "Serve Apps";
 
         public Configuration()
         {
@@ -440,9 +442,23 @@ namespace NotificationPortal.Migrations
             var serverTypeApplication = context.ServerType
                 .Where(t => t.ServerTypeName == Key.SERVER_TYPE_APPLICATION)
                 .FirstOrDefault();
+            var serverTypeDirectory = context.ServerType
+                .Where(t => t.ServerTypeName == Key.SERVER_TYPE_DIRECTORY)
+                .FirstOrDefault();
             var server = new Server()
             {
-                ServerName = sampleServerName,
+                ServerName = sampleServerName1,
+                Description = "Server for Domains",
+                LocationID = location.LocationID,
+                StatusID = serverOfflineStatus.StatusID,
+                ServerTypeID = serverTypeDirectory.ServerTypeID,
+                ReferenceID = Guid.NewGuid().ToString()
+            };
+            context.Server.Add(server);
+
+            server = new Server()
+            {
+                ServerName = sampleServerName2,
                 Description = "Server for Applications",
                 LocationID = location.LocationID,
                 StatusID = serverOfflineStatus.StatusID,
@@ -450,6 +466,18 @@ namespace NotificationPortal.Migrations
                 ReferenceID = Guid.NewGuid().ToString()
             };
             context.Server.Add(server);
+
+            server = new Server()
+            {
+                ServerName = sampleServerName3,
+                Description = "Server for more Applications",
+                LocationID = location.LocationID,
+                StatusID = serverOfflineStatus.StatusID,
+                ServerTypeID = serverTypeApplication.ServerTypeID,
+                ReferenceID = Guid.NewGuid().ToString()
+            };
+            context.Server.Add(server);
+
             context.SaveChanges();
         }
 
@@ -469,7 +497,8 @@ namespace NotificationPortal.Migrations
                 && s.StatusName == Key.STATUS_APPLICATION_OFFLINE).FirstOrDefault();
 
             // Get server
-            var server = context.Server;
+            var server = context.Server
+                .Where(s=>s.ServerType.ServerTypeName==Key.SERVER_TYPE_APPLICATION);
 
             var app = new Application()
             {
@@ -506,7 +535,7 @@ namespace NotificationPortal.Migrations
                 .Where(l => l.Level == Key.LEVEL_OF_IMPACT_IMPACTING)
                 .FirstOrDefault();
             // Get server
-            var servers = context.Server.Where(s => s.ServerName == sampleServerName);
+            var servers = context.Server.Where(s => s.ServerName == sampleServerName1);
             // Get server
             var sendMethod = context.SendMethod
                 .Where(s => s.SendMethodName == Key.SEND_METHOD_EMAIL)
