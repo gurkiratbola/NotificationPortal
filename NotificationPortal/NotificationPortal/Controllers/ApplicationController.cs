@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace NotificationPortal.Controllers
 {
     [Authorize(Roles = "Admin, Staff")]
-    public class ApplicationController : AppBaseController
+    public class ApplicationController : Controller
     {
         private readonly ApplicationRepo _aRepo = new ApplicationRepo();
 

@@ -17,15 +17,6 @@ namespace NotificationPortal.Controllers
         public ActionResult Index()
         {
             IEnumerable<DashboardVM> dashboard = _dashboardRepo.GetDashBoard();
-            //save user full name in session
-            ApplicationDbContext _context = new ApplicationDbContext();
-            string name = User.Identity.Name;
-            UserDetail user = _context.UserDetail
-                    .Where(u => u.User.UserName == name).FirstOrDefault();
-            if (user != null) {
-                string userFullName = user.FirstName + " " + user.LastName;
-                Session["FullName"] = userFullName;
-            }
             return View(dashboard);
         }
 

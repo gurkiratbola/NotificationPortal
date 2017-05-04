@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.Controllers
 {
-    public class StatusController : AppBaseController
+    public class StatusController : Controller
     {
         ApplicationDbContext context = new ApplicationDbContext();
 

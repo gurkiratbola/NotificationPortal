@@ -12,7 +12,7 @@ using System.Web.Mvc;
 namespace NotificationPortal.Controllers
 {
     [Authorize(Roles = "Admin, Staff")]
-    public class ServerController : AppBaseController
+    public class ServerController : Controller
     {
         private readonly ServerRepo _sRepo = new ServerRepo();
 
