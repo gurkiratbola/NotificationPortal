@@ -19,7 +19,7 @@ namespace NotificationPortal.Controllers
         private readonly UserRepo _userRepo = new UserRepo();
 
         // GET: UserDetails/Index
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         public ActionResult Index()
         {
             IEnumerable<UserVM> users = _userRepo.GetAllUsers();
@@ -28,7 +28,7 @@ namespace NotificationPortal.Controllers
         }
 
         // POST: UserDetails/Search
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpPost]
         public ActionResult Search()
         {
@@ -36,7 +36,7 @@ namespace NotificationPortal.Controllers
         }
 
         // GET: UserDetails/Add
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpGet]
         public ActionResult Add()
         {
@@ -50,7 +50,7 @@ namespace NotificationPortal.Controllers
         }
 
         // POST: UserDetails/Add
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Add(AddUserVM model)
@@ -78,7 +78,7 @@ namespace NotificationPortal.Controllers
         }
 
         // GET: UserDetails/Edit
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpGet]
         public ActionResult Edit(string id)
         {
@@ -89,7 +89,7 @@ namespace NotificationPortal.Controllers
         }
 
         // POST: UserDetails/Edit
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(UserVM model)
@@ -117,7 +117,7 @@ namespace NotificationPortal.Controllers
 
 
         // GET: UserDetails/Details
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpGet]
         public ActionResult Details(string id)
         {
@@ -128,7 +128,7 @@ namespace NotificationPortal.Controllers
         }
 
         // GET: UserDetails/Delete
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpGet]
         public ActionResult Delete(string id)
         {
@@ -136,7 +136,7 @@ namespace NotificationPortal.Controllers
         }
 
         // POST: UserDetails/Delete
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(UserDeleteVM model)
