@@ -11,7 +11,7 @@ using NotificationPortal.Models;
 namespace NotificationPortal.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : AppBaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;

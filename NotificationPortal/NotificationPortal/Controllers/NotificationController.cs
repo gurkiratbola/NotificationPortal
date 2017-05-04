@@ -9,7 +9,7 @@ using System.Web.Mvc;
 namespace NotificationPortal.Controllers
 {
     [Authorize]
-    public class NotificationController : Controller
+    public class NotificationController : AppBaseController
     {
         public string GetTimeZoneOffset() {
             string timeOffsetString = "0";

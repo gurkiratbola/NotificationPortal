@@ -9,7 +9,7 @@ using NotificationPortal.Models;
 
 namespace NotificationPortal.Controllers
 {
-    public class DashboardController : Controller
+    public class DashboardController : AppBaseController
     {
         private readonly DashboardRepo _dashboardRepo = new DashboardRepo();
         // GET: Dashboard
@@ -28,5 +28,6 @@ namespace NotificationPortal.Controllers
             }
             return View(dashboard);
         }
+
     }
 }

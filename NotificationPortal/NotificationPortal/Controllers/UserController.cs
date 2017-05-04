@@ -14,7 +14,7 @@ using System.Net;
 
 namespace NotificationPortal.Controllers
 {
-    public class UserController : Controller
+    public class UserController : AppBaseController
     {
         private readonly UserRepo _userRepo = new UserRepo();
 

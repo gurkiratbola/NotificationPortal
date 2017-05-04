@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : AppBaseController
     {
         public ActionResult Index()
         {

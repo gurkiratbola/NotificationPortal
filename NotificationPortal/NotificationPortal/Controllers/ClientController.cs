@@ -12,7 +12,7 @@ using static NotificationPortal.ViewModels.ValidationVM;
 namespace NotificationPortal.Controllers
 {
     [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
-    public class ClientController : Controller
+    public class ClientController : AppBaseController
     {
         private readonly ClientRepo _cRepo = new ClientRepo();
         private readonly SelectListRepo _sRepo = new SelectListRepo();
