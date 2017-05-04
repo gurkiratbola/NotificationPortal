@@ -52,7 +52,7 @@ namespace NotificationPortal.Repositories
                 model = new NotificationCreateVM();
                 model.ThreadID = Guid.NewGuid().ToString();
             }
-            model.ApplicationList = _slRepo.GetApplicaitonList();
+            model.ApplicationList = GetApplicationList();
             model.SendMethodList = _slRepo.GetSendMethodList();
             model.ServerList = _slRepo.GetServerList();
             model.NotificationTypeList = _slRepo.GetTypeList();
@@ -66,14 +66,28 @@ namespace NotificationPortal.Repositories
 
             try
             {
-                if(notification.Source == "Application")
+                //if(notification.Source == "Application")
+                //{
+                //    notification.ServerID = null;
+                //}
+                //else
+                //{
+                //    notification.ApplicationID = null;
+                //}
+
+                //TO DO: check if it's by server or by Application
+                if (notification.ServerReferenceIDs == null)
                 {
-                    notification.ServerID = null;
+                    msg = "Must choose a Server";
+                    return false;
                 }
-                else
+                if (notification.ApplicationReferenceIDs == null)
                 {
-                    notification.ApplicationID = null;
+                    notification.ApplicationReferenceIDs = new string[0];
                 }
+
+                var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
+                var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
                 Notification newNotification = new Notification()
                 {
                     LevelOfImpactID = notification.LevelOfImpactID,
@@ -90,14 +104,8 @@ namespace NotificationPortal.Repositories
                     StartDateTime = notification.StartDateTime,
                     EndDateTime = notification.EndDateTime,
                 };
-
-
-                //TO DO: check if it's by server or by Application
-                if (notification.ServerID==null && notification.ApplicationID==null)
-                {
-                    msg = "Must choose a Application or Server";
-                    return false;
-                }
+                newNotification.Servers = servers.ToList();
+                newNotification.Applications = apps.ToList();
 
                 _context.Notification.Add(newNotification);
                 _context.SaveChanges();
@@ -106,7 +114,7 @@ namespace NotificationPortal.Repositories
                 msg = "Notification Sent";
                 return true;
             } catch (Exception ex){
-                msg = "Notification cannot be created";
+                msg = "Notification not created";
                 return false;
             }
 
@@ -136,32 +144,36 @@ namespace NotificationPortal.Repositories
                     {
                         ServerName = s.ServerName,
                         ServerType = s.ServerType.ServerTypeName,
-                        ServerStatus = s.Status.StatusName
+                        ServerStatus = s.Status.StatusName,
+                        ReferenceID = s.ReferenceID
                     });
 
-
-            IEnumerable<NotificationApplicationVM> apps;
-            if (lastestNotification.Servers.Count == 1)
-            {
-                apps =
+            // Get Applications that are associated to this notification
+            IEnumerable<NotificationApplicationVM> apps =
                 lastestNotification.Applications.Select(
                     a => new NotificationApplicationVM
                     {
                         ApplicationName = a.ApplicationName,
                         ApplicationURL = a.URL,
-                        ApplicationStatus = a.Status.StatusName
-                    });
-            }
-            else
-            {
+                        ApplicationStatus = a.Status.StatusName,
+                        ReferenceID = a.ReferenceID
+                    }).OrderByDescending(a => a.ApplicationName);
+
+            // If there are no applications associated to this notification
+            // get all application associated with server(s)
+            if (apps.Count()==0){
                 apps =
                 lastestNotification.Servers.SelectMany(s=>s.Applications.Select(
                     a => new NotificationApplicationVM
                     {
                         ApplicationName = a.ApplicationName,
                         ApplicationURL = a.URL,
-                        ApplicationStatus = a.Status.StatusName
-                    }));
+                        ApplicationStatus = a.Status.StatusName,
+                        ReferenceID  = a.ReferenceID
+                    })).GroupBy(a => a.ReferenceID)
+                    .Select(
+                        a => a.FirstOrDefault()
+                ).OrderByDescending(a => a.ApplicationName);
             }
 
             NotificationDetailVM model = new NotificationDetailVM()
@@ -169,7 +181,7 @@ namespace NotificationPortal.Repositories
                 ThreadID = threadID,
                 Source = lastestNotification.Servers.Count == 0 ? "Application" : "Server",
                 // TODO
-                //ApplicationServerName = lastestNotification.Servers.Count == 0 ? lastestNotification.Application.ApplicationName : lastestNotification.Server.ServerName,
+                // ApplicationServerName = lastestNotification.Servers.Count == 0 ? lastestNotification.Application.ApplicationName : lastestNotification.Server.ServerName,
                 NotificationType = lastestNotification.NotificationType.NotificationTypeName,
                 LevelOfImpact = lastestNotification.LevelOfImpact.Level,
                 Status = lastestNotification.Status.StatusName,
@@ -206,9 +218,24 @@ namespace NotificationPortal.Repositories
             model = CreateAddModel(model);
             return model;
         }
+
+        public IEnumerable<ApplicationOptionVM> GetApplicationList()
+        {
+            //var apps = _context.Server.Select(s=>s.Applications.Select(
+            //    a => new { AppName = a.ApplicationName, AppRef = a.ReferenceID }));
+            //var group = apps.GroupBy(a=>a.AppRef);
+            //var grouped = group.Select(g=>new ApplicationOptionVM
+            //{
+            //    ApplicationName = g.First().AppName,
+            //    ReferenceID = g.First().AppRef,
+            //    //ServerReferenceIDs = string.Join(" ", g.Select(i=>i.ServerRef))
+            //});
+            return new List<ApplicationOptionVM>() {new ApplicationOptionVM()};
+        }
     }
 }
 
+//string.Join(" ", a.Servers.Select(s => s.ReferenceID).ToArray())
 //parse timezone
 
 //int offsetNum = 0;

@@ -11,8 +11,10 @@ namespace NotificationPortal.Migrations
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         private string sampleClientEmail = "client@portal.com";
-        private string sampleApplicationName = "Notification Portal";
-        private string sampleServerName1 = "DNS Server";
+        private string sampleApplicationName1 = "Notification Portal";
+        private string sampleApplicationName2 = "Portal Notification";
+        private string sampleApplicationName3 = "Domain Dad";
+        private string sampleServerName1 = "DNS Server"; 
         private string sampleServerName2 = "App Serve";
         private string sampleServerName3 = "Serve Apps";
 
@@ -495,6 +497,9 @@ namespace NotificationPortal.Migrations
             var appOfflineStatus = context.Status
                 .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_APPLICATION
                 && s.StatusName == Key.STATUS_APPLICATION_OFFLINE).FirstOrDefault();
+            var appOnlineStatus = context.Status
+                .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_APPLICATION
+                && s.StatusName == Key.STATUS_APPLICATION_ONLINE).FirstOrDefault();
 
             // Get server
             var server = context.Server
@@ -502,7 +507,7 @@ namespace NotificationPortal.Migrations
 
             var app = new Application()
             {
-                ApplicationName = sampleApplicationName,
+                ApplicationName = sampleApplicationName1,
                 Description = "Portal to manage all notifications",
                 URL = "http://notification-portal.com/",
                 ClientID = clientID,
@@ -512,6 +517,33 @@ namespace NotificationPortal.Migrations
             app.UserDetails = clientUserDetail.ToList();
             app.Servers = server.ToList();
             context.Application.Add(app);
+
+            app = new Application()
+            {
+                ApplicationName = sampleApplicationName2,
+                Description = "Notifications to manage all portals",
+                URL = "http://portal-notification.com/",
+                ClientID = clientID,
+                StatusID = appOfflineStatus.StatusID,
+                ReferenceID = Guid.NewGuid().ToString()
+            };
+            app.UserDetails = clientUserDetail.ToList();
+            app.Servers = server.ToList();
+            context.Application.Add(app);
+
+            app = new Application()
+            {
+                ApplicationName = sampleApplicationName3,
+                Description = "Get your new domains",
+                URL = "http://domain-dad.com/",
+                ClientID = clientID,
+                StatusID = appOnlineStatus.StatusID,
+                ReferenceID = Guid.NewGuid().ToString()
+            };
+            app.UserDetails = clientUserDetail.ToList();
+            app.Servers = server.ToList();
+            context.Application.Add(app);
+
             context.SaveChanges();
         }
 
@@ -519,7 +551,7 @@ namespace NotificationPortal.Migrations
         {
             // Get app
             var apps = context.Application
-                .Where(a => a.ApplicationName == sampleApplicationName);
+                .Where(a => a.ApplicationName == sampleApplicationName1);
             // Get notification type
             var notificationTypeMaintenance = context.NotificationType
                 .Where(t => t.NotificationTypeName == Key.NOTIFICATION_TYPE_MAINTENANCE)
