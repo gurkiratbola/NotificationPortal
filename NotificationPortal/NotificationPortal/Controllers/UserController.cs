@@ -19,7 +19,7 @@ namespace NotificationPortal.Controllers
         private readonly UserRepo _userRepo = new UserRepo();
 
         // GET: UserDetails/Index
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         public ActionResult Index()
         {
             IEnumerable<UserVM> users = _userRepo.GetAllUsers();
@@ -28,7 +28,7 @@ namespace NotificationPortal.Controllers
         }
 
         // POST: UserDetails/Search
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpPost]
         public ActionResult Search()
         {
@@ -36,7 +36,7 @@ namespace NotificationPortal.Controllers
         }
 
         // GET: UserDetails/Add
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpGet]
         public ActionResult Add()
         {
@@ -50,7 +50,7 @@ namespace NotificationPortal.Controllers
         }
 
         // POST: UserDetails/Add
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Add(AddUserVM model)
@@ -61,24 +61,24 @@ namespace NotificationPortal.Controllers
 
                 if (_userRepo.AddUser(model, out msg))
                 {
-                    TempData["AddUserSuccess"] = msg;
-
+                    TempData["SuccessMsg"] = msg;
                   
                     return RedirectToAction("Index");
                 }
 
-                TempData["AddUserError"] = msg;
-
-                return RedirectToAction("Index");
+                TempData["ErrorMsg"] = msg;
             }
 
-            TempData["AddUserError"] = "Cannot add user at this time, please try again!";
+            TempData["ErrorMsg"] = "Cannot add user at this time, please try again!";
+
+            model.StatusList = _userRepo.GetStatusList();
+            model.ClientList = _userRepo.GetClientList();
 
             return View(model);
         }
 
         // GET: UserDetails/Edit
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpGet]
         public ActionResult Edit(string id)
         {
@@ -89,7 +89,7 @@ namespace NotificationPortal.Controllers
         }
 
         // POST: UserDetails/Edit
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(UserVM model)
@@ -102,15 +102,13 @@ namespace NotificationPortal.Controllers
 
                 if (isUserUpdated)
                 {
-                    TempData["EditUserSuccess"] = "User information successfully updated!";
+                    TempData["SuccessMsg"] = "User information successfully updated!";
 
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["EditUserError"] = "Failed to update the user information.";
-
-                    return RedirectToAction("Index");
+                    TempData["ErrorMsg"] = "Failed to update the user information.";
                 }
             }
             
@@ -119,7 +117,7 @@ namespace NotificationPortal.Controllers
 
 
         // GET: UserDetails/Details
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpGet]
         public ActionResult Details(string id)
         {
@@ -130,32 +128,36 @@ namespace NotificationPortal.Controllers
         }
 
         // GET: UserDetails/Delete
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpGet]
-        public ActionResult Delete(string id, int? clientId)
+        public ActionResult Delete(string id)
         {
-            return View(_userRepo.GetUserDetails(id));
+            return View(_userRepo.GetDeleteUser(id));
         }
 
         // POST: UserDetails/Delete
-        [Authorize]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(UserVM model)
+        public ActionResult Delete(UserDeleteVM model)
         {
             string msg = "";
-            _userRepo.DeleteUser(model.UserID, model.ClientID, out msg);
-            TempData["ActionResultMsg"] = msg;
 
-            return RedirectToAction("Index");
-        }
-
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("", error);
+                if (_userRepo.DeleteUser(model.ReferenceID, model.ClientName, out msg))
+                {
+                    TempData["SuccessMsg"] = msg;
+
+                    return RedirectToAction("Index");
+                }
+
+                TempData["ErrorMsg"] = msg;
             }
+
+            TempData["ErrorMsg"] = "User cannot be deleted at this time.";
+
+            return View(model);
         }
     }
 }

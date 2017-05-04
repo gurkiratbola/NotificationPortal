@@ -4,7 +4,7 @@
     ViewBag.Title = "Notification Details";
 }
 
-<h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
+<h1 class="display-1 text-center pb-3">@ViewBag.Title</h1>
 
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
@@ -12,47 +12,175 @@
     <li class="breadcrumb-item active">Notification Details</li>
 </ol>
 
-<dl class="row">
-    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Source)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(model => model.Source)</dd>
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#Notifications" role="tab">Notifications</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Servers" role="tab">Servers</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Applications" role="tab">Applications</a>
+    </li>
+</ul>
 
-    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NotificationType)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(model => model.NotificationType)</dd>
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="Notifications" role="tabpanel">
+        <dl class="row">
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Source)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Source)</dd>
 
-    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.LevelOfImpact)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(model => model.LevelOfImpact)</dd>
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NotificationType)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.NotificationType)</dd>
 
-    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Status)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(model => model.Status)</dd>
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.LevelOfImpact)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.LevelOfImpact)</dd>
 
-    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.StartDateTime)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(model => model.StartDateTime)</dd>
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Status)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Status)</dd>
 
-    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.EndDateTime)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(model => model.EndDateTime)</dd>
-</dl>
-<!-- list of threads-->
-<div id="accordion" role="tablist" aria-multiselectable="true">
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.StartDateTime)</dt>
+            <dd class="col-sm-10">
+                @if (Model.StartDateTime != null)
+                {
+                    @Html.DisplayFor(model => model.StartDateTime)
+                }
+                else
+                {
+                    @Html.Raw("TBA")
+                }
+            </dd>
 
-    @foreach (var item in Model.Thread)
-    {
-        <div class="card">
-            <div class="card-header" role="tab" id="headingOne">
-                <h5 class="mb-0">
-                    <div data-toggle="collapse" class="d-flex justify-content-between bd-highlight md-3" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <span class="p-2 bd-highlight">@Html.DisplayFor(modelItem => item.NotificationHeading)</span>
-                        <span class="badge bd-highlight">@Html.DisplayFor(modelItem => item.SentDateTime)</span>
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.EndDateTime)</dt>
+            <dd class="col-sm-10">
+                @if (Model.EndDateTime != null)
+                {
+                    @Html.DisplayFor(model => model.EndDateTime)
+                }
+                else
+                {
+                    @Html.Raw("TBA")
+                }
+            </dd>
+
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ThreadID)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.ThreadID)</dd>
+        </dl>
+        <!-- list of threads-->
+        <div id="accordion" role="tablist" aria-multiselectable="true">
+            @{ int cardIndex = 0; }
+            @foreach (var item in Model.Thread)
+            {
+                string collapseId = "collapse" + cardIndex.ToString();
+                string headingId = "heading" + cardIndex.ToString();
+                <div class="card">
+                    <div class="card-header" role="tab" id="@headingId">
+                        <div data-toggle="collapse" class="d-flex justify-content-between bd-highlight md-3" data-parent="#accordion" href="#@collapseId" aria-expanded="true" aria-controls="@collapseId">
+                            <div>
+                                <h5 class="p-2 col-12">
+                                    <span class="bd-highlight">
+                                        @Html.DisplayFor(modelItem => item.NotificationHeading)
+                                    </span>
+                                </h5>
+                                <p class="small p-2">
+                                    @Html.DisplayFor(modelItem => item.ReferenceID)
+                                </p>
+                            </div>
+                            <h5>
+                                <span class="badge bd-highlight">
+                                    @Html.DisplayFor(modelItem => item.SentDateTime)
+                                </span>
+                            </h5>
+                        </div>
                     </div>
-                </h5>
-            </div>
 
-            <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
-                <div class="card-block">
-                    @Html.DisplayFor(modelItem => item.NotificationDescription)
+                    <div id="@collapseId" class="collapse show" role="tabpanel" aria-labelledby="@headingId">
+                        <div class="card-block">
+                            @Html.DisplayFor(modelItem => item.NotificationDescription)
+                        </div>
+                    </div>
                 </div>
-            </div>
+                cardIndex++;
+            }
         </div>
-    }
+    </div>
+    <div class="tab-pane" id="Servers" role="tabpanel">
+        <table class="table table-bordered">
+            @{ var serverModel = Model.Servers.FirstOrDefault();}
+            <thead>
+                <tr class="bg-inverse text-white text-center">
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.ServerName)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.ServerType)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.ServerStatus)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Servers)
+                {
+                    <tr class="text-center"> @*clickable-row" id="@item.ThreadID" data-href="/Details/@item.ThreadID">*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServerType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServerStatus)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane" id="Applications" role="tabpanel">
+        @if (Model.Applications.Count() == 0)
+        {
+            <p>There are no applications associated with this thread.</p>
+        }
+        else
+        {
+            var applicationModel = Model.Applications.FirstOrDefault();
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="bg-inverse text-white text-center">
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => applicationModel.ApplicationName)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => applicationModel.ApplicationURL)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => applicationModel.ApplicationStatus)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Applications)
+                {
+                        <tr class="text-center">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ApplicationName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ApplicationURL)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ApplicationStatus)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
 </div>
 
 <div>
