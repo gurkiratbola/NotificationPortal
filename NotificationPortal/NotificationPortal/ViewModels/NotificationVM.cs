@@ -23,6 +23,7 @@ namespace NotificationPortal.ViewModels
         public string NotificationHeading { get; set; }
         [Display(Name = "Status")]
         public string Status { get; set; }
+        public DateTime SentDateTime { get; set; }
     }
 
     public class NotificationCreateVM
@@ -81,6 +82,7 @@ namespace NotificationPortal.ViewModels
 
     public class NotificationDetailVM
     {
+        [Display(Name = "Thread ID")]
         public string ThreadID { get; set; }
         [Display(Name = "Source")]
         public string Source { get; set; }
@@ -97,11 +99,32 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "End Time")]
         public DateTime? EndDateTime { get; set; }
         public IEnumerable<NotificationSpecificDetailVM> Thread { get; set; }
+        public IEnumerable<NotificationServerVM> Servers { get; set; }
+        public IEnumerable<NotificationApplicationVM> Applications { get; set; }
     }
     public class NotificationSpecificDetailVM
     {
+        public string ReferenceID { get; set; }
         public string NotificationHeading { get; set; }
         public string NotificationDescription { get; set; }
         public DateTime SentDateTime { get; set; }
+    }
+    public class NotificationServerVM
+    {
+        [Display(Name ="Server")]
+        public string ServerName { get; set; }
+        [Display(Name = "Type")]
+        public string ServerType { get; set; }
+        [Display(Name = "Status")]
+        public string ServerStatus { get; set; }
+    }
+    public class NotificationApplicationVM
+    {
+        [Display(Name = "Application")]
+        public string ApplicationName { get; set; }
+        [Display(Name = "URL")]
+        public string ApplicationURL { get; set; }
+        [Display(Name = "Status")]
+        public string ApplicationStatus { get; set; }
     }
 }
