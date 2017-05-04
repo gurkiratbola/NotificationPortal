@@ -9,10 +9,18 @@
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
     <li class="breadcrumb-item"><a href="~/User/Index">User Management</a></li>
-    <li class="breadcrumb-item active">Delete <strong>@Html.DisplayFor(model => model.FirstName)</strong></li>
+    <li class="breadcrumb-item active">@ViewBag.Title</li>
+    <li class="breadcrumb-item active">@Html.DisplayFor(model => model.FirstName)</li>
 </ol>
 
 <div class="container">
+
+     @{  if (TempData["ErrorMsg"] != null)
+         {
+             <p class="alert alert-danger pb-3">@TempData["ErrorMsg"]</p>
+         }
+     }
+
     <h3 class="text-danger pb-2">Are you sure you want to delete this?</h3>
 
     <dl class="row">

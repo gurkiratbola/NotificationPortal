@@ -145,7 +145,7 @@ namespace NotificationPortal.Controllers
 
             if (ModelState.IsValid)
             {
-                if (_userRepo.DeleteUser(model.ReferenceID, out msg))
+                if (_userRepo.DeleteUser(model.ReferenceID, model.ClientName, out msg))
                 {
                     TempData["SuccessMsg"] = msg;
 
