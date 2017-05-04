@@ -2,6 +2,7 @@
 using NotificationPortal.Repositories;
 using NotificationPortal.ViewModels;
 using System;
+using PagedList;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -17,10 +18,26 @@ namespace NotificationPortal.Controllers
         private readonly SelectListRepo _sRepo = new SelectListRepo();
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            if (searchString != null){
+                page = 1;
+            }else{
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.ClientNameSort =
+              String.IsNullOrEmpty(sortOrder) ? ConstantsRepo.SORT_CLIENT_BY_NAME_DESC : "";
+            ViewBag.StatusNameSort =
+              sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC;
+
+            // TO DO: if it's null, redirect to a page
             IEnumerable<ClientVM> clientList = _cRepo.GetClientList();
-            return View(clientList);
+            clientList = _cRepo.Sort(clientList, sortOrder, searchString);
+
+            int pageNumber = (page ?? 1);
+            return View(clientList.ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE));
         }
 
         [HttpGet]
@@ -53,12 +70,13 @@ namespace NotificationPortal.Controllers
             else {
                 TempData["ErrorMsg"] = "Client cannot be added at this time.";
             }
-            model.StatusList = _cRepo.GetStatusList();
+            model.StatusList = _sRepo.GetStatusList(Key.ROLE_CLIENT);
             return View(model);
         }
 
         [HttpGet]
         public ActionResult Edit(string id) {
+            // TO DO: if it's null, redirect to a page
             ClientVM client = _cRepo.GetClient(id);
             ViewBag.StatusNames = _sRepo.GetStatusList(Key.ROLE_CLIENT);
             return View(client);
@@ -80,19 +98,22 @@ namespace NotificationPortal.Controllers
                     TempData["ErrorMsg"] = msg;
                 }
             }
+            // TO DO: if it's null, redirect to a page
             ClientVM client = _cRepo.GetClient(model.ReferenceID);
-            ViewBag.StatusNames = _cRepo.GetStatusList();
+            ViewBag.StatusNames = _sRepo.GetStatusList(Key.ROLE_CLIENT);
             return View(client);
         }
 
         [HttpGet]
         public ActionResult Details(string id) {
+            // TO DO: if it's null, redirect to a page
             return View(_cRepo.GetClient(id));
         }
 
         [HttpGet]
         public ActionResult Delete(string id) {
-            return View(_cRepo.GetDeleteClient(id));
+            // TO DO: if it's null, redirect to a page
+            return View(_cRepo.GetClient(id));
         }
 
         [HttpPost]

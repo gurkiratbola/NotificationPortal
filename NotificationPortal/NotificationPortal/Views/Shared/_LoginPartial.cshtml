@@ -9,7 +9,14 @@
             <li class="nav-item hover-dropdown">
                 <a href="@Url.Action("Index", "Manage")" class="nav-link drop-btn">
                     <span class="hidden-lg-down" id="username">
-                        Hello, @Html.Raw(Session["FullName"].ToString())!
+                        Hello,
+                        @if (System.Web.HttpContext.Current.Session["FullName"] != null) {
+                            @Html.Raw(Session["FullName"].ToString())
+                        }
+                        else {
+                            @Html.Raw("user");
+                        }
+                        !
                     </span>
                     <span class="hidden-lg-up">
                         My Profile

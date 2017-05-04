@@ -41,7 +41,8 @@ textarea {
 }
 
 /* jQuery table row notifications */
-.clickable-row:hover {
+.clickable-row:hover,
+.clickable-row-dashboard :hover{
     background: #f7f7f7;
     cursor: pointer;
 }
