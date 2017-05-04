@@ -38,9 +38,11 @@ namespace NotificationPortal.ViewModels
         public string NotificationDescription { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:yyy-MM-ddThh:mm}", ApplyFormatInEditMode = true)]
         public DateTime? StartDateTime { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:yyy-MM-ddThh:mm}", ApplyFormatInEditMode = true)]
         public DateTime? EndDateTime { get; set; }
 
         [Required]

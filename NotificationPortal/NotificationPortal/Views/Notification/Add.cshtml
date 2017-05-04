@@ -30,7 +30,7 @@
         </div>
 
         <!--notification application ID-->
-        <div class="form-group ApplicationList">
+        <div class="form-group">
             @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label" })
             <div class="col-md-12">
                 <select class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false">
@@ -125,7 +125,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create Thread" class="btn btn-success" />
+                @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
             </div>
         </div>
     </div>
@@ -142,10 +143,6 @@
         });
     });
 </script>
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval",

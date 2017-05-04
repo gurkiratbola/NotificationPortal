@@ -98,7 +98,7 @@
 
                     <div id="@collapseId" class="collapse show" role="tabpanel" aria-labelledby="@headingId">
                         <div class="card-block">
-                            @Html.DisplayFor(modelItem => item.NotificationDescription)
+                            @Html.Raw(item.NotificationDescription)
                         </div>
                     </div>
                 </div>
@@ -184,8 +184,8 @@
 </div>
 
 <div>
-    @Html.ActionLink("Update", "Update", new { id = Model.ThreadID }, new { @class = "btn btn-primary" })
-    @Html.ActionLink("Go Back", "Index", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Update Thread", "Update", new { id = Model.ThreadID }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
 </div>
 
 <script src="~/Scripts/jquery-3.1.1.min.js"></script>

@@ -12,18 +12,18 @@
 </ol>
 
 <div class="row">
-    <div class="col-md-2">
-        <p>
-            @Html.ActionLink("Create New", "Add", null, new { @class = "btn btn-primary btn-lg" })
-        </p>
+    <div class="col-md-6">
+        <form class="form-inline pb-3" method="get" action="~/">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" name="name" />
+            <input class="btn btn-secondary" type="submit" value="Search" />
+        </form>
     </div>
 
-    <div class="offset-md-4 col-md-6">
+    <div class="offset-md-4 col-md-2">
         <div style="float: right">
-            <form class="form-inline pb-3" method="get" action="~/">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" name="name" />
-                <input class="btn btn-secondary" type="submit" value="Search" />
-            </form>
+            <p>
+                @Html.ActionLink("Create New", "Add", null, new { @class = "btn btn-primary btn-lg" })
+            </p>
         </div>
     </div>
 </div>

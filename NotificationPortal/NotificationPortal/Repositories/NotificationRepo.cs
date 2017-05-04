@@ -66,15 +66,6 @@ namespace NotificationPortal.Repositories
 
             try
             {
-                //if(notification.Source == "Application")
-                //{
-                //    notification.ServerID = null;
-                //}
-                //else
-                //{
-                //    notification.ApplicationID = null;
-                //}
-
                 //TO DO: check if it's by server or by Application
                 if (notification.ServerReferenceIDs == null)
                 {
@@ -98,7 +89,7 @@ namespace NotificationPortal.Repositories
                     SendMethodID = notification.SentMethodID,
                     //TO DO: discuss how referenceID is generated
                     ReferenceID = Guid.NewGuid().ToString(),
-                    ThreadID = Guid.NewGuid().ToString(),
+                    ThreadID = notification.ThreadID ?? Guid.NewGuid().ToString(),
                     //TO DO: convert input time to UTC time
                     SentDateTime = DateTime.Now,
                     StartDateTime = notification.StartDateTime,
@@ -214,6 +205,8 @@ namespace NotificationPortal.Repositories
                     NotificationDescription = lastestNotification.NotificationDescription,
                     NotificationHeading = lastestNotification.NotificationHeading
                 };
+                model.ServerReferenceIDs = lastestNotification.Servers.Select(s => s.ReferenceID).ToArray();
+                model.ApplicationReferenceIDs = lastestNotification.Applications.Select(a => a.ReferenceID).ToArray();
             }
             model = CreateAddModel(model);
             return model;
