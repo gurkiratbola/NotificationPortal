@@ -13,12 +13,27 @@ namespace NotificationPortal.Repositories
 
         public SelectList GetRolesList()
         {
-            IEnumerable<SelectListItem> rolesList = _context.Roles.Select(roles =>
+            IEnumerable<SelectListItem> rolesList = _context.Roles//.Where(r => r.Name == roleName)
+                                                    .Select(roles =>
                                                     new SelectListItem
                                                     {
-                                                        Value = roles.Id,
+                                                        Value = roles.Name,
                                                         Text = roles.Name
                                                     });
+
+            if (HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN))
+            {
+                return new SelectList(rolesList, "Value", "Text");
+            }
+
+            rolesList = rolesList.Where(r => r.Value != Key.ROLE_ADMIN);
+
+            if (HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
+            {
+                return new SelectList(rolesList, "Value", "Text");
+            }
+
+            rolesList = rolesList.Where(r => r.Value != Key.ROLE_STAFF);
 
             return new SelectList(rolesList, "Value", "Text");
         }
