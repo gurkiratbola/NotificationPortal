@@ -45,6 +45,20 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                <select class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false">
+                    @foreach (var item in Model.ApplicationList)
+                    {
+                        <option value="@Html.DisplayFor(modelItem => item.ReferenceID)" class="ApplicationListItem @Html.DisplayFor(modelItem => item.ClientReferenceID)">@Html.DisplayFor(modelItem => item.ApplicationName)</option>
+
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.ApplicationReferenceIDs, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.Email, new {htmlAttributes = new {@class = "form-control"}})
@@ -100,6 +114,18 @@
         </div>
     </div>
 }
+
+<script>
+    $(document).ready(function () {
+        $(".ApplicationListItem").hide();
+        $("." + $("#ClientReferenceID").val()).show();
+        $("#ClientReferenceID").change(function() {
+            var clientRefIDs = $(this).val();
+            $(".ApplicationListItem").hide();
+            $("." + clientRefIDs).show();
+        });
+    });
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

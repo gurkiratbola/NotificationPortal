@@ -218,10 +218,10 @@ namespace NotificationPortal.Repositories
             }
         }
 
-        public IEnumerable<ApplicationOptionVM> GetApplicationList()
+        public IEnumerable<ApplicationServerOptionVM> GetApplicationList()
         {
             var apps = _context.Application.Select(a=>new { Application=a, Servers=a.Servers });
-            var appList = new List<ApplicationOptionVM>() { };
+            var appList = new List<ApplicationServerOptionVM>() { };
             foreach (var app in apps)
             {
                 var appServers = app.Servers;
@@ -230,7 +230,7 @@ namespace NotificationPortal.Repositories
                 {
                     serverRefIDs = string.Join(" ", appServers.Select(i => i.ReferenceID).ToArray());
                 }
-                appList.Add(new ApplicationOptionVM
+                appList.Add(new ApplicationServerOptionVM
                 {
                     ApplicationName = app.Application.ApplicationName,
                     ReferenceID = app.Application.ReferenceID,

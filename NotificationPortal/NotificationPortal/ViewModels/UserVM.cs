@@ -82,6 +82,9 @@ namespace NotificationPortal.ViewModels
         public string RoleName { get; set; }
 
         [Required]
+        public string[] ApplicationReferenceIDs { get; set; }
+
+        [Required]
         [EmailAddress]
         public string Email { get; set; }
 
@@ -105,6 +108,9 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name = "Roles")]
         public SelectList RolesList { get; set; }
+
+        [Display(Name = "Applications")]
+        public IEnumerable<ApplicationClientOptionVM> ApplicationList { get; set; }
     }
 
     public class UserDeleteVM
@@ -154,5 +160,13 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name = "Client")]
         public SelectList ClientList { get; set; }
+    }
+
+
+    public class ApplicationClientOptionVM
+    {
+        public string ReferenceID { get; set; }
+        public string ApplicationName { get; set; }
+        public string ClientReferenceID { get; set; }
     }
 }
