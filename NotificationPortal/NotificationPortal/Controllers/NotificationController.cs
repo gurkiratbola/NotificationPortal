@@ -11,37 +11,37 @@ namespace NotificationPortal.Controllers
     [Authorize]
     public class NotificationController : AppBaseController
     {
-        public string GetTimeZoneOffset() {
-            string timeOffsetString = "0";
-            if (Request.Cookies["timezoneoffset"] != null)
-            {
-                timeOffsetString = Request.Cookies["timezoneoffset"].Value;
-            }
-            return timeOffsetString;
-        }
+        private readonly NotificationRepo _nRepo = new NotificationRepo();
+        //public string GetTimeZoneOffset() {
+        //    string timeOffsetString = "0";
+        //    if (Request.Cookies["timezoneoffset"] != null)
+        //    {
+        //        timeOffsetString = Request.Cookies["timezoneoffset"].Value;
+        //    }
+        //    return timeOffsetString;
+        //}
         public ActionResult Index()
         {
-            NotificationRepo nRepo = new NotificationRepo();
-            var n = nRepo.GetAllNotifications();
+            var n = _nRepo.GetAllNotifications();
             return View(n);
         }
         
         [HttpGet]
         public ActionResult CreateThread()
         {
-            NotificationRepo nRepo = new NotificationRepo();
-            var model = nRepo.CreateAddModel();
+            var model = _nRepo.CreateAddModel();
             return View(model);
         }
+
         [HttpPost]
         public ActionResult CreateThread(NotificationCreateVM model) {
             string result = "";
-            NotificationRepo nRepo = new NotificationRepo();
             if (ModelState.IsValid)
             {
-                bool success = nRepo.CreateNotification(model, out result);
+                bool success = _nRepo.CreateNotification(model, out result);
                 if (success)
                 {
+                    TempData["SuccessMsg"] = result;
                     return RedirectToAction("Index");
                 }
             }
@@ -49,64 +49,91 @@ namespace NotificationPortal.Controllers
             {
                 ViewBag.ErrorMsg = "Cannot add Notification, model not valid.";
             }
-            model = nRepo.CreateAddModel(model);
+            model = _nRepo.CreateAddModel(model);
             return View(model);
         }
         
         public ActionResult DetailsThread(string id)
         {
-            NotificationRepo nRepo = new NotificationRepo();
-            var model = nRepo.CreateDetailModel(id);
+            var model = _nRepo.CreateDetailModel(id);
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult DeleteThread(string id)
+        {
+            var model = _nRepo.CreateDetailModel(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteThread(ThreadDetailVM model)
+        {
+            string result = "";
+            if (ModelState.IsValid)
+            {
+                bool success = _nRepo.DeleteThread(model.ThreadID, out result);
+                if (success)
+                {
+                    TempData["SuccessMsg"] = result;
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                ViewBag.ErrorMsg = "Cannot add Notification, model not valid.";
+            }
+            TempData["ErrorMsg"] = result;
+            model = _nRepo.CreateDetailModel(model.ThreadID);
             return View(model);
         }
 
         [HttpGet]
         public ActionResult Create(string id)
         {
-            NotificationRepo nRepo = new NotificationRepo();
-            var model = nRepo.CreateUpdateModel(id);
+            var model = _nRepo.CreateUpdateModel(id);
             return View(model);
         }
+
         [HttpPost]
         public ActionResult Create(NotificationCreateVM model)
         {
             string result = "";
-            NotificationRepo nRepo = new NotificationRepo();
             if (ModelState.IsValid)
             {
-                bool success = nRepo.CreateNotification(model, out result);
+                bool success = _nRepo.CreateNotification(model, out result);
                 if (success)
                 {
-                    return RedirectToAction("Index");
+                    TempData["SuccessMsg"] = result;
+                    return RedirectToAction("DetailsThread",new { id = model.ThreadID });
                 }
             }
             else
             {
                 ViewBag.ErrorMsg = "Cannot update Notification, model not valid.";
             }
-            model = nRepo.CreateUpdateModel(model.ThreadID,model);
+            model = _nRepo.CreateUpdateModel(model.ThreadID,model);
             return View(model);
         }
-
-
+        
         [HttpGet]
         public ActionResult Edit(string id)
         {
-            NotificationRepo nRepo = new NotificationRepo();
-            var model = nRepo.CreateEditModel(id);
+            var model = _nRepo.CreateEditModel(id);
             return View(model);
         }
+
         [HttpPost]
         public ActionResult Edit(NotificationEditVM model)
         {
             string result = "";
-            NotificationRepo nRepo = new NotificationRepo();
             if (ModelState.IsValid)
             {
-                bool success = nRepo.EditNotification(model, out result);
+                bool success = _nRepo.EditNotification(model, out result);
                 if (success)
                 {
-                    return RedirectToAction("Index");
+                    TempData["SuccessMsg"] = result;
+                    return RedirectToAction("DetailsThread", new { id = model.ThreadID});
                 }
             }
             else
@@ -114,7 +141,37 @@ namespace NotificationPortal.Controllers
                 TempData["ErrorMsg"] = "Cannot edit Notification, model not valid.";
             }
             TempData["ErrorMsg"] = result;
-            model = nRepo.CreateEditModel(model.NotificationReferenceID, model);
+            model = _nRepo.CreateEditModel(model.NotificationReferenceID, model);
+            return View(model);
+        }
+        
+        [HttpGet]
+        public ActionResult Delete(string id)
+        {
+            var model = _nRepo.CreateDeleteModel(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(NotificationDetailVM model)
+        {
+            string result = "";
+            if (ModelState.IsValid)
+            {
+                bool success = _nRepo.DeleteNotification(model.ReferenceID, out result);
+                if (success)
+                {
+                    TempData["SuccessMsg"] = result;
+                    // TODO handle when thread no longer exists
+                    return RedirectToAction("DetailsThread", new { id = model.ThreadID });
+                }
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Cannot delete Notification, try again later.";
+            }
+            TempData["ErrorMsg"] = result;
+            model = _nRepo.CreateDeleteModel(model.ReferenceID);
             return View(model);
         }
 

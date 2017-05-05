@@ -10,10 +10,11 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.Controllers
 {
-    [Authorize(Roles = "Admin, Staff")]
-    public class ApplicationController : Controller
+    [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
+    public class ApplicationController : AppBaseController
     {
         private readonly ApplicationRepo _aRepo = new ApplicationRepo();
+        private readonly SelectListRepo _sRepo = new SelectListRepo();
 
         [HttpGet]
         public ActionResult Index()
@@ -66,8 +67,8 @@ namespace NotificationPortal.Controllers
         {
             ApplicationVM application = _aRepo.GetApplication(id);
             // To be modified: global method for status in development
-            ViewBag.StatusNames = _aRepo.GetStatusList();
-            ViewBag.ClientNames = _aRepo.GetClientList();
+            ViewBag.StatusID = _aRepo.GetStatusList();
+            ViewBag.ClientID = _aRepo.GetClientList();
             return View(application);
         }
 
@@ -89,8 +90,8 @@ namespace NotificationPortal.Controllers
                 }
             }
             ApplicationVM application = _aRepo.GetApplication(model.ReferenceID);
-            ViewBag.StatusNames = _aRepo.GetStatusList();
-            ViewBag.ClientNames = _aRepo.GetClientList();
+            ViewBag.StatusID = _aRepo.GetStatusList();
+            ViewBag.ClientID = _aRepo.GetClientList();
             return View(application);
         }
 

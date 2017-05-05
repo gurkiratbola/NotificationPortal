@@ -13,7 +13,6 @@ namespace NotificationPortal.ViewModels
     public class ApplicationVM
     {
         [Key]
-        [Required]
         public string ReferenceID { get; set; }
 
         [Required]
@@ -45,6 +44,38 @@ namespace NotificationPortal.ViewModels
 
         public SelectList StatusList { get; set; }
         public SelectList ClientList { get; set; }
+    }
+    public class ApplicationDeleteVM
+    {
+        [Key]
+        public string ReferenceID { get; set; }
+
+        [Required]
+        [DisplayName("Application Name")]
+        public string ApplicationName { get; set; }
+
+        [Required]
+        public string Description { get; set; }
+
+
+        [Required]
+        public string URL { get; set; }
+
+
+        //[Required]
+        //public string StatusName { get; set; }
+
+
+
+        [Required]
+        public int StatusID { get; set; }
+
+
+        //[Required]
+        //public string ClientName { get; set; }
+
+        [Required]
+        public int ClientID { get; set; }
     }
 
 }

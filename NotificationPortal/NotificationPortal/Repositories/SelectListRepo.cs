@@ -16,9 +16,23 @@ namespace NotificationPortal.Repositories
             IEnumerable<SelectListItem> rolesList = _context.Roles.Select(roles =>
                                                     new SelectListItem
                                                     {
-                                                        Value = roles.Id,
+                                                        Value = roles.Name,
                                                         Text = roles.Name
                                                     });
+
+            if (HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN))
+            {
+                return new SelectList(rolesList, "Value", "Text");
+            }
+
+            rolesList = rolesList.Where(r => r.Value != Key.ROLE_ADMIN);
+
+            if (HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
+            {
+                return new SelectList(rolesList, "Value", "Text");
+            }
+
+            rolesList = rolesList.Where(r => r.Value != Key.ROLE_STAFF);
 
             return new SelectList(rolesList, "Value", "Text");
         }

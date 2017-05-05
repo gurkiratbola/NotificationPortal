@@ -106,30 +106,30 @@ namespace NotificationPortal.Repositories
             return application;
         }
 
-        //public ApplicationVM GetDeleteApplication(string referenceID)
-        //{
-        //    ApplicationVM application = _context.Application
-        //                    .Where(a => a.ReferenceID == referenceID)
-        //                    .Select(b => new ApplicationVM
-        //                    {
-        //                        ApplicationName = b.ApplicationName,
-        //                        ReferenceID = b.ReferenceID,
-        //                        Description = b.Description,
-        //                        URL = b.URL,
-        //                        StatusID = b.StatusID,
-        //                        ClientID = b.ClientID,
-        //                    }).FirstOrDefault();
-        //    return application;
-        //}
+        public ApplicationVM GetDeleteApplication(string referenceID)
+        {
+            ApplicationVM application = _context.Application
+                            .Where(a => a.ReferenceID == referenceID)
+                            .Select(b => new ApplicationVM
+                            {
+                                ApplicationName = b.ApplicationName,
+                                ReferenceID = b.ReferenceID,
+                                Description = b.Description,
+                                URL = b.URL,
+                                StatusID = b.StatusID,
+                                ClientID = b.ClientID,
+                            }).FirstOrDefault();
+            return application;
+        }
 
         public bool EditApplication(ApplicationVM application, out string msg)
         {
             Application a = _context.Application.Where(b => b.ApplicationName == application.ApplicationName).FirstOrDefault();
-            if (a != null)
-            {
-                msg = "Application name already exist.";
-                return false;
-            }
+            //if (a != null)
+            //{
+            //    msg = "Application name already exist.";
+            //    return false;
+            //}
             try
             {
                 Application applicationUpdated = _context.Application

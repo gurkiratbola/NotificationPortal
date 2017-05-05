@@ -47,11 +47,17 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Home Phone")]
         public string HomePhone { get; set; }
 
+        [Display(Name = "Role")]
+        public string RoleName { get; set; }
+
         [Display(Name = "Client")]
         public string ClientName { get; set; }
 
         [Display(Name = "Status")]
         public string StatusName { get; set; }
+
+        [Display(Name = "Role")]
+        public SelectList RoleList { get; set; }
 
         [Display(Name = "Status")]
         public SelectList StatusList { get; set; }
@@ -73,7 +79,7 @@ namespace NotificationPortal.ViewModels
         public string ClientReferenceID { get; set; }
 
         [Required]
-        public string RolesId { get; set; }
+        public string RoleName { get; set; }
 
         [Required]
         [EmailAddress]
@@ -92,13 +98,13 @@ namespace NotificationPortal.ViewModels
         public string BusinessTitle { get; set; }
 
         [Display(Name = "Status")]
-        public IEnumerable<SelectListItem> StatusList { get; set; }
+        public SelectList StatusList { get; set; }
 
         [Display(Name = "Client")]
-        public IEnumerable<SelectListItem> ClientList { get; set; }
+        public SelectList ClientList { get; set; }
 
         [Display(Name = "Roles")]
-        public IEnumerable<SelectListItem> RolesList { get; set; }
+        public SelectList RolesList { get; set; }
     }
 
     public class UserDeleteVM
@@ -136,6 +142,12 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name = "Status")]
         public string StatusName { get; set; }
+
+        [Display(Name = "Role")]
+        public string RoleName { get; set; }
+
+        [Display(Name = "Role")]
+        public SelectList RoleList { get; set; }
 
         [Display(Name = "Status")]
         public SelectList StatusList { get; set; }
