@@ -98,24 +98,32 @@ namespace NotificationPortal.Repositories
 
         public bool AddUser(AddUserVM model, out string msg)
         {
+            // Get the user manager 
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+
+            // Check if the user exists in the database
             ApplicationUser checkUser = userManager.Users.FirstOrDefault(u => u.Email.ToLower() == model.Email.ToLower());
 
             try
             {
+                // if user does not exist then ONLY proceed
                 if (checkUser == null)
                 {
+                    // create a new AspNetUser
                     var user = new ApplicationUser()
                     {
                         UserName = model.Email,
                         Email = model.Email
                     };
 
+                    // make the user at this point
                     userManager.Create(user);
 
+                    // find the client id with the reference id passed with the viewmodel and add the new client to that
                     var clientID = _context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
                                    .Select(client => client.ClientID).FirstOrDefault();
 
+                    // duplicate the user from aspnetuser to userdetail
                     UserDetail details = new UserDetail()
                     {
                         UserID = user.Id,
@@ -127,14 +135,20 @@ namespace NotificationPortal.Repositories
                         ClientID = clientID
                     };
 
+                    // add the user details to the database 
                     _context.UserDetail.Add(details);
                     _context.SaveChanges();
 
+                    // verify which role the user needs to be added     
+                    userManager.AddToRole(user.Id, model.RoleName);
+
+                    // if the client was added successfully pass this msg out
                     msg = "Client added successfully!";
                     return true;
                 }
                 else
                 {
+                    // if error show this msg
                     msg = "The email address is already in use.";
 
                     return false;

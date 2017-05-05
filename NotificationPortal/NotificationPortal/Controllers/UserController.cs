@@ -91,6 +91,7 @@ namespace NotificationPortal.Controllers
         {
             ViewBag.StatusNames = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
             ViewBag.ClientNames = _selectRepo.GetClientList();
+            ViewBag.RoleNames = _selectRepo.GetRolesList();
 
             return View(_userRepo.GetUserDetails(id));
         }
@@ -127,6 +128,7 @@ namespace NotificationPortal.Controllers
         {
             ViewBag.StatusNames = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
             ViewBag.ClientNames = _selectRepo.GetClientList();
+            ViewBag.RoleNames = _selectRepo.GetRolesList();
 
             return View(_userRepo.GetUserDetails(id));
         }
