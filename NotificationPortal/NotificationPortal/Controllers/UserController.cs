@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -49,6 +49,7 @@ namespace NotificationPortal.Controllers
             {
                 StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER),
                 ClientList = _selectRepo.GetClientList(),
+                RolesList = _selectRepo.GetRolesList(),
             };
 
             return View(model);
@@ -78,6 +79,7 @@ namespace NotificationPortal.Controllers
 
             model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
             model.ClientList = _selectRepo.GetClientList();
+            model.RolesList = _selectRepo.GetRolesList();
 
             return View(model);
         }
