@@ -32,7 +32,7 @@ namespace NotificationPortal.Repositories
                     }
                 );
 
-
+                // TODO: show initial notification heading
                 IEnumerable<NotificationIndexVM> allThreads = allNotifications
                     .GroupBy(n => n.ThreadID)
                     .Select(
@@ -40,7 +40,7 @@ namespace NotificationPortal.Repositories
                 );
                 return allThreads;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -50,8 +50,9 @@ namespace NotificationPortal.Repositories
         {
             if (model == null)
             {
-                model = new NotificationCreateVM();
-                model.ThreadID = Guid.NewGuid().ToString();
+                model = new NotificationCreateVM() {
+                    ThreadID = Guid.NewGuid().ToString()
+                };
             }
             model.ApplicationList = GetApplicationList();
             model.SendMethodList = _slRepo.GetSendMethodList();
@@ -106,7 +107,7 @@ namespace NotificationPortal.Repositories
                 msg = "Notification Sent";
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 msg = "Notification not created";
                 return false;
@@ -173,15 +174,15 @@ namespace NotificationPortal.Repositories
             }
 
         }
-        public NotificationDetailVM CreateDetailModel(string threadID)
+        public ThreadDetailVM CreateDetailModel(string threadID)
         {
             IEnumerable<Notification> notifications =
                 _context.Notification.Where(n => n.ThreadID == threadID)
                 .OrderBy(n => n.SentDateTime);
 
-            IEnumerable<NotificationSpecificDetailVM> thread =
+            IEnumerable<NotificationDetailVM> thread =
                 notifications.Select(
-                    n => new NotificationSpecificDetailVM
+                    n => new NotificationDetailVM
                     {
                         ReferenceID = n.ReferenceID,
                         NotificationHeading = n.NotificationHeading,
@@ -230,10 +231,9 @@ namespace NotificationPortal.Repositories
                 ).OrderByDescending(a => a.ApplicationName);
             }
 
-            NotificationDetailVM model = new NotificationDetailVM()
+            ThreadDetailVM model = new ThreadDetailVM()
             {
                 ThreadID = threadID,
-                Source = lastestNotification.Servers.Count == 0 ? "Application" : "Server",
                 // TODO
                 // ApplicationServerName = lastestNotification.Servers.Count == 0 ? lastestNotification.Application.ApplicationName : lastestNotification.Server.ServerName,
                 NotificationType = lastestNotification.NotificationType.NotificationTypeName,
@@ -254,6 +254,8 @@ namespace NotificationPortal.Repositories
                 _context.Notification.Where(n => n.ThreadID == threadID)
                 .OrderByDescending(n => n.SentDateTime).FirstOrDefault();
 
+            int headingLength = lastestNotification.NotificationHeading.IndexOf(" (Edit");
+            
             if (model == null)
             {
                 model = new NotificationCreateVM()
@@ -266,8 +268,11 @@ namespace NotificationPortal.Repositories
                     SentMethodID = lastestNotification.SendMethodID,
                     StatusID = lastestNotification.StatusID,
                     NotificationDescription = lastestNotification.NotificationDescription,
-                    NotificationHeading = lastestNotification.NotificationHeading
-                };
+                    NotificationHeading = lastestNotification.NotificationHeading = headingLength == -1 ?
+                        lastestNotification.NotificationHeading :
+                        lastestNotification.NotificationHeading.Substring(0, headingLength)
+
+            };
                 model.ServerReferenceIDs = lastestNotification.Servers.Select(s => s.ReferenceID).ToArray();
                 model.ApplicationReferenceIDs = lastestNotification.Applications.Select(a => a.ReferenceID).ToArray();
             }
@@ -308,6 +313,21 @@ namespace NotificationPortal.Repositories
             return model;
         }
 
+        public NotificationDetailVM CreateDeleteModel(string notificationReferenceID)
+        {
+            var deletingNotification =
+                _context.Notification.Where(n => n.ReferenceID == notificationReferenceID)
+                .FirstOrDefault();
+            NotificationDetailVM model = new NotificationDetailVM()
+            {
+                ReferenceID = notificationReferenceID,
+                NotificationDescription = deletingNotification.NotificationDescription,
+                NotificationHeading = deletingNotification.NotificationHeading,
+                SentDateTime = deletingNotification.SentDateTime,
+                ThreadID = deletingNotification.ThreadID
+            };
+            return model;
+        }
         public IEnumerable<ApplicationOptionVM> GetApplicationList()
         {
             //var apps = _context.Server.Select(s=>s.Applications.Select(
@@ -320,6 +340,42 @@ namespace NotificationPortal.Repositories
             //    //ServerReferenceIDs = string.Join(" ", g.Select(i=>i.ServerRef))
             //});
             return new List<ApplicationOptionVM>() { new ApplicationOptionVM() };
+        }
+
+        public bool DeleteThread(string threadID, out string msg)
+        {
+            try
+            {
+                var deletingThread = _context.Notification.Where(n => n.ThreadID == threadID);
+                _context.Notification.RemoveRange(deletingThread);
+                _context.SaveChanges();
+                msg = "Thread has been deleted";
+                return true;
+            }
+            catch (Exception)
+            {
+                msg = "Thread has not been deleted";
+                return false;
+            }
+            
+        }
+
+        public bool DeleteNotification(string notificationReferenceID, out string msg)
+        {
+            try
+            {
+                var deletingNotification = _context.Notification.Where(n => n.ReferenceID == notificationReferenceID).FirstOrDefault();
+                _context.Notification.Remove(deletingNotification);
+                _context.SaveChanges();
+                msg = "Notification has been deleted";
+                return true;
+            }
+            catch (Exception)
+            {
+                msg = "Notification has not been deleted";
+                return false;
+            }
+
         }
     }
 }

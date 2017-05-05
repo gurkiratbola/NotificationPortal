@@ -17,6 +17,12 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
+        @if (TempData["ErrorMsg"] != null)
+        {
+            <p class="alert alert-danger offset-md-3 col-md-6 offset-md-3">
+                @Html.Raw(TempData["ErrorMsg"])
+            </p>
+        }
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ThreadID)
