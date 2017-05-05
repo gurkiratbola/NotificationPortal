@@ -5,11 +5,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
 
+<ol class="breadcrumb bg-faded">
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="~/Client/Index" class="link-color">Clients</a></li>
+    <li class="breadcrumb-item active">@Html.DisplayFor(model => model.ServerName)</li>
+</ol>
+
+<div class="container">
+    @if (TempData["SuccessMsg"] != null)
+    {
+        <p class="alert alert-success">
+            @Html.Raw(TempData["SuccessMsg"])
+        </p>
+    }
 <div>
-    <h4>ServerVM</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.ServerName)
@@ -54,6 +65,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
 </p>

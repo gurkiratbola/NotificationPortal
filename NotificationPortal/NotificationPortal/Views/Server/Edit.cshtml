@@ -1,12 +1,17 @@
 ﻿@model NotificationPortal.ViewModels.ServerVM
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Server";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
 
+<ol class="breadcrumb bg-faded">
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="~/Client/Index" class="link-color">Clients</a></li>
+    <li class="breadcrumb-item active">@Html.DisplayFor(model => model.ServerName)</li>
+</ol>
 
 @using (Html.BeginForm())
 {
@@ -62,7 +67,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </div>
     </div>
