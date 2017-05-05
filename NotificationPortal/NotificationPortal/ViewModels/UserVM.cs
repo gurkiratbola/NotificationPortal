@@ -98,13 +98,13 @@ namespace NotificationPortal.ViewModels
         public string BusinessTitle { get; set; }
 
         [Display(Name = "Status")]
-        public IEnumerable<SelectListItem> StatusList { get; set; }
+        public SelectList StatusList { get; set; }
 
         [Display(Name = "Client")]
-        public IEnumerable<SelectListItem> ClientList { get; set; }
+        public SelectList ClientList { get; set; }
 
         [Display(Name = "Roles")]
-        public IEnumerable<SelectListItem> RolesList { get; set; }
+        public SelectList RolesList { get; set; }
     }
 
     public class UserDeleteVM

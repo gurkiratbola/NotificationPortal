@@ -336,12 +336,8 @@
     <Content Include="Views\Status\Details.cshtml" />
     <Content Include="Views\Status\Create.cshtml" />
     <Content Include="Views\Status\Edit.cshtml" />
-    <Content Include="Views\Application\Index.cshtml" />
     <Content Include="Views\Status\Delete.cshtml" />
-    <Content Include="Views\Application\Details.cshtml" />
     <Content Include="Views\Application\Create.cshtml" />
-    <Content Include="Views\Application\Edit.cshtml" />
-    <Content Include="Views\Application\Delete.cshtml" />
     <Content Include="Views\Client\Create.cshtml" />
     <Content Include="Views\Client\Edit.cshtml" />
     <Content Include="Views\Client\Details.cshtml" />
@@ -356,6 +352,10 @@
     <Content Include="Views\Notification\Edit.cshtml" />
     <Content Include="Views\Notification\DeleteThread.cshtml" />
     <Content Include="Views\Notification\DetailsThread.cshtml" />
+    <Content Include="Views\Application\Index.cshtml" />
+    <Content Include="Views\Application\Edit.cshtml" />
+    <Content Include="Views\Application\Details.cshtml" />
+    <Content Include="Views\Application\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

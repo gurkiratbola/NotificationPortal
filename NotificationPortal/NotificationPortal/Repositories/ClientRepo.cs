@@ -55,7 +55,7 @@ namespace NotificationPortal.Repositories
                                                 });
                 return clientList;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -71,10 +71,12 @@ namespace NotificationPortal.Repositories
             }
             try
             {
-                Client newClient = new Client();
-                newClient.ClientName = client.ClientName;
-                newClient.StatusID = client.StatusID;
-                newClient.ReferenceID = Guid.NewGuid().ToString();
+                Client newClient = new Client()
+                {
+                    ClientName = client.ClientName,
+                    StatusID = client.StatusID,
+                    ReferenceID = Guid.NewGuid().ToString()
+                };
                 _context.Client.Add(newClient);
                 _context.SaveChanges();
                 msg = "Client successfully added";
@@ -100,7 +102,7 @@ namespace NotificationPortal.Repositories
                 }).FirstOrDefault();
                 return client;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

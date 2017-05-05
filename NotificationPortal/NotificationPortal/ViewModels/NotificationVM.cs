@@ -36,12 +36,10 @@ namespace NotificationPortal.ViewModels
         [Required]
         [AllowHtml]
         public string NotificationDescription { get; set; }
-
-        [Required]
+        
         [DisplayFormat(DataFormatString = "{0:yyy-MM-ddThh:mm}", ApplyFormatInEditMode = true)]
         public DateTime? StartDateTime { get; set; }
-
-        [Required]
+        
         [DisplayFormat(DataFormatString = "{0:yyy-MM-ddThh:mm}", ApplyFormatInEditMode = true)]
         public DateTime? EndDateTime { get; set; }
 
@@ -86,14 +84,11 @@ namespace NotificationPortal.ViewModels
         public string NotificationReferenceID { get; set; }
     }
 
-    public class NotificationDetailVM
+    public class ThreadDetailVM
     {
+        [Required]
         [Display(Name = "Thread ID")]
         public string ThreadID { get; set; }
-        [Display(Name = "Source")]
-        public string Source { get; set; }
-        [Display(Name = "Application/Server")]
-        public string ApplicationServerName { get; set; }
         [Display(Name = "Type")]
         public string NotificationType { get; set; }
         [Display(Name = "Level of Impact")]
@@ -104,16 +99,17 @@ namespace NotificationPortal.ViewModels
         public DateTime? StartDateTime { get; set; }
         [Display(Name = "End Time")]
         public DateTime? EndDateTime { get; set; }
-        public IEnumerable<NotificationSpecificDetailVM> Thread { get; set; }
+        public IEnumerable<NotificationDetailVM> Thread { get; set; }
         public IEnumerable<NotificationServerVM> Servers { get; set; }
         public IEnumerable<NotificationApplicationVM> Applications { get; set; }
     }
-    public class NotificationSpecificDetailVM
+    public class NotificationDetailVM
     {
         public string ReferenceID { get; set; }
         public string NotificationHeading { get; set; }
         public string NotificationDescription { get; set; }
         public DateTime SentDateTime { get; set; }
+        public string ThreadID { get; set; }
     }
     public class NotificationServerVM
     {
