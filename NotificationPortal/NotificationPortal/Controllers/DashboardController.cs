@@ -16,8 +16,9 @@ namespace NotificationPortal.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            IEnumerable<DashboardVM> dashboard = _dashboardRepo.GetDashBoard();
-            return View(dashboard);
+            IEnumerable<DashboardExternalVM> dashboard = _dashboardRepo.GetDashBoard();
+            //return View(dashboard);
+            return RedirectToAction("Index", "Notification", "");
         }
 
     }

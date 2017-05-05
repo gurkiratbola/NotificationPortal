@@ -7,7 +7,55 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.ViewModels
 {
-    public class DashboardVM
+    public class DashboardExternalVM
+    {
+        [Required]
+        public string ThreadID { get; set; }
+
+        public int ApplicationID { get; set; }
+
+        public int NotificationID { get; set; }
+
+        public string ReferenceID { get; set; }
+
+        public IEnumerable<DashboardThreadDetailVM> ThreadDetail { get; set; }
+
+        [Required]
+        public int StatusID { get; set; }
+
+        [Required]
+        public int LevelOfImpactID { get; set; }
+
+        [Required]
+        public int ServerID { get; set; }
+
+        [Display(Name = "Type")]
+        public string NotificationTypeName { get; set; }
+
+        [Display(Name =  "Application Name")]
+        public string ApplicationName { get; set; }
+
+        [Display(Name = "Status")]
+        public string StatusName { get; set; }
+
+
+        [Display(Name = "Level of Impact")]
+        public string LevelOfImpactName { get; set; }
+
+        [Required]
+        [Display(Name = "Heading")]
+        public string NotificationHeading { get; set; }
+
+    }
+
+    public class DashboardThreadDetailVM
+    {
+        public string ReferenceID { get; set; }
+        public string NotificationHeading { get; set; }
+        public DateTime SentDateTime { get; set; }
+    }
+
+    public class DashboardInternalVM
     {
         [Required]
         public string ThreadID { get; set; }
@@ -32,7 +80,7 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Type")]
         public string NotificationTypeName { get; set; }
 
-        [Display(Name =  "Application Name")]
+        [Display(Name = "Application Name")]
         public string ApplicationName { get; set; }
 
         [Display(Name = "Status")]
@@ -58,16 +106,5 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Start Time")]
         public DateTime? StartDateTime { get; set; }
 
-        public IEnumerable<SelectListItem> ApplicationList { get; set; }
-
-        public IEnumerable<SelectListItem> ServerList { get; set; }
-
-        public IEnumerable<SelectListItem> TypeList { get; set; }
-
-        public IEnumerable<SelectListItem> LevelOfImpactList { get; set; }
-
-        public IEnumerable<SelectListItem> StatusList { get; set; }
-
-        public IEnumerable<SelectListItem> ProirityList { get; set; }
     }
 }

@@ -11,10 +11,10 @@ namespace NotificationPortal.Repositories
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
-        public IEnumerable<DashboardVM> GetDashBoard()
+        public IEnumerable<DashboardExternalVM> GetDashBoard()
         {
-            IEnumerable<DashboardVM> dashboard = from notif in _context.Notification
-                                                 select new DashboardVM()
+            IEnumerable<DashboardExternalVM> dashboard = from notif in _context.Notification
+                                                 select new DashboardExternalVM()
                                                  {
                                                      //ApplicationID = app.ApplicationID,
                                                      //ApplicationName = notif.Applications.ToString(),
@@ -30,7 +30,7 @@ namespace NotificationPortal.Repositories
                                                      LevelOfImpactID = notif.LevelOfImpact.LevelOfImpactID,
                                                      LevelOfImpactName = notif.LevelOfImpact.Level,
                                                      //URL = app.URL,
-                                                     StartDateTime = notif.StartDateTime
+                                                     //StartDateTime = notif.StartDateTime
                                                  };
             return dashboard;
         }

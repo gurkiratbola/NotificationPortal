@@ -11,6 +11,18 @@ namespace NotificationPortal.Repositories
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
+        public SelectList GetRolesList()
+        {
+            IEnumerable<SelectListItem> rolesList = _context.Roles.Select(roles =>
+                                                    new SelectListItem
+                                                    {
+                                                        Value = roles.Id,
+                                                        Text = roles.Name
+                                                    });
+
+            return new SelectList(rolesList, "Value", "Text");
+        }
+
         public SelectList GetClientList()
         {
             List<SelectListItem> clientList = _context.Client.Select(app => new SelectListItem
