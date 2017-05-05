@@ -84,9 +84,9 @@ namespace NotificationPortal.Migrations
         {
             string[] levelsOfImpact = new string[] {
                 Key.LEVEL_OF_IMPACT_IMPACTING,
-                Key.LEVEL_OF_IMPACT_NON_IMPACTING,
                 Key.LEVEL_OF_IMPACT_OUTAGE,
-                Key.LEVEL_OF_IMPACT_REDUNDANCY
+                Key.LEVEL_OF_IMPACT_REDUNDANCY,
+                Key.LEVEL_OF_IMPACT_NON_IMPACTING
             };
 
             foreach (string level in levelsOfImpact)
