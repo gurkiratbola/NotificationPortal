@@ -21,19 +21,19 @@ namespace NotificationPortal.Controllers
 
         // GET: UserDetails/Index
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index(/*string sortOrder, string currentFilter, string searchString, int? page*/)
         {
-            if (searchString != null)
-            {
-                page = 1;
-            }
+            //if (searchString != null)
+            //{
+            //    page = 1;
+            //}
 
-            searchString = currentFilter;
+            //searchString = currentFilter;
 
-            ViewBag.CurrentFilter = searchString;
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.ClientNameSort = string.IsNullOrEmpty(sortOrder) ? ConstantsRepo.SORT_CLIENT_BY_NAME_DESC : "";
-            ViewBag.StatusNameSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC;
+            //ViewBag.CurrentFilter = searchString;
+            //ViewBag.CurrentSort = sortOrder;
+            //ViewBag.ClientNameSort = string.IsNullOrEmpty(sortOrder) ? ConstantsRepo.SORT_CLIENT_BY_NAME_DESC : "";
+            //ViewBag.StatusNameSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC;
 
             IEnumerable<UserVM> users = _userRepo.GetAllUsers();
 
@@ -146,7 +146,7 @@ namespace NotificationPortal.Controllers
             if (ModelState.IsValid)
             {
                 var msg = "";
-                if (_userRepo.DeleteUser(model.ReferenceID, model.ClientName, out msg))
+                if (_userRepo.DeleteUser(model.ReferenceID, model.ClientReferenceID, out msg))
                 {
                     TempData["SuccessMsg"] = msg;
 
