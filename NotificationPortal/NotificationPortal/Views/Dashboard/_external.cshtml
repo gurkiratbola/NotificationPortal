@@ -1,0 +1,72 @@
+﻿@model IEnumerable<NotificationPortal.ViewModels.DashboardVM>
+
+
+@if (Model.Count() > 0)
+{
+
+    foreach (var item in Model)
+    {
+        var statusClass = item.Status == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INCOMPLETE ? "text-danger" : "text-success";
+        var impactClass = item.LevelOfImpact == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING ? "badge badge-success" : "badge badge-danger";
+        <div class="card-deck pb-3">
+            <div class="card clickable-row" data-href="/Notification/Details">
+                <div class="card-header card-inverse card-deck">
+                        <div class="col-md-6">
+                                <h4>
+                                    <a href="@Url.Action("Details", "Application", new { id = item.SourceReferenceID })">
+                                        @Html.DisplayFor(modelItem => item.SourceName)
+                                    </a>
+                                    <span class="@impactClass">
+                                        @Html.DisplayFor(modelItem => item.LevelOfImpact)
+                                    </span>
+                                </h4>
+
+                        </div>
+                        <div class="col-md-6">
+                                <span class="@statusClass float-right">
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </span>
+                        </div>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3 class="heading-padding">
+                                        @Html.DisplayFor(modelItem => item.ThreadHeading)
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="offset-md-1 col-md-11">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul>
+                                        @foreach (var detail in item.ThreadDetail)
+                                        {
+                                            <li>
+                                                <p class="text-muted">
+                                                    @Html.DisplayFor(modelItem => detail.SentDateTime)
+                                                    <span class="text-indent">
+                                                        @Html.DisplayFor(modelItem => detail.NotificationHeading)
+                                                    </span>
+                                                </p>
+                                            </li>
+                                        }
+                                    </ul>
+
+                                </div>
+                                <div class="col-md-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       }
+}else {
+    <p>Currently, there are not notifications.</p>
+}

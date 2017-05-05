@@ -11,14 +11,14 @@ namespace NotificationPortal.Controllers
 {
     public class DashboardController : AppBaseController
     {
-        private readonly DashboardRepo _dashboardRepo = new DashboardRepo();
+        private readonly DashboardRepo _dRepo = new DashboardRepo();
         // GET: Dashboard
         [Authorize]
         public ActionResult Index()
         {
-            IEnumerable<DashboardExternalVM> dashboard = _dashboardRepo.GetDashBoard();
-            //return View(dashboard);
-            return RedirectToAction("Index", "Notification", "");
+            IEnumerable<DashboardVM> dashboard = _dRepo.GetDashboard(User);
+            return View(dashboard);
+            //return RedirectToAction("Index", "Notification", "");
         }
 
     }
