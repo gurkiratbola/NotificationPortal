@@ -11,9 +11,9 @@ namespace NotificationPortal.Repositories
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
-        public SelectList GetRolesList(string roleName)
+        public SelectList GetRolesList()
         {
-            IEnumerable<SelectListItem> rolesList = _context.Roles.Where(r => r.Name == roleName)
+            IEnumerable<SelectListItem> rolesList = _context.Roles//.Where(r => r.Name == roleName)
                                                     .Select(roles =>
                                                     new SelectListItem
                                                     {
