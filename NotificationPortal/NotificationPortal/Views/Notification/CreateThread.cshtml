@@ -1,7 +1,7 @@
 @model NotificationPortal.ViewModels.NotificationCreateVM
 
 @{
-    ViewBag.Title = "Update Thread";
+    ViewBag.Title = "Start New Thread";
 }
 
 <h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
@@ -12,15 +12,15 @@
     <li class="breadcrumb-item active">Add Notification</li>
 </ol>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-
+    
     <div class="form-horizontal">
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ThreadID)
-        <!--notification server reference ID-->
+
+        <!--notification server ID-->
         <div class="form-group">
             @Html.LabelFor(model => model.ServerReferenceIDs, htmlAttributes: new { @class = "control-label" })
             <div class="col-md-12">
@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <!--notification application reference ID-->
+        <!--notification application ID-->
         <div class="form-group">
             @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label" })
             <div class="col-md-12">
@@ -37,9 +37,10 @@
                     @foreach (var item in Model.ApplicationList)
                     {
                         <option value="@Html.DisplayFor(modelItem => item.ReferenceID)" class="ApplicationListItem @Html.DisplayFor(modelItem => item.ServerReferenceIDs)">@Html.DisplayFor(modelItem => item.ApplicationName)</option>
+
                     }
                 </select>
-                @* @Html.ListBoxFor(m => m.ApplicationReferenceIDs, Model.ApplicationList, htmlAttributes: new { @class = "form-control" })*@
+               @* @Html.ListBoxFor(m => m.ApplicationReferenceIDs, Model.ApplicationList, htmlAttributes: new { @class = "form-control" })*@
                 @Html.ValidationMessageFor(model => model.ApplicationReferenceIDs, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -101,7 +102,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.NotificationDescription, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.NotificationDescription, new { @class = "form-control" })
+                @Html.TextAreaFor(model => model.NotificationDescription,  new { @class = "form-control"} )
                 @Html.ValidationMessageFor(model => model.NotificationDescription, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -121,12 +122,11 @@
                 @Html.ValidationMessageFor(model => model.EndDateTime, "", new { @class = "text-danger" })
             </div>
         </div>
-        
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Update Thread" class="btn btn-success" />
-                @Html.ActionLink("Back", "Details", new { id = Model.ThreadID }, new { @class = "btn btn-danger" })
-
+                <input type="submit" value="Create Thread" class="btn btn-success" />
+                @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
             </div>
         </div>
     </div>
@@ -134,7 +134,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#ServerList").change(function () {
+        $("#ServerList").change(function() {
             var serverRefIDs = $(this).val();
             $(".ApplicationListItem").hide();
             $.each(serverRefIDs, function (index, value) {

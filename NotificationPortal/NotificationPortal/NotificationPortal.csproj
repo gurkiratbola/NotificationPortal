@@ -327,7 +327,7 @@
     <Content Include="Views\Home\Documentation.cshtml" />
     <Content Include="Views\Notification\Delete.cshtml" />
     <Content Include="Views\Notification\Details.cshtml" />
-    <Content Include="Views\Notification\Create.cshtml" />
+    <Content Include="Views\Notification\CreateThread.cshtml" />
     <Content Include="Views\Server\Details.cshtml" />
     <Content Include="Views\Server\Create.cshtml" />
     <Content Include="Views\Server\Edit.cshtml" />
@@ -350,10 +350,12 @@
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />
-    <Content Include="Views\Notification\Update.cshtml" />
+    <Content Include="Views\Notification\Create.cshtml" />
     <Content Include="Views\Dashboard\OldIndex.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Notification\Edit.cshtml" />
+    <Content Include="Views\Notification\DeleteThread.cshtml" />
+    <Content Include="Views\Notification\DetailsThread.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

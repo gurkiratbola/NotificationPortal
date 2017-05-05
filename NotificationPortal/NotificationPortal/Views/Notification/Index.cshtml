@@ -22,7 +22,7 @@
     <div class="offset-md-4 col-md-2">
         <div style="float: right">
             <p>
-                @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary btn-lg" })
+                @Html.ActionLink("Create New", "CreateThread", null, new { @class = "btn btn-primary btn-lg" })
             </p>
         </div>
     </div>
@@ -49,7 +49,7 @@
 
         @foreach (var item in Model)
         {
-            <tr class="text-center clickable-row" id="@item.ThreadID" data-href="/Details/@item.ThreadID">
+            <tr class="text-center clickable-row" id="@item.ThreadID" data-href="/DetailsThread/@item.ThreadID">
                 <td>
                     @Html.DisplayFor(modelItem => item.NotificationType)
                 </td>
@@ -69,7 +69,7 @@
 </table>
 <div class="hidden-menu">
     <ul>
-        <li><a href="/Update/" class="btn btn-sm">Update</a></li>
+        <li><a href="/Create/" class="btn btn-sm">Update</a></li>
         <li><a href="/Delete/" class="btn btn-sm">Delete</a></li>
     </ul>
 </div>
