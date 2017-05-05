@@ -11,8 +11,8 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.Controllers
 {
-    [Authorize(Roles = "Admin, Staff")]
-    public class ServerController : Controller
+    [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
+    public class ServerController : AppBaseController
     {
         private readonly ServerRepo _sRepo = new ServerRepo();
 
@@ -30,7 +30,8 @@ namespace NotificationPortal.Controllers
             var model = new ServerVM
             {
                 StatusList = _sRepo.GetStatusList(),
-                LocationList = _sRepo.GetLocationList()
+                LocationList = _sRepo.GetLocationList(),
+                ServerTypeList = _sRepo.GetServerTypeList()
             };
             return View(model);
         }
@@ -59,6 +60,7 @@ namespace NotificationPortal.Controllers
             }
             model.StatusList = _sRepo.GetStatusList();
             model.LocationList = _sRepo.GetLocationList();
+            model.ServerTypeList = _sRepo.GetServerTypeList();
             return View(model);
         }
 
@@ -67,8 +69,9 @@ namespace NotificationPortal.Controllers
         {
             ServerVM server = _sRepo.GetServer(id);
             // To be modified: global method for status in development
-            ViewBag.StatusNames = _sRepo.GetStatusList();
-            ViewBag.LocationNames = _sRepo.GetStatusList();
+            ViewBag.StatusList = _sRepo.GetStatusList();
+            ViewBag.ServerTypeList = _sRepo.GetServerTypeList();
+            ViewBag.LocationList = _sRepo.GetStatusList();
             return View(server);
         }
 
@@ -90,8 +93,9 @@ namespace NotificationPortal.Controllers
                 }
             }
             ServerVM server = _sRepo.GetServer(model.ReferenceID);
-            ViewBag.StatusNames = _sRepo.GetStatusList();
-            ViewBag.LocationNames = _sRepo.GetLocationList();
+            ViewBag.StatusList = _sRepo.GetStatusList();
+            ViewBag.LocationList = _sRepo.GetLocationList();
+            ViewBag.ServerTypeList = _sRepo.GetServerTypeList();
             return View(server);
         }
 
@@ -108,7 +112,7 @@ namespace NotificationPortal.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(ServerVM server)
+        public ActionResult Delete(ServerDeleteVM server)
         {
             string msg = "";
             if (ModelState.IsValid)

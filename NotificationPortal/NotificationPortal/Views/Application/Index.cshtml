@@ -1,59 +1,43 @@
-﻿@model IEnumerable<NotificationPortal.Models.Application>
+﻿@model IEnumerable<NotificationPortal.ViewModels.ApplicationVM>
 
 @{
-    ViewBag.Title = "Applications";
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
+<h2>Index</h2>
 
-<ol class="breadcrumb bg-faded">
-    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
-    <li class="breadcrumb-item active">@ViewBag.Title</li>
-</ol>
-
-<div class="row">
-    <div class="col-md-2">
-        <p>
-            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary btn-lg" })
-        </p>
-    </div>
-    <div class="offset-md-4 col-md-6">
-        <div style="float: right">
-            <form class="form-inline pb-3" method="get" action="~/Application/Search">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" name="name" />
-                <input class="btn btn-secondary" type="submit" value="Search" />
-            </form>
-        </div>
-    </div>
-</div>
-
-<table class="table table-bordered">
-    <tr class="bg-inverse text-white text-center">
-        <th class="text-center">
-            @Html.DisplayNameFor(model => model.Client.ClientName)
-        </th>
-        <th class="text-center">
-            @Html.DisplayNameFor(model => model.Status.StatusName)
-        </th>
-        <th class="text-center">
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
             @Html.DisplayNameFor(model => model.ApplicationName)
         </th>
-        <th class="text-center">
+        <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
-        <th class="text-center">
+        <th>
             @Html.DisplayNameFor(model => model.URL)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClientID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusList)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClientList)
+        </th>
+        <th></th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr class="text-center clickable-row" id="@item.ApplicationID" data-href="/Details/@item.ApplicationID">
-        <td>
-            @Html.DisplayFor(modelItem => item.Client.ClientName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status.StatusName)
-        </td>
+    <tr>
         <td>
             @Html.DisplayFor(modelItem => item.ApplicationName)
         </td>
@@ -63,14 +47,24 @@
         <td>
             @Html.DisplayFor(modelItem => item.URL)
         </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StatusID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClientID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StatusList)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClientList)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ReferenceID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ReferenceID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ReferenceID })
+        </td>
     </tr>
 }
 
 </table>
-
-<div class="hidden-menu">
-    <ul>
-        <li><a href="/Edit/" class="btn btn-sm">Edit</a></li>
-        <li><a href="/Delete/" class="btn btn-sm">Delete</a></li>
-    </ul>
-</div>

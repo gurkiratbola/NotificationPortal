@@ -25,6 +25,7 @@ namespace NotificationPortal.Repositories
                                                     ServerName = c.ServerName,
                                                     ReferenceID = c.ReferenceID,
                                                     StatusID = c.StatusID,
+                                                    ServerTypeID = c.ServerTypeID,
                                                     LocationID = c.LocationID,
                                                     Description = c.Description
                                                 });
@@ -47,7 +48,7 @@ namespace NotificationPortal.Repositories
 
         public SelectList GetLocationList()
         {
-            ApplicationDbContext db = new ApplicationDbContext();
+
             IEnumerable<SelectListItem> locationList = _context.DataCenterLocation
                     .Select(app =>
                                 new SelectListItem
@@ -57,6 +58,20 @@ namespace NotificationPortal.Repositories
                                 });
 
             return new SelectList(locationList, "Value", "Text");
+        }
+
+        public SelectList GetServerTypeList()
+        {
+
+            IEnumerable<SelectListItem> serverTypeList = _context.ServerType
+                    .Select(server =>
+                                new SelectListItem
+                                {
+                                    Value = server.ServerTypeID.ToString(),
+                                    Text = server.ServerTypeName
+                                });
+
+            return new SelectList(serverTypeList, "Value", "Text");
         }
 
 
@@ -86,9 +101,13 @@ namespace NotificationPortal.Repositories
             }
             try
             {
+
                 Server newServer = new Server();
                 newServer.ServerName = server.ServerName;
                 newServer.StatusID = server.StatusID;
+                newServer.LocationID = server.LocationID;
+                newServer.Description = server.Description;
+                newServer.ServerTypeID = server.ServerTypeID;
                 newServer.ReferenceID = Guid.NewGuid().ToString();
                 _context.Server.Add(newServer);
                 _context.SaveChanges();
@@ -113,22 +132,25 @@ namespace NotificationPortal.Repositories
                                 Description = b.Description,
                                 StatusID = b.StatusID,
                                 LocationID = b.LocationID,
+                                ServerTypeID = b.ServerTypeID,
 
                             }).FirstOrDefault();
             return server;
         }
 
-        public ServerVM GetDeleteServer(string referenceID)
+        public ServerDeleteVM GetDeleteServer(string referenceID)
         {
-            ServerVM server = _context.Server
+            ServerDeleteVM server = _context.Server
                             .Where(a => a.ReferenceID == referenceID)
-                            .Select(b => new ServerVM
+                            .Select(b => new ServerDeleteVM
                             {
+
                                 ServerName = b.ServerName,
                                 ReferenceID = b.ReferenceID,
                                 Description = b.Description,
                                 StatusID = b.StatusID,
                                 LocationID = b.LocationID,
+                                ServerTypeID = b.ServerTypeID,
 
                             }).FirstOrDefault();
             return server;
@@ -137,11 +159,11 @@ namespace NotificationPortal.Repositories
         public bool EditServer(ServerVM server, out string msg)
         {
             Server s = _context.Server.Where(a => a.ServerName == server.ServerName).FirstOrDefault();
-            if (s != null)
-            {
-                msg = "Server name already exist.";
-                return false;
-            }
+            //if (s != null)
+            //{
+            //    msg = "Server name already exist.";
+            //    return false;
+            //}
             try
             {
                 Server serverUpdated = _context.Server
@@ -152,6 +174,7 @@ namespace NotificationPortal.Repositories
                 serverUpdated.LocationID = server.LocationID;
                 serverUpdated.Description = server.Description;
                 serverUpdated.ReferenceID = server.ReferenceID;
+                serverUpdated.ServerTypeID = server.ServerTypeID;
                 _context.SaveChanges();
                 msg = "Server information succesfully updated.";
                 return true;
@@ -209,4 +232,4 @@ namespace NotificationPortal.Repositories
     }
 }
 
-    
+

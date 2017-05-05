@@ -1,35 +1,16 @@
-﻿@model NotificationPortal.Models.Application
+﻿@model NotificationPortal.ViewModels.ApplicationVM
 
 @{
-    ViewBag.Title = "Application Details";
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
-
-<ol class="breadcrumb bg-faded">
-    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
-    <li class="breadcrumb-item"><a href="~/Application/Index">Applications</a></li>
-    <li class="breadcrumb-item active">@ViewBag.Title</li>
-</ol>
+<h2>Details</h2>
 
 <div>
+    <h4>ApplicationVM</h4>
+    <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Client.ClientName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Client.ClientName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status.StatusName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status.StatusName)
-        </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.ApplicationName)
         </dt>
@@ -53,10 +34,26 @@
         <dd>
             @Html.DisplayFor(model => model.URL)
         </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StatusID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StatusID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClientID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClientID)
+        </dd>
+
     </dl>
 </div>
-
-
-@Html.ActionLink("Edit", "Edit", new { id = Model.ApplicationID }, new { @class = "btn btn-success" })
-@Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
-
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

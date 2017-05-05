@@ -1,36 +1,17 @@
-﻿@model NotificationPortal.Models.Application
+﻿@model NotificationPortal.ViewModels.ApplicationVM
 
 @{
-    ViewBag.Title = "Delete Application";
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
+<h2>Delete</h2>
 
-<ol class="breadcrumb bg-faded">
-    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
-    <li class="breadcrumb-item"><a href="~/Application/Index">Applications</a></li>
-    <li class="breadcrumb-item active">@ViewBag.Title</li>
-</ol>
-
-<h3 class="text-danger pb-2">Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to delete this?</h3>
 <div>
+    <h4>ApplicationVM</h4>
+    <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Client.ClientName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Client.ClientName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status.StatusName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status.StatusName)
-        </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.ApplicationName)
         </dt>
@@ -55,15 +36,36 @@
             @Html.DisplayFor(model => model.URL)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.StatusID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StatusID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClientID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClientID)
+        </dd>
+
     </dl>
 
-    @using (Html.BeginForm())
-    {
+    @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.ReferenceID)
+        @Html.HiddenFor(model => model.ApplicationName)
+        @Html.HiddenFor(model => model.ClientID)
+        @Html.HiddenFor(model => model.Description)
+        @Html.HiddenFor(model => model.URL)
+        @Html.HiddenFor(model => model.StatusID)
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-success" /> 
-            @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
         </div>
     }
 </div>
