@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -73,6 +73,9 @@ namespace NotificationPortal.ViewModels
         public string ClientReferenceID { get; set; }
 
         [Required]
+        public string RolesId { get; set; }
+
+        [Required]
         [EmailAddress]
         public string Email { get; set; }
 
@@ -93,6 +96,9 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name = "Client")]
         public IEnumerable<SelectListItem> ClientList { get; set; }
+
+        [Display(Name = "Roles")]
+        public IEnumerable<SelectListItem> RolesList { get; set; }
     }
 
     public class UserDeleteVM
