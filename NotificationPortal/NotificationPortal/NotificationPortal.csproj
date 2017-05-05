@@ -353,6 +353,7 @@
     <Content Include="Views\Notification\Update.cshtml" />
     <Content Include="Views\Dashboard\OldIndex.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Notification\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

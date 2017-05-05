@@ -88,6 +88,36 @@ namespace NotificationPortal.Controllers
             return View(model);
         }
 
+
+        [HttpGet]
+        public ActionResult Edit(string id)
+        {
+            NotificationRepo nRepo = new NotificationRepo();
+            var model = nRepo.CreateEditModel(id);
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Edit(NotificationEditVM model)
+        {
+            string result = "";
+            NotificationRepo nRepo = new NotificationRepo();
+            if (ModelState.IsValid)
+            {
+                bool success = nRepo.EditNotification(model, out result);
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Cannot edit Notification, model not valid.";
+            }
+            TempData["ErrorMsg"] = result;
+            model = nRepo.CreateEditModel(model.NotificationReferenceID, model);
+            return View(model);
+        }
+
         public ActionResult Delete()
         {
             return View();

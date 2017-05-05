@@ -2,6 +2,7 @@
 using NotificationPortal.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -104,13 +105,74 @@ namespace NotificationPortal.Repositories
 
                 msg = "Notification Sent";
                 return true;
-            } catch (Exception ex){
+            }
+            catch (Exception ex)
+            {
                 msg = "Notification not created";
                 return false;
             }
 
         }
 
+        public bool EditNotification(NotificationEditVM notification, out string msg)
+        {
+
+            try
+            {
+                //TO DO: check if it's by server or by Application
+                if (notification.ServerReferenceIDs == null)
+                {
+                    msg = "Must choose a Server";
+                    return false;
+                }
+                if (notification.ApplicationReferenceIDs == null)
+                {
+                    notification.ApplicationReferenceIDs = new string[0];
+                }
+
+                var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
+                var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
+
+
+                var editingNotification = _context.Notification
+                        .Where(n => n.ReferenceID == notification.NotificationReferenceID)
+                        .FirstOrDefault();
+
+                int headingLength = notification.NotificationHeading.IndexOf(" (Edit");
+                editingNotification.NotificationHeading = headingLength == -1 ?
+                    notification.NotificationHeading + " (Edited " + DateTime.Now.ToString() + ")" :
+                    notification.NotificationHeading.Substring(0, headingLength) + " (Edited " + DateTime.Now.ToString() + ")";
+                editingNotification.LevelOfImpactID = notification.LevelOfImpactID;
+                editingNotification.NotificationTypeID = notification.NotificationTypeID;
+                editingNotification.NotificationDescription = notification.NotificationDescription;
+                editingNotification.StatusID = notification.StatusID;
+                editingNotification.SendMethodID = notification.SentMethodID;
+                editingNotification.StartDateTime = notification.StartDateTime;
+                editingNotification.EndDateTime = notification.EndDateTime;
+                
+                // drop associated servers and apps first
+                editingNotification.Servers.Clear();
+                editingNotification.Applications.Clear();
+                // then set associated servers and apps
+                editingNotification.Servers = servers.ToList();
+                editingNotification.Applications = apps.ToList();               
+
+                _context.SaveChanges();
+
+                msg = "Notification Edited";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (ex is SqlException)
+                {
+
+                }
+                msg = "Notification not edited";
+                return false;
+            }
+
+        }
         public NotificationDetailVM CreateDetailModel(string threadID)
         {
             IEnumerable<Notification> notifications =
@@ -119,7 +181,7 @@ namespace NotificationPortal.Repositories
 
             IEnumerable<NotificationSpecificDetailVM> thread =
                 notifications.Select(
-                    n=> new NotificationSpecificDetailVM
+                    n => new NotificationSpecificDetailVM
                     {
                         ReferenceID = n.ReferenceID,
                         NotificationHeading = n.NotificationHeading,
@@ -152,15 +214,16 @@ namespace NotificationPortal.Repositories
 
             // If there are no applications associated to this notification
             // get all application associated with server(s)
-            if (apps.Count()==0){
+            if (apps.Count() == 0)
+            {
                 apps =
-                lastestNotification.Servers.SelectMany(s=>s.Applications.Select(
+                lastestNotification.Servers.SelectMany(s => s.Applications.Select(
                     a => new NotificationApplicationVM
                     {
                         ApplicationName = a.ApplicationName,
                         ApplicationURL = a.URL,
                         ApplicationStatus = a.Status.StatusName,
-                        ReferenceID  = a.ReferenceID
+                        ReferenceID = a.ReferenceID
                     })).GroupBy(a => a.ReferenceID)
                     .Select(
                         a => a.FirstOrDefault()
@@ -187,17 +250,17 @@ namespace NotificationPortal.Repositories
 
         public NotificationCreateVM CreateUpdateModel(string threadID, NotificationCreateVM model = null)
         {
-            var lastestNotification = 
+            var lastestNotification =
                 _context.Notification.Where(n => n.ThreadID == threadID)
                 .OrderByDescending(n => n.SentDateTime).FirstOrDefault();
 
             if (model == null)
             {
-                model = new NotificationCreateVM() {
+                model = new NotificationCreateVM()
+                {
                     ThreadID = threadID,
                     StartDateTime = lastestNotification.StartDateTime,
                     EndDateTime = lastestNotification.EndDateTime,
-                    Source = lastestNotification.Applications == null ? "Application":"Server",
                     LevelOfImpactID = lastestNotification.LevelOfImpactID,
                     NotificationTypeID = lastestNotification.NotificationTypeID,
                     SentMethodID = lastestNotification.SendMethodID,
@@ -212,6 +275,39 @@ namespace NotificationPortal.Repositories
             return model;
         }
 
+        public NotificationEditVM CreateEditModel(string notificationReferenceID, NotificationEditVM model = null)
+        {
+            var editingNotification =
+                _context.Notification.Where(n => n.ReferenceID == notificationReferenceID)
+                .FirstOrDefault();
+
+            if (model == null)
+            {
+                model = new NotificationEditVM()
+                {
+                    NotificationReferenceID = notificationReferenceID,
+                    ThreadID = editingNotification.ThreadID,
+                    StartDateTime = editingNotification.StartDateTime,
+                    EndDateTime = editingNotification.EndDateTime,
+                    LevelOfImpactID = editingNotification.LevelOfImpactID,
+                    NotificationTypeID = editingNotification.NotificationTypeID,
+                    SentMethodID = editingNotification.SendMethodID,
+                    StatusID = editingNotification.StatusID,
+                    NotificationDescription = editingNotification.NotificationDescription,
+                    NotificationHeading = editingNotification.NotificationHeading
+                };
+                model.ServerReferenceIDs = editingNotification.Servers.Select(s => s.ReferenceID).ToArray();
+                model.ApplicationReferenceIDs = editingNotification.Applications.Select(a => a.ReferenceID).ToArray();
+            }
+            model.ApplicationList = GetApplicationList();
+            model.SendMethodList = _slRepo.GetSendMethodList();
+            model.ServerList = _slRepo.GetServerList();
+            model.NotificationTypeList = _slRepo.GetTypeList();
+            model.LevelOfImpactList = _slRepo.GetImpactLevelList();
+            model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
+            return model;
+        }
+
         public IEnumerable<ApplicationOptionVM> GetApplicationList()
         {
             //var apps = _context.Server.Select(s=>s.Applications.Select(
@@ -223,7 +319,7 @@ namespace NotificationPortal.Repositories
             //    ReferenceID = g.First().AppRef,
             //    //ServerReferenceIDs = string.Join(" ", g.Select(i=>i.ServerRef))
             //});
-            return new List<ApplicationOptionVM>() {new ApplicationOptionVM()};
+            return new List<ApplicationOptionVM>() { new ApplicationOptionVM() };
         }
     }
 }

@@ -99,6 +99,7 @@
                     <div id="@collapseId" class="collapse show" role="tabpanel" aria-labelledby="@headingId">
                         <div class="card-block">
                             @Html.Raw(item.NotificationDescription)
+                            @Html.ActionLink("Edit", "Edit", new { id=@item.ReferenceID }, new { @class = "btn btn-primary btn-lg" })
                         </div>
                     </div>
                 </div>

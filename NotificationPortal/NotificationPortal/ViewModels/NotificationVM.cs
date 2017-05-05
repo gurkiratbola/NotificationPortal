@@ -60,8 +60,6 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int ProirityID { get; set; }
 
-        public string Source { get; set; }
-
         public string[] ServerReferenceIDs { get; set; }
 
         public string[] ApplicationReferenceIDs { get; set; }
@@ -80,6 +78,12 @@ namespace NotificationPortal.ViewModels
 
         public SelectList ProirityList { get; set; }
 
+    }
+    
+    public class NotificationEditVM : NotificationCreateVM
+    {
+        [Required]
+        public string NotificationReferenceID { get; set; }
     }
 
     public class NotificationDetailVM
