@@ -30,7 +30,7 @@ namespace NotificationPortal.Repositories
                                                      LevelOfImpactID = notif.LevelOfImpact.LevelOfImpactID,
                                                      LevelOfImpactName = notif.LevelOfImpact.Level,
                                                      //URL = app.URL,
-                                                     StartDateTime = notif.StartDateTime
+                                                     //StartDateTime = notif.StartDateTime
                                                  };
             return dashboard;
         }

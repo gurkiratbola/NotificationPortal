@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.ViewModels
 {
-    public class DashboardInternalVM
+    public class DashboardExternalVM
     {
         [Required]
         public string ThreadID { get; set; }
@@ -18,7 +18,7 @@ namespace NotificationPortal.ViewModels
 
         public string ReferenceID { get; set; }
 
-        //server status 
+        public IEnumerable<DashboardThreadDetailVM> ThreadDetail { get; set; }
 
         [Required]
         public int StatusID { get; set; }
@@ -38,8 +38,6 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Status")]
         public string StatusName { get; set; }
 
-        [Display(Name = "Server")]
-        public string ServerName { get; set; }
 
         [Display(Name = "Level of Impact")]
         public string LevelOfImpactName { get; set; }
@@ -48,18 +46,17 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Heading")]
         public string NotificationHeading { get; set; }
 
-        [Required]
-        [AllowHtml]
-        public string NotificationDescription { get; set; }
-
-        public DateTime SentDateTime { get; set; }
-
-        [Required]
-        [Display(Name = "Start Time")]
-        public DateTime? StartDateTime { get; set; }
-
     }
-    public class DashboardExternalVM {
+
+    public class DashboardThreadDetailVM
+    {
+        public string ReferenceID { get; set; }
+        public string NotificationHeading { get; set; }
+        public DateTime SentDateTime { get; set; }
+    }
+
+    public class DashboardInternalVM
+    {
         [Required]
         public string ThreadID { get; set; }
 
