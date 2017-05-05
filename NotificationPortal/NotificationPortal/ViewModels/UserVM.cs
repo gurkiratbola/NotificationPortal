@@ -50,14 +50,14 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Role")]
         public string RoleName { get; set; }
 
-        [Display(Name = "Role")]
-        public SelectList RoleList { get; set; }
-
         [Display(Name = "Client")]
         public string ClientName { get; set; }
 
         [Display(Name = "Status")]
         public string StatusName { get; set; }
+
+        [Display(Name = "Role")]
+        public SelectList RoleList { get; set; }
 
         [Display(Name = "Status")]
         public SelectList StatusList { get; set; }
@@ -143,11 +143,11 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Status")]
         public string StatusName { get; set; }
 
-        //[Display(Name = "Role")]
-        //public SelectList RoleName { get; set; }
+        [Display(Name = "Role")]
+        public string RoleName { get; set; }
 
-        //[Display(Name = "Role")]
-        //public SelectList RoleList { get; set; }
+        [Display(Name = "Role")]
+        public SelectList RoleList { get; set; }
 
         [Display(Name = "Status")]
         public SelectList StatusList { get; set; }

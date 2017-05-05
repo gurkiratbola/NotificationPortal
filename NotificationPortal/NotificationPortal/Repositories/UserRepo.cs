@@ -8,6 +8,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
+using System.Data.SqlClient;
+using System.Data.Entity;
 
 namespace NotificationPortal.Repositories
 {
@@ -47,23 +49,33 @@ namespace NotificationPortal.Repositories
         {
             try
             {
-                return _context.Users.Select(user => new UserVM()
-                       {
-                           ReferenceID = user.UserDetail.ReferenceID,
-                           Email = user.Email,
-                           FirstName = user.UserDetail.FirstName,
-                           LastName = user.UserDetail.LastName,
-                           BusinessTitle = user.UserDetail.BusinessTitle,
-                           BusinessPhone = user.UserDetail.BusinessPhone,
-                           MobilePhone = user.UserDetail.MobilePhone,
-                           HomePhone = user.UserDetail.HomePhone,
-                           ClientReferenceID = user.UserDetail.Client.ReferenceID,
-                           ClientName = user.UserDetail.Client.ClientName,
-                           StatusID = user.UserDetail.Status.StatusID,
-                           StatusName = user.UserDetail.Status.StatusName
-                       }).OrderByDescending(s => s.StatusID);
+                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
+
+                var users = _context.Users.Select(user => new UserVM()
+                {
+                    ReferenceID = user.UserDetail.ReferenceID,
+                    Email = user.Email,
+                    RoleName = user.Roles.FirstOrDefault().RoleId.ToString(),
+                    FirstName = user.UserDetail.FirstName,
+                    LastName = user.UserDetail.LastName,
+                    BusinessTitle = user.UserDetail.BusinessTitle,
+                    BusinessPhone = user.UserDetail.BusinessPhone,
+                    MobilePhone = user.UserDetail.MobilePhone,
+                    HomePhone = user.UserDetail.HomePhone,
+                    ClientReferenceID = user.UserDetail.Client.ReferenceID,
+                    ClientName = user.UserDetail.Client.ClientName,
+                    StatusID = user.UserDetail.Status.StatusID,
+                    StatusName = user.UserDetail.Status.StatusName
+                }).OrderByDescending(s => s.StatusID).ToList();
+
+                foreach (var user in users)
+                {
+                    user.RoleName = roleManager.FindById(user.RoleName).Name.ToString();
+                }
+
+                return users;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
             }
@@ -76,11 +88,14 @@ namespace NotificationPortal.Repositories
                 throw new HttpException(404, "Page Not Found");
             }
 
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
+
             var details = _context.Users.Where(u => u.UserDetail.ReferenceID == id)
                           .Select(user => new UserVM()
                           {
                               ReferenceID = user.UserDetail.ReferenceID,
                               Email = user.Email,
+                              RoleName = user.Roles.FirstOrDefault().RoleId.ToString(),
                               FirstName = user.UserDetail.FirstName,
                               LastName = user.UserDetail.LastName,
                               BusinessTitle = user.UserDetail.BusinessTitle,
@@ -92,6 +107,8 @@ namespace NotificationPortal.Repositories
                               StatusID = user.UserDetail.Status.StatusID,
                               StatusName = user.UserDetail.Status.StatusName
                           }).FirstOrDefault();
+
+            details.RoleName = roleManager.FindById(details.RoleName).Name.ToString();
 
             return details;
         }
@@ -181,7 +198,23 @@ namespace NotificationPortal.Repositories
                     user.ClientID = clientID;
                     user.StatusID = model.StatusID;
 
+                    // Get the user manager 
+                    var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+                    var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
+
+                    var userId = userManager.FindById(user.UserID);
+                    var oldRoleId = userId.Roles.SingleOrDefault().RoleId;
+                    var oldRoleName = _context.Roles.SingleOrDefault(a => a.Id == oldRoleId).Name;
+
+                    if(oldRoleName != model.RoleName)
+                    {
+                        userManager.RemoveFromRole(user.UserID, oldRoleName);
+                        userManager.AddToRole(user.UserID, model.RoleName);
+                    }
+
+                   // _context.Entry(model).State = EntityState.Modified;
                     _context.SaveChanges();
+
                     msg = "User information successfully updated!";
 
                     return true;
@@ -201,11 +234,14 @@ namespace NotificationPortal.Repositories
 
         public UserDeleteVM GetDeleteUser(string referenceId)
         {
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
+
             UserDeleteVM userToBeDeleted = _context.Users.Where(u => u.UserDetail.ReferenceID == referenceId)
                                            .Select(user => new UserDeleteVM()
                                            {
                                                ReferenceID = user.UserDetail.ReferenceID,
                                                Email = user.Email,
+                                               RoleName = user.Roles.FirstOrDefault().RoleId.ToString(),
                                                ClientReferenceID = user.UserDetail.Client.ReferenceID,
                                                FirstName = user.UserDetail.FirstName,
                                                LastName = user.UserDetail.LastName,
@@ -217,6 +253,8 @@ namespace NotificationPortal.Repositories
                                                StatusID = user.UserDetail.Status.StatusID,
                                                StatusName = user.UserDetail.Status.StatusName
                                            }).FirstOrDefault();
+
+            userToBeDeleted.RoleName = roleManager.FindById(userToBeDeleted.RoleName).Name.ToString();
 
             return userToBeDeleted;
         }

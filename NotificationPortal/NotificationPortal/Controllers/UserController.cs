@@ -117,8 +117,12 @@ namespace NotificationPortal.Controllers
                     TempData["ErrorMsg"] = "Failed to update the user information.";
                 }
             }
-            
-            return View();
+
+            ViewBag.StatusNames = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
+            ViewBag.ClientNames = _selectRepo.GetClientList();
+            ViewBag.RoleNames = _selectRepo.GetRolesList();
+
+            return View(model);
         }
 
         // GET: UserDetails/Details
