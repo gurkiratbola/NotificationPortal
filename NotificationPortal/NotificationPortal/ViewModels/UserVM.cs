@@ -82,6 +82,7 @@ namespace NotificationPortal.ViewModels
         public string RoleName { get; set; }
 
         [Required]
+        [Display(Name = "Applications")]
         public string[] ApplicationReferenceIDs { get; set; }
 
         [Required]
