@@ -50,6 +50,7 @@ namespace NotificationPortal.Controllers
                 StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER),
                 ClientList = _selectRepo.GetClientList(),
                 RolesList = _selectRepo.GetRolesList(),
+                ApplicationList = _userRepo.GetApplicationList()
             };
 
             return View(model);

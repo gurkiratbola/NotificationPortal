@@ -502,8 +502,10 @@ namespace NotificationPortal.Migrations
                 && s.StatusName == Key.STATUS_APPLICATION_ONLINE).FirstOrDefault();
 
             // Get server
-            var server = context.Server
-                .Where(s=>s.ServerType.ServerTypeName==Key.SERVER_TYPE_APPLICATION);
+            var serverApplication = context.Server
+                .Where(s => s.ServerType.ServerTypeName == Key.SERVER_TYPE_APPLICATION);
+            var serverDirectory = context.Server
+                .Where(s => s.ServerType.ServerTypeName == Key.SERVER_TYPE_DIRECTORY);
 
             var app = new Application()
             {
@@ -515,7 +517,7 @@ namespace NotificationPortal.Migrations
                 ReferenceID = Guid.NewGuid().ToString()
             };
             app.UserDetails = clientUserDetail.ToList();
-            app.Servers = server.ToList();
+            app.Servers = serverApplication.ToList();
             context.Application.Add(app);
 
             app = new Application()
@@ -528,7 +530,7 @@ namespace NotificationPortal.Migrations
                 ReferenceID = Guid.NewGuid().ToString()
             };
             app.UserDetails = clientUserDetail.ToList();
-            app.Servers = server.ToList();
+            app.Servers = serverApplication.ToList();
             context.Application.Add(app);
 
             app = new Application()
@@ -541,7 +543,7 @@ namespace NotificationPortal.Migrations
                 ReferenceID = Guid.NewGuid().ToString()
             };
             app.UserDetails = clientUserDetail.ToList();
-            app.Servers = server.ToList();
+            app.Servers = serverDirectory.ToList();
             context.Application.Add(app);
 
             context.SaveChanges();

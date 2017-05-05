@@ -206,13 +206,13 @@ namespace NotificationPortal.Repositories
                     var oldRoleId = userId.Roles.SingleOrDefault().RoleId;
                     var oldRoleName = _context.Roles.SingleOrDefault(a => a.Id == oldRoleId).Name;
 
-                    if(oldRoleName != model.RoleName)
+                    if (oldRoleName != model.RoleName)
                     {
                         userManager.RemoveFromRole(user.UserID, oldRoleName);
                         userManager.AddToRole(user.UserID, model.RoleName);
                     }
 
-                   // _context.Entry(model).State = EntityState.Modified;
+                    // _context.Entry(model).State = EntityState.Modified;
                     _context.SaveChanges();
 
                     msg = "User information successfully updated!";
@@ -301,6 +301,19 @@ namespace NotificationPortal.Repositories
 
                 return false;
             }
+        }
+
+        public IEnumerable<ApplicationClientOptionVM> GetApplicationList()
+        {
+            var apps = _context.Application.Select(
+                a => new ApplicationClientOptionVM
+                {
+                    ApplicationName = a.ApplicationName,
+                    ReferenceID = a.ReferenceID,
+                    ClientReferenceID = a.Client.ReferenceID
+                });
+
+            return apps;
         }
     }
 }

@@ -62,7 +62,7 @@ namespace NotificationPortal.ViewModels
 
         public string[] ApplicationReferenceIDs { get; set; }
 
-        public IEnumerable<ApplicationOptionVM> ApplicationList { get; set; }
+        public IEnumerable<ApplicationServerOptionVM> ApplicationList { get; set; }
 
         public SelectList ServerList { get; set; }
 
@@ -132,7 +132,7 @@ namespace NotificationPortal.ViewModels
         public string ReferenceID { get; set; }
     }
 
-    public class ApplicationOptionVM
+    public class ApplicationServerOptionVM
     {
         public string ReferenceID { get; set; }
         public string ApplicationName { get; set; }

@@ -10,12 +10,12 @@
     <div class="col-md-2">
         <div class="btn-group" role="group">
             <button id="filter-btn" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Sort
+                Filter
             </button>
             <div class="dropdown-menu" aria-labelledby="filter-btn">
-                <a class="dropdown-item" href="#">Name</a>
-                <a class="dropdown-item" href="#">Status</a>
-                <a class="dropdown-item" href="#">Client</a>
+                <a class="dropdown-item" href="#">Source</a>
+                <a class="dropdown-item" href="#">Filter 1</a>
+                <a class="dropdown-item" href="#">Filter 2</a>
             </div>
         </div>
     </div>
@@ -28,47 +28,63 @@
         </div>
     </div>
 </div>
-
-<table class="table table-bordered" style="position:relative;">
-    <thead>
-        <tr class="bg-inverse text-white text-center">
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.ServerName)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.NotificationTypeName)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.StatusName)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.LevelOfImpactName)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            var statusClass = item.StatusName == NotificationPortal.Models.Key.STATUS_APPLICATION_OFFLINE ? "badge badge-danger" : "badge badge-success";
-            var impactClass = item.LevelOfImpactName == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING ? "badge badge-success" : "badge badge-danger";
-            <tr class="text-centerclickable-row-dashboard" data-href="/Notification/Details/@item.ThreadID">
-                <td>
-                    @Html.DisplayFor(modelItem => item.ServerName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NotificationTypeName)
-                </td>
-                <td>
-                    <span class="@statusClass">
-                        @Html.DisplayFor(modelItem => item.StatusName)
-                    </span>
-                </td>
-                <td>
-                    <span class="@impactClass">
-                        @Html.DisplayFor(modelItem => item.LevelOfImpactName)
-                    </span>
-                </td>
+@if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_USER) || HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_CLIENT)) {
+    @Html.Partial("~/Views/Dashboard/_external.cshtml", Model)
+}
+else {
+    <table class="table table-bordered" style="position:relative;">
+        <thead>
+            <tr class="bg-inverse text-white text-center">
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.SourceName)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.LevelOfImpact)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.ThreadHeading)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.SentDateTime)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var statusClass = item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INCOMPLETE.ToUpper() ? "text-danger" : "text-success";
+                var impactClass = item.LevelOfImpact.ToUpper() == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING.ToUpper() ? "badge badge-success" : "badge badge-danger";
+                <tr class="text-centerclickable-row-dashboard" data-href="/Notification/Details/@item.ThreadID">
+                    <td>
+                        <a href="@Url.Action("Details", "Server", new { id = item.SourceReferenceID })" class="">
+                            @Html.DisplayFor(modelItem => item.SourceName)
+                        </a>
+                    </td>
+                    <td>
+                        <span class="@impactClass">
+                                @Html.DisplayFor(modelItem => item.LevelOfImpact)
+                        </span>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("DetailsThread", "Notification", new { id = item.ThreadID })" class="">
+                            @Html.DisplayFor(modelItem => item.ThreadHeading)
+                        </a>
+                    </td>
+                    <td>
+                        <span>
+                            @Html.DisplayFor(modelItem => item.SentDateTime)
+                        </span>
+                    </td>
+                    <td>
+                        <span class="@statusClass">
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

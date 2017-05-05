@@ -192,7 +192,8 @@ namespace NotificationPortal.Repositories
         {
             try
             {
-                IEnumerable<NotificationIndexVM> allThreads = _context.Notification
+                IEnumerable<Notification> allNotifications = _context.Notification;
+                IEnumerable<NotificationIndexVM> allThreads = allNotifications
                     .GroupBy(n => n.ThreadID)
                     .Select(t => t.OrderBy(i => i.SentDateTime))
                     .Select(
@@ -217,18 +218,26 @@ namespace NotificationPortal.Repositories
             }
         }
 
-        public IEnumerable<ApplicationOptionVM> GetApplicationList()
+        public IEnumerable<ApplicationServerOptionVM> GetApplicationList()
         {
-            //var apps = _context.Server.Select(s=>s.Applications.Select(
-            //    a => new { AppName = a.ApplicationName, AppRef = a.ReferenceID }));
-            //var group = apps.GroupBy(a=>a.AppRef);
-            //var grouped = group.Select(g=>new ApplicationOptionVM
-            //{
-            //    ApplicationName = g.First().AppName,
-            //    ReferenceID = g.First().AppRef,
-            //    //ServerReferenceIDs = string.Join(" ", g.Select(i=>i.ServerRef))
-            //});
-            return new List<ApplicationOptionVM>() { new ApplicationOptionVM() };
+            var apps = _context.Application.Select(a=>new { Application=a, Servers=a.Servers });
+            var appList = new List<ApplicationServerOptionVM>() { };
+            foreach (var app in apps)
+            {
+                var appServers = app.Servers;
+                string serverRefIDs = "";
+                if (appServers.Count() > 0)
+                {
+                    serverRefIDs = string.Join(" ", appServers.Select(i => i.ReferenceID).ToArray());
+                }
+                appList.Add(new ApplicationServerOptionVM
+                {
+                    ApplicationName = app.Application.ApplicationName,
+                    ReferenceID = app.Application.ReferenceID,
+                    ServerReferenceIDs = serverRefIDs
+                });
+            }
+            return appList;
         }
 
         public bool CreateNotification(NotificationCreateVM notification, out string msg)
