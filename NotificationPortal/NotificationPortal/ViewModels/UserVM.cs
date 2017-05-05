@@ -16,10 +16,12 @@ namespace NotificationPortal.ViewModels
         public string ReferenceID { get; set; }
 
         [Required]
-        public int? ClientID { get; set; }
+        public string ClientReferenceID { get; set; }
 
         [Required]
         public int StatusID { get; set; }
+
+        public string Email  { get; set; }
 
         [Required]
         [Display(Name = "First Name")]
@@ -68,7 +70,7 @@ namespace NotificationPortal.ViewModels
         public int StatusID { get; set; }
 
         [Required]
-        public int? ClientId { get; set; }
+        public string ClientReferenceID { get; set; }
 
         [Required]
         [EmailAddress]
@@ -98,9 +100,12 @@ namespace NotificationPortal.ViewModels
         [Required]
         public string ReferenceID { get; set; }
 
-        public int? ClientID { get; set; }
+        [Required]
+        public string ClientReferenceID { get; set; }
 
         public int StatusID { get; set; }
+
+        public string Email { get; set; }
 
         [Display(Name = "First Name")]
         public string FirstName { get; set; }

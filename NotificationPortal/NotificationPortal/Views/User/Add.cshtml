@@ -39,8 +39,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ClientList, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
             <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.DropDownListFor(m => m.ClientId, Model.ClientList, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ClientList, "", new {@class = "text-danger"})
+                @Html.DropDownListFor(m => m.ClientReferenceID, Model.ClientList, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ClientReferenceID, "", new {@class = "text-danger"})
             </div>
         </div>
 
@@ -48,7 +48,7 @@
             @Html.LabelFor(model => model.Email, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.Email, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Email, "", new {@class = "text-danger"})
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -80,7 +80,7 @@
             @Html.LabelFor(model => model.StatusList, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.DropDownListFor(m => m.StatusID, Model.StatusList, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.StatusList, "", new {@class = "text-danger"})
+                @Html.ValidationMessageFor(model => model.StatusID, "", new {@class = "text-danger"})
             </div>
         </div>
 

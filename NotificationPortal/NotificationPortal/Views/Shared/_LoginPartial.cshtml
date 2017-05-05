@@ -9,9 +9,9 @@
             <li class="nav-item hover-dropdown">
                 <a href="@Url.Action("Index", "Manage")" class="nav-link drop-btn">
                     <span class="hidden-lg-down" id="username">
-                        Hello,
-                        @if (System.Web.HttpContext.Current.Session["FullName"] != null) {
-                            @Html.Raw(Session["FullName"].ToString())
+                        Hello, 
+                        @if (ViewData["FullName"] != null) {
+                            @Html.Raw(ViewData["FullName"])
                         }
                         else {
                             @Html.Raw("user");
@@ -23,7 +23,7 @@
                     </span>
                 </a>
                 <div class="hover-dropdown-content">
-                    <a href="@Url.Action("Index", "Manage")">Edit Profile</a>
+                    <a href="@Url.Action("Index", "Profile")">Edit Profile</a>
                     <a href="@Url.Action("ChangePassword", "Manage")">Reset Password</a>
                 </div>
             </li>

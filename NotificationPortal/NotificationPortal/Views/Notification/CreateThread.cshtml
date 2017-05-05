@@ -1,7 +1,7 @@
 @model NotificationPortal.ViewModels.NotificationCreateVM
 
 @{
-    ViewBag.Title = "Update Notification";
+    ViewBag.Title = "Start New Thread";
 }
 
 <h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
@@ -19,33 +19,29 @@
     <div class="form-horizontal">
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ThreadID)
 
-        <!--choose source-->
+        <!--notification server ID-->
         <div class="form-group">
-            <label for="group_name" class="control-label">Source Filter</label>
-            <div class="">
-                <select class="form-control" id="source" name="source" required>
-                    <option value="Application" @if (Model.Source=="Application") { @Html.Raw("selected")}>Application</option>
-                    <option value="Server" @if (Model.Source == "Server") { @Html.Raw("selected")}>Server</option>
-                </select>
+            @Html.LabelFor(model => model.ServerReferenceIDs, htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Html.ListBoxFor(m => m.ServerReferenceIDs, Model.ServerList, htmlAttributes: new { @id = "ServerList", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ServerReferenceIDs, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <!--notification application ID-->
-        <div class="form-group ApplicationList" @if (Model.Source != "Application") { @Html.Raw("style=\"display: none;\"")}>
-            @Html.LabelFor(model => model.ApplicationID, htmlAttributes: new { @class = "control-label" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label" })
             <div class="col-md-12">
-                @Html.DropDownListFor(m => m.ApplicationID, Model.ApplicationList, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ApplicationID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <!--notification server ID-->
-        <div class="form-group ServerList" @if (Model.Source != "Server") { @Html.Raw("style=\"display: none;\"")}>
-            @Html.LabelFor(model => model.ServerID, htmlAttributes: new { @class = "control-label" })
-            <div class="col-md-12">
-                @Html.DropDownListFor(m => m.ServerID, Model.ServerList, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ServerID, "", new { @class = "text-danger" })
+                <select class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false">
+                    @foreach (var item in Model.ApplicationList)
+                    {
+                        <option value="@Html.DisplayFor(modelItem => item.ReferenceID)" class="ApplicationListItem @Html.DisplayFor(modelItem => item.ServerReferenceIDs)">@Html.DisplayFor(modelItem => item.ApplicationName)</option>
+
+                    }
+                </select>
+               @* @Html.ListBoxFor(m => m.ApplicationReferenceIDs, Model.ApplicationList, htmlAttributes: new { @class = "form-control" })*@
+                @Html.ValidationMessageFor(model => model.ApplicationReferenceIDs, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -129,7 +125,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Update" class="btn btn-default" />
+                <input type="submit" value="Create Thread" class="btn btn-success" />
+                @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
             </div>
         </div>
     </div>
@@ -137,23 +134,15 @@
 
 <script>
     $(document).ready(function () {
-        $("#source").change(function() {
-            var el = $(this);
-            if (el.val() == "Application") {
-                $(".ServerList").hide();
-                $(".ApplicationList").show();
-            }
-            else if (el.val() == "Server") {
-                $(".ApplicationList").hide();
-                $(".ServerList").show();
-            }
+        $("#ServerList").change(function() {
+            var serverRefIDs = $(this).val();
+            $(".ApplicationListItem").hide();
+            $.each(serverRefIDs, function (index, value) {
+                $("." + value).show();
+            });
         });
     });
 </script>
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval",

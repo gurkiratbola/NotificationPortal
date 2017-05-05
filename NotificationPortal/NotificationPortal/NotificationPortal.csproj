@@ -184,12 +184,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AppBaseController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -216,6 +218,7 @@
     <Compile Include="Repositories\DashboardRepo.cs" />
     <Compile Include="Repositories\DataCenterRepo.cs" />
     <Compile Include="Repositories\IInterfaceRepo.cs" />
+    <Compile Include="Repositories\ProfileRepo.cs" />
     <Compile Include="Repositories\SelectListRepo.cs" />
     <Compile Include="Repositories\NotificationRepo.cs" />
     <Compile Include="Repositories\ServerRepo.cs" />
@@ -229,6 +232,7 @@
     <Compile Include="ViewModels\DataCenterVM.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="ViewModels\NotificationVM.cs" />
+    <Compile Include="ViewModels\ProfileVM.cs" />
     <Compile Include="ViewModels\ServerAppViewModels.cs" />
     <Compile Include="ViewModels\ServerVM.cs" />
     <Compile Include="ViewModels\UserVM.cs" />
@@ -321,11 +325,9 @@
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Home\Documentation.cshtml" />
-    <Content Include="Views\Notification\withoutmodel\Add.cshtml" />
     <Content Include="Views\Notification\Delete.cshtml" />
     <Content Include="Views\Notification\Details.cshtml" />
-    <Content Include="Views\Notification\withoutmodel\Update.cshtml" />
-    <Content Include="Views\Notification\Add.cshtml" />
+    <Content Include="Views\Notification\CreateThread.cshtml" />
     <Content Include="Views\Server\Details.cshtml" />
     <Content Include="Views\Server\Create.cshtml" />
     <Content Include="Views\Server\Edit.cshtml" />
@@ -348,13 +350,18 @@
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />
-    <Content Include="Views\Notification\Update.cshtml" />
+    <Content Include="Views\Notification\Create.cshtml" />
     <Content Include="Views\Dashboard\OldIndex.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Notification\Edit.cshtml" />
+    <Content Include="Views\Notification\DeleteThread.cshtml" />
+    <Content Include="Views\Notification\DetailsThread.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\fonts\" />
     <Folder Include="Service\" />
+    <Folder Include="Views\AppBase\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

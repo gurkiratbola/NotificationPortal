@@ -38,9 +38,11 @@ namespace NotificationPortal.ViewModels
         public string NotificationDescription { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:yyy-MM-ddThh:mm}", ApplyFormatInEditMode = true)]
         public DateTime? StartDateTime { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:yyy-MM-ddThh:mm}", ApplyFormatInEditMode = true)]
         public DateTime? EndDateTime { get; set; }
 
         [Required]
@@ -58,13 +60,11 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int ProirityID { get; set; }
 
-        public string Source { get; set; }
+        public string[] ServerReferenceIDs { get; set; }
 
-        public int? ServerID { get; set; }
+        public string[] ApplicationReferenceIDs { get; set; }
 
-        public int? ApplicationID { get; set; }
-
-        public SelectList ApplicationList { get; set; }
+        public IEnumerable<ApplicationOptionVM> ApplicationList { get; set; }
 
         public SelectList ServerList { get; set; }
 
@@ -78,6 +78,12 @@ namespace NotificationPortal.ViewModels
 
         public SelectList ProirityList { get; set; }
 
+    }
+    
+    public class NotificationEditVM : NotificationCreateVM
+    {
+        [Required]
+        public string NotificationReferenceID { get; set; }
     }
 
     public class NotificationDetailVM
@@ -117,6 +123,7 @@ namespace NotificationPortal.ViewModels
         public string ServerType { get; set; }
         [Display(Name = "Status")]
         public string ServerStatus { get; set; }
+        public string ReferenceID { get; set; }
     }
     public class NotificationApplicationVM
     {
@@ -126,5 +133,13 @@ namespace NotificationPortal.ViewModels
         public string ApplicationURL { get; set; }
         [Display(Name = "Status")]
         public string ApplicationStatus { get; set; }
+        public string ReferenceID { get; set; }
+    }
+
+    public class ApplicationOptionVM
+    {
+        public string ReferenceID { get; set; }
+        public string ApplicationName { get; set; }
+        public string ServerReferenceIDs { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using System.Web.Mvc;
 namespace NotificationPortal.Controllers
 {
     [Authorize]
-    public class NotificationController : Controller
+    public class NotificationController : AppBaseController
     {
         public string GetTimeZoneOffset() {
             string timeOffsetString = "0";
@@ -27,14 +27,14 @@ namespace NotificationPortal.Controllers
         }
         
         [HttpGet]
-        public ActionResult Add()
+        public ActionResult CreateThread()
         {
             NotificationRepo nRepo = new NotificationRepo();
             var model = nRepo.CreateAddModel();
             return View(model);
         }
         [HttpPost]
-        public ActionResult Add(NotificationCreateVM model) {
+        public ActionResult CreateThread(NotificationCreateVM model) {
             string result = "";
             NotificationRepo nRepo = new NotificationRepo();
             if (ModelState.IsValid)
@@ -53,7 +53,7 @@ namespace NotificationPortal.Controllers
             return View(model);
         }
         
-        public ActionResult Details(string id)
+        public ActionResult DetailsThread(string id)
         {
             NotificationRepo nRepo = new NotificationRepo();
             var model = nRepo.CreateDetailModel(id);
@@ -61,14 +61,14 @@ namespace NotificationPortal.Controllers
         }
 
         [HttpGet]
-        public ActionResult Update(string id)
+        public ActionResult Create(string id)
         {
             NotificationRepo nRepo = new NotificationRepo();
             var model = nRepo.CreateUpdateModel(id);
             return View(model);
         }
         [HttpPost]
-        public ActionResult Update(NotificationCreateVM model)
+        public ActionResult Create(NotificationCreateVM model)
         {
             string result = "";
             NotificationRepo nRepo = new NotificationRepo();
@@ -85,6 +85,36 @@ namespace NotificationPortal.Controllers
                 ViewBag.ErrorMsg = "Cannot update Notification, model not valid.";
             }
             model = nRepo.CreateUpdateModel(model.ThreadID,model);
+            return View(model);
+        }
+
+
+        [HttpGet]
+        public ActionResult Edit(string id)
+        {
+            NotificationRepo nRepo = new NotificationRepo();
+            var model = nRepo.CreateEditModel(id);
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Edit(NotificationEditVM model)
+        {
+            string result = "";
+            NotificationRepo nRepo = new NotificationRepo();
+            if (ModelState.IsValid)
+            {
+                bool success = nRepo.EditNotification(model, out result);
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Cannot edit Notification, model not valid.";
+            }
+            TempData["ErrorMsg"] = result;
+            model = nRepo.CreateEditModel(model.NotificationReferenceID, model);
             return View(model);
         }
 

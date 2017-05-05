@@ -12,53 +12,54 @@ namespace NotificationPortal.Repositories
 {
     public class UserRepo
     {
-        const string APP_STATUS_TYPE_NAME = "User";
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
-        public IEnumerable<SelectListItem> GetStatusList()
-        {
-            IEnumerable<SelectListItem> statusList = _context.Status.Where(s => s.StatusType.StatusTypeName == APP_STATUS_TYPE_NAME)
-                                                     .Select(app => new SelectListItem
-                                                     {
-                                                         Value = app.StatusID.ToString(),
-                                                         Text = app.StatusName
-                                                     });
+        //public IEnumerable<UserVM> Sort(IEnumerable<UserVM> list, string sortOrder, string searchString = null)
+        //{
+        //    if (!string.IsNullOrEmpty(searchString))
+        //    {
+        //        list = list.Where(c => c.ClientName.ToUpper().Contains(searchString.ToUpper()));
+        //    }
 
-            return new SelectList(statusList, "Value", "Text");
-        }
+        //    switch (sortOrder)
+        //    {
+        //        case ConstantsRepo.SORT_CLIENT_BY_NAME_DESC:
+        //            list = list.OrderByDescending(c => c.ClientName);
+        //            break;
 
-        public IEnumerable<SelectListItem> GetClientList()
-        {
-            List<SelectListItem> clientList = _context.Client.Select(app => new SelectListItem
-                                              {
-                                                  Value = app.ClientID.ToString(),
-                                                  Text = app.ClientName
-                                              }).ToList();
+        //        case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
+        //            list = list.OrderByDescending(c => c.StatusName);
+        //            break;
 
-            clientList.Add(new SelectListItem { Value = "-1", Text = "" });
-            //clientList.OrderByDescending(x => x.Value);
+        //        case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
+        //            list = list.OrderBy(c => c.StatusName);
+        //            break;
 
-            return new SelectList(clientList, "Value", "Text");
-        }
+        //        default:
+        //            list = list.OrderBy(c => c.ClientName);
+        //            break;
+        //    }
+        //    return list;
+        //}
 
         public IEnumerable<UserVM> GetAllUsers()
         {
             try
             {
-                return _context.UserDetail.Where(u => u.Status.StatusID == u.StatusID)
-                       .Select(user => new UserVM()
+                return _context.Users.Select(user => new UserVM()
                        {
-                           ReferenceID = user.ReferenceID,
-                           FirstName = user.FirstName,
-                           LastName = user.LastName,
-                           BusinessTitle = user.BusinessTitle,
-                           BusinessPhone = user.BusinessPhone,
-                           MobilePhone = user.MobilePhone,
-                           HomePhone = user.HomePhone,
-                           ClientID = user.ClientID,
-                           ClientName = user.Client.ClientName,
-                           StatusID = user.Status.StatusID,
-                           StatusName = user.Status.StatusName
+                           ReferenceID = user.UserDetail.ReferenceID,
+                           Email = user.Email,
+                           FirstName = user.UserDetail.FirstName,
+                           LastName = user.UserDetail.LastName,
+                           BusinessTitle = user.UserDetail.BusinessTitle,
+                           BusinessPhone = user.UserDetail.BusinessPhone,
+                           MobilePhone = user.UserDetail.MobilePhone,
+                           HomePhone = user.UserDetail.HomePhone,
+                           ClientReferenceID = user.UserDetail.Client.ReferenceID,
+                           ClientName = user.UserDetail.Client.ClientName,
+                           StatusID = user.UserDetail.Status.StatusID,
+                           StatusName = user.UserDetail.Status.StatusName
                        }).OrderByDescending(s => s.StatusID);
             }
             catch (Exception)
@@ -74,20 +75,21 @@ namespace NotificationPortal.Repositories
                 throw new HttpException(404, "Page Not Found");
             }
 
-            var details = _context.UserDetail.Where(u => u.ReferenceID == id)
+            var details = _context.Users.Where(u => u.UserDetail.ReferenceID == id)
                           .Select(user => new UserVM()
                           {
-                              ReferenceID = user.ReferenceID,
-                              FirstName = user.FirstName,
-                              LastName = user.LastName,
-                              BusinessTitle = user.BusinessTitle,
-                              BusinessPhone = user.BusinessPhone,
-                              MobilePhone = user.MobilePhone,
-                              HomePhone = user.HomePhone,
-                              ClientID = user.ClientID,
-                              ClientName = user.Client.ClientName,
-                              StatusID = user.Status.StatusID,
-                              StatusName = user.Status.StatusName
+                              ReferenceID = user.UserDetail.ReferenceID,
+                              Email = user.Email,
+                              FirstName = user.UserDetail.FirstName,
+                              LastName = user.UserDetail.LastName,
+                              BusinessTitle = user.UserDetail.BusinessTitle,
+                              BusinessPhone = user.UserDetail.BusinessPhone,
+                              MobilePhone = user.UserDetail.MobilePhone,
+                              HomePhone = user.UserDetail.HomePhone,
+                              ClientReferenceID = user.UserDetail.Client.ReferenceID,
+                              ClientName = user.UserDetail.Client.ClientName,
+                              StatusID = user.UserDetail.Status.StatusID,
+                              StatusName = user.UserDetail.Status.StatusName
                           }).FirstOrDefault();
 
             return details;
@@ -110,6 +112,9 @@ namespace NotificationPortal.Repositories
 
                     userManager.Create(user);
 
+                    var clientID = _context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
+                                   .Select(client => client.ClientID).FirstOrDefault();
+
                     UserDetail details = new UserDetail()
                     {
                         UserID = user.Id,
@@ -118,7 +123,7 @@ namespace NotificationPortal.Repositories
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         StatusID = model.StatusID,
-                        ClientID = model.ClientId
+                        ClientID = clientID
                     };
 
                     _context.UserDetail.Add(details);
@@ -147,6 +152,9 @@ namespace NotificationPortal.Repositories
             {
                 UserDetail user = _context.UserDetail.FirstOrDefault(u => u.ReferenceID == model.ReferenceID);
 
+                var clientID = _context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
+                               .Select(client => client.ClientID).FirstOrDefault();
+
                 if (user != null)
                 {
                     user.FirstName = model.FirstName;
@@ -155,7 +163,7 @@ namespace NotificationPortal.Repositories
                     user.BusinessPhone = model.BusinessPhone;
                     user.MobilePhone = model.MobilePhone;
                     user.HomePhone = model.HomePhone;
-                    user.ClientID = model.ClientID;
+                    user.ClientID = clientID;
                     user.StatusID = model.StatusID;
 
                     _context.SaveChanges();
@@ -178,32 +186,33 @@ namespace NotificationPortal.Repositories
 
         public UserDeleteVM GetDeleteUser(string referenceId)
         {
-            UserDeleteVM userToBeDeleted = _context.UserDetail.Where(u => u.ReferenceID == referenceId)
+            UserDeleteVM userToBeDeleted = _context.Users.Where(u => u.UserDetail.ReferenceID == referenceId)
                                            .Select(user => new UserDeleteVM()
                                            {
-                                               ReferenceID = user.ReferenceID,
-                                               FirstName = user.FirstName,
-                                               LastName = user.LastName,
-                                               BusinessTitle = user.BusinessTitle,
-                                               BusinessPhone = user.BusinessPhone,
-                                               MobilePhone = user.MobilePhone,
-                                               HomePhone = user.HomePhone,
-                                               ClientID = user.ClientID,
-                                               ClientName = user.Client.ClientName,
-                                               StatusID = user.Status.StatusID,
-                                               StatusName = user.Status.StatusName
+                                               ReferenceID = user.UserDetail.ReferenceID,
+                                               Email = user.Email,
+                                               ClientReferenceID = user.UserDetail.Client.ReferenceID,
+                                               FirstName = user.UserDetail.FirstName,
+                                               LastName = user.UserDetail.LastName,
+                                               BusinessTitle = user.UserDetail.BusinessTitle,
+                                               BusinessPhone = user.UserDetail.BusinessPhone,
+                                               MobilePhone = user.UserDetail.MobilePhone,
+                                               HomePhone = user.UserDetail.HomePhone,
+                                               ClientName = user.UserDetail.Client.ClientName,
+                                               StatusID = user.UserDetail.Status.StatusID,
+                                               StatusName = user.UserDetail.Status.StatusName
                                            }).FirstOrDefault();
 
             return userToBeDeleted;
         }
 
-        public bool DeleteUser(string referenceId, string clientName, out string msg)
+        public bool DeleteUser(string referenceId, string clientReferenceId, out string msg)
         {
             UserDetail userToBeDeleted = _context.UserDetail.FirstOrDefault(u => u.ReferenceID == referenceId);
 
             var appUserTobeDeleted = _context.Users.FirstOrDefault(u => u.Id == userToBeDeleted.UserID);
 
-            Client clientToBeDeleted = _context.Client.FirstOrDefault(c => c.ClientName == clientName);
+            Client clientToBeDeleted = _context.Client.FirstOrDefault(c => c.ReferenceID == clientReferenceId);
 
             //Application clientApplication = _context.Application.FirstOrDefault(a => a.ApplicationID == clientToBeDeleted.ClientID);
 
