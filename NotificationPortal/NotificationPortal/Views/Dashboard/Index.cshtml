@@ -6,28 +6,6 @@
 
 <h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
 
-<div class="row">
-    <div class="col-md-2">
-        <div class="btn-group" role="group">
-            <button id="filter-btn" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Filter
-            </button>
-            <div class="dropdown-menu" aria-labelledby="filter-btn">
-                <a class="dropdown-item" href="#">Source</a>
-                <a class="dropdown-item" href="#">Filter 1</a>
-                <a class="dropdown-item" href="#">Filter 2</a>
-            </div>
-        </div>
-    </div>
-    <div class="offset-md-4 col-md-6">
-        <div style="float: right">
-            <form class="form-inline pb-3" method="get" action="~/Dashboard/Search">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" name="name" />
-                <input class="btn btn-secondary" type="submit" value="Search" />
-            </form>
-        </div>
-    </div>
-</div>
 @if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_USER) || HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_CLIENT)) {
     @Html.Partial("~/Views/Dashboard/_external.cshtml", Model)
 }

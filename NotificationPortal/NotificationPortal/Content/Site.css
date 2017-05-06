@@ -1,6 +1,6 @@
 ﻿/* ------------- style for fonts -------------*/
 h1, h2, h3, h4, h5 {
-    
+    border: none;
 }
 
 h3 {
@@ -135,4 +135,20 @@ ul, li {
 .text-indent {
     display: inline;
     padding-left: 30px;
+}
+
+
+/* ------------- style for Dashboard dropdown -------------*/
+.card-deck .card {
+    border: none;
+}
+
+.card-deck {
+    background-color: transparent;
+    padding:0;
+    padding-top: 1em;
+}
+
+.card-block {
+    padding: 0;
 }
