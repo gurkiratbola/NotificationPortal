@@ -1,4 +1,5 @@
-﻿using NotificationPortal.Repositories;
+﻿using NotificationPortal.Models;
+using NotificationPortal.Repositories;
 using NotificationPortal.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -20,13 +21,21 @@ namespace NotificationPortal.Controllers
         //    }
         //    return timeOffsetString;
         //}
+
         public ActionResult Index()
         {
             var n = _nRepo.GetAllNotifications();
             return View(n);
         }
-        
+
+        public ActionResult DetailsThread(string id)
+        {
+            var model = _nRepo.CreateDetailModel(id);
+            return View(model);
+        }
+
         [HttpGet]
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         public ActionResult CreateThread()
         {
             var model = _nRepo.CreateAddModel();
@@ -34,6 +43,7 @@ namespace NotificationPortal.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         public ActionResult CreateThread(NotificationCreateVM model) {
             string result = "";
             if (ModelState.IsValid)
@@ -52,43 +62,9 @@ namespace NotificationPortal.Controllers
             model = _nRepo.CreateAddModel(model);
             return View(model);
         }
-        
-        public ActionResult DetailsThread(string id)
-        {
-            var model = _nRepo.CreateDetailModel(id);
-            return View(model);
-        }
 
         [HttpGet]
-        public ActionResult DeleteThread(string id)
-        {
-            var model = _nRepo.CreateDetailModel(id);
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult DeleteThread(ThreadDetailVM model)
-        {
-            string result = "";
-            if (ModelState.IsValid)
-            {
-                bool success = _nRepo.DeleteThread(model.ThreadID, out result);
-                if (success)
-                {
-                    TempData["SuccessMsg"] = result;
-                    return RedirectToAction("Index");
-                }
-            }
-            else
-            {
-                ViewBag.ErrorMsg = "Cannot add Notification, model not valid.";
-            }
-            TempData["ErrorMsg"] = result;
-            model = _nRepo.CreateDetailModel(model.ThreadID);
-            return View(model);
-        }
-
-        [HttpGet]
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         public ActionResult Create(string id)
         {
             var model = _nRepo.CreateUpdateModel(id);
@@ -96,6 +72,7 @@ namespace NotificationPortal.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         public ActionResult Create(NotificationCreateVM model)
         {
             string result = "";
@@ -117,6 +94,7 @@ namespace NotificationPortal.Controllers
         }
         
         [HttpGet]
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         public ActionResult Edit(string id)
         {
             var model = _nRepo.CreateEditModel(id);
@@ -124,6 +102,7 @@ namespace NotificationPortal.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         public ActionResult Edit(NotificationEditVM model)
         {
             string result = "";
@@ -146,6 +125,7 @@ namespace NotificationPortal.Controllers
         }
         
         [HttpGet]
+        [Authorize(Roles = Key.ROLE_ADMIN)]
         public ActionResult Delete(string id)
         {
             var model = _nRepo.CreateDeleteModel(id);
@@ -153,6 +133,7 @@ namespace NotificationPortal.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Key.ROLE_ADMIN)]
         public ActionResult Delete(NotificationDetailVM model)
         {
             string result = "";
@@ -175,9 +156,35 @@ namespace NotificationPortal.Controllers
             return View(model);
         }
 
-        public ActionResult Delete()
+        [HttpGet]
+        [Authorize(Roles = Key.ROLE_ADMIN)]
+        public ActionResult DeleteThread(string id)
         {
-            return View();
+            var model = _nRepo.CreateDetailModel(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = Key.ROLE_ADMIN)]
+        public ActionResult DeleteThread(ThreadDetailVM model)
+        {
+            string result = "";
+            if (ModelState.IsValid)
+            {
+                bool success = _nRepo.DeleteThread(model.ThreadID, out result);
+                if (success)
+                {
+                    TempData["SuccessMsg"] = result;
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                ViewBag.ErrorMsg = "Cannot add Notification, model not valid.";
+            }
+            TempData["ErrorMsg"] = result;
+            model = _nRepo.CreateDetailModel(model.ThreadID);
+            return View(model);
         }
     }
 }

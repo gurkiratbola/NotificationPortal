@@ -96,8 +96,16 @@
                     <div id="@collapseId" class="collapse show" role="tabpanel" aria-labelledby="@headingId">
                         <div class="card-block">
                             @Html.Raw(item.NotificationDescription)
-                            @Html.ActionLink("Edit", "Edit", new { id=@item.ReferenceID }, new { @class = "btn btn-primary" })
-                            @Html.ActionLink("Delete", "Delete", new { id=@item.ReferenceID }, new { @class = "btn btn-warning" })
+
+                            @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
+                                User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+                            {
+                                @Html.ActionLink("Edit", "Edit", new { id = @item.ReferenceID }, new { @class = "btn btn-primary" })
+                            }
+                            @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN))
+                            {
+                                @Html.ActionLink("Delete", "Delete", new { id = @item.ReferenceID }, new { @class = "btn btn-warning" })
+                            }
                         </div>
                     </div>
                 </div>
@@ -183,8 +191,15 @@
 </div>
 
 <div>
+    @if(User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN)||
+        User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+    {
         @Html.ActionLink("Update Thread", "Create", new { id = Model.ThreadID }, new { @class = "btn btn-success" })
+    }
+    @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN))
+    {
         @Html.ActionLink("Delete Thread", "DeleteThread", new { id = Model.ThreadID }, new { @class = "btn btn-warning" })
+    }
     @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
 </div>
 
