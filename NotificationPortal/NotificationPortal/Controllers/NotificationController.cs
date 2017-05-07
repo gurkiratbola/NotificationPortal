@@ -22,10 +22,11 @@ namespace NotificationPortal.Controllers
         //    return timeOffsetString;
         //}
 
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            var n = _nRepo.GetAllNotifications();
-            return View(n);
+            NotificationIndexVM model = _nRepo.GetAllNotifications(sortOrder, currentFilter, searchString, page);
+            return View(model);
         }
 
         public ActionResult DetailsThread(string id)

@@ -1,4 +1,5 @@
 ﻿using NotificationPortal.Models;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,18 @@ namespace NotificationPortal.ViewModels
 {
 
     public class NotificationIndexVM
+    {
+        public IPagedList<NotificationThreadVM> Threads { get; set; }
+        
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+        public string LevelOfImpactSort { get; set; }
+        public string NotificationHeadingSort { get; set; }
+        public string NotificationTypeSort { get; set; }
+        public string StatusSort { get; set; }
+    }
+
+    public class NotificationThreadVM
     {
         public string ThreadID { get; set; }
 
