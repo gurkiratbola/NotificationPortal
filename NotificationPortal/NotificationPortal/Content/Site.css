@@ -1,5 +1,5 @@
 ﻿body {
-    line-height: 1.1;
+    line-height: 1.4;
 }
 
 /* ------------- style for fonts -------------*/
@@ -41,6 +41,7 @@ button:focus {
 .btn-primary {
     background-color: #373e50;
 }
+
 
 /* ------------- table classes-------------*/
 th {
@@ -91,9 +92,24 @@ td a {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1000;
+}
+
+    .hover-dropdown-content:before {
+        content: ' ';
+        height: 0;
+        position: absolute;
+        width: 0;
+        border: 10px solid transparent;
+    }
+.hover-dropdown-content:before {
+    border-bottom-color: #fff; /* arrow color */
+    /* positioning */
+    position: absolute;
+    top: -20px;
+    right: 20px;
+    z-index: 1001;
 }
 
 .hover-dropdown-content a {
@@ -117,7 +133,7 @@ td a {
 }
 /* ------------- style for footer -------------*/
 .container-fluid {
-    height: calc(100vh - 120px);
+    /*height: calc(100vh - 120px);*/
 }
 
 /* Keeping the sidebar layout look decent */
@@ -152,15 +168,19 @@ td a {
     padding: 10px;
 }
 
-dl.row {
+/*dl.row {
     padding: 0.5em 1em;
-}
+}*/
 
 .tab-pane {
     padding-top: 30px;
 }
 
 /* ------------- style for right click -------------*/
+.btn-sm {
+    width: 100%;
+}
+
 .hidden-menu {
     display: none;
     width: 80px;
@@ -201,11 +221,16 @@ dl.row {
 
 .sidebar-dropdown .nav-link {
     border-bottom: 1px solid #6f7e95;
+    font-size: 0.9em;
+    color: lightgrey;
 }
 
-
-
-
+.fa-caret-down {
+    transition: 0.3s;
+}
+.arrow-rotate {
+    transform: rotate(180deg);
+}
 /* ------------- style for Dashboard -------------*/
 .card-deck .card {
     border: none;
