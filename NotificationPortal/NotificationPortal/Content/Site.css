@@ -1,12 +1,21 @@
-﻿/* ------------- style for fonts -------------*/
+﻿body {
+    line-height: 1.1;
+}
+
+/* ------------- style for fonts -------------*/
 h1, h2, h3, h4, h5 {
     border: none;
+}
+
+h1 {
+    font-size: 2.2em !important;
 }
 
 h3 {
     font-weight: 700;
     font-size: 1.1em;
 }
+
 
 
 ul, li {
@@ -20,84 +29,54 @@ ul, li {
     color: #025aa5 !important;
 }
 
-/* Keeping the sidebar layout look decent */
-@media (min-width: 768px) { 
-    .col-md-1 {
-        max-width: 9.333333% !important;
-    }
+/* ------------- color classes-------------*/
+.bg-inverse {
+    background-color: #6f7e95 !important;
 }
 
-/* height for editor plugin*/
-#editor {
-    min-height: 220px !important;
+button:focus {
+    outline: none;
 }
 
-/* jQuery table row notifications */
-.clickable-row:hover,
-.clickable-row-dashboard :hover{
-    background: #f7f7f7;
-    cursor: pointer;
+.btn-primary {
+    background-color: #373e50;
 }
 
-.float-create {
-    float: right !important;
+/* ------------- table classes-------------*/
+th {
+    text-transform: uppercase;
+    font-size: 0.9em;
+    font-weight: 500;
 }
 
-#accordion {
-    margin-bottom: 30px !important;
-}
-
-#accordion .badge {
-    background-color: grey;
-    padding: 10px;
-}
-
-/* ------------- style for right click -------------*/
-.hidden-menu {
-    display:none;
-    width: 80px;
-    height: 60px;
-    background-color: #ededed;
-    border: 1px solid grey;
-}
-
-.hidden-menu ul,
-.hidden-menu li {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-}
-
-.hidden-menu li:first-child {
-    outline: 1px solid grey;
-}
-
-/* ------------- style for sidebar dropdown -------------*/
-
-.sidebar-dropdown-button {
+th a {
     color: white;
-    background-color: #292b2c;
-    width: 100%;
-    box-shadow: none;
-    border: none;
-    text-align: left;
-    padding: 0.5em 1em;
-    cursor: pointer;
+    transition: 0.3s;
 }
-.sidebar-dropdown {
-    margin: 0;
-    padding: 0;
-    background-color: #555;
-    display: none;
+th a:hover {
+    color: #ededed;
 }
 
-.sidebar-dropdown .nav-link {
-    border-bottom: 1px solid grey;
+td a {
+    color: #373e50;
+    text-decoration: underline;
 }
 
+/* ------------- pagination -------------*/
+.pagination a {
+    background-color: #6f7e95 !important;
+}
+/* ------------- style for header -------------*/
+.navbar-brand {
+    text-transform: uppercase;
+    font-family: century gothic;
+    font-weight: 700;
+}
 
-/* ------------- style for top nav hover dropdown -------------*/
+.fixed-top {
+    background-color: #373e50;
+}
+
 .drop-btn {
     border: none;
     cursor: pointer;
@@ -136,19 +115,124 @@ ul, li {
     display: inline;
     padding-left: 30px;
 }
+/* ------------- style for footer -------------*/
+.container-fluid {
+    height: calc(100vh - 120px);
+}
+
+/* Keeping the sidebar layout look decent */
+@media (min-width: 768px) { 
+    .col-md-1 {
+        max-width: 9.333333% !important;
+    }
+}
+
+/* height for editor plugin*/
+#editor {
+    min-height: 220px !important;
+}
+
+/* jQuery table row notifications */
+.clickable-row:hover,
+.clickable-row-dashboard :hover{
+    background: #f7f7f7;
+    cursor: pointer;
+}
+
+.float-create {
+    float: right !important;
+}
+
+#accordion {
+    margin-bottom: 30px !important;
+}
+
+#accordion .badge {
+    background-color: grey;
+    padding: 10px;
+}
+
+dl.row {
+    padding: 0.5em 1em;
+}
+
+.tab-pane {
+    padding-top: 30px;
+}
+
+/* ------------- style for right click -------------*/
+.hidden-menu {
+    display: none;
+    width: 80px;
+    height: 60px;
+    background-color: #ededed;
+    border: 1px solid grey;
+}
+
+.hidden-menu ul,
+.hidden-menu li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.hidden-menu li:first-child {
+    outline: 1px solid grey;
+}
+
+/* ------------- style for sidebar dropdown -------------*/
+
+.sidebar-dropdown-button {
+    color: white;
+    width: 100%;
+    box-shadow: none;
+    border: none;
+    text-align: left;
+    padding: 0.5em 1em;
+    cursor: pointer;
+}
+.sidebar-dropdown {
+    margin: 0;
+    padding: 0;
+    background-color: #5d6a7e;
+    display: none;
+}
+
+.sidebar-dropdown .nav-link {
+    border-bottom: 1px solid #6f7e95;
+}
 
 
-/* ------------- style for Dashboard dropdown -------------*/
+
+
+/* ------------- style for Dashboard -------------*/
 .card-deck .card {
     border: none;
 }
 
 .card-deck {
     background-color: transparent;
-    padding:0;
-    padding-top: 1em;
+    padding: 1em 0 10px;
 }
 
 .card-block {
     padding: 0;
+}
+
+.external-status {
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+.border-red {
+    border: 1px solid red;
+}
+
+.border-green {
+    border: 1px solid green;
+}
+
+.card-header {
+    border-bottom: 2px solid #0275d8;
 }

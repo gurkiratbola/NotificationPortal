@@ -23,7 +23,7 @@
                 @{if (Request.IsAuthenticated && !HttpContext.Current.User.IsInRole("User"))
                     {
                         <li class="nav-item">
-                            <button class="sidebar-dropdown-button">
+                            <button class="sidebar-dropdown-button bg-inverse">
                                 Settings
                             </button>
                             <ul class="sidebar-dropdown" >

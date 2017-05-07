@@ -6,7 +6,7 @@
 
     foreach (var item in Model)
     {
-        var statusClass = item.Status == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INCOMPLETE ? "text-danger" : "text-success";
+        var statusClass = item.Status == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INCOMPLETE ? "text-danger border-red" : "text-success border-green";
         var impactClass = item.LevelOfImpact == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING ? "badge badge-success" : "badge badge-danger";
         <div class="card-deck pb-3">
             <div class="card">
@@ -23,7 +23,7 @@
 
                         </div>
                         <div class="col-md-6">
-                                <span class="@statusClass float-right">
+                                <span class="@statusClass float-right external-status">
                                     @Html.DisplayFor(modelItem => item.Status)
                                 </span>
                         </div>
@@ -40,13 +40,13 @@
                             </div>
                         </div>
 
-                        <div class="offset-md-1 col-md-11">
+                        <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
                                     <ul>
                                         @foreach (var detail in item.ThreadDetail)
                                         {
-                                            <li>
+                                            <li class="notification-list">
                                                 <p class="text-muted">
                                                     @Html.DisplayFor(modelItem => detail.SentDateTime)
                                                     <span class="text-indent">

@@ -28,6 +28,7 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Status")]
         public string Status { get; set; }
 
+        [Display(Name = "Issue Time")]
         public DateTime SentDateTime { get; set; }
         
         // for external dashboard only
