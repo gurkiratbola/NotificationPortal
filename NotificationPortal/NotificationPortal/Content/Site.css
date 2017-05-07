@@ -1,5 +1,6 @@
 ﻿body {
     line-height: 1.4;
+    background-color: #edf2f6;
 }
 
 /* ------------- style for fonts -------------*/
@@ -42,6 +43,13 @@ button:focus {
     background-color: #373e50;
 }
 
+.bg-faded {
+    background-color: transparent;
+}
+
+.btn-mint {
+    background-color: #44bbc1;
+}
 
 /* ------------- table classes-------------*/
 th {
@@ -61,6 +69,10 @@ th a:hover {
 td a {
     color: #373e50;
     text-decoration: underline;
+}
+
+tbody {
+    background-color: white;
 }
 
 /* ------------- pagination -------------*/
@@ -133,7 +145,10 @@ td a {
 }
 /* ------------- style for footer -------------*/
 .container-fluid {
-    /*height: calc(100vh - 120px);*/
+    min-height: calc(100vh - 130px);
+}
+
+footer {
 }
 
 /* Keeping the sidebar layout look decent */
@@ -163,19 +178,53 @@ td a {
     margin-bottom: 30px !important;
 }
 
-#accordion .badge {
-    background-color: grey;
-    padding: 10px;
+h5.col-12 {
+    color: #44bbc1;
+    padding-left: 0;
 }
 
-/*dl.row {
+#accordion .card-block a {
+    color: black !important;
+}
+
+#accordion .card-block a:hover {
+    text-decoration: none !important;
+}
+
+#accordion .badge {
+    background-color: #44bbc1;
+    padding: 5px;
+}
+
+#accordion .card {
+    margin-bottom: 15px;
+    border: none;
+}
+#accordion .card-header {
+    border-bottom: 2px solid #44bbc1;
+    padding: 0;
+    background-color: transparent;
+}
+    
+.left-padding {
     padding: 0.5em 1em;
-}*/
+}
 
 .tab-pane {
-    padding-top: 30px;
+    padding: 1em;
+    padding-top: 25px;
+    background-color: white;
+    margin-bottom: 20px;
 }
 
+.tab-content {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+.tab-content > .active {
+    border-bottom: 1px solid #ddd;
+}
 /* ------------- style for right click -------------*/
 .btn-sm {
     width: 100%;

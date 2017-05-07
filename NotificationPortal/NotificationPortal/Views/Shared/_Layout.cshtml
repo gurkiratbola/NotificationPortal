@@ -58,28 +58,27 @@
         }
     </div>
 
-<div class="container body-content">
-    <br />
-    
-    @{
-        if (Request.IsAuthenticated)
-        {
-            @Html.Partial("~/Views/Sidebar/_Sidebar-top.cshtml")
+    <div class="container body-content">
+        <br />
+        @{
+            if (Request.IsAuthenticated)
+            {
+                @Html.Partial("~/Views/Sidebar/_Sidebar-top.cshtml")
+            }
         }
-    }
 
-    @RenderBody()
+        @RenderBody()
     
-    @{
-        if (Request.IsAuthenticated)
-        {
-            @Html.Partial("~/Views/Sidebar/_Sidebar-bottom.cshtml")
+        @{
+            if (Request.IsAuthenticated)
+            {
+                @Html.Partial("~/Views/Sidebar/_Sidebar-bottom.cshtml")
+            }
         }
-    }
+    </div>
     <footer>
         <p class="text-center">@Html.Raw("Latest Build: " + File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString()) | <a href="~/Home/Documentation" class="text-primary">Documentation</a></p>
     </footer>
-</div>
 
     @RenderSection("scripts", required: false)
 </body>

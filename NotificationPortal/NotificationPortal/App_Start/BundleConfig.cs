@@ -27,7 +27,8 @@ namespace NotificationPortal
                       "~/Content/bootstrap.css",
                       "~/Content/sidebar.css",
                       "~/Content/site.css",
-                      "~/Content/summernote.css"
+                      "~/Content/summernote.css",
+                      "~/Content/PagedList.css"
                       ));
             // For the rtf editor 
             bundles.Add(new ScriptBundle("~/bundles/summernote").Include(

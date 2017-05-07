@@ -1,8 +1,6 @@
 ﻿@model PagedList.IPagedList<NotificationPortal.ViewModels.ClientVM>
 @using PagedList.Mvc;
 
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-
 @{
     ViewBag.Title = "Clients";
 }
@@ -26,7 +24,7 @@
         </div>
         <div class="offset-md-4 col-md-2">
             <div class="float-create">
-                @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-mint text-white" })
             </div>
         </div>
     </div>
