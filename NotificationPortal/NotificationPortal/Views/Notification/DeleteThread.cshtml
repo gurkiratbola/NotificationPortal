@@ -12,65 +12,66 @@
     <li class="breadcrumb-item active">Notification Details</li>
 </ol>
 
-<!-- Nav tabs -->
-<ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#Notifications" role="tab">Notifications</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#Servers" role="tab">Servers</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#Applications" role="tab">Applications</a>
-    </li>
-</ul>
+<div class="container">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#Notifications" role="tab">Notifications</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#Servers" role="tab">Servers</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#Applications" role="tab">Applications</a>
+        </li>
+    </ul>
 
-<!-- Tab panes -->
-<div class="tab-content">
-    <div class="tab-pane active" id="Notifications" role="tabpanel">
-        <dl class="row">
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NotificationType)</dt>
-            <dd class="col-sm-10">@Html.DisplayFor(model => model.NotificationType)</dd>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="Notifications" role="tabpanel">
+            <dl class="row">
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NotificationType)</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.NotificationType)</dd>
 
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.LevelOfImpact)</dt>
-            <dd class="col-sm-10">@Html.DisplayFor(model => model.LevelOfImpact)</dd>
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.LevelOfImpact)</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.LevelOfImpact)</dd>
 
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Status)</dt>
-            <dd class="col-sm-10">@Html.DisplayFor(model => model.Status)</dd>
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Status)</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Status)</dd>
 
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.StartDateTime)</dt>
-            <dd class="col-sm-10">
-                @if (Model.StartDateTime != null)
-                {
-                    @Html.DisplayFor(model => model.StartDateTime)
-                }
-                else
-                {
-                    @Html.Raw("TBA")
-                }
-            </dd>
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.StartDateTime)</dt>
+                <dd class="col-sm-10">
+                    @if (Model.StartDateTime != null)
+                    {
+                        @Html.DisplayFor(model => model.StartDateTime)
+                    }
+                    else
+                    {
+                        @Html.Raw("TBA")
+                    }
+                </dd>
 
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.EndDateTime)</dt>
-            <dd class="col-sm-10">
-                @if (Model.EndDateTime != null)
-                {
-                    @Html.DisplayFor(model => model.EndDateTime)
-                }
-                else
-                {
-                    @Html.Raw("TBA")
-                }
-            </dd>
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.EndDateTime)</dt>
+                <dd class="col-sm-10">
+                    @if (Model.EndDateTime != null)
+                    {
+                        @Html.DisplayFor(model => model.EndDateTime)
+                    }
+                    else
+                    {
+                        @Html.Raw("TBA")
+                    }
+                </dd>
 
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ThreadID)</dt>
-            <dd class="col-sm-10">@Html.DisplayFor(model => model.ThreadID)</dd>
-        </dl>
-        <!-- list of threads-->
-        <div id="accordion" role="tablist" aria-multiselectable="true">
-            @{  var threadnModel = Model.Thread.FirstOrDefault(); }
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ThreadID)</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.ThreadID)</dd>
+            </dl>
+            <!-- list of threads-->
+            <div id="accordion" role="tablist" aria-multiselectable="true">
+                @{  var threadnModel = Model.Thread.FirstOrDefault(); }
            
-            <table class="table table-bordered">
-                <thead>
+                <table class="table table-bordered">
+                    <thead>
                     <tr class="bg-inverse text-white text-center">
                         <th class="text-center">
                             @Html.DisplayNameFor(model => threadnModel.NotificationHeading)
@@ -82,8 +83,8 @@
                             @Html.DisplayNameFor(model => threadnModel.SentDateTime)
                         </th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     @foreach (var item in Model.Thread)
                     {
                         <tr class="text-center">
@@ -98,14 +99,14 @@
                             </td>
                         </tr>
                     }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-    <div class="tab-pane" id="Servers" role="tabpanel">
-        <table class="table table-bordered">
-            @{ var serverModel = Model.Servers.FirstOrDefault();}
-            <thead>
+        <div class="tab-pane" id="Servers" role="tabpanel">
+            <table class="table table-bordered">
+                @{ var serverModel = Model.Servers.FirstOrDefault();}
+                <thead>
                 <tr class="bg-inverse text-white text-center">
                     <th class="text-center">
                         @Html.DisplayNameFor(model => serverModel.ServerName)
@@ -117,8 +118,8 @@
                         @Html.DisplayNameFor(model => serverModel.ServerStatus)
                     </th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 @foreach (var item in Model.Servers)
                 {
                     <tr class="text-center">
@@ -134,19 +135,19 @@
                         </td>
                     </tr>
                 }
-            </tbody>
-        </table>
-    </div>
-    <div class="tab-pane" id="Applications" role="tabpanel">
-        @if (Model.Applications.Count() == 0)
-        {
-            <p>There are no applications associated with this thread.</p>
-        }
-        else
-        {
-            var applicationModel = Model.Applications.FirstOrDefault();
-            <table class="table table-bordered">
-                <thead>
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="Applications" role="tabpanel">
+            @if (Model.Applications.Count() == 0)
+            {
+                <p>There are no applications associated with this thread.</p>
+            }
+            else
+            {
+                var applicationModel = Model.Applications.FirstOrDefault();
+                <table class="table table-bordered">
+                    <thead>
                     <tr class="bg-inverse text-white text-center">
                         <th class="text-center">
                             @Html.DisplayNameFor(model => applicationModel.ApplicationName)
@@ -158,10 +159,10 @@
                             @Html.DisplayNameFor(model => applicationModel.ApplicationStatus)
                         </th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     @foreach (var item in Model.Applications)
-                {
+                    {
                         <tr class="text-center">
                             <td>
                                 @Html.DisplayFor(modelItem => item.ApplicationName)
@@ -174,19 +175,20 @@
                             </td>
                         </tr>
                     }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+
+    <div>
+        @using (Html.BeginForm())
+        {
+            @Html.HiddenFor(model=>model.ThreadID)
+            <input type="submit" value="Delete Thread" class="btn btn-danger" />
+            @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-mint text-white" })
         }
     </div>
-</div>
-
-<div>
-@using (Html.BeginForm())
-{
-    @Html.HiddenFor(model=>model.ThreadID)
-    <input type="submit" value="Delete Thread" class="btn btn-danger" />
-    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-mint text-white" })
-}
 </div>
 
 <script src="~/Scripts/jquery-3.1.1.min.js"></script>

@@ -1,5 +1,5 @@
-﻿@model IEnumerable<NotificationPortal.ViewModels.UserVM>
-
+﻿@model PagedList.IPagedList<NotificationPortal.ViewModels.UserVM>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "User Management";
@@ -15,10 +15,11 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <form class="form-inline pb-3" method="get" action="~/User/Search">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" name="name" />
+            @using (Html.BeginForm("Index", "User", FormMethod.Get, new { @class = "form-inline pb-3" }))
+            {
+                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control mr-sm-2" })
                 <input class="btn btn-secondary" type="submit" value="Search" />
-            </form>
+            }
         </div>
         <div class="offset-md-4 col-md-2">
             <div class="float-create">
@@ -27,7 +28,7 @@
         </div>
     </div>
 
-    @{  if (Model.Count() > 0)
+    @{  if (Model.Any())
         {
             if (TempData["SuccessMsg"] != null)
             {
@@ -37,22 +38,22 @@
             <table class="table table-bordered">
                 <tr class="bg-inverse text-white text-center">
                     <th class="text-center">
-                        @Html.DisplayNameFor(model => model.RoleName)
+                        @Html.ActionLink("Role", "Index", new { sortOrder = ViewBag.ClientNameSort, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th class="text-center">
-                        @Html.DisplayNameFor(model => model.Email)
+                        @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th class="text-center">
-                        @Html.DisplayNameFor(model => model.FirstName)
+                        @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th class="text-center">
-                        @Html.DisplayNameFor(model => model.LastName)
+                        @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th class="text-center">
-                        @Html.DisplayNameFor(model => model.ClientName)
+                        @Html.ActionLink("Client", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th class="text-center">
-                        @Html.DisplayNameFor(model => model.StatusName)
+                        @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
                     </th>
                 </tr>
 
@@ -82,7 +83,9 @@
                         </td>
                     </tr>
                 }
-            </table>                     
+            </table>
+            
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))                     
         }
         else
         {
