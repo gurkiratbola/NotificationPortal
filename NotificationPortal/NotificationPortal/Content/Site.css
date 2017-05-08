@@ -134,11 +134,18 @@ tbody {
 }
 
 /* ==========================================================================
-                            Pagination Styles
+                            Pagination/Filter/Sort Styles
 ========================================================================== */
 .pagination a {
     background-color: #6f7e95 !important;
 }
+
+.filter-arrows {
+    display: flex;
+    flex-direction: column;
+}
+
+
 
 /* ==========================================================================
                             Header Styles

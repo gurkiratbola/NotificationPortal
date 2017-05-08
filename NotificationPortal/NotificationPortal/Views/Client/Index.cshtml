@@ -36,18 +36,25 @@
     }
 
     <table class="table table-bordered" style="position:relative;">
-        <tr class="bg-inverse text-white text-center">
-            <th class="text-center">
-                @Html.ActionLink("Client Name", "Index", new { sortOrder = ViewBag.ClientNameSort, currentFilter = ViewBag.CurrentFilter })
+        <tr class="bg-inverse text-white">
+            <th>
+                <a href="@Url.Action("Index", "Client", new { sortOrder = ViewBag.ClientNameSort, currentFilter = ViewBag.CurrentFilter })">
+                    @*@Html.ActionLink("Client Name", "Index", new { sortOrder = ViewBag.ClientNameSort, currentFilter = ViewBag.CurrentFilter })*@
+                    Client
+                    @*<span class="filter-arrows">
+                        <i class="fa fa-caret-up" aria-hidden="true"></i>
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    </span>*@
+                </a>
             </th>
-            <th class="text-center">
+            <th>
                 @Html.ActionLink("Current Status", "Index", new { sortOrder = ViewBag.StatusNameSort, currentFilter = ViewBag.CurrentFilter })
             </th>
         </tr>
 
         @foreach (var item in Model)
         {
-            <tr class="text-center clickable-row" id="@item.ReferenceID" data-href="/Details/@item.ReferenceID">
+            <tr class="clickable-row" id="@item.ReferenceID" data-href="/Details/@item.ReferenceID">
                 <td>
                     @Html.DisplayFor(modelItem => item.ClientName)
                 </td>
