@@ -8,98 +8,97 @@
 <h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
 
 <ol class="breadcrumb bg-faded">
-    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            @using (Html.BeginForm("Index", "User", FormMethod.Get, new { @class = "form-inline pb-3" }))
-            {
-                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control mr-sm-2" })
-                <input class="btn btn-secondary" type="submit" value="Search" />
-            }
-        </div>
-        <div class="offset-md-4 col-md-2">
-            <div class="float-create">
-                @Html.ActionLink("Create New", "Add", null, new { @class = "btn btn-mint text-white" })
-            </div>
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm("Index", "User", FormMethod.Get, new { @class = "form-inline pb-3" }))
+        {
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control mr-sm-2" })
+            <input class="btn btn-secondary" type="submit" value="Search" />
+        }
+    </div>
+    <div class="offset-md-4 col-md-2">
+        <div class="float-create">
+            @Html.ActionLink("Create New", "Add", null, new { @class = "btn btn-mint text-white" })
         </div>
     </div>
+</div>
 
-    @{  if (Model.Any())
+@{  if (Model.Any())
+    {
+        if (TempData["SuccessMsg"] != null)
         {
-            if (TempData["SuccessMsg"] != null)
+            <p class="alert alert-success">@TempData["SuccessMsg"]</p>
+        }
+
+        <table class="table table-bordered">
+            <tr class="bg-inverse text-white text-center">
+                <th class="text-center">
+                    @Html.ActionLink("Role", "Index", new { sortOrder = ViewBag.ClientNameSort, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th class="text-center">
+                    @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th class="text-center">
+                    @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th class="text-center">
+                    @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th class="text-center">
+                    @Html.ActionLink("Client", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th class="text-center">
+                    @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
             {
-                <p class="alert alert-success">@TempData["SuccessMsg"]</p>
-            }
-
-            <table class="table table-bordered">
-                <tr class="bg-inverse text-white text-center">
-                    <th class="text-center">
-                        @Html.ActionLink("Role", "Index", new { sortOrder = ViewBag.ClientNameSort, currentFilter = ViewBag.CurrentFilter })
-                    </th>
-                    <th class="text-center">
-                        @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
-                    </th>
-                    <th class="text-center">
-                        @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
-                    </th>
-                    <th class="text-center">
-                        @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
-                    </th>
-                    <th class="text-center">
-                        @Html.ActionLink("Client", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
-                    </th>
-                    <th class="text-center">
-                        @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
-                    </th>
+                <tr class="text-center clickable-row" id="@item.ReferenceID" data-href="/Details/@item.ReferenceID">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClientName)
+                    </td>
+                    @{
+                        var className = item.StatusName == "Disabled" ? "badge badge-danger" : "badge badge-success";
+                    }
+                    <td>
+                        <span class="@className">@Html.DisplayFor(modelItem => item.StatusName)</span>
+                    </td>
                 </tr>
-
-                @foreach (var item in Model)
-                {
-                    <tr class="text-center clickable-row" id="@item.ReferenceID" data-href="/Details/@item.ReferenceID">
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RoleName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FirstName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ClientName)
-                        </td>
-                        @{
-                            var className = item.StatusName == "Disabled" ? "badge badge-danger" : "badge badge-success";
-                        }
-                        <td>
-                            <span class="@className">@Html.DisplayFor(modelItem => item.StatusName)</span>
-                        </td>
-                    </tr>
-                }
-            </table>
+            }
+        </table>
             
-            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))                     
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))                     
+    }
+    else
+    {
+        if (Model == null)
+        {
+            <p> Something went wrong, user database not available.</p>
         }
         else
         {
-            if (Model == null)
-            {
-                <p> Something went wrong, user database not available.</p>
-            }
-            else
-            {
-                <p> There are no such users in the database at the moment.</p>
-            }
+            <p> There are no such users in the database at the moment.</p>
         }
     }
-</div>
+}
+
 
 <div class="hidden-menu">
     <ul>

@@ -12,34 +12,32 @@
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.ClientName)</li>
 </ol>
 
-<div class="container">
-    @if (TempData["SuccessMsg"] != null)
-    {
-        <p class="alert alert-success">
-            @Html.Raw(TempData["SuccessMsg"])
-        </p>
-    }
-    <div>
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ClientName)
-            </dt>
+@if (TempData["SuccessMsg"] != null)
+{
+    <p class="alert alert-success">
+        @Html.Raw(TempData["SuccessMsg"])
+    </p>
+}
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ClientName)
+        </dt>
 
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ClientName)
-            </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ClientName)
+        </dd>
 
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.StatusName)
-            </dt>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StatusName)
+        </dt>
 
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.StatusName)
-            </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StatusName)
+        </dd>
 
-        </dl>
-    </div>
-
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-mint text-white" })
-    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
+    </dl>
 </div>
+
+@Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-mint text-white" })
+@Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
