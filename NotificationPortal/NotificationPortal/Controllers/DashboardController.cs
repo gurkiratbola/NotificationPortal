@@ -18,7 +18,6 @@ namespace NotificationPortal.Controllers
         {
             IEnumerable<DashboardVM> dashboard = _dRepo.GetDashboard(User);
             return View(dashboard);
-            //return RedirectToAction("Index", "Notification", "");
         }
 
     }

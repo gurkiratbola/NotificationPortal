@@ -19,7 +19,6 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Required]
         [Display(Name = "Business Title")]
         public string BusinessTitle { get; set; }
 
@@ -31,7 +30,6 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Mobile Phone")]
         public string MobilePhone { get; set; }
 
-        [Required]
         [Display(Name = "Home Phone")]
         public string HomePhone { get; set; }
 

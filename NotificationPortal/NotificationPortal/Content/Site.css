@@ -142,19 +142,23 @@ tbody {
 
 .filter-arrows {
     display: flex;
+    width: 10px;
+    height: 1em;
+    float: right;
     flex-direction: column;
 }
 
-
-
+.filter-arrows .fa-caret-down {
+    transform: translateY(-6px);
+}
 /* ==========================================================================
                             Header Styles
 ========================================================================== */
-.navbar-brand {
-    text-transform: uppercase;
-    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
-    font-weight: 700;
-}
+    .navbar-brand {
+        text-transform: uppercase;
+        font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+        font-weight: 700;
+    }
 
 .fixed-top {
     background-color: #373e50;
@@ -216,6 +220,10 @@ tbody {
 /* ==========================================================================
                             Sidebar Styles
 ========================================================================== */
+
+.nav-pills > li {
+    border-bottom: 1px solid #edf2f6;
+}
 
 .sidebar-dropdown-button {
     color: white;

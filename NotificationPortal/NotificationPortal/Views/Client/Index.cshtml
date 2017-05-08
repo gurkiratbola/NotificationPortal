@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<NotificationPortal.ViewModels.ClientVM>
+﻿@model NotificationPortal.ViewModels.ClientIndexVM
 @using PagedList.Mvc;
 
 @{
@@ -15,7 +15,7 @@
     <div class="col-md-6">
         @using (Html.BeginForm("Index", "Client", FormMethod.Get, new { @class = "form-inline pb-3" }))
         {
-            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control mr-sm-2" })
+            @Html.TextBox("SearchString", Model.CurrentFilter, new { @class = "form-control mr-sm-2" })
             <input class="btn btn-secondary" type="submit" value="Search" />
         }
 
@@ -26,7 +26,7 @@
         </div>
     </div>
 </div>
-@if (Model.Count() > 0)
+@if (Model.Clients.Count() > 0)
 {
     if (TempData["SuccessMsg"] != null)
     {
@@ -38,21 +38,31 @@
     <table class="table table-bordered" style="position:relative;">
         <tr class="bg-inverse text-white">
             <th>
-                <a href="@Url.Action("Index", "Client", new { sortOrder = ViewBag.ClientNameSort, currentFilter = ViewBag.CurrentFilter })">
+                <a href="@Url.Action("Index", "Client", new { sortOrder = Model.ClientHeadingSort, currentFilter = Model.CurrentFilter })">
                     @*@Html.ActionLink("Client Name", "Index", new { sortOrder = ViewBag.ClientNameSort, currentFilter = ViewBag.CurrentFilter })*@
                     Client
-                    @*<span class="filter-arrows">
+                    <span class="filter-arrows">
                         <i class="fa fa-caret-up" aria-hidden="true"></i>
                         <i class="fa fa-caret-down" aria-hidden="true"></i>
-                    </span>*@
+                    </span>
                 </a>
             </th>
             <th>
-                @Html.ActionLink("Current Status", "Index", new { sortOrder = ViewBag.StatusNameSort, currentFilter = ViewBag.CurrentFilter })
+                <a href="@Url.Action("Index", "Client", new { sortOrder = Model.StatusSort, currentFilter = Model.CurrentFilter })">
+                    @*@Html.ActionLink("Client Name", "Index", new { sortOrder = ViewBag.ClientNameSort, currentFilter = ViewBag.CurrentFilter })*@
+                    Status
+                    <span class="filter-arrows">
+                        <i class="fa fa-caret-up" aria-hidden="true"></i>
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    </span>
+                </a>
+            </th>
+            <th>
+                Number of Applications
             </th>
         </tr>
 
-        @foreach (var item in Model)
+        @foreach (var item in Model.Clients)
         {
             <tr class="clickable-row" id="@item.ReferenceID" data-href="/Details/@item.ReferenceID">
                 <td>
@@ -61,12 +71,15 @@
                 <td>
                     <span class="">@Html.DisplayFor(modelItem => item.StatusName)</span>
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumOfApps)
+                </td>
             </tr>
         }
     </table>
 
-    @Html.PagedListPager(Model, page => Url.Action("Index",
-        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    @Html.PagedListPager(Model.Clients, page => Url.Action("Index",
+        new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
 }
 else
 {
