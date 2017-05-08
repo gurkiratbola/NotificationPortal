@@ -235,6 +235,7 @@
     <Compile Include="ViewModels\ProfileVM.cs" />
     <Compile Include="ViewModels\ServerAppViewModels.cs" />
     <Compile Include="ViewModels\ServerVM.cs" />
+    <Compile Include="ViewModels\StatusVM.cs" />
     <Compile Include="ViewModels\UserVM.cs" />
     <Compile Include="ViewModels\ValidationVM.cs" />
   </ItemGroup>

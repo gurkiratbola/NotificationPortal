@@ -17,16 +17,16 @@ namespace NotificationPortal.Repositories
         const string APP_STATUS_TYPE_NAME = "Server";
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
-        public IEnumerable<ServerVM> GetServerList()
+        public IEnumerable<ServerListVM> GetServerList()
         {
-            IEnumerable<ServerVM> serverList = _context.Server
-                                                .Select(c => new ServerVM
+            IEnumerable<ServerListVM> serverList = _context.Server
+                                                .Select(c => new ServerListVM
                                                 {
                                                     ServerName = c.ServerName,
                                                     ReferenceID = c.ReferenceID,
-                                                    StatusID = c.StatusID,
-                                                    ServerTypeID = c.ServerTypeID,
-                                                    LocationID = c.LocationID,
+                                                    StatusName = c.Status.StatusName,
+                                                    ServerTypeName = c.ServerType.ServerTypeName,
+                                                    LocationName = c.DataCenterLocation.Location,
                                                     Description = c.Description
                                                 });
             return serverList;

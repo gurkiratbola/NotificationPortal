@@ -1,6 +1,7 @@
 ﻿using NotificationPortal.Models;
 using NotificationPortal.Repositories;
 using NotificationPortal.ViewModels;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,11 +17,36 @@ namespace NotificationPortal.Controllers
         private readonly ApplicationRepo _aRepo = new ApplicationRepo();
         private readonly SelectListRepo _sRepo = new SelectListRepo();
 
+        //[HttpGet]
+        //public ActionResult Index()
+        //{
+        //    IEnumerable<ApplicationListVM> applicationList = _aRepo.GetApplicationList();
+        //    return View(applicationList);
+        //}
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            IEnumerable<ApplicationVM> applicationList = _aRepo.GetApplicationList();
-            return View(applicationList);
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.ClientNameSort =
+              String.IsNullOrEmpty(sortOrder) ? ConstantsRepo.SORT_CLIENT_BY_NAME_DESC : "";
+            ViewBag.StatusNameSort =
+              sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC;
+
+            // TO DO: if it's null, redirect to a page
+            IEnumerable<ApplicationListVM> appList = _aRepo.GetApplicationList();
+            appList = _aRepo.Sort(appList, sortOrder, searchString);
+
+            int pageNumber = (page ?? 1);
+            return View(appList.ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE));
         }
 
         [HttpGet]
@@ -69,8 +95,9 @@ namespace NotificationPortal.Controllers
         {
             ApplicationVM application = _aRepo.GetApplication(id);
             // To be modified: global method for status in development
-            ViewBag.ClientRefID = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
-            ViewBag.ClientID = _sRepo.GetClientList();
+            ViewBag.StatusList = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
+
+            ViewBag.ClientList = _sRepo.GetClientList();
             return View(application);
         }
 
@@ -92,9 +119,11 @@ namespace NotificationPortal.Controllers
                 }
             }
             ApplicationVM application = _aRepo.GetApplication(model.ReferenceID);
-            ViewBag.ClientRefID = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
+            //ViewBag.ClientRefID = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
             //ViewBag.StatusID = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
-            ViewBag.ClientID = _sRepo.GetClientList();
+            // ViewBag.ClientID = _sRepo.GetClientList();
+            ViewBag.StatusList = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
+            ViewBag.ClientList = _sRepo.GetClientList();
             return View(application);
         }
 

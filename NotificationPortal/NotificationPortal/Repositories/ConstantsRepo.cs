@@ -25,5 +25,9 @@ namespace NotificationPortal.Repositories
 
         public const string SORT_FIRST_NAME_BY_ASCE = "first_name_asce";
         public const string SORT_FIRST_NAME_BY_DESC = "first_name_desc";
+
+        public const string SORT_APP_BY_NAME_ASCE = "application_name_asce";
+        public const string SORT_APP_BY_NAME_DESC = "application_name_desc";
+
     }
 }

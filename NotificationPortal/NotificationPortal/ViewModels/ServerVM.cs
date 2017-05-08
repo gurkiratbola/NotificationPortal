@@ -110,4 +110,32 @@ namespace NotificationPortal.ViewModels
 
 
     }
+
+    public class ServerListVM
+    {
+        [Key]
+        public string ReferenceID { get; set; }
+
+
+        [Required]
+        [DisplayName("Server Name")]
+        public string ServerName { get; set; }
+
+        [Required]
+        public string Description { get; set; }
+
+        [Required]
+        [DisplayName("Location")]
+        public string LocationName { get; set; }
+
+        [Required]
+        [DisplayName("Server Type")]
+        public string ServerTypeName { get; set; }
+
+        [Required]
+        [DisplayName("Status")]
+        public string StatusName { get; set; }
+
+
+    }
 }

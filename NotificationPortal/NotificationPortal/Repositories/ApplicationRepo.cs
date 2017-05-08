@@ -15,17 +15,71 @@ namespace NotificationPortal.Repositories
         const string APP_STATUS_TYPE_NAME = "Application";
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
-        public IEnumerable<ApplicationVM> GetApplicationList()
+        public IEnumerable<ApplicationListVM> Sort(IEnumerable<ApplicationListVM> list, string sortOrder, string searchString = null)
         {
-            IEnumerable<ApplicationVM> applicationList = _context.Application
-                                                .Select(c => new ApplicationVM
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(c => c.ApplicationName.ToUpper().Contains(searchString.ToUpper()));
+            }
+            switch (sortOrder)
+            {
+                case ConstantsRepo.SORT_APP_BY_NAME_DESC:
+                    list = list.OrderByDescending(c => c.ApplicationName);
+                    break;
+
+                case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
+                    list = list.OrderByDescending(c => c.StatusName);
+                    break;
+
+                case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
+                    list = list.OrderBy(c => c.StatusName);
+                    break;
+
+
+                case ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE:
+                    list = list.OrderBy(c => c.ClientName);
+                    break;
+
+                case ConstantsRepo.SORT_CLIENT_BY_NAME_DESC:
+                    list = list.OrderBy(c => c.ClientName);
+                    break;
+
+                default:
+                    list = list.OrderBy(c => c.ApplicationName);
+                    break;
+            }
+            return list;
+        }
+
+
+        //public IEnumerable<ApplicationVM> GetApplicationList()
+        //{
+        //    IEnumerable<ApplicationVM> applicationList = _context.Application
+        //                                        .Select(c => new ApplicationVM
+        //                                        {
+        //                                            ApplicationName = c.ApplicationName,
+        //                                            ReferenceID = c.ReferenceID,
+        //                                            Description = c.Description,
+        //                                            URL = c.URL,
+        //                                            StatusID = c.StatusID,
+        //                                            ClientRefID = c.Client.ReferenceID,
+        //                                        });
+        //    return applicationList;
+        //}
+
+
+        public IEnumerable<ApplicationListVM> GetApplicationList()
+        {
+            IEnumerable<ApplicationListVM> applicationList = _context.Application
+                                                .Select(c => new ApplicationListVM
                                                 {
                                                     ApplicationName = c.ApplicationName,
                                                     ReferenceID = c.ReferenceID,
                                                     Description = c.Description,
                                                     URL = c.URL,
-                                                    StatusID = c.StatusID,
-                                                    ClientRefID = c.Client.ReferenceID,
+                                                    StatusName = c.Status.StatusName,
+                                                    ClientName = c.Client.ClientName,
                                                 });
             return applicationList;
         }
@@ -178,7 +232,7 @@ namespace NotificationPortal.Repositories
                                      .FirstOrDefault();
             if (applicationToBeDeleted == null)
             {
-                msg = "Client could not be deleted.";
+                msg = "application could not be deleted.";
                 return false;
             }
             if (applicationServers != null)
@@ -203,12 +257,12 @@ namespace NotificationPortal.Repositories
             {
                 _context.Application.Remove(applicationToBeDeleted);
                 _context.SaveChanges();
-                msg = "Client Successfully Deleted";
+                msg = "Application Successfully Deleted";
                 return true;
             }
             catch
             {
-                msg = "Failed to update client.";
+                msg = "Failed to update application.";
                 return false;
             }
 
