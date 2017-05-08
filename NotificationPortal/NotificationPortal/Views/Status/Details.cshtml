@@ -1,4 +1,4 @@
-﻿@model NotificationPortal.Models.Status
+﻿@model NotificationPortal.ViewModels.StatusVM
 
 @{
     ViewBag.Title = "Details";
@@ -12,19 +12,19 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.StatusType.StatusTypeName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.StatusType.StatusTypeName)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.StatusName)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.StatusName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StatusTypeID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StatusTypeID)
         </dd>
 
     </dl>

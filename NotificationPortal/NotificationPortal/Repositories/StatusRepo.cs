@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Data.SqlClient;
 
 namespace NotificationPortal.Repositories
 {
@@ -44,7 +45,8 @@ namespace NotificationPortal.Repositories
             IEnumerable<StatusVM> statusList = _context.Status
                                                 .Select(c => new StatusVM
                                                 {
-                                                    
+                                                    StatusName = c.StatusName,
+                                                    StatusTypeID = c.StatusTypeID,
                                                     StatusID = c.StatusID,
                                                     //ClientRefID = c.Client.ReferenceID,
                                                 });
@@ -68,13 +70,13 @@ namespace NotificationPortal.Repositories
             {
                 Status newStatus = new Status();
                 newStatus.StatusName = status.StatusName;
-                newStatus.StatusID = status.StatusID;
+                newStatus.StatusTypeID = status.StatusTypeID;
                 _context.Status.Add(newStatus);
                 _context.SaveChanges();
                 msg = "Application successfully added";
                 return true;
             }
-            catch
+            catch (SqlException)
             {
                 msg = "Failed to add application.";
                 return false;
@@ -89,6 +91,7 @@ namespace NotificationPortal.Repositories
                             {
                                 StatusName = b.StatusName,
                                 StatusTypeID = b.StatusTypeID,
+                                StatusID = b.StatusID,
                             }).FirstOrDefault();
             return status;
         }

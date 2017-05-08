@@ -118,5 +118,17 @@ namespace NotificationPortal.Repositories
 
             return new SelectList(sendMethodList, "Value", "Text");
         }
+
+
+        public SelectList GetStatusTypeList()
+        {
+            IEnumerable<SelectListItem> statusTypeList = _context.StatusType.Select(statusType => new SelectListItem()
+            {
+                Value = statusType.StatusTypeID.ToString(),
+                Text = statusType.StatusTypeName,
+            });
+
+            return new SelectList(statusTypeList, "Value", "Text");
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace NotificationPortal.Controllers
             var model = new StatusVM
             {
 
-                StatusTypeList = _lRepo.GetTypeList()
+                StatusTypeList = _lRepo.GetStatusTypeList()
             };
             return View(model);
         }
@@ -58,7 +58,7 @@ namespace NotificationPortal.Controllers
             {
                 TempData["ErrorMsg"] = "Client cannot be added at this time.";
             }
-            model.StatusTypeList = _lRepo.GetTypeList();
+            model.StatusTypeList = _lRepo.GetStatusTypeList();
             return View(model);
         }
 
@@ -67,7 +67,7 @@ namespace NotificationPortal.Controllers
         {
             StatusVM status = _sRepo.GetStatus(id);
             // To be modified: global method for status in development
-            ViewBag.StatusTypeList = _lRepo.GetTypeList();
+            ViewBag.StatusTypeList = _lRepo.GetStatusTypeList();
           
             return View(status);
         }

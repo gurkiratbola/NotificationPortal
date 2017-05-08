@@ -1,26 +1,30 @@
 ﻿@model NotificationPortal.ViewModels.StatusVM
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Server";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
 
+<ol class="breadcrumb bg-faded">
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="~/Server/Index" class="link-color">Servers</a></li>
+    <li class="breadcrumb-item active">@Html.DisplayFor(model => model.StatusName)</li>
+</ol>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>StatusVM</h4>
-        <hr />
+
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.StatusID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.StatusName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.StatusName, htmlAttributes: new { @class = "control-label" })
+            <div class="">
                 @Html.EditorFor(model => model.StatusName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.StatusName, "", new { @class = "text-danger" })
             </div>
@@ -29,22 +33,20 @@
         <div class="form-group">
             @Html.LabelFor(model => model.StatusTypeID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.StatusTypeID, Model.StatusTypeList, htmlAttributes: new { @class = "" })
+                @Html.DropDownListFor(m => m.StatusTypeID, ViewBag.StatusTypeList as SelectList, htmlAttributes: new { @class = "" })
 
             </div>
         </div>
 
+
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="">
+                <input type="submit" value="Save" class="btn btn-success" />
+                @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
