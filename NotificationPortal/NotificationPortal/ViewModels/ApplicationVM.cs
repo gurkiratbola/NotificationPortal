@@ -35,12 +35,13 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int StatusID { get; set; }
 
-
+        [Required]
+        public string ClientRefID { get; set; }
         //[Required]
         //public string ClientName { get; set; }
 
-        [Required]
-        public int ClientID { get; set; }
+        //[Required]
+        //public int ClientID { get; set; }
 
         public SelectList StatusList { get; set; }
         public SelectList ClientList { get; set; }

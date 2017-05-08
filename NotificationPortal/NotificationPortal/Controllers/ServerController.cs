@@ -16,6 +16,7 @@ namespace NotificationPortal.Controllers
     {
         private readonly ServerRepo _sRepo = new ServerRepo();
 
+
         [HttpGet]
         public ActionResult Index()
         {
@@ -71,7 +72,7 @@ namespace NotificationPortal.Controllers
             // To be modified: global method for status in development
             ViewBag.StatusList = _sRepo.GetStatusList();
             ViewBag.ServerTypeList = _sRepo.GetServerTypeList();
-            ViewBag.LocationList = _sRepo.GetStatusList();
+            ViewBag.LocationList = _sRepo.GetLocationList();
             return View(server);
         }
 
