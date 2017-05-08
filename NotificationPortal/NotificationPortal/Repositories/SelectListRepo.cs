@@ -46,7 +46,7 @@ namespace NotificationPortal.Repositories
                                               }).ToList();
 
             clientList.Add(new SelectListItem { Value = "-1", Text = "" });
-            //clientList.OrderByDescending(x => x.Value);
+            //clientList.OrderBy(x => x.Text);
 
             return new SelectList(clientList, "Value", "Text");
         }

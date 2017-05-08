@@ -1,4 +1,5 @@
 ﻿using NotificationPortal.Models;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,18 @@ namespace NotificationPortal.ViewModels
 {
 
     public class NotificationIndexVM
+    {
+        public IPagedList<NotificationThreadVM> Threads { get; set; }
+        
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+        public string LevelOfImpactSort { get; set; }
+        public string NotificationHeadingSort { get; set; }
+        public string NotificationTypeSort { get; set; }
+        public string StatusSort { get; set; }
+    }
+
+    public class NotificationThreadVM
     {
         public string ThreadID { get; set; }
 
@@ -31,16 +44,20 @@ namespace NotificationPortal.ViewModels
         public string ThreadID { get; set; }
 
         [Required]
+        [Display(Name = "Heading")]
         public string NotificationHeading { get; set; }
 
         [Required]
         [AllowHtml]
+        [Display(Name = "Description")]
         public string NotificationDescription { get; set; }
         
         [DisplayFormat(DataFormatString = "{0:yyy-MM-ddThh:mm}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Start Date")]
         public DateTime? StartDateTime { get; set; }
         
         [DisplayFormat(DataFormatString = "{0:yyy-MM-ddThh:mm}", ApplyFormatInEditMode = true)]
+        [Display(Name = "End Date")]
         public DateTime? EndDateTime { get; set; }
 
         [Required]
@@ -58,22 +75,29 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int ProirityID { get; set; }
 
+        [Display(Name = "Select Server")]
         public string[] ServerReferenceIDs { get; set; }
 
+        [Display(Name = "Applications")]
         public string[] ApplicationReferenceIDs { get; set; }
 
         public IEnumerable<ApplicationServerOptionVM> ApplicationList { get; set; }
 
         public SelectList ServerList { get; set; }
 
+        [Display(Name = "Type")]
         public SelectList NotificationTypeList { get; set; }
 
+        [Display(Name = "Level of Impact")]
         public SelectList LevelOfImpactList { get; set; }
 
+        [Display(Name = "Status")]
         public SelectList StatusList { get; set; }
 
+        [Display(Name = "Send Method")]
         public SelectList SendMethodList { get; set; }
 
+        [Display(Name = "Proirity")]
         public SelectList ProirityList { get; set; }
 
     }

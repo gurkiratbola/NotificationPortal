@@ -76,14 +76,16 @@
                     <div class="card-header" role="tab" id="@headingId">
                         <div data-toggle="collapse" class="d-flex justify-content-between bd-highlight md-3" data-parent="#accordion" href="#@collapseId" aria-expanded="true" aria-controls="@collapseId">
                             <div>
-                                <h5 class="p-2 col-12">
+                                <h5 class="col-12">
                                     <span class="bd-highlight">
                                         @Html.DisplayFor(modelItem => item.NotificationHeading)
                                     </span>
+
+                                    @*<p class="small">
+                @Html.DisplayFor(modelItem => item.ReferenceID)
+            </p>*@
                                 </h5>
-                                <p class="small p-2">
-                                    @Html.DisplayFor(modelItem => item.ReferenceID)
-                                </p>
+
                             </div>
                             <h5>
                                 <span class="badge bd-highlight">
@@ -95,9 +97,20 @@
 
                     <div id="@collapseId" class="collapse show" role="tabpanel" aria-labelledby="@headingId">
                         <div class="card-block">
+                            @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
+                                User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+                            {
+                                <a class="" href="@Url.Action("Edit", "Notification", new { id = @item.ReferenceID })">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </a>
+                            }
+                            @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN))
+                            {
+                                <a class="" href="@Url.Action("Delete", "Notification", new { id = @item.ReferenceID })">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                            }
                             @Html.Raw(item.NotificationDescription)
-                            @Html.ActionLink("Edit", "Edit", new { id=@item.ReferenceID }, new { @class = "btn btn-primary" })
-                            @Html.ActionLink("Delete", "Delete", new { id=@item.ReferenceID }, new { @class = "btn btn-warning" })
                         </div>
                     </div>
                 </div>
@@ -183,9 +196,15 @@
 </div>
 
 <div>
-        @Html.ActionLink("Update Thread", "Create", new { id = Model.ThreadID }, new { @class = "btn btn-success" })
-        @Html.ActionLink("Delete Thread", "DeleteThread", new { id = Model.ThreadID }, new { @class = "btn btn-warning" })
-    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
+    @if(User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN)||
+        User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+    {
+        @Html.ActionLink("Update Thread", "Create", new { id = Model.ThreadID }, new { @class = "btn btn-mint text-white" })
+    }
+    @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN))
+    {
+        @Html.ActionLink("Delete Thread", "DeleteThread", new { id = Model.ThreadID }, new { @class = "btn btn-danger" })
+    }
 </div>
 
 <script src="~/Scripts/jquery-3.1.1.min.js"></script>

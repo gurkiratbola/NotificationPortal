@@ -36,9 +36,11 @@ $(document).ready(function ($) {
     $(".sidebar-dropdown-button").click(function() {
         if ($(".sidebar-dropdown").is(":hidden")){
             localStorage.setItem("isDropdownVisible", true);
+            $(".fa-caret-down").addClass("arrow-rotate");
             $(".sidebar-dropdown").slideDown();
         } else {
             $(".sidebar-dropdown").slideUp();
+            $(".fa-caret-down").removeClass("arrow-rotate");
             localStorage.removeItem("isDropdownVisible");
         }
     })

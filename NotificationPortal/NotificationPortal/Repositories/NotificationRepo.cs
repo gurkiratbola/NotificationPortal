@@ -1,5 +1,6 @@
 ﻿using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -188,16 +189,16 @@ namespace NotificationPortal.Repositories
             return model;
         }
 
-        public IEnumerable<NotificationIndexVM> GetAllNotifications()
+        public NotificationIndexVM GetAllNotifications(string sortOrder, string currentFilter, string searchString, int? page)
         {
             try
             {
                 IEnumerable<Notification> allNotifications = _context.Notification;
-                IEnumerable<NotificationIndexVM> allThreads = allNotifications
+                IEnumerable<NotificationThreadVM> allThreads = allNotifications
                     .GroupBy(n => n.ThreadID)
                     .Select(t => t.OrderBy(i => i.SentDateTime))
                     .Select(
-                        t => new NotificationIndexVM()
+                        t => new NotificationThreadVM()
                         {
                             ReferenceID = t.FirstOrDefault().ReferenceID,
                             ThreadID = t.FirstOrDefault().ThreadID,
@@ -209,8 +210,22 @@ namespace NotificationPortal.Repositories
                         })
                     .GroupBy(n => n.ThreadID)
                     .Select(t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault());
-
-                return allThreads;
+                
+                // build the index model based on sort/filter/page information
+                page = searchString == null ? page:1;
+                searchString = searchString ?? currentFilter;
+                int pageNumber = (page ?? 1);
+                NotificationIndexVM model = new NotificationIndexVM
+                {
+                    Threads = Sort(allThreads, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
+                    CurrentFilter= searchString,
+                    CurrentSort= sortOrder,
+                    LevelOfImpactSort = sortOrder == ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC ? ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE : ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
+                    NotificationHeadingSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC,
+                    NotificationTypeSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC,
+                    StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
+                };
+                return model;
             }
             catch (Exception)
             {
@@ -387,10 +402,54 @@ namespace NotificationPortal.Repositories
             }
 
         }
+
+        public IEnumerable<NotificationThreadVM> Sort(IEnumerable<NotificationThreadVM> list, string sortOrder, string searchString = null)
+        {
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(n => n.NotificationHeading.ToUpper().Contains(searchString.ToUpper()));
+            }
+            switch (sortOrder)
+            {
+                case ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE:
+                    // TODO: modify to severity value if implement in table later
+                    list = list.OrderBy(n => n.LevelOfImpact);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE:
+                    list = list.OrderBy(n => n.NotificationHeading);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC:
+                    list = list.OrderByDescending(n => n.NotificationHeading);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE:
+                    list = list.OrderBy(n => n.NotificationType);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC:
+                    list = list.OrderByDescending(n => n.NotificationType);
+                    break;
+
+                case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
+                    list = list.OrderBy(n => n.Status);
+                    break;
+
+                case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
+                    list = list.OrderByDescending(n => n.Status);
+                    break;
+
+                default:
+                    // TODO: modify to severity value if implement in table later
+                    list = list.OrderByDescending(n => n.LevelOfImpact);
+                    break;
+            }
+            return list;
+        }
     }
 }
 
-//string.Join(" ", a.Servers.Select(s => s.ReferenceID).ToArray())
 //parse timezone
 
 //int offsetNum = 0;

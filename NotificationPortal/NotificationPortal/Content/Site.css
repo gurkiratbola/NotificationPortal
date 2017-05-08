@@ -1,12 +1,31 @@
-﻿/* ------------- style for fonts -------------*/
+﻿/* ------------- colors -------------*/
+/*
+mint: #44bbc1 
+light-blue: #edf2f6 
+dark-navy: #373e50 
+sidebar-grey: #6f7e95
+*/
+
+
+
+body {
+    line-height: 1.4;
+    background-color: #edf2f6;
+}
+
+/* ------------- style for fonts -------------*/
 h1, h2, h3, h4, h5 {
-    
+    border: none;
+}
+
+h1 {
+    font-size: 2.2em !important;
 }
 
 h3 {
-    font-weight: 700;
-    font-size: 1.1em;
+    font-size: 1em;
 }
+
 
 
 ul, li {
@@ -14,10 +33,144 @@ ul, li {
 }
 
 .heading-padding {
-    padding: 0.75rem 1.25rem;
+    padding: 0.5rem 1rem;
 }
 .link-color {
     color: #025aa5 !important;
+}
+
+/* ------------- color classes-------------*/
+.bg-inverse {
+    background-color: #6f7e95 !important;
+}
+
+button:focus {
+    outline: none;
+}
+
+.btn-primary {
+    background-color: #373e50;
+}
+
+.bg-faded {
+    background-color: transparent;
+}
+
+.btn-mint,
+.btn-success {
+    background-color: #44bbc1;
+}
+
+.badge-success {
+    background-color: #44bbc1;
+}
+
+.text-success {
+    color: #44bbc1 !important;
+}
+
+.card {
+    background-color: transparent;
+}
+
+/* ------------- table classes-------------*/
+th {
+    text-transform: uppercase;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+th a {
+    color: white;
+    transition: 0.3s;
+}
+th a:hover {
+    color: #ededed;
+}
+
+td a {
+    color: #373e50;
+    text-decoration: underline;
+}
+
+tbody {
+    background-color: white;
+}
+
+/* ------------- pagination -------------*/
+.pagination a {
+    background-color: #6f7e95 !important;
+}
+/* ------------- style for header -------------*/
+.navbar-brand {
+    text-transform: uppercase;
+    font-family: century gothic;
+    font-weight: 700;
+}
+
+.fixed-top {
+    background-color: #373e50;
+}
+
+.drop-btn {
+    border: none;
+    cursor: pointer;
+}
+
+.hover-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.hover-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+    .hover-dropdown-content:before {
+        content: ' ';
+        height: 0;
+        position: absolute;
+        width: 0;
+        border: 10px solid transparent;
+    }
+.hover-dropdown-content:before {
+    border-bottom-color: #fff; /* arrow color */
+    /* positioning */
+    position: absolute;
+    top: -20px;
+    right: 20px;
+    z-index: 1001;
+}
+
+.hover-dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.hover-dropdown-content a:hover {
+    background-color: #f1f1f1
+}
+
+.hover-dropdown:hover .hover-dropdown-content {
+    display: block;
+}
+
+.text-indent {
+    display: inline;
+    padding-left: 30px;
+}
+/* ------------- style for footer -------------*/
+.container-fluid {
+    min-height: calc(100vh - 130px);
+}
+
+footer {
 }
 
 /* Keeping the sidebar layout look decent */
@@ -47,14 +200,60 @@ ul, li {
     margin-bottom: 30px !important;
 }
 
-#accordion .badge {
-    background-color: grey;
-    padding: 10px;
+h5.col-12 {
+    color: #44bbc1;
+    padding-left: 0;
 }
 
+#accordion .card-block a {
+    color: black !important;
+}
+
+#accordion .card-block a:hover {
+    text-decoration: none !important;
+}
+
+#accordion .badge {
+    background-color: #44bbc1;
+    padding: 5px;
+}
+
+#accordion .card {
+    margin-bottom: 15px;
+    border: none;
+}
+#accordion .card-header {
+    border-bottom: 2px solid #44bbc1;
+    padding: 0;
+    background-color: transparent;
+}
+    
+.left-padding {
+    padding: 0.5em 1em;
+}
+
+.tab-pane {
+    padding: 1em;
+    padding-top: 25px;
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+.tab-content {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+.tab-content > .active {
+    border-bottom: 1px solid #ddd;
+}
 /* ------------- style for right click -------------*/
+.btn-sm {
+    width: 100%;
+}
+
 .hidden-menu {
-    display:none;
+    display: none;
     width: 80px;
     height: 60px;
     background-color: #ededed;
@@ -77,7 +276,6 @@ ul, li {
 
 .sidebar-dropdown-button {
     color: white;
-    background-color: #292b2c;
     width: 100%;
     box-shadow: none;
     border: none;
@@ -88,51 +286,49 @@ ul, li {
 .sidebar-dropdown {
     margin: 0;
     padding: 0;
-    background-color: #555;
+    background-color: #5d6a7e;
     display: none;
 }
 
 .sidebar-dropdown .nav-link {
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid #6f7e95;
+    font-size: 0.9em;
+    color: lightgrey;
 }
 
-
-/* ------------- style for top nav hover dropdown -------------*/
-.drop-btn {
+.fa-caret-down {
+    transition: 0.3s;
+}
+.arrow-rotate {
+    transform: rotate(180deg);
+}
+/* ------------- style for Dashboard -------------*/
+.card-deck .card {
     border: none;
-    cursor: pointer;
 }
 
-.hover-dropdown {
-    position: relative;
-    display: inline-block;
+.card-deck {
+    background-color: transparent;
+    padding: 1em 0 5px;
 }
 
-.hover-dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1000;
+.card-block {
+    padding: 0;
 }
 
-.hover-dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
+.external-status {
+    padding: 2px 5px;
+    border-radius: 5px;
 }
 
-.hover-dropdown-content a:hover {
-    background-color: #f1f1f1
+.border-muted {
+    border: 1px solid #636c72 !important;
 }
 
-.hover-dropdown:hover .hover-dropdown-content {
-    display: block;
+.card-header {
+    border-bottom: 2px solid #6f7e95;
 }
 
-.text-indent {
-    display: inline;
-    padding-left: 30px;
-}
+/*.card-header a {
+    color: #44bbc1;
+}*/

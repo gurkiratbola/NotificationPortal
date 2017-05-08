@@ -11,13 +11,13 @@ namespace NotificationPortal.ViewModels
     public class ClientCreateVM
     {
         [Required]
-        [DisplayName("Client Name")]
+        [DisplayName("Client")]
         public string ClientName { get; set; }
 
         [Required]
         public int StatusID { get; set; }
 
-        [DisplayName("Status Name")]
+        [DisplayName("Status")]
         public string StatusName { get; set; }
 
         public SelectList StatusList { get; set; }
@@ -29,13 +29,13 @@ namespace NotificationPortal.ViewModels
         public string ReferenceID { get; set; }
 
         [Required]
-        [DisplayName("Client Name")]
+        [DisplayName("Client")]
         public string ClientName { get; set; }
 
         [Required]
         public int StatusID { get; set; }
 
-        [DisplayName("Status Name")]
+        [DisplayName("Status")]
         public string StatusName { get; set; }
 
         public SelectList StatusList { get; set; }

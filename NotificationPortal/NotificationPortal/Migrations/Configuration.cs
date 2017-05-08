@@ -11,6 +11,7 @@ namespace NotificationPortal.Migrations
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         private string sampleClientEmail = "client@portal.com";
+        private string sameplUserEmail = "user@portal.com";
         private string sampleApplicationName1 = "Notification Portal";
         private string sampleApplicationName2 = "Portal Notification";
         private string sampleApplicationName3 = "Domain Dad";
@@ -400,8 +401,8 @@ namespace NotificationPortal.Migrations
 
             var user = new ApplicationUser()
             {
-                UserName = "user@portal.com",
-                Email = "user@portal.com",
+                UserName = sameplUserEmail,
+                Email = sameplUserEmail,
                 EmailConfirmed = true,
             };
             user.UserDetail = new UserDetail()
@@ -493,6 +494,10 @@ namespace NotificationPortal.Migrations
             // Get first client id
             var clientID = context.Client.FirstOrDefault().ClientID;
 
+            // Get user userDetail
+            var userUser = userManager.FindByName(sameplUserEmail);
+            var userUserDetail = context.UserDetail.Where(u => u.UserID == userUser.Id);
+
             // Get app Status
             var appOfflineStatus = context.Status
                 .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_APPLICATION
@@ -530,6 +535,7 @@ namespace NotificationPortal.Migrations
                 ReferenceID = Guid.NewGuid().ToString()
             };
             app.UserDetails = clientUserDetail.ToList();
+            app.UserDetails = userUserDetail.ToList();
             app.Servers = serverApplication.ToList();
             context.Application.Add(app);
 

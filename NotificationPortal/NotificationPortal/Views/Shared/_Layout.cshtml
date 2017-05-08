@@ -20,7 +20,7 @@
     <script src="~/Scripts/script.js" type="text/javascript"></script>
 </head>
 <body>
-    <div class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-primary">
+    <div class="navbar navbar-toggleable-md navbar-inverse fixed-top">
         @{
             if (!Request.IsAuthenticated)
             {
@@ -58,29 +58,27 @@
         }
     </div>
 
-<div class="container body-content">
-    <br />
-    
-    @{
-        if (Request.IsAuthenticated)
-        {
-            @Html.Partial("~/Views/Sidebar/_Sidebar-top.cshtml")
+    <div class="container body-content">
+        <br />
+        @{
+            if (Request.IsAuthenticated)
+            {
+                @Html.Partial("~/Views/Sidebar/_Sidebar-top.cshtml")
+            }
         }
-    }
 
-    @RenderBody()
+        @RenderBody()
     
-    @{
-        if (Request.IsAuthenticated)
-        {
-            @Html.Partial("~/Views/Sidebar/_Sidebar-bottom.cshtml")
+        @{
+            if (Request.IsAuthenticated)
+            {
+                @Html.Partial("~/Views/Sidebar/_Sidebar-bottom.cshtml")
+            }
         }
-    }
-    <hr/>
+    </div>
     <footer>
         <p class="text-center">@Html.Raw("Latest Build: " + File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString()) | <a href="~/Home/Documentation" class="text-primary">Documentation</a></p>
     </footer>
-</div>
 
     @RenderSection("scripts", required: false)
 </body>

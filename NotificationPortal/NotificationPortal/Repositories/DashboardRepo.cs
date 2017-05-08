@@ -5,6 +5,8 @@ using System.Web;
 using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
 using System.Security.Principal;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace NotificationPortal.Repositories
 {
@@ -48,36 +50,23 @@ namespace NotificationPortal.Repositories
                 }
                 else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
                 {
-                    // find out client id to get all applications
+                    // if it's external admin
                     var username = User.Identity.Name;
                     var clientID = _context.UserDetail
                                 .Where(u => u.User.UserName == username)
                                 .FirstOrDefault().ClientID;
 
                     // get all notifications for all client apps
-                    var apps = _context.Application.Where(n => n.ClientID == clientID);
-                    IEnumerable<DashboardVM> notifications = apps
-                                                            .SelectMany(a => a.Notifications
-                                                            .Select(s => new DashboardVM()
-                                                            {
-                                                                SourceReferenceID = s.ReferenceID,
-                                                                SourceName = a.ApplicationName,
-                                                                ThreadID = s.ThreadID,
-                                                                LevelOfImpact = s.LevelOfImpact.Level,
-                                                                ThreadHeading = s.NotificationHeading,
-                                                                NotificationType = s.NotificationType.NotificationTypeName,
-                                                                SentDateTime = s.SentDateTime,
-                                                                Status = s.Status.StatusName
-                                                            })).OrderBy(x => x.LevelOfImpact);
-                    dashboard = notifications.GroupBy(n => n.ThreadID)
-                                    .Select(
-                                        t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
-                                    );
-                    dashboard = dashboard.ToList();
-                    foreach (var item in dashboard)
-                    {
-                        item.ThreadDetail = GetThreadDetails(item.ThreadID);
-                    }
+                    var apps = _context.Client.Where(n => n.ClientID == clientID).SingleOrDefault().Applications;
+                    dashboard = GetAppNotifications(dashboard,apps);
+                }
+                else {
+                    // if it's external user
+                    var userId = User.Identity.GetUserId();
+                    //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+                    //var userId = userManager.FindByName(username).Id;
+                    var apps = _context.UserDetail.Where(u => u.UserID == userId).SingleOrDefault().Applications;
+                    dashboard = GetAppNotifications(dashboard, apps);
                 }
 
             }
@@ -94,6 +83,32 @@ namespace NotificationPortal.Repositories
                                                                NotificationHeading = c.NotificationHeading
                                                            });
             return details;
+        }
+
+        public IEnumerable<DashboardVM> GetAppNotifications(IEnumerable<DashboardVM> dashboard, ICollection<Application>apps) {
+            IEnumerable<DashboardVM> notifications = apps
+                                        .SelectMany(a => a.Notifications
+                                        .Select(s => new DashboardVM()
+                                        {
+                                            SourceReferenceID = s.ReferenceID,
+                                            SourceName = a.ApplicationName,
+                                            ThreadID = s.ThreadID,
+                                            LevelOfImpact = s.LevelOfImpact.Level,
+                                            ThreadHeading = s.NotificationHeading,
+                                            NotificationType = s.NotificationType.NotificationTypeName,
+                                            SentDateTime = s.SentDateTime,
+                                            Status = s.Status.StatusName
+                                        })).OrderBy(x => x.LevelOfImpact);
+            dashboard = notifications.GroupBy(n => n.ThreadID)
+                            .Select(
+                                t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
+                            );
+            dashboard = dashboard.ToList();
+            foreach (var item in dashboard)
+            {
+                item.ThreadDetail = GetThreadDetails(item.ThreadID);
+            }
+            return dashboard;
         }
     }
 }

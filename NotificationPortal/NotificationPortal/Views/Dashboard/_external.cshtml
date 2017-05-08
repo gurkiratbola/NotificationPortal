@@ -6,47 +6,47 @@
 
     foreach (var item in Model)
     {
-        var statusClass = item.Status == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INCOMPLETE ? "text-danger" : "text-success";
+        //var statusClass = item.Status == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INCOMPLETE ? "text-muted" : "text-muted";
         var impactClass = item.LevelOfImpact == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING ? "badge badge-success" : "badge badge-danger";
         <div class="card-deck pb-3">
-            <div class="card clickable-row" data-href="/Notification/Details">
+            <div class="card">
                 <div class="card-header card-inverse card-deck">
-                        <div class="col-md-6">
-                                <h4>
-                                    <a href="@Url.Action("Details", "Application", new { id = item.SourceReferenceID })">
+                        <div class="col-md-6 pl-0">
+                                <h5>
+                                    <a class="text-muted" href="@Url.Action("Details", "Application", new { id = item.SourceReferenceID })">
                                         @Html.DisplayFor(modelItem => item.SourceName)
                                     </a>
                                     <span class="@impactClass">
                                         @Html.DisplayFor(modelItem => item.LevelOfImpact)
                                     </span>
-                                </h4>
+                                </h5>
 
                         </div>
-                        <div class="col-md-6">
-                                <span class="@statusClass float-right">
+                        <div class="col-md-6 pr-0">
+                                <span class="float-right external-status text-muted border-muted">
                                     @Html.DisplayFor(modelItem => item.Status)
                                 </span>
                         </div>
                 </div>
-                <div class="card-block">
+                <div class="card-block clickable-row-dashboard" data-href="/Notification/DetailsThread/@item.ThreadID">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h3 class="heading-padding">
+                                    <h3 class="heading-padding text-success">
                                         @Html.DisplayFor(modelItem => item.ThreadHeading)
                                     </h3>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="offset-md-1 col-md-11">
+                        <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
                                     <ul>
                                         @foreach (var detail in item.ThreadDetail)
                                         {
-                                            <li>
+                                            <li class="notification-list">
                                                 <p class="text-muted">
                                                     @Html.DisplayFor(modelItem => detail.SentDateTime)
                                                     <span class="text-indent">
