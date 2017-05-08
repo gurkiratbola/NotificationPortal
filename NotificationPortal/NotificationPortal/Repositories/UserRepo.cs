@@ -17,33 +17,33 @@ namespace NotificationPortal.Repositories
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
-        //public IEnumerable<UserVM> Sort(IEnumerable<UserVM> list, string sortOrder, string searchString = null)
-        //{
-        //    if (!string.IsNullOrEmpty(searchString))
-        //    {
-        //        list = list.Where(c => c.ClientName.ToUpper().Contains(searchString.ToUpper()));
-        //    }
+        public IEnumerable<UserVM> Sort(IEnumerable<UserVM> list, string sortOrder, string searchString = null)
+        {
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(c => c.FirstName.ToUpper().Contains(searchString.ToUpper())).ToList();
+            }
 
-        //    switch (sortOrder)
-        //    {
-        //        case ConstantsRepo.SORT_CLIENT_BY_NAME_DESC:
-        //            list = list.OrderByDescending(c => c.ClientName);
-        //            break;
+            switch (sortOrder)
+            {
+                case ConstantsRepo.SORT_CLIENT_BY_NAME_DESC:
+                    list = list.OrderByDescending(c => c.ClientName);
+                    break;
 
-        //        case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
-        //            list = list.OrderByDescending(c => c.StatusName);
-        //            break;
+                case ConstantsRepo.SORT_FIRST_NAME_BY_DESC:
+                    list = list.OrderByDescending(c => c.FirstName);
+                    break;
 
-        //        case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
-        //            list = list.OrderBy(c => c.StatusName);
-        //            break;
+                case ConstantsRepo.SORT_FIRST_NAME_BY_ASCE:
+                    list = list.OrderBy(c => c.FirstName);
+                    break;
 
-        //        default:
-        //            list = list.OrderBy(c => c.ClientName);
-        //            break;
-        //    }
-        //    return list;
-        //}
+                default:
+                    list = list.OrderBy(c => c.ClientName);
+                    break;
+            }
+            return list;
+        }
 
         public IEnumerable<UserVM> GetAllUsers()
         {
@@ -306,12 +306,12 @@ namespace NotificationPortal.Repositories
         public IEnumerable<ApplicationClientOptionVM> GetApplicationList()
         {
             var apps = _context.Application.Select(
-                a => new ApplicationClientOptionVM
-                {
-                    ApplicationName = a.ApplicationName,
-                    ReferenceID = a.ReferenceID,
-                    ClientReferenceID = a.Client.ReferenceID
-                });
+            a => new ApplicationClientOptionVM
+            {
+                ApplicationName = a.ApplicationName,
+                ReferenceID = a.ReferenceID,
+                ClientReferenceID = a.Client.ReferenceID
+            });
 
             return apps;
         }

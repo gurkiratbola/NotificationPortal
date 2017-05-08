@@ -11,6 +11,7 @@ using NotificationPortal.Repositories;
 using NotificationPortal.ViewModels;
 using System.Net.Mail;
 using System.Net;
+using PagedList;
 
 namespace NotificationPortal.Controllers
 {
@@ -20,28 +21,34 @@ namespace NotificationPortal.Controllers
         private readonly SelectListRepo _selectRepo = new SelectListRepo();
 
         // GET: UserDetails/Index
-        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
-        public ActionResult Index(/*string sortOrder, string currentFilter, string searchString, int? page*/)
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            //if (searchString != null)
-            //{
-            //    page = 1;
-            //}
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
 
-            //searchString = currentFilter;
 
-            //ViewBag.CurrentFilter = searchString;
-            //ViewBag.CurrentSort = sortOrder;
-            //ViewBag.ClientNameSort = string.IsNullOrEmpty(sortOrder) ? ConstantsRepo.SORT_CLIENT_BY_NAME_DESC : "";
-            //ViewBag.StatusNameSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC;
+            ViewBag.CurrentFilter = searchString;
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.ClientNameSort = string.IsNullOrEmpty(sortOrder) ? ConstantsRepo.SORT_CLIENT_BY_NAME_DESC : "";
+            ViewBag.FirstNameSort = sortOrder == ConstantsRepo.SORT_FIRST_NAME_BY_DESC ? ConstantsRepo.SORT_FIRST_NAME_BY_ASCE : ConstantsRepo.SORT_FIRST_NAME_BY_DESC;
 
             IEnumerable<UserVM> users = _userRepo.GetAllUsers();
+            users = _userRepo.Sort(users, sortOrder, searchString);
 
-            return View(users);
+            int pageNumber = (page ?? 1);
+
+            return View(users.ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE));
         }
 
         // GET: UserDetails/Add
-        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Add()
         {
@@ -57,7 +64,7 @@ namespace NotificationPortal.Controllers
         }
 
         // POST: UserDetails/Add
-        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Add(AddUserVM model)
@@ -86,7 +93,7 @@ namespace NotificationPortal.Controllers
         }
 
         // GET: UserDetails/Edit
-        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Edit(string id)
         {
@@ -98,7 +105,7 @@ namespace NotificationPortal.Controllers
         }
 
         // POST: UserDetails/Edit
-        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(UserVM model)
@@ -127,7 +134,7 @@ namespace NotificationPortal.Controllers
         }
 
         // GET: UserDetails/Details
-        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Details(string id)
         {
@@ -139,7 +146,7 @@ namespace NotificationPortal.Controllers
         }
 
         // GET: UserDetails/Delete
-        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Delete(string id)
         {
@@ -147,7 +154,7 @@ namespace NotificationPortal.Controllers
         }
 
         // POST: UserDetails/Delete
-        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF)]
+        [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(UserDeleteVM model)
