@@ -16,6 +16,7 @@ namespace NotificationPortal.Repositories
     public class UserRepo
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
+        private readonly SelectListRepo _selectRepo = new SelectListRepo();
 
         public IEnumerable<UserVM> Sort(IEnumerable<UserVM> list, string sortOrder, string searchString = null)
         {
@@ -42,6 +43,7 @@ namespace NotificationPortal.Repositories
                     list = list.OrderBy(c => c.ClientName);
                     break;
             }
+
             return list;
         }
 
@@ -49,7 +51,7 @@ namespace NotificationPortal.Repositories
         {
             try
             {
-                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
+                var roleManager = new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole>(_context));
 
                 var users = _context.Users.Select(user => new UserVM()
                 {
@@ -75,7 +77,7 @@ namespace NotificationPortal.Repositories
 
                 return users;
             }
-            catch (Exception e)
+            catch (SqlException e)
             {
                 return null;
             }
@@ -83,12 +85,12 @@ namespace NotificationPortal.Repositories
 
         public UserVM GetUserDetails(string id)
         {
-            if (!_context.UserDetail.Any(o => o.ReferenceID == id))
-            {
-                throw new HttpException(404, "Page Not Found");
-            }
+            //if (!_context.UserDetail.Any(o => o.ReferenceID == id))
+            //{
+            //    throw new HttpException(404, "Page Not Found");
+            //}
 
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
+            var roleManager = new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole>(_context));
 
             var details = _context.Users.Where(u => u.UserDetail.ReferenceID == id)
                           .Select(user => new UserVM()
@@ -105,10 +107,22 @@ namespace NotificationPortal.Repositories
                               ClientReferenceID = user.UserDetail.Client.ReferenceID,
                               ClientName = user.UserDetail.Client.ClientName,
                               StatusID = user.UserDetail.Status.StatusID,
-                              StatusName = user.UserDetail.Status.StatusName
+                              StatusName = user.UserDetail.Status.StatusName,
+                              Applications = user.UserDetail.Applications.Select(a=> new ApplicationVM()
+                                             {
+                                                ApplicationName = a.ApplicationName,
+                                                Description = a.Description,
+                                                URL = a.URL,
+                                                ReferenceID = a.ReferenceID
+                                             })
                           }).FirstOrDefault();
 
             details.RoleName = roleManager.FindById(details.RoleName).Name.ToString();
+
+            details.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
+            details.ClientList = _selectRepo.GetClientList();
+            details.RoleList = _selectRepo.GetRolesList();
+            details.ApplicationList = GetApplicationList();
 
             return details;
         }
@@ -152,6 +166,15 @@ namespace NotificationPortal.Repositories
                         ClientID = clientID
                     };
 
+                    if(model.ApplicationReferenceIDs == null)
+                    {
+                        model.ApplicationReferenceIDs = new string[0];
+                    }
+
+                    var apps = _context.Application.Where(a => model.ApplicationReferenceIDs.Contains(a.ReferenceID));
+
+                    details.Applications = apps.ToList();
+
                     // add the user details to the database 
                     _context.UserDetail.Add(details);
                     _context.SaveChanges();
@@ -167,7 +190,6 @@ namespace NotificationPortal.Repositories
                 {
                     // if error show this msg
                     msg = "The email address is already in use.";
-
                     return false;
                 }
             }
@@ -215,7 +237,7 @@ namespace NotificationPortal.Repositories
 
                     var checkEmailExists = _context.Users.Where(e => e.Email == model.Email && e.UserName == model.Email).FirstOrDefault();
 
-                    if(checkEmailExists == null)
+                    if(checkEmailExists != null && user.UserID == checkEmailExists.Id)
                     {
                         userId.Email = model.Email;
                         userId.UserName = model.Email;
@@ -223,26 +245,32 @@ namespace NotificationPortal.Repositories
                     else
                     {
                         msg = "User with the email address already exists.";
-
                         return false;
                     }
+
+                    // check for previous applications and remove it
+                    if (model.ApplicationReferenceIDs == null)
+                    {
+                        model.ApplicationReferenceIDs = new string[0];
+                    }
+
+                    var apps = _context.Application.Where(a => model.ApplicationReferenceIDs.Contains(a.ReferenceID));
+
+                    user.Applications = apps.ToList();
 
                     // _context.Entry(model).State = EntityState.Modified;
                     _context.SaveChanges();
 
                     msg = "User information successfully updated!";
-
                     return true;
                 }
 
                 msg = "Failed to update the user.";
-
                 return false;
             }
             catch
             {
                 msg = "Failed to update the user.";
-
                 return false;
             }
         }
@@ -266,10 +294,19 @@ namespace NotificationPortal.Repositories
                                                HomePhone = user.UserDetail.HomePhone,
                                                ClientName = user.UserDetail.Client.ClientName,
                                                StatusID = user.UserDetail.Status.StatusID,
-                                               StatusName = user.UserDetail.Status.StatusName
+                                               StatusName = user.UserDetail.Status.StatusName,
+                                               Applications = user.UserDetail.Applications.Select(a => new ApplicationVM()
+                                               {
+                                                   ApplicationName = a.ApplicationName,
+                                                   Description = a.Description,
+                                                   URL = a.URL,
+                                                   ReferenceID = a.ReferenceID
+                                               })
                                            }).FirstOrDefault();
 
             userToBeDeleted.RoleName = roleManager.FindById(userToBeDeleted.RoleName).Name.ToString();
+
+            userToBeDeleted.ApplicationList = GetApplicationList();
 
             return userToBeDeleted;
         }
@@ -287,7 +324,6 @@ namespace NotificationPortal.Repositories
             if (userToBeDeleted == null && appUserTobeDeleted == null && clientToBeDeleted == null)
             {
                 msg = "User cannot be deleted.";
-
                 return false;
             }
 
@@ -307,21 +343,18 @@ namespace NotificationPortal.Repositories
                 _context.SaveChanges();
 
                 msg = "User deleted successfully!";
-
                 return true;
             }
             catch
             {
                 msg = "Failed to delete user.";
-
                 return false;
             }
         }
 
         public IEnumerable<ApplicationClientOptionVM> GetApplicationList()
         {
-            var apps = _context.Application.Select(
-            a => new ApplicationClientOptionVM
+            var apps = _context.Application.Select(a => new ApplicationClientOptionVM
             {
                 ApplicationName = a.ApplicationName,
                 ReferenceID = a.ReferenceID,

@@ -33,7 +33,6 @@ namespace NotificationPortal.Controllers
                 searchString = currentFilter;
             }
 
-
             ViewBag.CurrentFilter = searchString;
             ViewBag.CurrentSort = sortOrder;
             ViewBag.ClientNameSort = string.IsNullOrEmpty(sortOrder) ? ConstantsRepo.SORT_CLIENT_BY_NAME_DESC : "";
@@ -83,11 +82,12 @@ namespace NotificationPortal.Controllers
                 TempData["ErrorMsg"] = msg;
             }
 
-            TempData["ErrorMsg"] = "Cannot add user at this time, please try again!";
+            //TempData["ErrorMsg"] = "Cannot add user at this time, please try again!";
 
             model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
             model.ClientList = _selectRepo.GetClientList();
             model.RolesList = _selectRepo.GetRolesList();
+            model.ApplicationList = _userRepo.GetApplicationList();
 
             return View(model);
         }
@@ -97,10 +97,6 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Edit(string id)
         {
-            ViewBag.StatusNames = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
-            ViewBag.ClientNames = _selectRepo.GetClientList();
-            ViewBag.RoleNames = _selectRepo.GetRolesList();
-
             return View(_userRepo.GetUserDetails(id));
         }
 
@@ -126,9 +122,10 @@ namespace NotificationPortal.Controllers
                 }
             }
 
-            ViewBag.StatusNames = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
-            ViewBag.ClientNames = _selectRepo.GetClientList();
-            ViewBag.RoleNames = _selectRepo.GetRolesList();
+            model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
+            model.ClientList = _selectRepo.GetClientList();
+            model.RoleList = _selectRepo.GetRolesList();
+            model.ApplicationList = _userRepo.GetApplicationList();
 
             return View(model);
         }
@@ -138,10 +135,6 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Details(string id)
         {
-            ViewBag.StatusNames = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
-            ViewBag.ClientNames = _selectRepo.GetClientList();
-            ViewBag.RoleNames = _selectRepo.GetRolesList();
-
             return View(_userRepo.GetUserDetails(id));
         }
 
@@ -172,7 +165,7 @@ namespace NotificationPortal.Controllers
                 TempData["ErrorMsg"] = msg;
             }
 
-            TempData["ErrorMsg"] = "User cannot be deleted at this time.";
+            //TempData["ErrorMsg"] = "User cannot be deleted at this time.";
 
             return View(model);
         }

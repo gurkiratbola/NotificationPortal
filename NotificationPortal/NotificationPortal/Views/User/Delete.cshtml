@@ -96,6 +96,23 @@
     </dd>
 </dl>
 
+<table class="table table-bordered">
+    <tr class="bg-inverse text-white text-center">
+        <th>@Html.DisplayNameFor(model => Model.Applications.FirstOrDefault().ApplicationName)</th>
+        <th>@Html.DisplayNameFor(model => Model.Applications.FirstOrDefault().Description)</th>
+        <th>@Html.DisplayNameFor(model => Model.Applications.FirstOrDefault().URL)</th>
+    </tr>
+    @{ foreach (var item in Model.Applications)
+        {
+            <tr class="clickable-row-dashboard" id="@item.ReferenceID" data-href="/Application/Details/@item.ReferenceID">
+                <td>@Html.DisplayFor(modelItem => item.ApplicationName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.URL)</td>
+            </tr>
+        }
+    }
+</table>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
