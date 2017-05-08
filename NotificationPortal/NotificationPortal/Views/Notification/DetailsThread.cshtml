@@ -62,8 +62,8 @@
                 }
             </dd>
 
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ThreadID)</dt>
-            <dd class="col-sm-10">@Html.DisplayFor(model => model.ThreadID)</dd>
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.IncidentNumber)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.IncidentNumber)</dd>
         </dl>
         <!-- list of threads-->
         <div id="accordion" role="tablist" aria-multiselectable="true">
@@ -199,11 +199,11 @@
     @if(User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN)||
         User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
     {
-        @Html.ActionLink("Update Thread", "Create", new { id = Model.ThreadID }, new { @class = "btn btn-mint text-white" })
+        @Html.ActionLink("Update Thread", "Create", new { id = Model.IncidentNumber }, new { @class = "btn btn-mint text-white" })
     }
     @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN))
     {
-        @Html.ActionLink("Delete Thread", "DeleteThread", new { id = Model.ThreadID }, new { @class = "btn btn-danger" })
+        @Html.ActionLink("Delete Thread", "DeleteThread", new { id = Model.IncidentNumber }, new { @class = "btn btn-danger" })
     }
 </div>
 
