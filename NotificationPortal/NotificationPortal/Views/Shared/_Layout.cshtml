@@ -77,7 +77,7 @@
         }
     </div>
     <footer>
-        <p class="text-center">@Html.Raw("Latest Build: " + File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString()) | <a href="~/Home/Documentation" class="text-primary">Documentation</a></p>
+        <p class="text-center">@Html.Raw("Latest Build: " + File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString()) - <a href="~/Home/Documentation">Documentation</a></p>
     </footer>
 
     @RenderSection("scripts", required: false)
