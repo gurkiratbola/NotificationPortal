@@ -21,13 +21,6 @@
 </head>
 <body>
     <div class="navbar navbar-toggleable-md navbar-inverse fixed-top">
-        @{
-            if (!Request.IsAuthenticated)
-            {
-                @Html.Raw("<div class='container'>")
-            }
-        }
-
         <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -44,26 +37,21 @@
         }
 
         <div class="navbar-collapse collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-            </ul>
-
+            <ul class="navbar-nav mr-auto"></ul>
             @Html.Partial("_LoginPartial")
         </div>
-
-        @{
-            if (!Request.IsAuthenticated)
-            {
-                @Html.Raw("</div>")
-            }
-        }
     </div>
 
-    @if (Request.IsAuthenticated)
-    {
-        @Html.Partial("~/Views/Sidebar/_Sidebar.cshtml")
+    @{
+        string offset = Request.IsAuthenticated?"col-md-11 offset-md-1":"";
+        if (Request.IsAuthenticated)
+        {
+            @Html.Partial("~/Views/Shared/_Sidebar.cshtml")
+        }
+
     }
 
-    <div class="container-fluid col-sm-9 col-md-11 offset-md-1">
+    <div class="container-fluid col-sm-9 @offset">
         <div class="container">
             @RenderBody()
         </div>
