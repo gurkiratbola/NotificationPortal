@@ -138,6 +138,43 @@ namespace NotificationPortal.Repositories
             return server;
         }
 
+        public ServerDetailVM GetDetailServer(string referenceID)
+        {
+            Server server = _context.Server
+                            .Where(a => a.ReferenceID == referenceID).FirstOrDefault();
+
+
+            IEnumerable<Notification> allServerNotifications = server.Notifications;
+            IEnumerable<ServerThreadVM> serverThreads = allServerNotifications
+                .GroupBy(n => n.ThreadID)
+                .Select(t => t.OrderBy(i => i.SentDateTime))
+                .Select(
+                    t => new ServerThreadVM()
+                    {
+                        ReferenceID = t.FirstOrDefault().ReferenceID,
+                        ThreadID = t.FirstOrDefault().ThreadID,
+                        ThreadHeading = t.FirstOrDefault().NotificationHeading,
+                        SentDateTime = t.FirstOrDefault().SentDateTime,
+                        ThreadType = t.LastOrDefault().NotificationType.NotificationTypeName,
+                        LevelOfImpact = t.LastOrDefault().LevelOfImpact.Level,
+                        ThreadStatus = t.LastOrDefault().Status.StatusName
+                    })
+                .GroupBy(n => n.ThreadID)
+                .Select(t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault());
+
+            ServerDetailVM model =  new ServerDetailVM
+             {
+                ServerName = server.ServerName,
+                 ReferenceID = server.ReferenceID,
+                 Description = server.Description,
+                 Status = server.Status.StatusName,
+                 Location = server.DataCenterLocation.Location,
+                 ServerType = server.ServerType.ServerTypeName,
+                 Threads = serverThreads
+             };
+            return model;
+        }
+
         public ServerDeleteVM GetDeleteServer(string referenceID)
         {
             ServerDeleteVM server = _context.Server
