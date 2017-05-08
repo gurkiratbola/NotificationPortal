@@ -116,13 +116,13 @@ namespace NotificationPortal.Controllers
 
                 if (_userRepo.EditUser(model, out msg))
                 {
-                    TempData["SuccessMsg"] = "User information successfully updated!";
+                    TempData["SuccessMsg"] = msg;
 
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["ErrorMsg"] = "Failed to update the user information.";
+                    TempData["ErrorMsg"] = msg;
                 }
             }
 

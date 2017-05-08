@@ -21,7 +21,7 @@ namespace NotificationPortal.Repositories
         {
             if (!string.IsNullOrEmpty(searchString))
             {
-                list = list.Where(c => c.FirstName.ToUpper().Contains(searchString.ToUpper())).ToList();
+                list = list.Where(c => c.FirstName.ToUpper().Contains(searchString.ToUpper()));
             }
 
             switch (sortOrder)
@@ -202,6 +202,7 @@ namespace NotificationPortal.Repositories
                     var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
                     var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
 
+                    // find the old role and user id and compare
                     var userId = userManager.FindById(user.UserID);
                     var oldRoleId = userId.Roles.SingleOrDefault().RoleId;
                     var oldRoleName = _context.Roles.SingleOrDefault(a => a.Id == oldRoleId).Name;
@@ -210,6 +211,20 @@ namespace NotificationPortal.Repositories
                     {
                         userManager.RemoveFromRole(user.UserID, oldRoleName);
                         userManager.AddToRole(user.UserID, model.RoleName);
+                    }
+
+                    var checkEmailExists = _context.Users.Where(e => e.Email == model.Email && e.UserName == model.Email).FirstOrDefault();
+
+                    if(checkEmailExists == null)
+                    {
+                        userId.Email = model.Email;
+                        userId.UserName = model.Email;
+                    }
+                    else
+                    {
+                        msg = "User with the email address already exists.";
+
+                        return false;
                     }
 
                     // _context.Entry(model).State = EntityState.Modified;

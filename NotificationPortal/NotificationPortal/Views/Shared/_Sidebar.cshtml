@@ -1,5 +1,6 @@
 ﻿
-<nav class="col-sm-3 col-md-1 hidden-xs-down bg-inverse sidebar">
+
+ <nav class="col-sm-3 col-md-1 hidden-xs-down bg-inverse sidebar">
     <ul class="nav nav-pills flex-column">
         <li class="nav-item">
             @{
@@ -19,7 +20,7 @@
             }
         </li>
 
-        @{if (Request.IsAuthenticated && !HttpContext.Current.User.IsInRole("User"))
+        @{if (Request.IsAuthenticated && !HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_USER))
             {
                 <li class="nav-item">
                     <button class="sidebar-dropdown-button bg-inverse">
@@ -27,7 +28,7 @@
                         <i class="fa fa-caret-down" aria-hidden="true"></i>
                     </button>
                     <ul class="sidebar-dropdown">
-                        @if (HttpContext.Current.User.IsInRole("Client"))
+                        @if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_CLIENT))
                         {
                             <li>@Html.ActionLink("User Control", "Index", "User", null, new { @class = "nav-link" })</li>
                         }
