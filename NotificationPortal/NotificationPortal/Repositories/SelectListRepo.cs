@@ -102,7 +102,7 @@ namespace NotificationPortal.Repositories
             IEnumerable<SelectListItem> impactList = _context.LevelOfImpact.Select(impact => new SelectListItem()
                                                      {
                                                          Value = impact.LevelOfImpactID.ToString(),
-                                                         Text = impact.Level
+                                                         Text = impact.LevelName
                                                      });
 
             return new SelectList(impactList, "Value", "Text");

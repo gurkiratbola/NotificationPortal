@@ -22,7 +22,7 @@ namespace NotificationPortal.Repositories
             {
                 model = new NotificationCreateVM()
                 {
-                    ThreadID = Guid.NewGuid().ToString()
+                    IncidentNumber = Guid.NewGuid().ToString()
                 };
             }
             model.ApplicationList = GetApplicationList();
@@ -34,10 +34,10 @@ namespace NotificationPortal.Repositories
             return model;
         }
 
-        public ThreadDetailVM CreateDetailModel(string threadID)
+        public ThreadDetailVM CreateDetailModel(string incidentNumber)
         {
             IEnumerable<Notification> notifications =
-                _context.Notification.Where(n => n.ThreadID == threadID)
+                _context.Notification.Where(n => n.IncidentNumber == incidentNumber)
                 .OrderBy(n => n.SentDateTime);
 
             IEnumerable<NotificationDetailVM> thread =
@@ -93,11 +93,11 @@ namespace NotificationPortal.Repositories
 
             ThreadDetailVM model = new ThreadDetailVM()
             {
-                ThreadID = threadID,
+                IncidentNumber = incidentNumber,
                 // TODO
                 // ApplicationServerName = lastestNotification.Servers.Count == 0 ? lastestNotification.Application.ApplicationName : lastestNotification.Server.ServerName,
                 NotificationType = lastestNotification.NotificationType.NotificationTypeName,
-                LevelOfImpact = lastestNotification.LevelOfImpact.Level,
+                LevelOfImpact = lastestNotification.LevelOfImpact.LevelName,
                 Status = lastestNotification.Status.StatusName,
                 StartDateTime = lastestNotification.StartDateTime,
                 EndDateTime = lastestNotification.EndDateTime,
@@ -108,10 +108,10 @@ namespace NotificationPortal.Repositories
             return model;
         }
 
-        public NotificationCreateVM CreateUpdateModel(string threadID, NotificationCreateVM model = null)
+        public NotificationCreateVM CreateUpdateModel(string incidentNumber, NotificationCreateVM model = null)
         {
             var lastestNotification =
-                _context.Notification.Where(n => n.ThreadID == threadID)
+                _context.Notification.Where(n => n.IncidentNumber == incidentNumber)
                 .OrderByDescending(n => n.SentDateTime).FirstOrDefault();
 
             int headingLength = lastestNotification.NotificationHeading.IndexOf(" (Edit");
@@ -120,7 +120,7 @@ namespace NotificationPortal.Repositories
             {
                 model = new NotificationCreateVM()
                 {
-                    ThreadID = threadID,
+                    IncidentNumber = incidentNumber,
                     StartDateTime = lastestNotification.StartDateTime,
                     EndDateTime = lastestNotification.EndDateTime,
                     LevelOfImpactID = lastestNotification.LevelOfImpactID,
@@ -151,7 +151,7 @@ namespace NotificationPortal.Repositories
                 model = new NotificationEditVM()
                 {
                     NotificationReferenceID = notificationReferenceID,
-                    ThreadID = editingNotification.ThreadID,
+                    IncidentNumber = editingNotification.IncidentNumber,
                     StartDateTime = editingNotification.StartDateTime,
                     EndDateTime = editingNotification.EndDateTime,
                     LevelOfImpactID = editingNotification.LevelOfImpactID,
@@ -184,7 +184,7 @@ namespace NotificationPortal.Repositories
                 NotificationDescription = deletingNotification.NotificationDescription,
                 NotificationHeading = deletingNotification.NotificationHeading,
                 SentDateTime = deletingNotification.SentDateTime,
-                ThreadID = deletingNotification.ThreadID
+                IncidentNumber = deletingNotification.IncidentNumber
             };
             return model;
         }
@@ -195,20 +195,20 @@ namespace NotificationPortal.Repositories
             {
                 IEnumerable<Notification> allNotifications = _context.Notification;
                 IEnumerable<NotificationThreadVM> allThreads = allNotifications
-                    .GroupBy(n => n.ThreadID)
+                    .GroupBy(n => n.IncidentNumber)
                     .Select(t => t.OrderBy(i => i.SentDateTime))
                     .Select(
                         t => new NotificationThreadVM()
                         {
                             ReferenceID = t.FirstOrDefault().ReferenceID,
-                            ThreadID = t.FirstOrDefault().ThreadID,
+                            IncidentNumber = t.FirstOrDefault().IncidentNumber,
                             NotificationHeading = t.FirstOrDefault().NotificationHeading,
                             SentDateTime = t.FirstOrDefault().SentDateTime,
                             NotificationType = t.LastOrDefault().NotificationType.NotificationTypeName,
-                            LevelOfImpact = t.LastOrDefault().LevelOfImpact.Level,
+                            LevelOfImpact = t.LastOrDefault().LevelOfImpact.LevelName,
                             Status = t.LastOrDefault().Status.StatusName
                         })
-                    .GroupBy(n => n.ThreadID)
+                    .GroupBy(n => n.IncidentNumber)
                     .Select(t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault());
                 
                 // build the index model based on sort/filter/page information
@@ -283,7 +283,7 @@ namespace NotificationPortal.Repositories
                     SendMethodID = notification.SentMethodID,
                     //TO DO: discuss how referenceID is generated
                     ReferenceID = Guid.NewGuid().ToString(),
-                    ThreadID = notification.ThreadID ?? Guid.NewGuid().ToString(),
+                    IncidentNumber = notification.IncidentNumber ?? Guid.NewGuid().ToString(),
                     //TO DO: convert input time to UTC time
                     SentDateTime = DateTime.Now,
                     StartDateTime = notification.StartDateTime,
@@ -367,11 +367,11 @@ namespace NotificationPortal.Repositories
 
         }
 
-        public bool DeleteThread(string threadID, out string msg)
+        public bool DeleteThread(string incidentNumber, out string msg)
         {
             try
             {
-                var deletingThread = _context.Notification.Where(n => n.ThreadID == threadID);
+                var deletingThread = _context.Notification.Where(n => n.IncidentNumber == incidentNumber);
                 _context.Notification.RemoveRange(deletingThread);
                 _context.SaveChanges();
                 msg = "Thread has been deleted";

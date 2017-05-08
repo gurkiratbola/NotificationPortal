@@ -30,8 +30,8 @@ namespace NotificationPortal.Repositories
 
                                                                 SourceReferenceID = s.ReferenceID,
                                                                 SourceName = s.ServerName,
-                                                                ThreadID = a.ThreadID,
-                                                                LevelOfImpact = a.LevelOfImpact.Level,
+                                                                ThreadID = a.IncidentNumber,
+                                                                LevelOfImpact = a.LevelOfImpact.LevelName,
                                                                 ThreadHeading = a.NotificationHeading,
                                                                 NotificationType = a.NotificationType.NotificationTypeName,
                                                                 SentDateTime = a.SentDateTime,
@@ -76,7 +76,7 @@ namespace NotificationPortal.Repositories
         {
 
             IEnumerable<DashboardThreadDetailVM> details = _context.Notification
-                                                           .Where(b => b.ThreadID == threadID)
+                                                           .Where(b => b.IncidentNumber == threadID)
                                                            .Select(c => new DashboardThreadDetailVM
                                                            {
                                                                SentDateTime = c.SentDateTime,
@@ -92,8 +92,8 @@ namespace NotificationPortal.Repositories
                                         {
                                             SourceReferenceID = s.ReferenceID,
                                             SourceName = a.ApplicationName,
-                                            ThreadID = s.ThreadID,
-                                            LevelOfImpact = s.LevelOfImpact.Level,
+                                            ThreadID = s.IncidentNumber,
+                                            LevelOfImpact = s.LevelOfImpact.LevelName,
                                             ThreadHeading = s.NotificationHeading,
                                             NotificationType = s.NotificationType.NotificationTypeName,
                                             SentDateTime = s.SentDateTime,

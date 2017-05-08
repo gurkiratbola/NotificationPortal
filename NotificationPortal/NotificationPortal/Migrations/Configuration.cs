@@ -12,12 +12,12 @@ namespace NotificationPortal.Migrations
     {
         private string sampleClientEmail = "client@portal.com";
         private string sameplUserEmail = "user@portal.com";
-        private string sampleApplicationName1 = "Notification Portal";
-        private string sampleApplicationName2 = "Portal Notification";
-        private string sampleApplicationName3 = "Domain Dad";
-        private string sampleServerName1 = "DNS Server"; 
-        private string sampleServerName2 = "App Serve";
-        private string sampleServerName3 = "Serve Apps";
+        private string sampleApplicationName1 = "Bank App";
+        private string sampleApplicationName2 = "Traffic App";
+        private string sampleApplicationName3 = "Domain App";
+        private string sampleServerName1 = "DNS Server";
+        private string sampleServerName2 = "App Server";
+        private string sampleServerName3 = "Web-App Server";
 
         public Configuration()
         {
@@ -32,6 +32,7 @@ namespace NotificationPortal.Migrations
             SeedSendMethod(context);
             SeedNotificationType(context);
             SeedLevelOfImpact(context);
+            SeedPriority(context);
             SeedDataCenterLocation(context);
             SeedGroups(context);
             SeedStatusType(context);
@@ -83,20 +84,53 @@ namespace NotificationPortal.Migrations
 
         private void SeedLevelOfImpact(ApplicationDbContext context)
         {
-            string[] levelsOfImpact = new string[] {
-                Key.LEVEL_OF_IMPACT_IMPACTING,
-                Key.LEVEL_OF_IMPACT_OUTAGE,
-                Key.LEVEL_OF_IMPACT_REDUNDANCY,
-                Key.LEVEL_OF_IMPACT_NON_IMPACTING
+            LevelOfImpact[] levelsOfImpact = new LevelOfImpact[] {
+                new LevelOfImpact()
+                    {
+                        LevelName = Key.LEVEL_OF_IMPACT_IMPACTING,LevelValue=Key.LEVEL_OF_IMPACT_IMPACTING_VALUE
+                },
+                new LevelOfImpact()
+                    {
+                        LevelName = Key.LEVEL_OF_IMPACT_OUTAGE,LevelValue=Key.LEVEL_OF_IMPACT_OUTAGE_VALUE
+                },
+                new LevelOfImpact()
+                    {
+                        LevelName = Key.LEVEL_OF_IMPACT_REDUNDANCY,LevelValue=Key.LEVEL_OF_IMPACT_REDUNDANCY_VALUE
+                },
+                new LevelOfImpact()
+                    {
+                        LevelName = Key.LEVEL_OF_IMPACT_NON_IMPACTING,LevelValue=Key.LEVEL_OF_IMPACT_NON_IMPACTING_VALUE
+                },
+
             };
 
-            foreach (string level in levelsOfImpact)
+            foreach (LevelOfImpact level in levelsOfImpact)
             {
-                context.LevelOfImpact.Add(
-                    new LevelOfImpact()
+                context.LevelOfImpact.Add(level);
+            }
+            context.SaveChanges();
+        }
+
+        private void SeedPriority(ApplicationDbContext context)
+        {
+            Priority[] priorities = new Priority[] {
+                new Priority()
                     {
-                        Level = level
-                    });
+                        PriorityName = Key.PRIORITY_NAME_HIGH,PriorityValue=Key.PRIORITY_VALUE_HIGH
+                },
+                new Priority()
+                    {
+                        PriorityName = Key.PRIORITY_NAME_NORMAL,PriorityValue=Key.PRIORITY_VALUE_NORMAL
+                },
+                new Priority()
+                    {
+                        PriorityName = Key.PRIORITY_NAME_LOW,PriorityValue=Key.PRIORITY_VALUE_LOW
+                }
+            };
+
+            foreach (Priority priority in priorities)
+            {
+                context.Priority.Add(priority);
             }
             context.SaveChanges();
         }
@@ -140,7 +174,7 @@ namespace NotificationPortal.Migrations
 
         private void SeedRoles(ApplicationDbContext context)
         {
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var roleManager = new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole>(context));
             string[] roles = new string[] {
                 Key.ROLE_ADMIN,
                 Key.ROLE_STAFF,
@@ -149,14 +183,14 @@ namespace NotificationPortal.Migrations
             };
             foreach (var role in roles)
             {
-                var iRole = new IdentityRole() { Name = role };
+                var iRole = new ApplicationRole() { Name = role };
                 roleManager.Create(iRole);
             }
         }
 
         private void SeedRoleDetail(ApplicationDbContext context)
         {
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var roleManager = new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole>(context));
             var adminRole = roleManager.FindByName(Key.ROLE_ADMIN);
             var staffRole = roleManager.FindByName(Key.ROLE_STAFF);
             var clientRole = roleManager.FindByName(Key.ROLE_CLIENT);
@@ -165,33 +199,33 @@ namespace NotificationPortal.Migrations
             var internalGroup = groups.Where(g => g.GroupName == Key.GROUP_INTERNAL).FirstOrDefault();
             var externalGroup = groups.Where(g => g.GroupName == Key.GROUP_EXTERNAL).FirstOrDefault();
 
-            context.RoleDetail.Add(new RoleDetail()
+            adminRole.RoleDetail = new RoleDetail()
             {
                 RoleID = adminRole.Id,
                 GroupID = internalGroup.GroupID,
                 RoleDescription = Key.GROUP_INTERNAL + " " + Key.ROLE_ADMIN
-            });
+            };
 
-            context.RoleDetail.Add(new RoleDetail()
+            staffRole.RoleDetail=new RoleDetail()
             {
                 RoleID = staffRole.Id,
                 GroupID = internalGroup.GroupID,
                 RoleDescription = Key.GROUP_INTERNAL + " " + Key.ROLE_STAFF
-            });
+            };
 
-            context.RoleDetail.Add(new RoleDetail()
+            clientRole.RoleDetail=new RoleDetail()
             {
                 RoleID = clientRole.Id,
                 GroupID = externalGroup.GroupID,
                 RoleDescription = Key.GROUP_EXTERNAL + " " + Key.ROLE_CLIENT
-            });
+            };
 
-            context.RoleDetail.Add(new RoleDetail()
+            userRole.RoleDetail=new RoleDetail()
             {
                 RoleID = userRole.Id,
                 GroupID = externalGroup.GroupID,
                 RoleDescription = Key.GROUP_EXTERNAL + " " + Key.ROLE_USER
-            });
+            };
             context.SaveChanges();
         }
 
@@ -515,8 +549,8 @@ namespace NotificationPortal.Migrations
             var app = new Application()
             {
                 ApplicationName = sampleApplicationName1,
-                Description = "Portal to manage all notifications",
-                URL = "http://notification-portal.com/",
+                Description = "Portal to manage all your banking needs",
+                URL = "http://bank-app.com/",
                 ClientID = clientID,
                 StatusID = appOfflineStatus.StatusID,
                 ReferenceID = Guid.NewGuid().ToString()
@@ -528,8 +562,8 @@ namespace NotificationPortal.Migrations
             app = new Application()
             {
                 ApplicationName = sampleApplicationName2,
-                Description = "Notifications to manage all portals",
-                URL = "http://portal-notification.com/",
+                Description = "App to handle all kinds of traffic",
+                URL = "http://traffic-app.com/",
                 ClientID = clientID,
                 StatusID = appOfflineStatus.StatusID,
                 ReferenceID = Guid.NewGuid().ToString()
@@ -543,7 +577,7 @@ namespace NotificationPortal.Migrations
             {
                 ApplicationName = sampleApplicationName3,
                 Description = "Get your new domains",
-                URL = "http://domain-dad.com/",
+                URL = "http://domain-app.com/",
                 ClientID = clientID,
                 StatusID = appOnlineStatus.StatusID,
                 ReferenceID = Guid.NewGuid().ToString()
@@ -569,10 +603,10 @@ namespace NotificationPortal.Migrations
                 .FirstOrDefault();
             // Get levelOfImpact
             var levelOfImpactNonImpacting = context.LevelOfImpact
-                .Where(l => l.Level == Key.LEVEL_OF_IMPACT_NON_IMPACTING)
+                .Where(l => l.LevelName == Key.LEVEL_OF_IMPACT_NON_IMPACTING)
                 .FirstOrDefault();
             var levelOfImpactImpacting = context.LevelOfImpact
-                .Where(l => l.Level == Key.LEVEL_OF_IMPACT_IMPACTING)
+                .Where(l => l.LevelName == Key.LEVEL_OF_IMPACT_IMPACTING)
                 .FirstOrDefault();
             // Get server
             var servers = context.Server.Where(s => s.ServerName == sampleServerName1);
@@ -589,6 +623,16 @@ namespace NotificationPortal.Migrations
                 .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_NOTIFICATION
                 && s.StatusName == Key.STATUS_NOTIFICATION_COMPLETE)
                 .FirstOrDefault();
+            // Get priority
+            var priorityHigh = context.Priority
+                .Where(p => p.PriorityName == Key.PRIORITY_NAME_HIGH)
+                .FirstOrDefault();
+            var priorityNormal = context.Priority
+                .Where(p => p.PriorityName == Key.PRIORITY_NAME_NORMAL)
+                .FirstOrDefault();
+            var priorityLow = context.Priority
+                .Where(p => p.PriorityName == Key.PRIORITY_NAME_LOW)
+                .FirstOrDefault();
 
             string sampleThread1 = Guid.NewGuid().ToString();
             var notification = new Notification()
@@ -602,7 +646,8 @@ namespace NotificationPortal.Migrations
                 LevelOfImpactID = levelOfImpactNonImpacting.LevelOfImpactID,
                 SendMethodID = sendMethod.SendMethodID,
                 StatusID = statusIncomplete.StatusID,
-                ThreadID = sampleThread1,
+                IncidentNumber = sampleThread1,
+                PriorityID = priorityHigh.PriorityID,
                 ReferenceID = Guid.NewGuid().ToString()
             };
             notification.Servers = servers.ToList();
@@ -619,7 +664,8 @@ namespace NotificationPortal.Migrations
                 LevelOfImpactID = levelOfImpactNonImpacting.LevelOfImpactID,
                 SendMethodID = sendMethod.SendMethodID,
                 StatusID = statusComplete.StatusID,
-                ThreadID = sampleThread1,
+                IncidentNumber = sampleThread1,
+                PriorityID = priorityLow.PriorityID,
                 ReferenceID = Guid.NewGuid().ToString()
             };
             notification.Servers = servers.ToList();
@@ -634,7 +680,8 @@ namespace NotificationPortal.Migrations
                 LevelOfImpactID = levelOfImpactImpacting.LevelOfImpactID,
                 SendMethodID = sendMethod.SendMethodID,
                 StatusID = statusIncomplete.StatusID,
-                ThreadID = Guid.NewGuid().ToString(),
+                IncidentNumber = Guid.NewGuid().ToString(),
+                PriorityID = priorityNormal.PriorityID,
                 ReferenceID = Guid.NewGuid().ToString()
             };
             notification.Applications = apps.ToList();
@@ -678,6 +725,7 @@ namespace NotificationPortal.Migrations
             context.Database.ExecuteSqlCommand("DELETE FROM LevelOfImpacts");
             context.Database.ExecuteSqlCommand("DELETE FROM DataCenterLocations");
             context.Database.ExecuteSqlCommand("DELETE FROM StatusTypes");
+            context.Database.ExecuteSqlCommand("DELETE FROM Priorities");
         }
     }
 }

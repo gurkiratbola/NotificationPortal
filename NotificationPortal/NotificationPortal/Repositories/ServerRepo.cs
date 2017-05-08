@@ -146,17 +146,17 @@ namespace NotificationPortal.Repositories
 
             IEnumerable<Notification> allServerNotifications = server.Notifications;
             IEnumerable<ServerThreadVM> serverThreads = allServerNotifications
-                .GroupBy(n => n.ThreadID)
+                .GroupBy(n => n.IncidentNumber)
                 .Select(t => t.OrderBy(i => i.SentDateTime))
                 .Select(
                     t => new ServerThreadVM()
                     {
                         ReferenceID = t.FirstOrDefault().ReferenceID,
-                        ThreadID = t.FirstOrDefault().ThreadID,
+                        ThreadID = t.FirstOrDefault().IncidentNumber,
                         ThreadHeading = t.FirstOrDefault().NotificationHeading,
                         SentDateTime = t.FirstOrDefault().SentDateTime,
                         ThreadType = t.LastOrDefault().NotificationType.NotificationTypeName,
-                        LevelOfImpact = t.LastOrDefault().LevelOfImpact.Level,
+                        LevelOfImpact = t.LastOrDefault().LevelOfImpact.LevelName,
                         ThreadStatus = t.LastOrDefault().Status.StatusName
                     })
                 .GroupBy(n => n.ThreadID)
