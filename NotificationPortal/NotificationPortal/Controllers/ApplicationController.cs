@@ -29,8 +29,9 @@ namespace NotificationPortal.Controllers
             // To be modified: global method for status in development
             var model = new ApplicationVM
             {
-                StatusList = _aRepo.GetStatusList(),
-                ClientList = _aRepo.GetClientList(),
+                StatusList = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION),
+                //StatusList = _aRepo.GetStatusList(),
+                ClientList = _sRepo.GetClientList(),
             };
             return View(model);
         }
@@ -57,8 +58,9 @@ namespace NotificationPortal.Controllers
             {
                 TempData["ErrorMsg"] = "Application cannot be added at this time.";
             }
-            model.StatusList = _aRepo.GetStatusList();
-            model.ClientList = _aRepo.GetClientList();
+            model.StatusList = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
+
+            model.ClientList = _sRepo.GetClientList();
             return View(model);
         }
 
@@ -67,8 +69,8 @@ namespace NotificationPortal.Controllers
         {
             ApplicationVM application = _aRepo.GetApplication(id);
             // To be modified: global method for status in development
-            ViewBag.StatusID = _aRepo.GetStatusList();
-            ViewBag.ClientID = _aRepo.GetClientList();
+            ViewBag.ClientRefID = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
+            ViewBag.ClientID = _sRepo.GetClientList();
             return View(application);
         }
 
@@ -90,8 +92,9 @@ namespace NotificationPortal.Controllers
                 }
             }
             ApplicationVM application = _aRepo.GetApplication(model.ReferenceID);
-            ViewBag.StatusID = _aRepo.GetStatusList();
-            ViewBag.ClientID = _aRepo.GetClientList();
+            ViewBag.ClientRefID = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
+            //ViewBag.StatusID = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
+            ViewBag.ClientID = _sRepo.GetClientList();
             return View(application);
         }
 

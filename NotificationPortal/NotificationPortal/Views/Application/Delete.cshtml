@@ -59,11 +59,11 @@
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.ClientID)
+                @Html.DisplayNameFor(model => model.ClientRefID)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.ClientID)
+                @Html.DisplayFor(model => model.ClientRefID)
             </dd>
 
         </dl>
@@ -73,7 +73,7 @@
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.ReferenceID)
             @Html.HiddenFor(model => model.ApplicationName)
-            @Html.HiddenFor(model => model.ClientID)
+            @Html.HiddenFor(model => model.ClientRefID)
             @Html.HiddenFor(model => model.Description)
             @Html.HiddenFor(model => model.URL)
             @Html.HiddenFor(model => model.StatusID)

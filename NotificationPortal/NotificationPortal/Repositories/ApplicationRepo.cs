@@ -25,7 +25,7 @@ namespace NotificationPortal.Repositories
                                                     Description = c.Description,
                                                     URL = c.URL,
                                                     StatusID = c.StatusID,
-                                                    ClientID = c.ClientID,
+                                                    ClientRefID = c.Client.ReferenceID,
                                                 });
             return applicationList;
         }
@@ -62,6 +62,8 @@ namespace NotificationPortal.Repositories
         {
             Application a = _context.Application.Where(e => e.ApplicationName == application.ApplicationName)
                             .FirstOrDefault();
+            var clientID = _context.Client.Where(c => c.ReferenceID == application.ClientRefID)
+                                .Select(client => client.ClientID).FirstOrDefault();
             if (a != null)
             {
                 msg = "Application name already exist.";
@@ -72,7 +74,7 @@ namespace NotificationPortal.Repositories
                 Application newApplication = new Application();
                 newApplication.ApplicationName = application.ApplicationName;
                 newApplication.StatusID = application.StatusID;
-                newApplication.ClientID = application.ClientID;
+                newApplication.ClientID = clientID;
                 newApplication.ReferenceID = application.ReferenceID;
                 newApplication.Description = application.Description;
                 newApplication.URL = application.URL;
@@ -101,7 +103,7 @@ namespace NotificationPortal.Repositories
                                 Description = b.Description,
                                 URL = b.URL,
                                 StatusID = b.StatusID,
-                                ClientID = b.ClientID,
+                                ClientRefID = b.Client.ReferenceID,
                             }).FirstOrDefault();
             return application;
         }
@@ -117,7 +119,8 @@ namespace NotificationPortal.Repositories
                                 Description = b.Description,
                                 URL = b.URL,
                                 StatusID = b.StatusID,
-                                ClientID = b.ClientID,
+                                ClientRefID = b.Client.ReferenceID,
+                                //ClientID = b.ClientID,
                             }).FirstOrDefault();
             return application;
         }
@@ -125,6 +128,8 @@ namespace NotificationPortal.Repositories
         public bool EditApplication(ApplicationVM application, out string msg)
         {
             Application a = _context.Application.Where(b => b.ApplicationName == application.ApplicationName).FirstOrDefault();
+            var clientID = _context.Client.Where(c => c.ReferenceID == application.ClientRefID)
+                               .Select(client => client.ClientID).FirstOrDefault();
             //if (a != null)
             //{
             //    msg = "Application name already exist.";
@@ -140,7 +145,7 @@ namespace NotificationPortal.Repositories
                 applicationUpdated.StatusID = application.StatusID;
                 applicationUpdated.Description = application.Description;
                 applicationUpdated.URL = application.URL;
-                applicationUpdated.ClientID = application.ClientID;
+                applicationUpdated.ClientID = clientID;
                 _context.SaveChanges();
                 msg = "Application information succesfully updated.";
                 return true;
