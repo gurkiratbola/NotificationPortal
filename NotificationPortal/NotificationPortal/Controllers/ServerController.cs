@@ -102,7 +102,7 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Details(string id)
         {
-            return View(_sRepo.GetServer(id));
+            return View(_sRepo.GetDetailServer(id));
         }
 
         [HttpGet]

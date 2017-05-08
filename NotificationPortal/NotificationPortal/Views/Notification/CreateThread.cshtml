@@ -12,126 +12,125 @@
     <li class="breadcrumb-item active">Add Notification</li>
 </ol>
 
-<div class="container">
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
+    <div class="form-horizontal">
 
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <!--notification server ID-->
-            <div class="form-group">
-                @Html.LabelFor(model => model.ServerReferenceIDs, htmlAttributes: new { @class = "control-label" })
+        <!--notification server ID-->
+        <div class="form-group">
+            @Html.LabelFor(model => model.ServerReferenceIDs, htmlAttributes: new { @class = "control-label" })
+            <div class="">
+                @Html.ListBoxFor(m => m.ServerReferenceIDs, Model.ServerList, htmlAttributes: new { @id = "ServerList", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ServerReferenceIDs, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!--notification application ID-->
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label" })
+            <div class="">
+                <select class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false">
+                    @foreach (var item in Model.ApplicationList)
+                    {
+                        <option value="@Html.DisplayFor(modelItem => item.ReferenceID)" class="ApplicationListItem @Html.DisplayFor(modelItem => item.ServerReferenceIDs)">@Html.DisplayFor(modelItem => item.ApplicationName)</option>
+                    }
+                </select>
+                @* @Html.ListBoxFor(m => m.ApplicationReferenceIDs, Model.ApplicationList, htmlAttributes: new { @class = "form-control" })*@
+                @Html.ValidationMessageFor(model => model.ApplicationReferenceIDs, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row">
+            <!--notification type-->
+            <div class="form-group col-md-3">
+                @Html.LabelFor(model => model.NotificationTypeList, htmlAttributes: new { @class = "control-label" })
                 <div class="">
-                    @Html.ListBoxFor(m => m.ServerReferenceIDs, Model.ServerList, htmlAttributes: new { @id = "ServerList", @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.ServerReferenceIDs, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(m => m.NotificationTypeID, Model.NotificationTypeList, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
 
-            <!--notification application ID-->
-            <div class="form-group">
-                @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label" })
+            <!--level of impact-->
+            <div class="form-group col-md-3">
+                @Html.LabelFor(model => model.LevelOfImpactList, htmlAttributes: new { @class = "control-label" })
                 <div class="">
-                    <select class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false">
-                        @foreach (var item in Model.ApplicationList)
-                        {
-                            <option value="@Html.DisplayFor(modelItem => item.ReferenceID)" class="ApplicationListItem @Html.DisplayFor(modelItem => item.ServerReferenceIDs)">@Html.DisplayFor(modelItem => item.ApplicationName)</option>
-                        }
+                    @Html.DropDownListFor(m => m.LevelOfImpactID, Model.LevelOfImpactList, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+
+            <!--notification status-->
+            <div class="form-group col-md-3">
+                @Html.LabelFor(model => model.StatusList, htmlAttributes: new { @class = "control-label" })
+                <div class="">
+                    @Html.DropDownListFor(m => m.StatusID, Model.StatusList, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+
+            <!--send method-->
+            <div class="form-group col-md-3">
+                @Html.LabelFor(model => model.SendMethodList, htmlAttributes: new { @class = "control-label" })
+                <div class="">
+                    @Html.DropDownListFor(m => m.SentMethodID, Model.SendMethodList, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+
+            <!--priority list-->
+            <div class="form-group col-md-3">
+                <label for="group_name" class="control-label">Priority</label>
+                <div class="">
+                    <select class="form-control" required>
+                        <option>Normal</option>
+                        <option>High</option>
+                        <option>Low</option>
                     </select>
-                    @* @Html.ListBoxFor(m => m.ApplicationReferenceIDs, Model.ApplicationList, htmlAttributes: new { @class = "form-control" })*@
-                    @Html.ValidationMessageFor(model => model.ApplicationReferenceIDs, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="row">
-                <!--notification type-->
-                <div class="form-group col-md-3">
-                    @Html.LabelFor(model => model.NotificationTypeList, htmlAttributes: new { @class = "control-label" })
-                    <div class="">
-                        @Html.DropDownListFor(m => m.NotificationTypeID, Model.NotificationTypeList, htmlAttributes: new { @class = "form-control" })
-                    </div>
-                </div>
-
-                <!--level of impact-->
-                <div class="form-group col-md-3">
-                    @Html.LabelFor(model => model.LevelOfImpactList, htmlAttributes: new { @class = "control-label" })
-                    <div class="">
-                        @Html.DropDownListFor(m => m.LevelOfImpactID, Model.LevelOfImpactList, htmlAttributes: new { @class = "form-control" })
-                    </div>
-                </div>
-
-                <!--notification status-->
-                <div class="form-group col-md-3">
-                    @Html.LabelFor(model => model.StatusList, htmlAttributes: new { @class = "control-label" })
-                    <div class="">
-                        @Html.DropDownListFor(m => m.StatusID, Model.StatusList, htmlAttributes: new { @class = "form-control" })
-                    </div>
-                </div>
-
-                <!--send method-->
-                <div class="form-group col-md-3">
-                    @Html.LabelFor(model => model.SendMethodList, htmlAttributes: new { @class = "control-label" })
-                    <div class="">
-                        @Html.DropDownListFor(m => m.SentMethodID, Model.SendMethodList, htmlAttributes: new { @class = "form-control" })
-                    </div>
-                </div>
-
-                <!--priority list-->
-                <div class="form-group col-md-3">
-                    <label for="group_name" class="control-label">Priority</label>
-                    <div class="">
-                        <select class="form-control" required>
-                            <option>Normal</option>
-                            <option>High</option>
-                            <option>Low</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <!--heading-->
-            <div class="form-group">
-                @Html.LabelFor(model => model.NotificationHeading, htmlAttributes: new { @class = "control-label" })
-                <div class="">
-                    @Html.EditorFor(model => model.NotificationHeading, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.NotificationHeading, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <!--description-->
-            <div class="form-group">
-                @Html.LabelFor(model => model.NotificationDescription, htmlAttributes: new { @class = "control-label" })
-                <div class="">
-                    @Html.TextAreaFor(model => model.NotificationDescription, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.NotificationDescription, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <!--start time-->
-            <div class="form-group">
-                @Html.LabelFor(model => model.StartDateTime, htmlAttributes: new { @class = "control-label" })
-                <div class="">
-                    @Html.EditorFor(model => model.StartDateTime, new { htmlAttributes = new { @class = "form-control", type = "datetime-local" } })
-                    @Html.ValidationMessageFor(model => model.StartDateTime, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <!--end time-->
-            <div class="form-group">
-                @Html.LabelFor(model => model.EndDateTime, htmlAttributes: new { @class = "control-label" })
-                <div class="">
-                    @Html.EditorFor(model => model.EndDateTime, new { htmlAttributes = new { @class = "form-control", type = "datetime-local" } })
-                    @Html.ValidationMessageFor(model => model.EndDateTime, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="">
-                    <input type="submit" value="Create Thread" class="btn btn-mint text-white" />
-                    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
                 </div>
             </div>
         </div>
-    }
-</div>
+        <!--heading-->
+        <div class="form-group">
+            @Html.LabelFor(model => model.NotificationHeading, htmlAttributes: new { @class = "control-label" })
+            <div class="">
+                @Html.EditorFor(model => model.NotificationHeading, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NotificationHeading, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!--description-->
+        <div class="form-group">
+            @Html.LabelFor(model => model.NotificationDescription, htmlAttributes: new { @class = "control-label" })
+            <div class="">
+                @Html.TextAreaFor(model => model.NotificationDescription, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.NotificationDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!--start time-->
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartDateTime, htmlAttributes: new { @class = "control-label" })
+            <div class="">
+                @Html.EditorFor(model => model.StartDateTime, new { htmlAttributes = new { @class = "form-control", type = "datetime-local" } })
+                @Html.ValidationMessageFor(model => model.StartDateTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!--end time-->
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDateTime, htmlAttributes: new { @class = "control-label" })
+            <div class="">
+                @Html.EditorFor(model => model.EndDateTime, new { htmlAttributes = new { @class = "form-control", type = "datetime-local" } })
+                @Html.ValidationMessageFor(model => model.EndDateTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="">
+                <input type="submit" value="Create Thread" class="btn btn-mint text-white" />
+                @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+}
+
     <script>
         $(document).ready(function () {
             $("#ServerList").change(function () {

@@ -41,6 +41,51 @@ namespace NotificationPortal.ViewModels
         public SelectList LocationList { get; set; }
     }
 
+    public class ServerDetailVM
+    {
+        [Key]
+        public string ReferenceID { get; set; }
+
+        
+        [DisplayName("Server")]
+        public string ServerName { get; set; }
+
+        [DisplayName("Description")]
+        public string Description { get; set; }
+
+        [DisplayName("Location")]
+        public string Location { get; set; }
+
+        [DisplayName("Type")]
+        public string ServerType { get; set; }
+
+        [DisplayName("Type")]
+        public string Status { get; set; }
+
+        public IEnumerable<ServerThreadVM> Threads { get; set; }
+    }
+
+    public class ServerThreadVM
+    {
+        public string ReferenceID { get; set; }
+        public string ThreadID { get; set; }
+
+        [DisplayName("Heading")]
+        public string ThreadHeading { get; set; }
+
+        [DisplayName("Type")]
+        public string ThreadType { get; set; }
+
+        [DisplayName("Heading")]
+        public string LevelOfImpact { get; set; }
+
+        [DisplayName("Status")]
+        public string ThreadStatus { get; set; }
+
+        public DateTime SentDateTime { get; set; }
+        
+    }
+
     public class ServerDeleteVM
     {
         [Key]

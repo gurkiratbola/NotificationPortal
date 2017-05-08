@@ -6,10 +6,12 @@
 
 <h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
 
-@if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_USER) || HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_CLIENT)) {
+@if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_USER) || HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_CLIENT))
+{
     @Html.Partial("~/Views/Dashboard/_external.cshtml", Model)
 }
-else {
+else
+{
     <table class="table table-bordered" style="position:relative;">
         <thead>
             <tr class="bg-inverse text-white">
@@ -43,7 +45,7 @@ else {
                     </td>
                     <td>
                         <span class="@impactClass">
-                                @Html.DisplayFor(modelItem => item.LevelOfImpact)
+                            @Html.DisplayFor(modelItem => item.LevelOfImpact)
                         </span>
                     </td>
                     <td>

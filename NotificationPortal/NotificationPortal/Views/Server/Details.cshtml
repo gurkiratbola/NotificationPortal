@@ -1,4 +1,4 @@
-﻿@model NotificationPortal.ViewModels.ServerVM
+﻿@model NotificationPortal.ViewModels.ServerDetailVM
 
 @{
     ViewBag.Title = "Details";
@@ -9,60 +9,111 @@
 
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="~/Client/Index" class="link-color">Clients</a></li>
+    <li class="breadcrumb-item"><a href="~/Server/Index" class="link-color">Servers</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.ServerName)</li>
 </ol>
 
-<div class="container">
-    @if (TempData["SuccessMsg"] != null)
-    {
-        <p class="alert alert-success">
-            @Html.Raw(TempData["SuccessMsg"])
-        </p>
-    }
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ServerName)
-        </dt>
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#Servers" role="tab">Servers</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Notifications" role="tab">Notifications</a>
+    </li>
+</ul>
+@if (TempData["SuccessMsg"] != null)
+{
+    <p class="alert alert-success">
+        @Html.Raw(TempData["SuccessMsg"])
+    </p>
+}
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="Servers" role="tabpanel">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ServerName)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ServerName)
-        </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ServerName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LocationID)
-        </dt>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Location)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.LocationID)
-        </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Location)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ServerTypeID)
-        </dt>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ServerType)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ServerTypeID)
-        </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ServerType)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StatusID)
-        </dt>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.StatusID)
-        </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
 
-    </dl>
+        </dl>
+    </div>
+    <div class="tab-pane" id="Notifications" role="tabpanel">
+        <table class="table table-bordered">
+            @{ var serverModel = Model.Threads.FirstOrDefault();}
+            <thead>
+                <tr class="bg-inverse text-white text-center">
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.ThreadType)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.LevelOfImpact)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.ThreadHeading)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.ThreadStatus)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Threads)
+                {
+                <tr class="text-center clickable-row" id="@item.ThreadID" data-href="/Details/@item.ThreadID">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ThreadType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LevelOfImpact)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ThreadHeading)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ThreadStatus)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-success" })

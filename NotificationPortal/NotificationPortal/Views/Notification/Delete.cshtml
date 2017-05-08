@@ -12,52 +12,51 @@
     <li class="breadcrumb-item active">Delete Notification</li>
 </ol>
 
-<div class="container">
-    <dl class="row">
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NotificationHeading)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.NotificationHeading)</dd>
+<dl class="row">
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NotificationHeading)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.NotificationHeading)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ReferenceID)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.ReferenceID)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ReferenceID)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.ReferenceID)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ThreadID)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.ThreadID)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ThreadID)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.ThreadID)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.SentDateTime)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.SentDateTime)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.SentDateTime)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.SentDateTime)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NotificationDescription)</dt>
-        <dd class="col-sm-10">@Html.Raw(Model.NotificationDescription)</dd>
-    </dl>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NotificationDescription)</dt>
+    <dd class="col-sm-10">@Html.Raw(Model.NotificationDescription)</dd>
+</dl>
 
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
-            @if (TempData["ErrorMsg"] != null)
-            {
-                <p class="alert alert-danger offset-md-3 col-md-6 offset-md-3">
-                    @Html.Raw(TempData["ErrorMsg"])
-                </p>
-            }
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.NotificationHeading)
-            @Html.HiddenFor(model => model.ReferenceID)
-            @Html.HiddenFor(model => model.ThreadID)
-            @Html.HiddenFor(model => model.SentDateTime)
+    <div class="form-horizontal">
+        @if (TempData["ErrorMsg"] != null)
+        {
+            <p class="alert alert-danger offset-md-3 col-md-6 offset-md-3">
+                @Html.Raw(TempData["ErrorMsg"])
+            </p>
+        }
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.NotificationHeading)
+        @Html.HiddenFor(model => model.ReferenceID)
+        @Html.HiddenFor(model => model.ThreadID)
+        @Html.HiddenFor(model => model.SentDateTime)
 
-            <div class="form-group">
-                <div class="">
-                    <input type="submit" value="Delete Notification" class="btn btn-mint text-white" />
-                    @Html.ActionLink("Back", "DetailsThread", new { id = Model.ThreadID }, new { @class = "btn btn-danger" })
+        <div class="form-group">
+            <div class="">
+                <input type="submit" value="Delete Notification" class="btn btn-mint text-white" />
+                @Html.ActionLink("Back", "DetailsThread", new { id = Model.ThreadID }, new { @class = "btn btn-danger" })
 
-                </div>
             </div>
         </div>
-    }
-</div>
+    </div>
+}
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval",
                     "~/bundles/summernote",

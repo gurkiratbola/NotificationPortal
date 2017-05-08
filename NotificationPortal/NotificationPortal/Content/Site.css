@@ -1,19 +1,26 @@
-﻿/* ------------- colors -------------*/
+﻿/* ==========================================================================
+                            Colors used for the project
+========================================================================== */
 /*
 mint: #44bbc1 
+darker mint: #3EA2C3
 light-blue: #edf2f6 
 dark-navy: #373e50 
 sidebar-grey: #6f7e95
 */
-
-
 
 body {
     line-height: 1.4;
     background-color: #edf2f6;
 }
 
-/* ------------- style for fonts -------------*/
+.container {
+    padding-top: 30px;
+}
+
+/* ==========================================================================
+                            Font Styles
+========================================================================== */
 h1, h2, h3, h4, h5 {
     border: none;
 }
@@ -26,8 +33,9 @@ h3 {
     font-size: 1em;
 }
 
-
-
+/* ==========================================================================
+                            List Styles
+========================================================================== */
 ul, li {
     list-style: none;
 }
@@ -35,11 +43,23 @@ ul, li {
 .heading-padding {
     padding: 0.5rem 1rem;
 }
+
+/* ==========================================================================
+                            Link Styles
+========================================================================== */
 .link-color {
     color: #025aa5 !important;
 }
 
-/* ------------- color classes-------------*/
+
+/* ==========================================================================
+                            Overriding default class styles
+========================================================================== */
+
+.breadcrumb {
+    padding-top: 0.75rem;
+    padding-left: 0;
+}
 .bg-inverse {
     background-color: #6f7e95 !important;
 }
@@ -52,6 +72,10 @@ button:focus {
     background-color: #373e50;
 }
 
+.text-primary {
+    color: #373e50  !important;
+}
+
 .bg-faded {
     background-color: transparent;
 }
@@ -59,6 +83,13 @@ button:focus {
 .btn-mint,
 .btn-success {
     background-color: #44bbc1;
+    border-color: transparent;
+}
+
+.btn-mint:hover,
+.btn-success:hover {
+    background-color: #3EA2C3;
+    border-color: transparent;
 }
 
 .badge-success {
@@ -73,7 +104,9 @@ button:focus {
     background-color: transparent;
 }
 
-/* ------------- table classes-------------*/
+/* ==========================================================================
+                            Table Styles
+========================================================================== */
 th {
     text-transform: uppercase;
     font-size: 0.9em;
@@ -90,18 +123,26 @@ th a:hover {
 
 td a {
     color: #373e50;
-    text-decoration: underline;
 }
 
+td a:hover {
+    color: #6f7e95;
+}
+    
 tbody {
     background-color: white;
 }
 
-/* ------------- pagination -------------*/
+/* ==========================================================================
+                            Pagination Styles
+========================================================================== */
 .pagination a {
     background-color: #6f7e95 !important;
 }
-/* ------------- style for header -------------*/
+
+/* ==========================================================================
+                            Header Styles
+========================================================================== */
 .navbar-brand {
     text-transform: uppercase;
     font-family: century gothic;
@@ -130,13 +171,13 @@ tbody {
     z-index: 1000;
 }
 
-    .hover-dropdown-content:before {
-        content: ' ';
-        height: 0;
-        position: absolute;
-        width: 0;
-        border: 10px solid transparent;
-    }
+.hover-dropdown-content:before {
+    content: ' ';
+    height: 0;
+    position: absolute;
+    width: 0;
+    border: 10px solid transparent;
+}
 .hover-dropdown-content:before {
     border-bottom-color: #fff; /* arrow color */
     /* positioning */
@@ -165,33 +206,106 @@ tbody {
     display: inline;
     padding-left: 30px;
 }
-/* ------------- style for footer -------------*/
+/* ==========================================================================
+                            Sidebar Styles
+========================================================================== */
+
+.sidebar-dropdown-button {
+    color: white;
+    width: 100%;
+    box-shadow: none;
+    border: none;
+    text-align: left;
+    padding: 0.5em 1em;
+    cursor: pointer;
+}
+
+.sidebar-dropdown {
+    margin: 0;
+    padding: 0;
+    background-color: #5d6a7e;
+    display: none;
+}
+
+.sidebar-dropdown .nav-link {
+    border-bottom: 1px solid #6f7e95;
+    font-size: 0.9em;
+    color: lightgrey;
+}
+
+.fa-caret-down {
+    transition: 0.3s;
+}
+
+.arrow-rotate {
+    transform: rotate(180deg);
+}
+
+@media (min-width: 768px) {
+    .col-md-1 {
+        max-width: 9.333333% !important;
+    }
+}
+/* ==========================================================================
+                            Footer Styles
+========================================================================== */
 .container-fluid {
     min-height: calc(100vh - 130px);
 }
 
 footer {
+    font-size: 0.9em;
+    margin-top: 20px;
 }
 
-/* Keeping the sidebar layout look decent */
-@media (min-width: 768px) { 
-    .col-md-1 {
-        max-width: 9.333333% !important;
-    }
+footer a {
+    text-transform: uppercase;
+    color: #44bbc1;
+    font-weight: 700;
 }
 
-/* height for editor plugin*/
-#editor {
-    min-height: 220px !important;
+footer a:hover {
+    text-decoration: none;
+    color: #3EA2C3;
 }
 
-/* jQuery table row notifications */
+
+
+/* ==========================================================================
+                            Right Click Styles
+========================================================================== */
 .clickable-row:hover,
 .clickable-row-dashboard :hover{
     background: #f7f7f7;
     cursor: pointer;
 }
 
+.btn-sm {
+    width: 100%;
+}
+
+.hidden-menu {
+    display: none;
+    width: 80px;
+    height: 60px;
+    background-color: #ededed;
+    border: 1px solid grey;
+}
+
+.hidden-menu ul,
+.hidden-menu li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.hidden-menu li:first-child {
+    outline: 1px solid grey;
+}
+/* ==========================================================================
+                            Page Styles: Notifications
+========================================================================== */
 .float-create {
     float: right !important;
 }
@@ -247,62 +361,14 @@ h5.col-12 {
 .tab-content > .active {
     border-bottom: 1px solid #ddd;
 }
-/* ------------- style for right click -------------*/
-.btn-sm {
-    width: 100%;
+
+#editor {
+    min-height: 220px !important;
 }
 
-.hidden-menu {
-    display: none;
-    width: 80px;
-    height: 60px;
-    background-color: #ededed;
-    border: 1px solid grey;
-}
-
-.hidden-menu ul,
-.hidden-menu li {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-}
-
-.hidden-menu li:first-child {
-    outline: 1px solid grey;
-}
-
-/* ------------- style for sidebar dropdown -------------*/
-
-.sidebar-dropdown-button {
-    color: white;
-    width: 100%;
-    box-shadow: none;
-    border: none;
-    text-align: left;
-    padding: 0.5em 1em;
-    cursor: pointer;
-}
-.sidebar-dropdown {
-    margin: 0;
-    padding: 0;
-    background-color: #5d6a7e;
-    display: none;
-}
-
-.sidebar-dropdown .nav-link {
-    border-bottom: 1px solid #6f7e95;
-    font-size: 0.9em;
-    color: lightgrey;
-}
-
-.fa-caret-down {
-    transition: 0.3s;
-}
-.arrow-rotate {
-    transform: rotate(180deg);
-}
-/* ------------- style for Dashboard -------------*/
+/* ==========================================================================
+                            Page Styles: Dashboard
+========================================================================== */
 .card-deck .card {
     border: none;
 }
@@ -328,7 +394,3 @@ h5.col-12 {
 .card-header {
     border-bottom: 2px solid #6f7e95;
 }
-
-/*.card-header a {
-    color: #44bbc1;
-}*/
