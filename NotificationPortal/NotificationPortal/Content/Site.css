@@ -1,4 +1,14 @@
-﻿body {
+﻿/* ------------- colors -------------*/
+/*
+mint: #44bbc1 
+light-blue: #edf2f6 
+dark-navy: #373e50 
+sidebar-grey: #6f7e95
+*/
+
+
+
+body {
     line-height: 1.4;
     background-color: #edf2f6;
 }
@@ -57,7 +67,7 @@ button:focus {
 }
 
 .text-success {
-    color: #44bbc1;
+    color: #44bbc1 !important;
 }
 
 .card {
