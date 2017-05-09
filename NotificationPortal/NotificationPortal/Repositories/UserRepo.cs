@@ -277,38 +277,48 @@ namespace NotificationPortal.Repositories
 
         public UserDeleteVM GetDeleteUser(string referenceId)
         {
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
+            try
+            {
+                var roleManager = new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole>(_context));
 
-            UserDeleteVM userToBeDeleted = _context.Users.Where(u => u.UserDetail.ReferenceID == referenceId)
-                                           .Select(user => new UserDeleteVM()
-                                           {
-                                               ReferenceID = user.UserDetail.ReferenceID,
-                                               Email = user.Email,
-                                               RoleName = user.Roles.FirstOrDefault().RoleId.ToString(),
-                                               ClientReferenceID = user.UserDetail.Client.ReferenceID,
-                                               FirstName = user.UserDetail.FirstName,
-                                               LastName = user.UserDetail.LastName,
-                                               BusinessTitle = user.UserDetail.BusinessTitle,
-                                               BusinessPhone = user.UserDetail.BusinessPhone,
-                                               MobilePhone = user.UserDetail.MobilePhone,
-                                               HomePhone = user.UserDetail.HomePhone,
-                                               ClientName = user.UserDetail.Client.ClientName,
-                                               StatusID = user.UserDetail.Status.StatusID,
-                                               StatusName = user.UserDetail.Status.StatusName,
-                                               Applications = user.UserDetail.Applications.Select(a => new ApplicationVM()
+                UserDeleteVM userToBeDeleted = _context.Users.Where(u => u.UserDetail.ReferenceID == referenceId)
+                                               .Select(user => new UserDeleteVM()
                                                {
-                                                   ApplicationName = a.ApplicationName,
-                                                   Description = a.Description,
-                                                   URL = a.URL,
-                                                   ReferenceID = a.ReferenceID
-                                               })
-                                           }).FirstOrDefault();
+                                                   ReferenceID = user.UserDetail.ReferenceID,
+                                                   Email = user.Email,
+                                                   RoleName = user.Roles.FirstOrDefault().RoleId.ToString(),
+                                                   ClientReferenceID = user.UserDetail.Client.ReferenceID,
+                                                   FirstName = user.UserDetail.FirstName,
+                                                   LastName = user.UserDetail.LastName,
+                                                   BusinessTitle = user.UserDetail.BusinessTitle,
+                                                   BusinessPhone = user.UserDetail.BusinessPhone,
+                                                   MobilePhone = user.UserDetail.MobilePhone,
+                                                   HomePhone = user.UserDetail.HomePhone,
+                                                   ClientName = user.UserDetail.Client.ClientName,
+                                                   StatusID = user.UserDetail.Status.StatusID,
+                                                   StatusName = user.UserDetail.Status.StatusName,
+                                                   Applications = user.UserDetail.Applications.Select(a => new ApplicationVM()
+                                                   {
+                                                       ApplicationName = a.ApplicationName,
+                                                       Description = a.Description,
+                                                       URL = a.URL,
+                                                       ReferenceID = a.ReferenceID
+                                                   })
+                                               }).FirstOrDefault();
 
-            userToBeDeleted.RoleName = roleManager.FindById(userToBeDeleted.RoleName).Name.ToString();
+                userToBeDeleted.RoleName = roleManager.FindById(userToBeDeleted.RoleName).Name.ToString();
 
-            userToBeDeleted.ApplicationList = GetApplicationList();
+                return userToBeDeleted;
+            }
+            catch (Exception e)
+            {
+                if(e is SqlException)
+                {
 
-            return userToBeDeleted;
+                }
+
+                return null;
+            }
         }
 
         public bool DeleteUser(string referenceId, string clientReferenceId, out string msg)
@@ -319,31 +329,28 @@ namespace NotificationPortal.Repositories
 
             Client clientToBeDeleted = _context.Client.FirstOrDefault(c => c.ReferenceID == clientReferenceId);
 
-            //Application clientApplication = _context.Application.FirstOrDefault(a => a.ApplicationID == clientToBeDeleted.ClientID);
-
             if (userToBeDeleted == null && appUserTobeDeleted == null && clientToBeDeleted == null)
             {
                 msg = "User cannot be deleted.";
                 return false;
             }
 
-            //if (clientApplication != null)
-            //{
-            //    msg = "User associated with application(s), cannot be deleted.";
-
-            //    return false;
-            //}
-
             try
             {
-                _context.UserDetail.Remove(userToBeDeleted);
-                _context.SaveChanges();
+                if(HttpContext.Current.User.Identity.GetUserId() != userToBeDeleted.UserID)
+                {
+                    _context.UserDetail.Remove(userToBeDeleted);
+                    _context.SaveChanges();
 
-                _context.Users.Remove(appUserTobeDeleted);
-                _context.SaveChanges();
+                    _context.Users.Remove(appUserTobeDeleted);
+                    _context.SaveChanges();
 
-                msg = "User deleted successfully!";
-                return true;
+                    msg = "User deleted successfully!";
+                    return true;
+                }
+
+                msg = "User cannot delete own account, Please contact an admin to delete your account.";
+                return false;               
             }
             catch
             {
