@@ -256,6 +256,7 @@ namespace NotificationPortal.Repositories
 
                     var apps = _context.Application.Where(a => model.ApplicationReferenceIDs.Contains(a.ReferenceID));
 
+                    user.Applications.Clear();
                     user.Applications = apps.ToList();
 
                     // _context.Entry(model).State = EntityState.Modified;
