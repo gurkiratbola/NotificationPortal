@@ -36,10 +36,17 @@
     }
 
     <table class="table table-bordered" style="position:relative;">
+        @{ 
+            var filterByStatus = "";
+            var filterByClient = "";
+            if (Model.CurrentSort != null) {
+                filterByStatus = Model.CurrentSort.Contains("status") ? "bg-mint" : "";
+                filterByClient = Model.CurrentSort.Contains("client") ? "bg-mint" : "";
+            }
+        }
         <tr class="bg-inverse text-white">
-            <th>
+            <th class="@filterByClient">
                 <a href="@Url.Action("Index", "Client", new { sortOrder = Model.ClientHeadingSort, currentFilter = Model.CurrentFilter })">
-                    @*@Html.ActionLink("Client Name", "Index", new { sortOrder = ViewBag.ClientNameSort, currentFilter = ViewBag.CurrentFilter })*@
                     Client
                     <span class="filter-arrows">
                         <i class="fa fa-caret-up" aria-hidden="true"></i>
@@ -47,9 +54,8 @@
                     </span>
                 </a>
             </th>
-            <th>
+            <th class="@filterByStatus">
                 <a href="@Url.Action("Index", "Client", new { sortOrder = Model.StatusSort, currentFilter = Model.CurrentFilter })">
-                    @*@Html.ActionLink("Client Name", "Index", new { sortOrder = ViewBag.ClientNameSort, currentFilter = ViewBag.CurrentFilter })*@
                     Status
                     <span class="filter-arrows">
                         <i class="fa fa-caret-up" aria-hidden="true"></i>
@@ -64,12 +70,17 @@
 
         @foreach (var item in Model.Clients)
         {
+            //var statusClass = item.StatusName.ToUpper() == NotificationPortal.Models.Key.STATUS_CLIENT_DISABLED.ToUpper() ? "text-danger" : "text-success";
+            var statusClass = item.StatusName.ToUpper() == NotificationPortal.Models.Key.STATUS_CLIENT_ENABLED.ToUpper() ? "<i class='fa fa-check text-success' aria-hidden='true'></i>" : "<i class='fa fa-times text-danger' aria-hidden='true'></i>";
             <tr class="clickable-row" id="@item.ReferenceID" data-href="/Details/@item.ReferenceID">
                 <td>
                     @Html.DisplayFor(modelItem => item.ClientName)
                 </td>
                 <td>
-                    <span class="">@Html.DisplayFor(modelItem => item.StatusName)</span>
+                    <span class="">
+                        <span>@Html.Raw(statusClass)</span>
+                        @Html.DisplayFor(modelItem => item.StatusName)
+                    </span>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.NumOfApps)
@@ -80,6 +91,9 @@
 
     @Html.PagedListPager(Model.Clients, page => Url.Action("Index",
         new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
+    <div class="pageinfo-display">
+        <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
+    </div>
 }
 else
 {
