@@ -105,7 +105,6 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name = "Proirity")]
         public SelectList ProirityList { get; set; }
-
     }
     
     public class NotificationEditVM : NotificationCreateVM

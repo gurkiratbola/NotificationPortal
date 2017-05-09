@@ -25,7 +25,7 @@
         }
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ThreadID)
+        @Html.HiddenFor(model => model.IncidentNumber)
         <!--notification server reference ID-->
         <div class="form-group">
             @Html.LabelFor(model => model.ServerReferenceIDs, htmlAttributes: new { @class = "control-label" })
@@ -85,13 +85,9 @@
 
             <!--priority list-->
             <div class="form-group col-md-3">
-                <label for="group_name" class="control-label">Priority</label>
+                @Html.LabelFor(model => model.ProirityList, htmlAttributes: new { @class = "control-label" })
                 <div class="">
-                    <select class="form-control" required>
-                        <option>Normal</option>
-                        <option>High</option>
-                        <option>Low</option>
-                    </select>
+                    @Html.DropDownListFor(m => m.ProirityID, Model.ProirityList, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
         </div>
@@ -131,7 +127,7 @@
         <div class="form-group">
             <div class="">
                 <input type="submit" value="Update Thread" class="btn btn-mint text-white" />
-                @Html.ActionLink("Back", "DetailsThread", new { id = Model.ThreadID }, new { @class = "btn btn-danger" })
+                @Html.ActionLink("Back", "DetailsThread", new { id = Model.IncidentNumber }, new { @class = "btn btn-danger" })
 
             </div>
         </div>

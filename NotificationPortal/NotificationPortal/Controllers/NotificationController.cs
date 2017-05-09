@@ -1,9 +1,9 @@
 ﻿using NotificationPortal.Models;
 using NotificationPortal.Repositories;
+using NotificationPortal.Service;
 using NotificationPortal.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -45,13 +45,15 @@ namespace NotificationPortal.Controllers
 
         [HttpPost]
         [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
-        public ActionResult CreateThread(NotificationCreateVM model) {
+        public async Task<ActionResult> CreateThread(NotificationCreateVM model) {
             string result = "";
             if (ModelState.IsValid)
             {
                 bool success = _nRepo.CreateNotification(model, out result);
                 if (success)
                 {
+                    await NotificationService.SendEmail(_nRepo.CreateMail(model));
+
                     TempData["SuccessMsg"] = result;
                     return RedirectToAction("Index");
                 }
@@ -74,7 +76,7 @@ namespace NotificationPortal.Controllers
 
         [HttpPost]
         [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
-        public ActionResult Create(NotificationCreateVM model)
+        public async Task<ActionResult> Create(NotificationCreateVM model)
         {
             string result = "";
             if (ModelState.IsValid)
@@ -82,6 +84,8 @@ namespace NotificationPortal.Controllers
                 bool success = _nRepo.CreateNotification(model, out result);
                 if (success)
                 {
+                    await NotificationService.SendEmail(_nRepo.CreateMail(model));
+
                     TempData["SuccessMsg"] = result;
                     return RedirectToAction("DetailsThread",new { id = model.IncidentNumber });
                 }
