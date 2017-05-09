@@ -79,13 +79,9 @@
 
             <!--priority list-->
             <div class="form-group col-md-3">
-                <label for="group_name" class="control-label">Priority</label>
+                @Html.LabelFor(model => model.ProirityList, htmlAttributes: new { @class = "control-label" })
                 <div class="">
-                    <select class="form-control" required>
-                        <option>Normal</option>
-                        <option>High</option>
-                        <option>Low</option>
-                    </select>
+                    @Html.DropDownListFor(m => m.ProirityID, Model.ProirityList, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
         </div>

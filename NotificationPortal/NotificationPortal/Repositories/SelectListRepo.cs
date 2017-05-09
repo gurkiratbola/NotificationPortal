@@ -108,6 +108,17 @@ namespace NotificationPortal.Repositories
             return new SelectList(impactList, "Value", "Text");
         }
 
+        public SelectList GetPriorityList()
+        {
+            IEnumerable<SelectListItem> priorityList = _context.Priority.Select(p => new SelectListItem()
+            {
+                Value = p.PriorityID.ToString(),
+                Text = p.PriorityName
+            });
+
+            return new SelectList(priorityList, "Value", "Text");
+        }
+
         public SelectList GetSendMethodList()
         {
             IEnumerable<SelectListItem> sendMethodList = _context.SendMethod.Select(sendMethod => new SelectListItem()

@@ -1,13 +1,15 @@
-﻿using NotificationPortal.Models;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
 using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
-using static NotificationPortal.ViewModels.ValidationVM;
 
 namespace NotificationPortal.Repositories
 {
@@ -31,6 +33,7 @@ namespace NotificationPortal.Repositories
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
             model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
+            model.ProirityList =_slRepo.GetPriorityList();
             return model;
         }
 
@@ -273,6 +276,9 @@ namespace NotificationPortal.Repositories
 
                 var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
                 var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
+                var priorityValue = _context.Notification.Where(n => notification.ProirityID == n.Priority.PriorityID)
+                    .Select(n=>n.Priority.PriorityValue)
+                    .FirstOrDefault();
                 Notification newNotification = new Notification()
                 {
                     LevelOfImpactID = notification.LevelOfImpactID,
@@ -280,6 +286,7 @@ namespace NotificationPortal.Repositories
                     NotificationHeading = notification.NotificationHeading,
                     NotificationDescription = notification.NotificationDescription,
                     StatusID = notification.StatusID,
+                    PriorityID = notification.ProirityID,
                     SendMethodID = notification.SentMethodID,
                     //TO DO: discuss how referenceID is generated
                     ReferenceID = Guid.NewGuid().ToString(),
@@ -294,7 +301,6 @@ namespace NotificationPortal.Repositories
 
                 _context.Notification.Add(newNotification);
                 _context.SaveChanges();
-                //TO DO: send the emails here, use levelOfImpactID here
 
                 msg = "Notification Sent";
                 return true;
@@ -446,6 +452,111 @@ namespace NotificationPortal.Repositories
                     break;
             }
             return list;
+        }
+
+        public List<MailMessage> CreateMails(NotificationCreateVM notification)
+        {
+            try
+            {
+                var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
+                var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
+                var priorityValue = _context.Notification.Where(n => notification.ProirityID == n.Priority.PriorityID)
+                    .Select(n => n.Priority.PriorityValue)
+                    .FirstOrDefault();
+
+                // Get recievers
+                List<string> receivers;
+                if (apps.Count() == 0)
+                {
+                    receivers = servers.SelectMany(s => s.Applications.SelectMany(a => a.UserDetails.Select(u => u.User.Email))).ToList();
+                }
+                else
+                {
+                    receivers = apps.SelectMany(a => a.UserDetails.Select(u => u.User.Email)).ToList();
+                }
+                receivers = receivers.Distinct().ToList();
+                
+                List<MailMessage> mails = new List<MailMessage>();
+                foreach (string receiver in receivers)
+                {
+                    // check if user have confirmed their email
+                    UserManager<ApplicationUser> manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+                    ApplicationUser user = manager.FindByEmail(receiver);
+                    if (user!=null)
+                    {
+                        if (user.EmailConfirmed)
+                        {
+                            //create the mail message 
+                            MailMessage mail = new MailMessage();
+
+                            //set the addresses 
+                            mail.From = new MailAddress("no-reply@notification-portal.com");
+                            mail.To.Add(receiver);
+
+                            //set the content 
+                            mail.Subject = notification.NotificationHeading;
+                            //TODO body needs to be improved
+                            mail.Body = notification.NotificationDescription;
+                            mail.IsBodyHtml = true;
+
+                            switch (priorityValue)
+                            {
+                                case Key.PRIORITY_VALUE_HIGH:
+                                    mail.Priority = MailPriority.High;
+                                    break;
+                                case Key.PRIORITY_VALUE_NORMAL:
+                                    mail.Priority = MailPriority.Normal;
+                                    break;
+                                case Key.PRIORITY_VALUE_LOW:
+                                    mail.Priority = MailPriority.Low;
+                                    break;
+                                default:
+                                    mail.Priority = MailPriority.Normal;
+                                    break;
+                            }
+                            mails.Add(mail);
+                        }
+                    }
+                }
+
+                return mails;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
+
+        // TODO verify the functionality
+        public string NewIncidentNumber(string notificationType)
+        {
+            string newIncidentNumber;
+            if (notificationType==Key.NOTIFICATION_TYPE_INCIDENT)
+            {
+                newIncidentNumber = "INC-";
+            }else if (notificationType == Key.NOTIFICATION_TYPE_MAINTENANCE)
+            {
+                newIncidentNumber = "MAI-";
+            }
+            else
+            {
+                newIncidentNumber = "UND-";
+            }
+            
+            int max = 20;
+            var incidentNumbers = _context.Notification
+                .Where(n => n.IncidentNumber.Substring(0,newIncidentNumber.Length) == newIncidentNumber)
+                .Select(n => int.Parse(n.IncidentNumber.Substring(newIncidentNumber.Length)));
+            var incidentNumberSet = new HashSet<int>(incidentNumbers);
+
+            var range = Enumerable.Range(1, max).Where(i => !incidentNumberSet.Contains(i));
+
+            var rand = new Random();
+            int index = rand.Next(0, max - incidentNumberSet.Count);
+            int randNumber = range.ElementAt(index);
+
+            return newIncidentNumber + randNumber.ToString();
         }
     }
 }

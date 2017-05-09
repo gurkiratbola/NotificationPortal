@@ -10,19 +10,24 @@ using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
 using System.Data.SqlClient;
 using System.Data.Entity;
+using PagedList;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System.Security.Policy;
 
 namespace NotificationPortal.Repositories
 {
     public class UserRepo
     {
+        const string EMAIL_CONFIRMATION = "EmailConfirmation";
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
         private readonly SelectListRepo _selectRepo = new SelectListRepo();
 
         public IEnumerable<UserVM> Sort(IEnumerable<UserVM> list, string sortOrder, string searchString = null)
         {
-            if (!string.IsNullOrEmpty(searchString))
+            if (!String.IsNullOrEmpty(searchString))
             {
-                list = list.Where(c => c.FirstName.ToUpper().Contains(searchString.ToUpper()));
+                list = list.Where(c => c.FirstName.ToUpper().Contains(searchString.ToUpper()) || c.RoleName.ToUpper().Contains(searchString.ToUpper()) || c.StatusName.ToUpper().Contains(searchString.ToUpper()) || c.LastName.ToUpper().Contains(searchString.ToUpper()) || c.Email.ToUpper().Contains(searchString.ToUpper()));
             }
 
             switch (sortOrder)
@@ -39,6 +44,14 @@ namespace NotificationPortal.Repositories
                     list = list.OrderBy(c => c.FirstName);
                     break;
 
+                case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
+                    list = list.OrderByDescending(c => c.StatusName);
+                    break;
+
+                case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
+                    list = list.OrderBy(c => c.StatusName);
+                    break;
+
                 default:
                     list = list.OrderBy(c => c.ClientName);
                     break;
@@ -47,13 +60,13 @@ namespace NotificationPortal.Repositories
             return list;
         }
 
-        public IEnumerable<UserVM> GetAllUsers()
+        public UserIndexVM GetAllUsers(string sortOrder, string currentFilter, string searchString, int? page)
         {
             try
             {
                 var roleManager = new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole>(_context));
 
-                var users = _context.Users.Select(user => new UserVM()
+                IEnumerable<UserVM> users = _context.Users.Select(user => new UserVM()
                 {
                     ReferenceID = user.UserDetail.ReferenceID,
                     Email = user.Email,
@@ -75,7 +88,27 @@ namespace NotificationPortal.Repositories
                     user.RoleName = roleManager.FindById(user.RoleName).Name.ToString();
                 }
 
-                return users;
+                int totalNumOfUsers = users.Count();
+                page = searchString == null ? page : 1;
+                int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+                searchString = searchString ?? currentFilter;
+                int pageNumber = (page ?? 1);
+                int defaultPageSize = ConstantsRepo.PAGE_SIZE;
+
+                UserIndexVM model = new UserIndexVM
+                {
+                    Users = Sort(users, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
+                    CurrentFilter = searchString,
+                    CurrentSort = sortOrder,
+                    TotalItemCount = totalNumOfUsers,
+                    ItemStart = currentPageIndex * 10 + 1,
+                    ItemEnd = totalNumOfUsers - (10 * currentPageIndex) >= 10 ? 10 * (currentPageIndex + 1) : totalNumOfUsers,
+                    ClientHeadingSort = sortOrder == ConstantsRepo.SORT_CLIENT_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_CLIENT_BY_NAME_DESC,
+                    FirstNameSort = sortOrder == ConstantsRepo.SORT_FIRST_NAME_BY_DESC ? ConstantsRepo.SORT_FIRST_NAME_BY_ASCE : ConstantsRepo.SORT_FIRST_NAME_BY_DESC,
+                    StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
+                };
+
+                return model;
             }
             catch (SqlException e)
             {
@@ -127,7 +160,7 @@ namespace NotificationPortal.Repositories
             return details;
         }
 
-        public bool AddUser(AddUserVM model, out string msg)
+        public bool AddUser(AddUserVM model, UrlHelper url, HttpRequestBase request, out string msg)
         {
             // Get the user manager 
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
@@ -148,7 +181,25 @@ namespace NotificationPortal.Repositories
                     };
 
                     // make the user at this point
-                    userManager.Create(user);
+                    var result = userManager.Create(user);
+
+                    if(result.Succeeded)
+                    {
+                        CreateTokenProvider(userManager, EMAIL_CONFIRMATION);
+
+                        string verificationCode = userManager.GenerateEmailConfirmationToken(user.Id);
+
+                        var callbackUrl = url.Action("ConfirmEmail", "Account", new { user.Id, code = verificationCode }, protocol: request.Url.Scheme);
+
+                        var subject = "Confirm your account";
+                        var message = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
+                        userManager.SendEmail(user.Id, subject, message);
+                    }
+                    else
+                    {
+                        msg = "Failed to add the user.";
+                        return false;
+                    }
 
                     // find the client id with the reference id passed with the viewmodel and add the new client to that
                     var clientID = _context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
@@ -171,6 +222,7 @@ namespace NotificationPortal.Repositories
                         model.ApplicationReferenceIDs = new string[0];
                     }
 
+                    // add the applications selected to user details application table
                     var apps = _context.Application.Where(a => model.ApplicationReferenceIDs.Contains(a.ReferenceID));
 
                     details.Applications = apps.ToList();
@@ -193,7 +245,7 @@ namespace NotificationPortal.Repositories
                     return false;
                 }
             }
-            catch
+            catch(Exception e)
             {
                 msg = "Failed to add the user!";
                 return false;
@@ -370,6 +422,11 @@ namespace NotificationPortal.Repositories
             });
 
             return apps;
+        }
+
+        void CreateTokenProvider(UserManager<ApplicationUser> manager, string tokenType)
+        {
+            manager.UserTokenProvider = new EmailTokenProvider<ApplicationUser>();
         }
     }
 }

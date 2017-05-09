@@ -35,7 +35,7 @@ else
         <tbody>
             @foreach (var item in Model)
             {
-                var statusClass = item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INCOMPLETE.ToUpper() ? "text-danger" : "text-success";
+                var statusClass = item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN.ToUpper() ? "text-danger" : "text-success";
                 var impactClass = item.LevelOfImpact.ToUpper() == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING.ToUpper() ? "badge badge-success" : "badge badge-danger";
                 <tr class="" data-href="/Notification/Details/@item.ThreadID">
                     <td>
