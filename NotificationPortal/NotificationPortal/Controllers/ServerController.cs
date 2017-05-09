@@ -19,10 +19,10 @@ namespace NotificationPortal.Controllers
 
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            IEnumerable<ServerListVM> serverList = _sRepo.GetServerList();
-            return View(serverList);
+            ServerIndexVM model = _sRepo.GetServerList(sortOrder, currentFilter, searchString, page);
+            return View(model);
         }
 
         [HttpGet]

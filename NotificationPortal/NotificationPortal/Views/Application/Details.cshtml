@@ -1,7 +1,7 @@
-﻿@model NotificationPortal.ViewModels.ApplicationVM
+﻿@model NotificationPortal.ViewModels.ApplicationDetailVM
 
 @{
-    ViewBag.Title = " Application Details";
+    ViewBag.Title = "Application Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,7 +12,20 @@
     <li class="breadcrumb-item"><a href="~/Client/Index" class="link-color">Clients</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.ApplicationName)</li>
 </ol>
-<div class="container">
+
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#Applications" role="tab">Applications</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Servers" role="tab">Servers</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Users" role="tab">Users</a>
+    </li>
+</ul>
 @if (TempData["SuccessMsg"] != null)
 {
     <p class="alert alert-success">
@@ -20,54 +33,145 @@
     </p>
 }
 
-<div>
-    <h4>ApplicationVM</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ApplicationName)
-        </dt>
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="Applications" role="tabpanel">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ApplicationName)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ApplicationName)
-        </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ApplicationName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.URL)
-        </dt>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.URL)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.URL)
-        </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.URL)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StatusID)
-        </dt>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Client)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.StatusID)
-        </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Client)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ClientRefID)
-        </dt>
+            <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ClientRefID)
-        </dd>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Status)
+                </dd>
 
-    </dl>
+        </dl>
+    </div>
+    <div class="tab-pane" id="Servers" role="tabpanel">
+        <table class="table table-bordered">
+            @{ var serverModel = Model.Servers.FirstOrDefault();}
+            <thead>
+                <tr class="bg-inverse text-white text-center">
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.ServerName)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.ServerType)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.Status)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.Location)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Servers)
+                {
+                    <tr class="clickable-row-dashboard" id="@item.ReferenceID" data-href="/Server/Details/@item.ReferenceID">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServerType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Location)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane" id="Users" role="tabpanel">
+        <table class="table table-bordered">
+            @{ var userModel = Model.Users.FirstOrDefault();}
+            <thead>
+                <tr class="bg-inverse text-white text-center">
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => userModel.FirstName)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => userModel.LastName)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => userModel.Email)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => userModel.RoleName)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => userModel.BusinessPhone)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Users)
+            {
+                    <tr class="clickable-row-dashboard" id="@item.ReferenceID" data-href="/User/Details/@item.ReferenceID">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RoleName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BusinessPhone)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-success" })
-    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
-</p>
-</div>
+
+
+
+
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-success" })
+            @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
+        </p>
+  

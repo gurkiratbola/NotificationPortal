@@ -96,20 +96,20 @@
             <tbody>
                 @foreach (var item in Model.Threads)
                 {
-                <tr class="text-center clickable-row" id="@item.ThreadID" data-href="/Details/@item.ThreadID">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ThreadType)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LevelOfImpact)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ThreadHeading)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ThreadStatus)
-                    </td>
-                </tr>
+                    <tr class="clickable-row-dashboard" id="@item.ThreadID" data-href="/Notification/DetailsThread/@item.ThreadID">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ThreadType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LevelOfImpact)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ThreadHeading)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ThreadStatus)
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>

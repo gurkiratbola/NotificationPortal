@@ -1,5 +1,6 @@
 ﻿using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,11 +46,126 @@ namespace NotificationPortal.Repositories
                     list = list.OrderBy(c => c.ClientName);
                     break;
 
+
+                case ConstantsRepo.SORT_APP_BY_DESCRIPTION_ASCE:
+                    list = list.OrderBy(c => c.Description);
+                    break;
+
+                case ConstantsRepo.SORT_APP_BY_DESCRIPTION_DESC:
+                    list = list.OrderByDescending(c => c.Description);
+                    break;
+
+                case ConstantsRepo.SORT_APP_BY_URL_ASCE:
+                    list = list.OrderBy(c => c.URL);
+                    break;
+
+                case ConstantsRepo.SORT_APP_BY_URL_DESC:
+                    list = list.OrderByDescending(c => c.URL);
+                    break;
+
+
+
                 default:
                     list = list.OrderBy(c => c.ApplicationName);
                     break;
             }
             return list;
+        }
+
+        public ApplicationIndexVM GetApplicationList(string sortOrder, string currentFilter, string searchString, int? page)
+        {
+            try
+            {
+                IEnumerable<ApplicationListVM> applicationList = _context.Application
+                                                .Select(c => new ApplicationListVM
+                                                {
+                                                    ApplicationName = c.ApplicationName,
+                                                    ReferenceID = c.ReferenceID,
+                                                    Description = c.Description,
+                                                    URL = c.URL,
+                                                    StatusName = c.Status.StatusName,
+                                                    ClientName = c.Client.ClientName,
+                                                });
+
+                page = searchString == null ? page : 1;
+                searchString = searchString ?? currentFilter;
+                int pageNumber = (page ?? 1);
+                ApplicationIndexVM model = new ApplicationIndexVM
+                {
+                    Applications = Sort(applicationList, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
+                    CurrentFilter = searchString,
+                    CurrentSort = sortOrder,
+                    ClientHeadingSort = sortOrder == ConstantsRepo.SORT_CLIENT_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_CLIENT_BY_NAME_DESC,
+                    StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
+                };
+                return model;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public ApplicationDetailVM GetDetailApplication(string referenceID)
+        {
+            Application application = _context.Application
+                            .Where(a => a.ReferenceID == referenceID).FirstOrDefault();
+
+
+            IEnumerable<Server> allApplicationServers = application.Servers;
+            IEnumerable<ApplicationServerVM> applicationServer = allApplicationServers
+                .GroupBy(n => n.Applications)
+                .Select(t => t.OrderBy(i => i.ServerName))
+                .Select(
+                    t => new ApplicationServerVM()
+                    {
+                        ReferenceID = t.FirstOrDefault().ReferenceID,
+                        ServerName = t.FirstOrDefault().ServerName,
+                        Location = t.FirstOrDefault().DataCenterLocation.Location,
+                        ServerType = t.FirstOrDefault().ServerName,
+                        Status = t.LastOrDefault().Status.StatusName,
+                     
+                    })
+                .GroupBy(n => n.Status)
+                .Select(t => t.OrderByDescending(i => i.ServerName).FirstOrDefault());
+
+            IEnumerable<UserDetail> allApplicationUsers = application.UserDetails;
+            IEnumerable<ApplicationUsersVM> applicationUser = allApplicationUsers
+                .GroupBy(n => n.ClientID)
+                .Select(t => t.OrderBy(i => i.FirstName))
+                .Select(
+                    t => new ApplicationUsersVM()
+                    {
+                        FirstName = t.FirstOrDefault().FirstName,
+                        LastName = t.FirstOrDefault().LastName,
+                        RoleName = t.FirstOrDefault().BusinessTitle,
+                        Email = t.FirstOrDefault().User.Email,
+                        StatusID = t.LastOrDefault().Status.StatusID,
+                        BusinessPhone = t.LastOrDefault().BusinessPhone,
+                        HomePhone = t.LastOrDefault().HomePhone,
+                        MobilePhone = t.LastOrDefault().MobilePhone,
+                        ReferenceID = t.LastOrDefault().ReferenceID,
+                        ClientReferenceID = t.LastOrDefault().ReferenceID,
+                        BusinessTitle = t.LastOrDefault().BusinessTitle
+
+                    })
+                .GroupBy(n => n.RoleName)
+                .Select(t => t.OrderByDescending(i => i.ClientReferenceID).FirstOrDefault());
+
+            ApplicationDetailVM model = new ApplicationDetailVM
+            {
+                ApplicationName = application.ApplicationName,
+                ReferenceID = application.ReferenceID,
+                Description = application.Description,
+                URL = application.URL,
+                Status = application.Status.StatusName,
+                Client = application.Client.ClientName,
+                StatusID = application.Status.StatusID,
+                ClientID = application.Client.ClientID,
+                Servers = applicationServer,
+                Users = applicationUser
+            };
+            return model;
         }
 
 
@@ -80,6 +196,7 @@ namespace NotificationPortal.Repositories
                                                     URL = c.URL,
                                                     StatusName = c.Status.StatusName,
                                                     ClientName = c.Client.ClientName,
+
                                                 });
             return applicationList;
         }
@@ -156,6 +273,8 @@ namespace NotificationPortal.Repositories
                                 ReferenceID = b.ReferenceID,
                                 Description = b.Description,
                                 URL = b.URL,
+                                StatusName = b.Status.StatusName,
+                                ClientName = b.Client.ClientName,
                                 StatusID = b.StatusID,
                                 ClientRefID = b.Client.ReferenceID,
                             }).FirstOrDefault();
@@ -172,9 +291,11 @@ namespace NotificationPortal.Repositories
                                 ReferenceID = b.ReferenceID,
                                 Description = b.Description,
                                 URL = b.URL,
+                                StatusName = b.Status.StatusName,
+                                ClientName = b.Client.ClientName,
                                 StatusID = b.StatusID,
                                 ClientRefID = b.Client.ReferenceID,
-                                //ClientID = b.ClientID,
+                                
                             }).FirstOrDefault();
             return application;
         }

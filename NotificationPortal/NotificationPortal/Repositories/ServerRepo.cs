@@ -8,15 +8,97 @@ using System.Threading.Tasks;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 using NotificationPortal.ViewModels;
+using PagedList;
 
 namespace NotificationPortal.Repositories
 {
 
     public class ServerRepo
     {
+
+
         const string APP_STATUS_TYPE_NAME = "Server";
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
+
+        public IEnumerable<ServerListVM> Sort(IEnumerable<ServerListVM> list, string sortOrder, string searchString = null)
+        {
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(c => c.ServerName.ToUpper().Contains(searchString.ToUpper()));
+            }
+            switch (sortOrder)
+            {
+
+                 
+        //public string ServerName { get; set; }   
+        //public string Description { get; set; }      
+        //public string LocationName { get; set; }
+        //public string ServerTypeName { get; set; }
+        //public string StatusName { get; set; }
+
+                case ConstantsRepo.SORT_SERVER_BY_NAME_DESC:
+                    list = list.OrderByDescending(c => c.StatusName);
+                    break;
+
+                case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
+                    list = list.OrderByDescending(c => c.Description);
+                    break;
+
+                case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
+                    list = list.OrderBy(c => c.LocationName);
+                    break;
+
+
+                case ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE:
+                    list = list.OrderBy(c => c.ServerTypeName);
+                    break;
+
+                case ConstantsRepo.SORT_CLIENT_BY_NAME_DESC:
+                    list = list.OrderByDescending(c => c.ServerName);
+                    break;
+
+                default:
+                    list = list.OrderBy(c => c.ServerName);
+                    break;
+            }
+            return list;
+        }
+
+        public ServerIndexVM GetServerList(string sortOrder, string currentFilter, string searchString, int? page)
+        {
+            try
+            {
+                IEnumerable<ServerListVM> serverList = _context.Server
+                                                .Select(c => new ServerListVM
+                                                {
+                                                    ServerName = c.ServerName,
+                                                    ReferenceID = c.ReferenceID,
+                                                    StatusName = c.Status.StatusName,
+                                                    ServerTypeName = c.ServerType.ServerTypeName,
+                                                    LocationName = c.DataCenterLocation.Location,
+                                                    Description = c.Description
+                                                });
+
+                page = searchString == null ? page : 1;
+                searchString = searchString ?? currentFilter;
+                int pageNumber = (page ?? 1);
+                ServerIndexVM model = new ServerIndexVM
+                {
+                    Servers = Sort(serverList, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
+                    CurrentFilter = searchString,
+                    CurrentSort = sortOrder,
+                    ClientHeadingSort = sortOrder == ConstantsRepo.SORT_CLIENT_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_CLIENT_BY_NAME_DESC,
+                    StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
+                };
+                return model;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
         public IEnumerable<ServerListVM> GetServerList()
         {
             IEnumerable<ServerListVM> serverList = _context.Server
