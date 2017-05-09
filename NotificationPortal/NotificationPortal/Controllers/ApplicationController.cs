@@ -26,27 +26,8 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-            ViewBag.CurrentFilter = searchString;
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.ClientNameSort =
-              String.IsNullOrEmpty(sortOrder) ? ConstantsRepo.SORT_CLIENT_BY_NAME_DESC : "";
-            ViewBag.StatusNameSort =
-              sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC;
-
-            // TO DO: if it's null, redirect to a page
-            IEnumerable<ApplicationListVM> appList = _aRepo.GetApplicationList();
-            appList = _aRepo.Sort(appList, sortOrder, searchString);
-
-            int pageNumber = (page ?? 1);
-            return View(appList.ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE));
+            ApplicationIndexVM model = _aRepo.GetApplicationList(sortOrder, currentFilter, searchString, page);
+            return View(model);
         }
 
         [HttpGet]
@@ -130,7 +111,7 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Details(string id)
         {
-            return View(_aRepo.GetApplication(id));
+            return View(_aRepo.GetDetailApplication(id));
         }
 
         [HttpGet]

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -9,6 +10,16 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.ViewModels
 {
+    public class ServerIndexVM
+    {
+        public IPagedList<ServerListVM> Servers { get; set; }
+
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+        public string ClientHeadingSort { get; set; }
+        public string StatusSort { get; set; }
+    }
+
     public class ServerVM
     {
         [Key]
@@ -16,26 +27,24 @@ namespace NotificationPortal.ViewModels
 
 
         [Required]
-        [DisplayName("Server Name")]
+        [DisplayName("Server Name*")]
         public string ServerName { get; set; }
 
         [Required]
+        [DisplayName("Server Name*")]
         public string Description { get; set; }
 
         [Required]
+        [DisplayName("Location*")]
         public int LocationID { get; set; }
 
         [Required]
+        [DisplayName("Server Type*")]
         public int ServerTypeID { get; set; }
 
         [Required]
+        [DisplayName("Status*")]
         public int StatusID { get; set; }
-        // public DataCenterLocation location { get; set; }
-        //public Status status { get; set; }
-        // public Notification notification { get; set; }
-        //public List<Status> status { get; set; }
-        //public List<DataCenterLocation> location { get; set; }
-        // public IEnumerable<SelectListItem> TypeList { get; set; }
         public SelectList ServerTypeList { get; set; }
         public SelectList StatusList { get; set; }
         public SelectList LocationList { get; set; }
@@ -56,10 +65,10 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Location")]
         public string Location { get; set; }
 
-        [DisplayName("Type")]
+        [DisplayName("Server Type")]
         public string ServerType { get; set; }
 
-        [DisplayName("Type")]
+        [DisplayName("Status")]
         public string Status { get; set; }
 
         public IEnumerable<ServerThreadVM> Threads { get; set; }
@@ -76,7 +85,7 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Type")]
         public string ThreadType { get; set; }
 
-        [DisplayName("Heading")]
+        [DisplayName("Impact Level")]
         public string LevelOfImpact { get; set; }
 
         [DisplayName("Status")]
@@ -100,12 +109,15 @@ namespace NotificationPortal.ViewModels
         public string Description { get; set; }
 
         [Required]
+        [DisplayName("Location")]
         public int LocationID { get; set; }
 
         [Required]
+        [DisplayName("Server Type")]
         public int ServerTypeID { get; set; }
 
         [Required]
+        [DisplayName("Status")]
         public int StatusID { get; set; }
 
 
