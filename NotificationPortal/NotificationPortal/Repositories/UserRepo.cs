@@ -10,6 +10,7 @@ using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
 using System.Data.SqlClient;
 using System.Data.Entity;
+using PagedList;
 
 namespace NotificationPortal.Repositories
 {
@@ -20,7 +21,7 @@ namespace NotificationPortal.Repositories
 
         public IEnumerable<UserVM> Sort(IEnumerable<UserVM> list, string sortOrder, string searchString = null)
         {
-            if (!string.IsNullOrEmpty(searchString))
+            if (!String.IsNullOrEmpty(searchString))
             {
                 list = list.Where(c => c.FirstName.ToUpper().Contains(searchString.ToUpper()));
             }
@@ -39,6 +40,14 @@ namespace NotificationPortal.Repositories
                     list = list.OrderBy(c => c.FirstName);
                     break;
 
+                case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
+                    list = list.OrderByDescending(c => c.StatusName);
+                    break;
+
+                case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
+                    list = list.OrderBy(c => c.StatusName);
+                    break;
+
                 default:
                     list = list.OrderBy(c => c.ClientName);
                     break;
@@ -47,13 +56,13 @@ namespace NotificationPortal.Repositories
             return list;
         }
 
-        public IEnumerable<UserVM> GetAllUsers()
+        public UserIndexVM GetAllUsers(string sortOrder, string currentFilter, string searchString, int? page)
         {
             try
             {
                 var roleManager = new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole>(_context));
 
-                var users = _context.Users.Select(user => new UserVM()
+                IEnumerable<UserVM> users = _context.Users.Select(user => new UserVM()
                 {
                     ReferenceID = user.UserDetail.ReferenceID,
                     Email = user.Email,
@@ -75,7 +84,27 @@ namespace NotificationPortal.Repositories
                     user.RoleName = roleManager.FindById(user.RoleName).Name.ToString();
                 }
 
-                return users;
+                int totalNumOfUsers = users.Count();
+                page = searchString == null ? page : 1;
+                int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+                searchString = searchString ?? currentFilter;
+                int pageNumber = (page ?? 1);
+                int defaultPageSize = ConstantsRepo.PAGE_SIZE;
+
+                UserIndexVM model = new UserIndexVM
+                {
+                    Users = Sort(users, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
+                    CurrentFilter = searchString,
+                    CurrentSort = sortOrder,
+                    TotalItemCount = totalNumOfUsers,
+                    ItemStart = currentPageIndex * 10 + 1,
+                    ItemEnd = totalNumOfUsers - (10 * currentPageIndex) >= 10 ? 10 * (currentPageIndex + 1) : totalNumOfUsers,
+                    ClientHeadingSort = sortOrder == ConstantsRepo.SORT_CLIENT_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_CLIENT_BY_NAME_DESC,
+                    FirstNameSort = sortOrder == ConstantsRepo.SORT_FIRST_NAME_BY_DESC ? ConstantsRepo.SORT_FIRST_NAME_BY_ASCE : ConstantsRepo.SORT_FIRST_NAME_BY_DESC,
+                    StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
+                };
+
+                return model;
             }
             catch (SqlException e)
             {

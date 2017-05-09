@@ -24,26 +24,9 @@ namespace NotificationPortal.Controllers
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
+            UserIndexVM model = _userRepo.GetAllUsers(sortOrder, currentFilter, searchString, page);
 
-            ViewBag.CurrentFilter = searchString;
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.ClientNameSort = string.IsNullOrEmpty(sortOrder) ? ConstantsRepo.SORT_CLIENT_BY_NAME_DESC : "";
-            ViewBag.FirstNameSort = sortOrder == ConstantsRepo.SORT_FIRST_NAME_BY_DESC ? ConstantsRepo.SORT_FIRST_NAME_BY_ASCE : ConstantsRepo.SORT_FIRST_NAME_BY_DESC;
-
-            IEnumerable<UserVM> users = _userRepo.GetAllUsers();
-            users = _userRepo.Sort(users, sortOrder, searchString);
-
-            int pageNumber = (page ?? 1);
-
-            return View(users.ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE));
+            return View(model);
         }
 
         // GET: UserDetails/Add
