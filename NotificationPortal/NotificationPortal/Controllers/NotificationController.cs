@@ -52,7 +52,7 @@ namespace NotificationPortal.Controllers
                 bool success = _nRepo.CreateNotification(model, out result);
                 if (success)
                 {
-                    await NotificationService.SendEmail(_nRepo.CreateMail(model));
+                    await NotificationService.SendEmail(_nRepo.CreateMails(model));
 
                     TempData["SuccessMsg"] = result;
                     return RedirectToAction("Index");
@@ -84,7 +84,7 @@ namespace NotificationPortal.Controllers
                 bool success = _nRepo.CreateNotification(model, out result);
                 if (success)
                 {
-                    await NotificationService.SendEmail(_nRepo.CreateMail(model));
+                    await NotificationService.SendEmail(_nRepo.CreateMails(model));
 
                     TempData["SuccessMsg"] = result;
                     return RedirectToAction("DetailsThread",new { id = model.IncidentNumber });
