@@ -14,18 +14,31 @@ namespace NotificationPortal.Models
         public const string GROUP_EXTERNAL = "External";
 
         public const string LEVEL_OF_IMPACT_IMPACTING = "Impacting";
-        public const string LEVEL_OF_IMPACT_NON_IMPACTING = "Non-Impacting";
         public const string LEVEL_OF_IMPACT_OUTAGE = "Full service outage";
         public const string LEVEL_OF_IMPACT_REDUNDANCY = "Loss of redundancy";
+        public const string LEVEL_OF_IMPACT_NON_IMPACTING = "Non-Impacting";
+
+        public const int LEVEL_OF_IMPACT_IMPACTING_VALUE = 4;
+        public const int LEVEL_OF_IMPACT_OUTAGE_VALUE = 3;
+        public const int LEVEL_OF_IMPACT_REDUNDANCY_VALUE = 2;
+        public const int LEVEL_OF_IMPACT_NON_IMPACTING_VALUE = 1;
 
         public const string NOTIFICATION_TYPE_INCIDENT = "Incident";
         public const string NOTIFICATION_TYPE_MAINTENANCE = "Maintenance";
+
+        public const string PRIORITY_NAME_HIGH = "High";
+        public const string PRIORITY_NAME_NORMAL = "Normal";
+        public const string PRIORITY_NAME_LOW = "Low";
+
+        public const int PRIORITY_VALUE_HIGH = 3;
+        public const int PRIORITY_VALUE_NORMAL = 2;
+        public const int PRIORITY_VALUE_LOW = 1;
 
         public const string ROLE_ADMIN = "Admin";
         public const string ROLE_STAFF = "Staff";
         public const string ROLE_CLIENT = "Client";
         public const string ROLE_USER = "User";
-        
+
         public const string SEND_METHOD_EMAIL = "Email";
         public const string SEND_METHOD_SMS = "SMS";
 

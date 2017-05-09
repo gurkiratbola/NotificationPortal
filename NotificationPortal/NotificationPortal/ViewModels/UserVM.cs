@@ -21,7 +21,14 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int StatusID { get; set; }
 
+        [Required]
         public string Email  { get; set; }
+
+        [Display(Name = "Applications")]
+        public string[] ApplicationReferenceIDs { get; set; }
+
+        [Display(Name = "Applications")]
+        public string ApplicationName { get; set; }
 
         [Required]
         [Display(Name = "First Name")]
@@ -31,19 +38,15 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Required]
         [Display(Name = "Business Title")]
         public string BusinessTitle { get; set; }
 
-        [Required]
         [Display(Name = "Business Phone")]
         public string BusinessPhone { get; set; }
 
-        [Required]
         [Display(Name = "Mobile Phone")]
         public string MobilePhone { get; set; }
 
-        [Required]
         [Display(Name = "Home Phone")]
         public string HomePhone { get; set; }
 
@@ -64,6 +67,12 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name = "Client")]
         public SelectList ClientList { get; set; }
+
+        [Display(Name = "Applications")]
+        public IEnumerable<ApplicationClientOptionVM> ApplicationList { get; set; }
+
+        [Display(Name = "Applications")]
+        public IEnumerable<ApplicationVM> Applications { get; set; }
     }
 
     public class AddUserVM
@@ -97,7 +106,6 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Required]
         [Display(Name = "Business Title")]
         public string BusinessTitle { get; set; }
 
@@ -132,6 +140,9 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [Display(Name = "Applications")]
+        public string[] ApplicationReferenceIDs { get; set; }
+
         [Display(Name = "Business Title")]
         public string BusinessTitle { get; set; }
 
@@ -161,6 +172,12 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name = "Client")]
         public SelectList ClientList { get; set; }
+
+        [Display(Name = "Applications")]
+        public IEnumerable<ApplicationVM> Applications { get; set; }
+
+        [Display(Name = "Applications")]
+        public IEnumerable<ApplicationClientOptionVM> ApplicationList { get; set; }
     }
 
 

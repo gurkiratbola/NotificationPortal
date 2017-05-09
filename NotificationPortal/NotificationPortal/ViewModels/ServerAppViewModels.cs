@@ -38,20 +38,20 @@ namespace NotificationPortal.ViewModels
     //    public IEnumerable<SelectListItem> LocationList { get; set; }
 
     //}
-    public class StatusVM
-    {
-        [Key]
-        [Required]
-        public int StatusID { get; set; }
+    //public class StatusVM
+    //{
+    //    [Key]
+    //    [Required]
+    //    public int StatusID { get; set; }
 
-        [Required]
-        public string StatusName { get; set; }
+    //    [Required]
+    //    public string StatusName { get; set; }
 
-        [Required]
-        public int StatusTypeID { get; set; }
+    //    [Required]
+    //    public int StatusTypeID { get; set; }
 
-        public IEnumerable<SelectListItem> StatusTypeList { get; set; }
-    }
+    //    public IEnumerable<SelectListItem> StatusTypeList { get; set; }
+    //}
 
     //public class ApplicationVM
     //{

@@ -15,12 +15,13 @@ namespace NotificationPortal.Controllers
     public class ServerController : AppBaseController
     {
         private readonly ServerRepo _sRepo = new ServerRepo();
+        private readonly SelectListRepo _lRepo = new SelectListRepo();
 
 
         [HttpGet]
         public ActionResult Index()
         {
-            IEnumerable<ServerVM> serverList = _sRepo.GetServerList();
+            IEnumerable<ServerListVM> serverList = _sRepo.GetServerList();
             return View(serverList);
         }
 
@@ -32,7 +33,7 @@ namespace NotificationPortal.Controllers
             {
                 StatusList = _sRepo.GetStatusList(),
                 LocationList = _sRepo.GetLocationList(),
-                ServerTypeList = _sRepo.GetServerTypeList()
+                ServerTypeList = _lRepo.GetTypeList()
             };
             return View(model);
         }

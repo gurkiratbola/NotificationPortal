@@ -12,6 +12,17 @@ namespace NotificationPortal.ViewModels
 
     public class NotificationIndexVM
     {
+        [Display(Name = "Reference ID")]
+        public string ReferenceID { get; set; }
+        [Display(Name = "Type")]
+        public string NotificationType { get; set; }
+        [Display(Name = "Level of Impact")]
+        public string LevelOfImpact { get; set; }
+        [Display(Name = "Heading")]
+        public string NotificationHeading { get; set; }
+        [Display(Name = "Status")]
+        public string Status { get; set; }
+
         public IPagedList<NotificationThreadVM> Threads { get; set; }
         
         public string CurrentFilter { get; set; }
@@ -24,24 +35,19 @@ namespace NotificationPortal.ViewModels
 
     public class NotificationThreadVM
     {
-        public string ThreadID { get; set; }
-
-        [Display(Name = "Reference ID")]
+        public string IncidentNumber { get; set; }
+        
         public string ReferenceID { get; set; }
-        [Display(Name = "Type")]
         public string NotificationType { get; set; }
-        [Display(Name = "Level of Impact")]
         public string LevelOfImpact { get; set; }
-        [Display(Name = "Heading")]
         public string NotificationHeading { get; set; }
-        [Display(Name = "Status")]
         public string Status { get; set; }
         public DateTime SentDateTime { get; set; }
     }
 
     public class NotificationCreateVM
     {
-        public string ThreadID { get; set; }
+        public string IncidentNumber { get; set; }
 
         [Required]
         [Display(Name = "Heading")]
@@ -111,8 +117,8 @@ namespace NotificationPortal.ViewModels
     public class ThreadDetailVM
     {
         [Required]
-        [Display(Name = "Thread ID")]
-        public string ThreadID { get; set; }
+        [Display(Name = "Incident Number")]
+        public string IncidentNumber { get; set; }
         [Display(Name = "Type")]
         public string NotificationType { get; set; }
         [Display(Name = "Level of Impact")]
@@ -133,7 +139,7 @@ namespace NotificationPortal.ViewModels
         public string NotificationHeading { get; set; }
         public string NotificationDescription { get; set; }
         public DateTime SentDateTime { get; set; }
-        public string ThreadID { get; set; }
+        public string IncidentNumber { get; set; }
     }
     public class NotificationServerVM
     {

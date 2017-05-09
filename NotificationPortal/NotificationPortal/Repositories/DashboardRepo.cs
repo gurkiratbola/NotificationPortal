@@ -30,8 +30,9 @@ namespace NotificationPortal.Repositories
 
                                                                 SourceReferenceID = s.ReferenceID,
                                                                 SourceName = s.ServerName,
-                                                                ThreadID = a.ThreadID,
-                                                                LevelOfImpact = a.LevelOfImpact.Level,
+                                                                ThreadID = a.IncidentNumber,
+                                                                LevelOfImpact = a.LevelOfImpact.LevelName,
+                                                                ImpactValue = a.LevelOfImpact.LevelValue,
                                                                 ThreadHeading = a.NotificationHeading,
                                                                 NotificationType = a.NotificationType.NotificationTypeName,
                                                                 SentDateTime = a.SentDateTime,
@@ -63,8 +64,6 @@ namespace NotificationPortal.Repositories
                 else {
                     // if it's external user
                     var userId = User.Identity.GetUserId();
-                    //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
-                    //var userId = userManager.FindByName(username).Id;
                     var apps = _context.UserDetail.Where(u => u.UserID == userId).SingleOrDefault().Applications;
                     dashboard = GetAppNotifications(dashboard, apps);
                 }
@@ -76,7 +75,7 @@ namespace NotificationPortal.Repositories
         {
 
             IEnumerable<DashboardThreadDetailVM> details = _context.Notification
-                                                           .Where(b => b.ThreadID == threadID)
+                                                           .Where(b => b.IncidentNumber == threadID)
                                                            .Select(c => new DashboardThreadDetailVM
                                                            {
                                                                SentDateTime = c.SentDateTime,
@@ -92,8 +91,9 @@ namespace NotificationPortal.Repositories
                                         {
                                             SourceReferenceID = s.ReferenceID,
                                             SourceName = a.ApplicationName,
-                                            ThreadID = s.ThreadID,
-                                            LevelOfImpact = s.LevelOfImpact.Level,
+                                            ThreadID = s.IncidentNumber,
+                                            LevelOfImpact = s.LevelOfImpact.LevelName,
+                                            ImpactValue = s.LevelOfImpact.LevelValue,
                                             ThreadHeading = s.NotificationHeading,
                                             NotificationType = s.NotificationType.NotificationTypeName,
                                             SentDateTime = s.SentDateTime,

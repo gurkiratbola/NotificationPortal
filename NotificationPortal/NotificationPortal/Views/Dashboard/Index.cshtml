@@ -37,7 +37,7 @@ else
             {
                 var statusClass = item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INCOMPLETE.ToUpper() ? "text-danger" : "text-success";
                 var impactClass = item.LevelOfImpact.ToUpper() == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING.ToUpper() ? "badge badge-success" : "badge badge-danger";
-                <tr class="text-centerclickable-row-dashboard" data-href="/Notification/Details/@item.ThreadID">
+                <tr class="" data-href="/Notification/Details/@item.ThreadID">
                     <td>
                         <a href="@Url.Action("Details", "Server", new { id = item.SourceReferenceID })" class="">
                             @Html.DisplayFor(modelItem => item.SourceName)

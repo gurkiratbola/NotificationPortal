@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NotificationPortal.ViewModels.ServerVM>
+﻿@model IEnumerable<NotificationPortal.ViewModels.ServerListVM>
 
 @{
     ViewBag.Title = "Servers";
@@ -36,14 +36,14 @@
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LocationID)
+            @Html.DisplayNameFor(model => model.LocationName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StatusID)
+            @Html.DisplayNameFor(model => model.StatusName)
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.ServerTypeID)
+            @Html.DisplayNameFor(model => model.ServerTypeName)
         </th>
     </tr>
 
@@ -57,14 +57,14 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LocationID)
+                @Html.DisplayFor(modelItem => item.LocationName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StatusID)
+                @Html.DisplayFor(modelItem => item.StatusName)
             </td>
 
             <td>
-                @Html.DisplayFor(modelItem => item.ServerTypeID)
+                @Html.DisplayFor(modelItem => item.ServerTypeName)
             </td>
         </tr>
     }

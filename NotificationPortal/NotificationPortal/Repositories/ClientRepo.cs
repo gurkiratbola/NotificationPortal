@@ -1,5 +1,6 @@
 ﻿using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,6 @@ namespace NotificationPortal.Repositories
 {
     public class ClientRepo
     {
-
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
         public IEnumerable<ClientVM> Sort(IEnumerable<ClientVM> list, string sortOrder, string searchString = null) {
@@ -41,7 +41,7 @@ namespace NotificationPortal.Repositories
             return list;
         }
 
-        public IEnumerable<ClientVM> GetClientList()
+        public ClientIndexVM GetClientList(string sortOrder, string currentFilter, string searchString, int? page)
         {
             try
             {
@@ -49,16 +49,45 @@ namespace NotificationPortal.Repositories
                                                 .Select(c => new ClientVM
                                                 {
                                                     ClientName = c.ClientName,
+                                                    ClientID = c.ClientID,
                                                     StatusID = c.StatusID,
                                                     StatusName = c.Status.StatusName,
-                                                    ReferenceID = c.ReferenceID
+                                                    ReferenceID = c.ReferenceID,
+                                                    NumOfApps = c.Applications.Count()
                                                 });
-                return clientList;
+
+                page = searchString == null ? page : 1;
+                searchString = searchString ?? currentFilter;
+                int pageNumber = (page ?? 1);
+                ClientIndexVM model = new ClientIndexVM
+                {
+                    Clients = Sort(clientList, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
+                    CurrentFilter = searchString,
+                    CurrentSort = sortOrder,
+                    ClientHeadingSort = sortOrder == ConstantsRepo.SORT_CLIENT_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_CLIENT_BY_NAME_DESC,
+                    StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
+                };
+                return model;
             }
             catch (Exception)
             {
                 return null;
             }
+        }
+
+        public IEnumerable<ClientApplicationVM> GetClientApplications(int clientID)
+        {
+
+            IEnumerable<ClientApplicationVM> applications = _context.Application
+                                                           .Where(a => a.ClientID == clientID)
+                                                           .Select(c => new ClientApplicationVM
+                                                           {
+                                                               ReferenceID = c.ReferenceID,
+                                                               ApplicationName = c.ApplicationName,
+                                                               URL = c.URL,
+                                                               Description = c.Description
+                                                           }).ToList();
+            return applications;
         }
 
         public bool AddClient(ClientCreateVM client, out string msg)
@@ -96,10 +125,14 @@ namespace NotificationPortal.Repositories
                 .Select(b => new ClientVM
                 {
                     ClientName = b.ClientName,
+                    ClientID = b.ClientID,
                     StatusID = b.StatusID,
                     StatusName = b.Status.StatusName,
                     ReferenceID = b.ReferenceID
                 }).FirstOrDefault();
+
+                client.Applications = GetClientApplications(client.ClientID);
+
                 return client;
             }
             catch (Exception)
@@ -111,11 +144,14 @@ namespace NotificationPortal.Repositories
         public bool EditClient(ClientVM client, out string msg)
         {
             Client c = _context.Client.Where(a => a.ClientName == client.ClientName).FirstOrDefault();
-            if (c.ReferenceID != client.ReferenceID)
-            {
-                msg = "Client name already exist.";
-                return false;
+            if (c != null) {
+                if (c.ReferenceID != client.ReferenceID)
+                {
+                    msg = "Client name already exist.";
+                    return false;
+                }
             }
+
             Client original = _context.Client.Where(a => a.ReferenceID == client.ReferenceID).FirstOrDefault();
             bool changed = original.ClientName != client.ClientName || original.StatusID != client.StatusID;
             if (changed)
@@ -142,7 +178,6 @@ namespace NotificationPortal.Repositories
                 msg = "Information is identical, no update performed.";
                 return false;
             }
-
         }
 
         public bool DeleteClient(string referenceID, out string msg) {

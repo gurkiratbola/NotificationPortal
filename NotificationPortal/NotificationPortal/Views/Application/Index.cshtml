@@ -1,7 +1,7 @@
-﻿@model IEnumerable<NotificationPortal.ViewModels.ApplicationVM>
+﻿@model IEnumerable<NotificationPortal.ViewModels.ApplicationListVM>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Applications";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -22,17 +22,12 @@
             @Html.DisplayNameFor(model => model.URL)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StatusID)
+            @Html.DisplayNameFor(model => model.StatusName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ClientRefID)
+            @Html.DisplayNameFor(model => model.ClientName)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StatusList)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClientList)
-        </th>
+      
         <th></th>
     </tr>
 
@@ -48,17 +43,12 @@
             @Html.DisplayFor(modelItem => item.URL)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.StatusID)
+            @Html.DisplayFor(modelItem => item.StatusName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ClientRefID)
+            @Html.DisplayFor(modelItem => item.ClientName)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StatusList)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClientList)
-        </td>
+ 
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ReferenceID }) |
             @Html.ActionLink("Details", "Details", new { id=item.ReferenceID }) |

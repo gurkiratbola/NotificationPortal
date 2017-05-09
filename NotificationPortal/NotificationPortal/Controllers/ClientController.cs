@@ -20,24 +20,8 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            if (searchString != null){
-                page = 1;
-            }else{
-                searchString = currentFilter;
-            }
-            ViewBag.CurrentFilter = searchString;
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.ClientNameSort =
-              String.IsNullOrEmpty(sortOrder) ? ConstantsRepo.SORT_CLIENT_BY_NAME_DESC : "";
-            ViewBag.StatusNameSort =
-              sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC;
-
-            // TO DO: if it's null, redirect to a page
-            IEnumerable<ClientVM> clientList = _cRepo.GetClientList();
-            clientList = _cRepo.Sort(clientList, sortOrder, searchString);
-
-            int pageNumber = (page ?? 1);
-            return View(clientList.ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE));
+            ClientIndexVM model = _cRepo.GetClientList(sortOrder, currentFilter, searchString, page);
+            return View(model);
         }
 
         [HttpGet]

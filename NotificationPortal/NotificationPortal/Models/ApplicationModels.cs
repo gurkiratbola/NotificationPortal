@@ -65,7 +65,9 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int LevelOfImpactID { get; set; }
-        public string Level { get; set; }
+        public string LevelName { get; set; }
+        [Index(IsUnique = true)]
+        public int LevelValue { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
     }
 
@@ -73,7 +75,7 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int NotificationID { get; set; }
-        public string ThreadID { get; set; }
+        public string IncidentNumber { get; set; }
         public string NotificationHeading { get; set; }
         public string NotificationDescription { get; set; }
         public DateTime SentDateTime { get; set; }
@@ -82,6 +84,7 @@ namespace NotificationPortal.Models
         public virtual ICollection<Application> Applications { get; set; }
         public virtual LevelOfImpact LevelOfImpact { get; set; }
         public virtual NotificationType NotificationType { get; set; }
+        public virtual Priority Priority { get; set; }
         public virtual SendMethod SendMethod { get; set; }
         public virtual ICollection<Server> Servers { get; set; }
         public virtual Status Status { get; set; }
@@ -93,6 +96,8 @@ namespace NotificationPortal.Models
         public int LevelOfImpactID { get; set; }
         [ForeignKey("NotificationType")]
         public int NotificationTypeID { get; set; }
+        [ForeignKey("Priority")]
+        public int PriorityID { get; set; }
         [StringLength(100)]
         [Index(IsUnique = true)]
         public string ReferenceID { get; set; }
@@ -106,13 +111,23 @@ namespace NotificationPortal.Models
         public virtual ICollection<Notification> Notifications { get; set; }
     }
 
+    public class Priority
+    {
+        [Key]
+        public int PriorityID { get; set; }
+        public string PriorityName { get; set; }
+        [Index(IsUnique = true)]
+        public int PriorityValue { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
+    }
+
     public class RoleDetail
     {
         [Key, ForeignKey("Role")]
         public string RoleID { get; set; }
         public string RoleDescription { get; set; }
         public virtual Group Group { get; set; }
-        public virtual IdentityRole Role { get; set; }
+        public virtual ApplicationRole Role { get; set; }
         [ForeignKey("Group")]
         public int GroupID { get; set; }
     }

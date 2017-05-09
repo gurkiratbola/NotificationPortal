@@ -21,7 +21,12 @@ namespace NotificationPortal.Models
 
         public virtual UserDetail UserDetail { get; set; }
     }
-    
+
+    public class ApplicationRole : IdentityRole
+    {
+        public virtual RoleDetail RoleDetail { get; set; }
+    }
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
@@ -68,6 +73,7 @@ namespace NotificationPortal.Models
         public DbSet<LevelOfImpact> LevelOfImpact { get; set; }
         public DbSet<Notification> Notification { get; set; }
         public DbSet<NotificationType> NotificationType { get; set; }
+        public DbSet<Priority> Priority { get; set; }
         public DbSet<RoleDetail> RoleDetail { get; set; }
         public DbSet<SendMethod> SendMethod { get; set; }
         public DbSet<Server> Server { get; set; }

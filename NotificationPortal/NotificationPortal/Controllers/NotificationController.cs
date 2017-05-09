@@ -83,14 +83,14 @@ namespace NotificationPortal.Controllers
                 if (success)
                 {
                     TempData["SuccessMsg"] = result;
-                    return RedirectToAction("DetailsThread",new { id = model.ThreadID });
+                    return RedirectToAction("DetailsThread",new { id = model.IncidentNumber });
                 }
             }
             else
             {
                 ViewBag.ErrorMsg = "Cannot update Notification, model not valid.";
             }
-            model = _nRepo.CreateUpdateModel(model.ThreadID,model);
+            model = _nRepo.CreateUpdateModel(model.IncidentNumber, model);
             return View(model);
         }
         
@@ -113,7 +113,7 @@ namespace NotificationPortal.Controllers
                 if (success)
                 {
                     TempData["SuccessMsg"] = result;
-                    return RedirectToAction("DetailsThread", new { id = model.ThreadID});
+                    return RedirectToAction("DetailsThread", new { id = model.IncidentNumber });
                 }
             }
             else
@@ -145,7 +145,7 @@ namespace NotificationPortal.Controllers
                 {
                     TempData["SuccessMsg"] = result;
                     // TODO handle when thread no longer exists
-                    return RedirectToAction("DetailsThread", new { id = model.ThreadID });
+                    return RedirectToAction("DetailsThread", new { id = model.IncidentNumber });
                 }
             }
             else
@@ -172,7 +172,7 @@ namespace NotificationPortal.Controllers
             string result = "";
             if (ModelState.IsValid)
             {
-                bool success = _nRepo.DeleteThread(model.ThreadID, out result);
+                bool success = _nRepo.DeleteThread(model.IncidentNumber, out result);
                 if (success)
                 {
                     TempData["SuccessMsg"] = result;
@@ -184,7 +184,7 @@ namespace NotificationPortal.Controllers
                 ViewBag.ErrorMsg = "Cannot add Notification, model not valid.";
             }
             TempData["ErrorMsg"] = result;
-            model = _nRepo.CreateDetailModel(model.ThreadID);
+            model = _nRepo.CreateDetailModel(model.IncidentNumber);
             return View(model);
         }
     }

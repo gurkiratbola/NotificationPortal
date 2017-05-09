@@ -14,7 +14,7 @@
 </ol>
 
 <dl class="row">
-    @if (Model.ClientReferenceID != null)
+    @if (Model.ReferenceID != null)
     {
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ClientName)
@@ -22,71 +22,88 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ClientName)
         </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RoleName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RoleName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BusinessTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BusinessTitle)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BusinessPhone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BusinessPhone)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MobilePhone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MobilePhone)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HomePhone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.HomePhone)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StatusName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StatusName)
+        </dd>
     }
-
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.RoleName)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.RoleName)
-    </dd>
-
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Email)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Email)
-    </dd>
-
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.FirstName)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.FirstName)
-    </dd>
-
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.LastName)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.LastName)
-    </dd>
-
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.BusinessTitle)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.BusinessTitle)
-    </dd>
-
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.BusinessPhone)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.BusinessPhone)
-    </dd>
-
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.MobilePhone)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.MobilePhone)
-    </dd>
-
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.HomePhone)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.HomePhone)
-    </dd>
-
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.StatusName)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.StatusName)
-    </dd>
 </dl>
+
+<table class="table table-bordered">
+    <tr class="bg-inverse text-white text-center">
+        <th>@Html.DisplayNameFor(model => Model.Applications.FirstOrDefault().ApplicationName)</th>
+        <th>@Html.DisplayNameFor(model => Model.Applications.FirstOrDefault().Description)</th>
+        <th>@Html.DisplayNameFor(model => Model.Applications.FirstOrDefault().URL)</th>
+    </tr>
+@{ foreach (var item in Model.Applications)
+    {
+        <tr class="clickable-row-dashboard" id="@item.ReferenceID" data-href="/Application/Details/@item.ReferenceID">
+            <td>@Html.DisplayFor(modelItem => item.ApplicationName)</td>
+            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+            <td>@Html.DisplayFor(modelItem => item.URL)</td>
+        </tr>             
+    }
+    }
+</table>
 
 @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-mint text-white" })
 @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })

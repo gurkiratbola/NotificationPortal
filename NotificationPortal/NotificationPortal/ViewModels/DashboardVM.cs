@@ -19,6 +19,8 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Level of Impact")]
         public string LevelOfImpact { get; set; }
 
+        public int ImpactValue { get; set; }
+
         [Display(Name = "Heading")]
         public string ThreadHeading { get; set; }
 
