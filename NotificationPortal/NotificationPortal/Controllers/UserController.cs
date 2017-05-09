@@ -55,7 +55,7 @@ namespace NotificationPortal.Controllers
             {
                 string msg = "";
 
-                if (_userRepo.AddUser(model, out msg))
+                if (_userRepo.AddUser(model, Url, Request, out msg))
                 {
                     TempData["SuccessMsg"] = msg;
                   
