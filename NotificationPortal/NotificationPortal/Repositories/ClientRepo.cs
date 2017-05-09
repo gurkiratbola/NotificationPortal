@@ -55,15 +55,20 @@ namespace NotificationPortal.Repositories
                                                     ReferenceID = c.ReferenceID,
                                                     NumOfApps = c.Applications.Count()
                                                 });
-
+                int totalNumOfClients = clientList.Count();
                 page = searchString == null ? page : 1;
+                int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
                 searchString = searchString ?? currentFilter;
                 int pageNumber = (page ?? 1);
+                int defaultPageSize = ConstantsRepo.PAGE_SIZE;
                 ClientIndexVM model = new ClientIndexVM
                 {
-                    Clients = Sort(clientList, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
+                    Clients = Sort(clientList, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
                     CurrentFilter = searchString,
                     CurrentSort = sortOrder,
+                    TotalItemCount = totalNumOfClients,
+                    ItemStart = currentPageIndex * 10 + 1,
+                    ItemEnd = totalNumOfClients - (10 * currentPageIndex) >= 10? 10 * (currentPageIndex + 1): totalNumOfClients,
                     ClientHeadingSort = sortOrder == ConstantsRepo.SORT_CLIENT_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_CLIENT_BY_NAME_DESC,
                     StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
                 };

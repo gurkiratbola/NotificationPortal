@@ -7,7 +7,7 @@ namespace NotificationPortal.Repositories
 {
     public static class ConstantsRepo
     {
-        public const int PAGE_SIZE = 20;
+        public const int PAGE_SIZE = 10;
         public const string SORT_CLIENT_BY_NAME_ASCE = "client_name_asce";
         public const string SORT_CLIENT_BY_NAME_DESC = "client_name_desc";
 

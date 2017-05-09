@@ -4,7 +4,7 @@
     ViewBag.Title = "Dashboard";
 }
 
-<h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
+<h1 class="display-4 text-center">@ViewBag.Title</h1>
 
 @if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_USER) || HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_CLIENT))
 {

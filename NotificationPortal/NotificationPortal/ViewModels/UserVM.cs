@@ -127,7 +127,6 @@ namespace NotificationPortal.ViewModels
         [Required]
         public string ReferenceID { get; set; }
 
-        [Required]
         public string ClientReferenceID { get; set; }
 
         public int StatusID { get; set; }

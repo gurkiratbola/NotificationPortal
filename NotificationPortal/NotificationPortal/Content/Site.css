@@ -34,6 +34,14 @@ h3 {
 }
 
 /* ==========================================================================
+                            Color Styles
+========================================================================== */
+.bg-mint {
+    background-color: #44bbc1;
+}
+
+
+/* ==========================================================================
                             List Styles
 ========================================================================== */
 ul, li {
@@ -55,6 +63,13 @@ ul, li {
 /* ==========================================================================
                             Overriding default class styles
 ========================================================================== */
+i.fa.fa-times.text-danger {
+    margin-right: 11px;
+}
+
+i.fa.fa-check.text-success {
+    margin-right: 8px;
+}
 
 .breadcrumb {
     padding-top: 0.75rem;
@@ -90,6 +105,11 @@ button:focus {
 .btn-success:hover {
     background-color: #3EA2C3;
     border-color: transparent;
+}
+
+.badge {
+    font-size: 0.9em;
+    padding-bottom: 7px;
 }
 
 .badge-success {
@@ -136,8 +156,20 @@ tbody {
 /* ==========================================================================
                             Pagination/Filter/Sort Styles
 ========================================================================== */
+.pagination-container {
+    float: right;
+}
+
 .pagination a {
+    color: #6f7e95;
+}
+
+.pagination > .active > a {
     background-color: #6f7e95 !important;
+}
+
+.pageinfo-display {
+    margin: 40px 0;
 }
 
 .filter-arrows {
@@ -269,6 +301,7 @@ tbody {
 }
 
 footer {
+    clear: both;
     font-size: 0.9em;
     margin-top: 20px;
 }
