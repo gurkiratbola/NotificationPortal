@@ -23,7 +23,7 @@ namespace NotificationPortal.Repositories
         {
             if (!String.IsNullOrEmpty(searchString))
             {
-                list = list.Where(c => c.FirstName.ToUpper().Contains(searchString.ToUpper()));
+                list = list.Where(c => c.FirstName.ToUpper().Contains(searchString.ToUpper()) || c.RoleName.ToUpper().Contains(searchString.ToUpper()) || c.StatusName.ToUpper().Contains(searchString.ToUpper()) || c.LastName.ToUpper().Contains(searchString.ToUpper()) || c.Email.ToUpper().Contains(searchString.ToUpper()));
             }
 
             switch (sortOrder)
@@ -200,6 +200,7 @@ namespace NotificationPortal.Repositories
                         model.ApplicationReferenceIDs = new string[0];
                     }
 
+                    // add the applications selected to user details application table
                     var apps = _context.Application.Where(a => model.ApplicationReferenceIDs.Contains(a.ReferenceID));
 
                     details.Applications = apps.ToList();
