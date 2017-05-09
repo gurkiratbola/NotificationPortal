@@ -167,7 +167,7 @@ namespace NotificationPortal.Controllers
 
             //TempData["ErrorMsg"] = "User cannot be deleted at this time.";
 
-            return View(model);
+            return View(_userRepo.GetDeleteUser(model.ReferenceID));
         }
     }
 }

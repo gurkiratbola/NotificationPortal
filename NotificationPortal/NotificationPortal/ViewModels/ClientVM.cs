@@ -16,6 +16,9 @@ namespace NotificationPortal.ViewModels
         public string CurrentSort { get; set; }
         public string ClientHeadingSort { get; set; }
         public string StatusSort { get; set; }
+        public int TotalItemCount { get; set; }
+        public int ItemStart { get; set; }
+        public int ItemEnd { get; set; }
     }
 
     public class ClientCreateVM
