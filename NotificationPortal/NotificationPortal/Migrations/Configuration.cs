@@ -295,10 +295,10 @@ namespace NotificationPortal.Migrations
             var statusTypeNotification = context.StatusType
                 .Where(s => s.StatusTypeName == Key.STATUS_TYPE_NOTIFICATION)
                 .FirstOrDefault();
-            status = new Status() { StatusName = Key.STATUS_NOTIFICATION_INCOMPLETE };
+            status = new Status() { StatusName = Key.STATUS_NOTIFICATION_CLOSED };
             status.StatusType = statusTypeNotification;
             context.Status.Add(status);
-            status = new Status() { StatusName = Key.STATUS_NOTIFICATION_COMPLETE };
+            status = new Status() { StatusName = Key.STATUS_NOTIFICATION_OPEN };
             status.StatusType = statusTypeNotification;
             context.Status.Add(status);
 
@@ -615,13 +615,13 @@ namespace NotificationPortal.Migrations
                 .Where(s => s.SendMethodName == Key.SEND_METHOD_EMAIL)
                 .FirstOrDefault();
             // Get status
-            var statusIncomplete = context.Status
+            var statusOpen = context.Status
                 .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_NOTIFICATION
-                && s.StatusName == Key.STATUS_NOTIFICATION_INCOMPLETE)
+                && s.StatusName == Key.STATUS_NOTIFICATION_OPEN)
                 .FirstOrDefault();
-            var statusComplete = context.Status
+            var statusClosed = context.Status
                 .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_NOTIFICATION
-                && s.StatusName == Key.STATUS_NOTIFICATION_COMPLETE)
+                && s.StatusName == Key.STATUS_NOTIFICATION_CLOSED)
                 .FirstOrDefault();
             // Get priority
             var priorityHigh = context.Priority
@@ -645,7 +645,7 @@ namespace NotificationPortal.Migrations
                 NotificationTypeID = notificationTypeMaintenance.NotificationTypeID,
                 LevelOfImpactID = levelOfImpactNonImpacting.LevelOfImpactID,
                 SendMethodID = sendMethod.SendMethodID,
-                StatusID = statusIncomplete.StatusID,
+                StatusID = statusOpen.StatusID,
                 IncidentNumber = sampleThread1,
                 PriorityID = priorityHigh.PriorityID,
                 ReferenceID = Guid.NewGuid().ToString()
@@ -663,7 +663,7 @@ namespace NotificationPortal.Migrations
                 NotificationTypeID = notificationTypeMaintenance.NotificationTypeID,
                 LevelOfImpactID = levelOfImpactNonImpacting.LevelOfImpactID,
                 SendMethodID = sendMethod.SendMethodID,
-                StatusID = statusComplete.StatusID,
+                StatusID = statusClosed.StatusID,
                 IncidentNumber = sampleThread1,
                 PriorityID = priorityLow.PriorityID,
                 ReferenceID = Guid.NewGuid().ToString()
@@ -679,7 +679,7 @@ namespace NotificationPortal.Migrations
                 NotificationTypeID = notificationTypeIncident.NotificationTypeID,
                 LevelOfImpactID = levelOfImpactImpacting.LevelOfImpactID,
                 SendMethodID = sendMethod.SendMethodID,
-                StatusID = statusIncomplete.StatusID,
+                StatusID = statusOpen.StatusID,
                 IncidentNumber = Guid.NewGuid().ToString(),
                 PriorityID = priorityNormal.PriorityID,
                 ReferenceID = Guid.NewGuid().ToString()
