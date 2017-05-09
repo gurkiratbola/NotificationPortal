@@ -56,8 +56,8 @@ namespace NotificationPortal.Models
         public const string STATUS_APPLICATION_ONLINE = "Online";
         public const string STATUS_CLIENT_DISABLED = "Disabled";
         public const string STATUS_CLIENT_ENABLED = "Enabled";
-        public const string STATUS_NOTIFICATION_INCOMPLETE = "Incomplete";
-        public const string STATUS_NOTIFICATION_COMPLETE = "Complete";
+        public const string STATUS_NOTIFICATION_OPEN = "Open";
+        public const string STATUS_NOTIFICATION_CLOSED = "Closed";
         public const string STATUS_SERVER_OFFLINE = "Offline";
         public const string STATUS_SERVER_ONLINE = "Online";
         public const string STATUS_USER_DISABLED = "Disabled";

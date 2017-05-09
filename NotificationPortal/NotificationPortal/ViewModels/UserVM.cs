@@ -1,3 +1,4 @@
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +9,20 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.ViewModels
 {
+    public class UserIndexVM
+    {
+        public IPagedList<UserVM> Users { get; set; }
+
+        public string CurrentFilter { get; set; }
+        public string CurrentSort { get; set; }
+        public string ClientHeadingSort { get; set; }
+        public string FirstNameSort { get; set; }
+        public string StatusSort { get; set; }
+        public int TotalItemCount { get; set; }
+        public int ItemStart { get; set; }
+        public int ItemEnd { get; set; }
+    }
+
     public class UserVM
     {
         public string UserID { get; set; }

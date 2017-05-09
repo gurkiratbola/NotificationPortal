@@ -224,6 +224,7 @@
     <Compile Include="Repositories\ServerRepo.cs" />
     <Compile Include="Repositories\StatusRepo.cs" />
     <Compile Include="Repositories\UserRepo.cs" />
+    <Compile Include="Service\NotificationService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\ApplicationVM.cs" />
@@ -361,7 +362,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\fonts\" />
-    <Folder Include="Service\" />
     <Folder Include="Views\AppBase\" />
   </ItemGroup>
   <ItemGroup>
