@@ -25,6 +25,9 @@
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#Users" role="tab">Users</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Notifications" role="tab">Notifications</a>
+    </li>
 </ul>
 @if (TempData["SuccessMsg"] != null)
 {
@@ -159,6 +162,42 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.BusinessPhone)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="tab-pane" id="Notifications" role="tabpanel">
+        <table class="table table-bordered">
+            @{ var notificationModel = Model.Notifications.FirstOrDefault();}
+            <thead>
+                <tr class="bg-inverse text-white text-center">
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => notificationModel.IncidentNumber)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => notificationModel.Status)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => notificationModel.Description)
+                    </th>
+                  
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Notifications)
+            {
+                    <tr class="clickable-row-dashboard" id="@item.IncidentNumber" data-href="/Notification/DetailsThread/@item.IncidentNumber">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IncidentNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
                         </td>
                     </tr>
                 }

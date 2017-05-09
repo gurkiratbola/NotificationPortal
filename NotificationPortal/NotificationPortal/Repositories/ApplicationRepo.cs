@@ -152,6 +152,25 @@ namespace NotificationPortal.Repositories
                 .GroupBy(n => n.RoleName)
                 .Select(t => t.OrderByDescending(i => i.ClientReferenceID).FirstOrDefault());
 
+            IEnumerable<Notification> allApplicationNotifications = application.Notifications;
+            IEnumerable<ApplicationNotificationsVM> applicationNotifications = allApplicationNotifications
+                .GroupBy(n => n.LevelOfImpact)
+                .Select(t => t.OrderBy(i => i.LevelOfImpact))
+                .Select(
+                    t => new ApplicationNotificationsVM()
+                    {
+                        ReferenceID = t.FirstOrDefault().ReferenceID,
+                        Description = t.FirstOrDefault().NotificationDescription,
+                        Status = t.FirstOrDefault().Status.StatusName,
+                        IncidentNumber = t.FirstOrDefault().IncidentNumber,
+                       
+
+
+
+                    })
+                .GroupBy(n => n.Status)
+                .Select(t => t.OrderByDescending(i => i.IncidentNumber).FirstOrDefault());
+
             ApplicationDetailVM model = new ApplicationDetailVM
             {
                 ApplicationName = application.ApplicationName,
@@ -163,7 +182,8 @@ namespace NotificationPortal.Repositories
                 StatusID = application.Status.StatusID,
                 ClientID = application.Client.ClientID,
                 Servers = applicationServer,
-                Users = applicationUser
+                Users = applicationUser,
+                Notifications = applicationNotifications
             };
             return model;
         }
