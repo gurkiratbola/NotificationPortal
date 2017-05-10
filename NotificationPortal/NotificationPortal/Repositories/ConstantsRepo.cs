@@ -35,6 +35,9 @@ namespace NotificationPortal.Repositories
         public const string SORT_APP_BY_DESCRIPTION_ASCE = "application_description_asce";
         public const string SORT_APP_BY_DESCRIPTION_DESC = "application_description_desc";
 
+        public const string SORT_NOTIFICATION_BY_PRIORITY_ASCE = "priority_value_asce";
+        public const string SORT_NOTIFICATION_BY_PRIORITY_DESC = "priority_value_desc";
+
         public const string SORT_SERVER_BY_NAME_ASCE = "server_name_asce";
         public const string SORT_SERVER_BY_NAME_DESC = "server_name_desc";
 

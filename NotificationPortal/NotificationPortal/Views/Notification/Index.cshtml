@@ -13,23 +13,41 @@
 </ol>
 
 <div class="row">
-    <div class="col-md-6">
-        @using (Html.BeginForm("Index", "Notification", FormMethod.Get, new { @class = "form-inline pb-3" }))
-        {
-            @Html.TextBox("SearchString", Model.CurrentFilter, new { @class = "form-control mr-sm-2" })
+    <div>
+    @using (Html.BeginForm("Index", "Notification", FormMethod.Post, new { @class = "form-inline pb-3", id = "filterForm" }))
+    {
+        @Html.HiddenFor(model => model.CurrentFilter)
+        @Html.HiddenFor(model => model.CurrentSort)
+        @Html.HiddenFor(model => model.Page)
+            <!--notification type-->
+        <div>
+            @Html.ListBoxFor(m => m.NotificationTypeIDs, Model.NotificationTypeList,new { style = "display: none;" })
+        </div>
+            <!--level of impact-->
+        <div>
+            @Html.ListBoxFor(m => m.LevelOfImpactIDs, Model.LevelOfImpactList, new { style = "display: none;" })
+        </div>
+            <!--notification status-->
+        <div>
+            @Html.ListBoxFor(m => m.StatusIDs, Model.StatusList, new { style = "display: none;" })
+        </div>
+            <!--priority list-->
+        <div>
+            @Html.ListBoxFor(m => m.PriorityIDs, Model.PriorityList, new { style = "display: none;" })
+        </div>
+        <a class="btn" href="javascript:void(0)" onclick="sort('reset')">Reset Filters</a>
+            @Html.TextBoxFor(model=> model.SearchString, Model.CurrentFilter, new { @class = "form-control mr-sm-2" })
             <input class="btn btn-secondary" type="submit" value="Search" />
-        }
-    </div>
+            }
+        </div>
 
     @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
-        User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+         User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
     {
-        <div class="offset-md-4 col-md-2">
-            <div style="float: right">
-                <p>
-                    @Html.ActionLink("Create New", "CreateThread", null, new { @class = "btn btn-mint text-white" })
-                </p>
-            </div>
+        <div style="float: right">
+            <p>
+                @Html.ActionLink("Create New", "CreateThread", null, new { @class = "btn btn-mint text-white" })
+            </p>
         </div>
     }
 </div>
@@ -38,20 +56,19 @@
     <thead>
         <tr class="bg-inverse text-white text-center">
             <th class="text-center">
-                @Html.ActionLink(Html.DisplayNameFor(model => Model.NotificationType).ToString(), "Index",
-            new { sortOrder = Model.NotificationTypeSort, currentFilter = Model.CurrentFilter })
+                <a href="javascript:void(0)" onclick="sort('@Model.NotificationTypeSort')">@Html.DisplayNameFor(model => Model.NotificationType)</a>
             </th>
             <th class="text-center">
-                @Html.ActionLink(Html.DisplayNameFor(model => Model.LevelOfImpact).ToString(), "Index",
-            new { sortOrder = Model.LevelOfImpactSort, currentFilter = Model.CurrentFilter })
+                <a href="javascript:void(0)" onclick="sort('@Model.LevelOfImpactSort')">@Html.DisplayNameFor(model => Model.LevelOfImpact)</a>
             </th>
             <th class="text-center">
-                @Html.ActionLink(Html.DisplayNameFor(model => Model.NotificationHeading).ToString(), "Index",
-            new { sortOrder = Model.NotificationHeadingSort, currentFilter = Model.CurrentFilter })
+                <a href="javascript:void(0)" onclick="sort('@Model.NotificationHeadingSort')">@Html.DisplayNameFor(model => Model.NotificationHeading)</a>
             </th>
             <th class="text-center">
-                @Html.ActionLink(Html.DisplayNameFor(model => Model.Status).ToString(), "Index",
-            new { sortOrder = Model.StatusSort, currentFilter = Model.CurrentFilter })
+                <a href="javascript:void(0)" onclick="sort('@Model.PrioritySort')">@Html.DisplayNameFor(model => Model.Priority)</a>
+            </th>
+            <th class="text-center">
+                <a href="javascript:void(0)" onclick="sort('@Model.StatusSort')">@Html.DisplayNameFor(model => Model.Status)</a>
             </th>
         </tr>
     </thead>
@@ -70,6 +87,9 @@
                     @Html.DisplayFor(modelItem => item.NotificationHeading)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Priority)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
             </tr>
@@ -78,7 +98,7 @@
 
 </table>
 @Html.PagedListPager(Model.Threads, page => Url.Action("Index",
-        new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
+        new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter, NotificationTypeIDs = Model.NotificationTypeIDs }))
 
 <div class="hidden-menu">
     <ul>
@@ -86,3 +106,38 @@
         <li><a href="/DeleteThread/" class="btn btn-sm">Delete</a></li>
     </ul>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#NotificationTypeIDs').multiselect({
+            buttonText: function (options, select) {
+                return 'Type (' + options.length + ')';
+            }
+        });
+        $('#LevelOfImpactIDs').multiselect({
+            buttonText: function (options, select) {
+                return 'Level of Impact (' + options.length + ')';
+            }
+        });
+        $('#StatusIDs').multiselect({
+            buttonText: function (options, select) {
+                return 'Status (' + options.length + ')';
+            }
+        });
+        $('#PriorityIDs').multiselect({
+            buttonText: function (options, select) {
+                return 'Priority (' + options.length + ')';
+            }
+        });
+    });
+    sort = function (sortOrder) {
+        if (sortOrder == 'reset') {
+            $('#NotificationTypeIDs').val(null);
+            $('#LevelOfImpactIDs').val(null);
+            $('#StatusIDs').val(null);
+            $('#PriorityIDs').val(null);
+        }
+        $('#CurrentSort').val(sortOrder)
+        document.getElementById("filterForm").submit();
+    }
+</script>
