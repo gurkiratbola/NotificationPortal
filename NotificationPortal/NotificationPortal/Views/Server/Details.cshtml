@@ -21,6 +21,9 @@
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#Notifications" role="tab">Notifications</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Applications" role="tab">Applications</a>
+    </li>
 </ul>
 @if (TempData["SuccessMsg"] != null)
 {
@@ -96,7 +99,7 @@
             <tbody>
                 @foreach (var item in Model.Threads)
                 {
-                    <tr class="clickable-row-dashboard" id="@item.ThreadID" data-href="/Notification/DetailsThread/@item.ThreadID">
+                    <tr class="clickable-row-dashboard" id="@item.ThreadID" data-href="/Notification/Details/@item.ThreadID">
                         <td>
                             @Html.DisplayFor(modelItem => item.ThreadType)
                         </td>
@@ -114,6 +117,47 @@
             </tbody>
         </table>
     </div>
+        <div class="tab-pane" id="Applications" role="tabpanel">
+            <table class="table table-bordered">
+                @{ var applicationModel = Model.Applications.FirstOrDefault();}
+                <thead>
+                    <tr class="bg-inverse text-white text-center">
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => applicationModel.ApplicationName)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => applicationModel.Status)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => applicationModel.Description)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => applicationModel.URL)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.Applications)
+                    {
+                        <tr class="clickable-row-dashboard" id="@item.ReferenceID" data-href="/Notification/Details/@item.ReferenceID">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ApplicationName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.URL)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+      
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-success" })

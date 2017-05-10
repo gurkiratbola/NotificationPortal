@@ -134,62 +134,60 @@ namespace NotificationPortal.Repositories
 
             IEnumerable<Server> allApplicationServers = application.Servers;
             IEnumerable<ApplicationServerVM> applicationServer = allApplicationServers
-                .GroupBy(n => n.Applications)
-                .Select(t => t.OrderBy(i => i.ServerName))
+                //.GroupBy(n => n.ServerName)
+                //.Select(t => t.OrderBy(i => i.ServerName))
                 .Select(
                     t => new ApplicationServerVM()
                     {
-                        ReferenceID = t.FirstOrDefault().ReferenceID,
-                        ServerName = t.FirstOrDefault().ServerName,
-                        Location = t.FirstOrDefault().DataCenterLocation.Location,
-                        ServerType = t.FirstOrDefault().ServerName,
-                        Status = t.LastOrDefault().Status.StatusName,
-                     
-                    })
-                .GroupBy(n => n.Status)
-                .Select(t => t.OrderByDescending(i => i.ServerName).FirstOrDefault());
+                        ReferenceID = t.ReferenceID,
+                        ServerName = t.ServerName,
+                        Location = t.DataCenterLocation.Location,
+                        ServerType = t.ServerName,
+                        Status = t.Status.StatusName,
+
+                    });
+                //.GroupBy(n => n.ServerName)
+                //.Select(t => t.OrderByDescending(i => i.ServerName).FirstOrDefault());
 
             IEnumerable<UserDetail> allApplicationUsers = application.UserDetails;
             IEnumerable<ApplicationUsersVM> applicationUser = allApplicationUsers
-                .GroupBy(n => n.ClientID)
-                .Select(t => t.OrderBy(i => i.FirstName))
+                //.GroupBy(n => n.ClientID)
+                //.Select(t => t.OrderBy(i => i.FirstName))
                 .Select(
                     t => new ApplicationUsersVM()
                     {
-                        FirstName = t.FirstOrDefault().FirstName,
-                        LastName = t.FirstOrDefault().LastName,
-                        RoleName = t.FirstOrDefault().BusinessTitle,
-                        Email = t.FirstOrDefault().User.Email,
-                        StatusID = t.LastOrDefault().Status.StatusID,
-                        BusinessPhone = t.LastOrDefault().BusinessPhone,
-                        HomePhone = t.LastOrDefault().HomePhone,
-                        MobilePhone = t.LastOrDefault().MobilePhone,
-                        ReferenceID = t.LastOrDefault().ReferenceID,
-                        ClientReferenceID = t.LastOrDefault().ReferenceID,
-                        BusinessTitle = t.LastOrDefault().BusinessTitle
+                        FirstName = t.FirstName,
+                        LastName = t.LastName,
+                        RoleName = t.BusinessTitle,
+                        Email = t.User.Email,
+                        StatusID = t.Status.StatusID,
+                        BusinessPhone = t.BusinessPhone,
+                        HomePhone = t.HomePhone,
+                        MobilePhone = t.MobilePhone,
+                        ReferenceID = t.ReferenceID,
+                        ClientReferenceID = t.ReferenceID,
+                        BusinessTitle = t.BusinessTitle
 
-                    })
-                .GroupBy(n => n.RoleName)
-                .Select(t => t.OrderByDescending(i => i.ClientReferenceID).FirstOrDefault());
+                    });
+                //.GroupBy(n => n.RoleName)
+                //.Select(t => t.OrderByDescending(i => i.ClientReferenceID).FirstOrDefault());
 
             IEnumerable<Notification> allApplicationNotifications = application.Notifications;
             IEnumerable<ApplicationNotificationsVM> applicationNotifications = allApplicationNotifications
-                .GroupBy(n => n.LevelOfImpact)
-                .Select(t => t.OrderBy(i => i.LevelOfImpact))
+
                 .Select(
                     t => new ApplicationNotificationsVM()
                     {
-                        ReferenceID = t.FirstOrDefault().ReferenceID,
-                        Description = t.FirstOrDefault().NotificationDescription,
-                        Status = t.FirstOrDefault().Status.StatusName,
-                        IncidentNumber = t.FirstOrDefault().IncidentNumber,
-                       
+                        ReferenceID = t.ReferenceID,
+                        Description = t.NotificationDescription,
+                        Status = t.Status.StatusName,
+                        IncidentNumber = t.IncidentNumber,
 
 
 
-                    })
-                .GroupBy(n => n.Status)
-                .Select(t => t.OrderByDescending(i => i.IncidentNumber).FirstOrDefault());
+
+                    });
+  
 
             ApplicationDetailVM model = new ApplicationDetailVM
             {

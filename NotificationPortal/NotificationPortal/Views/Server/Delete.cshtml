@@ -40,27 +40,27 @@
         </dd>
 
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LocationID)
+            @Html.DisplayNameFor(model => model.Location)
         </dt>
 
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LocationID)
+            @Html.DisplayFor(model => model.Location)
         </dd>
 
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ServerTypeID)
+            @Html.DisplayNameFor(model => model.ServerTypeName)
         </dt>
 
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ServerTypeID)
+            @Html.DisplayFor(model => model.ServerTypeName)
         </dd>
 
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StatusID)
+            @Html.DisplayNameFor(model => model.StatusName)
         </dt>
 
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StatusID)
+            @Html.DisplayFor(model => model.StatusName)
         </dd>
 
     </dl>
@@ -70,11 +70,11 @@
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.ReferenceID)
-        @Html.HiddenFor(model => model.LocationID)
+        @Html.HiddenFor(model => model.Location)
         @Html.HiddenFor(model => model.Description)
-        @Html.HiddenFor(model => model.StatusID)
+        @Html.HiddenFor(model => model.StatusName)
         @Html.HiddenFor(model => model.ServerName)
-        @Html.HiddenFor(model => model.ServerTypeID)
+        @Html.HiddenFor(model => model.ServerTypeName)
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-success" />

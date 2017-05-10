@@ -31,13 +31,6 @@ namespace NotificationPortal.Repositories
             switch (sortOrder)
             {
 
-                 
-        //public string ServerName { get; set; }   
-        //public string Description { get; set; }      
-        //public string LocationName { get; set; }
-        //public string ServerTypeName { get; set; }
-        //public string StatusName { get; set; }
-
                 case ConstantsRepo.SORT_SERVER_BY_NAME_DESC:
                     list = list.OrderByDescending(c => c.StatusName);
                     break;
@@ -64,6 +57,21 @@ namespace NotificationPortal.Repositories
                     break;
             }
             return list;
+        }
+
+        public IEnumerable<ServerApplicationVM> GetApplicationList()
+        {
+            var apps = _context.Application.Select(a => new ServerApplicationVM
+            {
+                ApplicationName = a.ApplicationName,
+                ReferenceID = a.ReferenceID,
+                ClientID = a.Client.ClientName,
+                Description = a.Description,
+                Status = a.Status.StatusName,
+
+            });
+
+            return apps;
         }
 
         public ServerIndexVM GetServerList(string sortOrder, string currentFilter, string searchString, int? page)
@@ -159,22 +167,6 @@ namespace NotificationPortal.Repositories
             return new SelectList(serverTypeList, "Value", "Text");
         }
 
-
-
-        //public SelectList GetLocationList()
-        //{
-        //    IEnumerable<SelectListItem> locationList = _context.DataCenterLocation
-        //                            .Where(a => a.StatusType.StatusTypeName == APP_STATUS_TYPE_NAME)
-        //                            .Select(sv => new SelectListItem()
-        //                            {
-        //                                Value = sv.StatusID.ToString(),
-        //                                Text = sv.StatusName
-        //                            });
-
-        //    return new SelectList(locationList, "Value", "Text");
-        //}
-
-
         public bool AddServer(ServerVM server, out string msg)
         {
             Server s = _context.Server.Where(a => a.ServerName == server.ServerName)
@@ -194,6 +186,14 @@ namespace NotificationPortal.Repositories
                 newServer.Description = server.Description;
                 newServer.ServerTypeID = server.ServerTypeID;
                 newServer.ReferenceID = Guid.NewGuid().ToString();
+
+                if (server.ApplicationsReferenceIDs == null)
+                {
+                    server.ApplicationsReferenceIDs = new string[0];
+                }
+
+                var applications = _context.Application.Where(b => server.ApplicationsReferenceIDs.Contains(b.ReferenceID));
+                newServer.Applications = applications.ToList();
                 _context.Server.Add(newServer);
                 _context.SaveChanges();
                 msg = "Server successfully added";
@@ -231,21 +231,33 @@ namespace NotificationPortal.Repositories
 
             IEnumerable<Notification> allServerNotifications = server.Notifications;
             IEnumerable<ServerThreadVM> serverThreads = allServerNotifications
-                .GroupBy(n => n.IncidentNumber)
-                .Select(t => t.OrderBy(i => i.SentDateTime))
                 .Select(
                     t => new ServerThreadVM()
                     {
-                        ReferenceID = t.FirstOrDefault().ReferenceID,
-                        ThreadID = t.FirstOrDefault().IncidentNumber,
-                        ThreadHeading = t.FirstOrDefault().NotificationHeading,
-                        SentDateTime = t.FirstOrDefault().SentDateTime,
-                        ThreadType = t.LastOrDefault().NotificationType.NotificationTypeName,
-                        LevelOfImpact = t.LastOrDefault().LevelOfImpact.LevelName,
-                        ThreadStatus = t.LastOrDefault().Status.StatusName
-                    })
-                .GroupBy(n => n.ThreadID)
-                .Select(t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault());
+                        ReferenceID = t.ReferenceID,
+                        ThreadID = t.IncidentNumber,
+                        ThreadHeading = t.NotificationHeading,
+                        SentDateTime = t.SentDateTime,
+                        ThreadType = t.NotificationType.NotificationTypeName,
+                        LevelOfImpact = t.LevelOfImpact.LevelName,
+                        ThreadStatus = t.Status.StatusName
+                    });
+
+            IEnumerable<Application> allServerApplications = server.Applications;
+            IEnumerable<ServerApplicationVM> serverApplication = allServerApplications
+                //.GroupBy(n => n.ClientID)
+                //.Select(t => t.OrderBy(i => i.FirstName))
+                .Select(
+                    t => new ServerApplicationVM()
+                    {
+                        ApplicationName = t.ApplicationName,
+                        Status = t.Status.StatusName,
+                        ClientID = t.Client.ClientName,
+                        Description = t.Description,
+                        URL = t.URL,
+
+                    });
+
 
             ServerDetailVM model =  new ServerDetailVM
              {
@@ -255,7 +267,8 @@ namespace NotificationPortal.Repositories
                  Status = server.Status.StatusName,
                  Location = server.DataCenterLocation.Location,
                  ServerType = server.ServerType.ServerTypeName,
-                 Threads = serverThreads
+                 Threads = serverThreads,
+                 Applications = serverApplication
              };
             return model;
         }
@@ -270,9 +283,9 @@ namespace NotificationPortal.Repositories
                                 ServerName = b.ServerName,
                                 ReferenceID = b.ReferenceID,
                                 Description = b.Description,
-                                StatusID = b.StatusID,
-                                LocationID = b.LocationID,
-                                ServerTypeID = b.ServerTypeID,
+                                StatusName = b.Status.StatusName,
+                                Location = b.DataCenterLocation.Location,
+                                ServerTypeName = b.ServerType.ServerTypeName,
 
                             }).FirstOrDefault();
             return server;
@@ -297,6 +310,17 @@ namespace NotificationPortal.Repositories
                 serverUpdated.Description = server.Description;
                 serverUpdated.ReferenceID = server.ReferenceID;
                 serverUpdated.ServerTypeID = server.ServerTypeID;
+
+
+                if (server.ApplicationsReferenceIDs == null)
+                {
+                    server.ApplicationsReferenceIDs = new string[0];
+                }
+
+                var applications = _context.Application.Where(b => server.ApplicationsReferenceIDs.Contains(b.ReferenceID));
+
+                serverUpdated.Applications.Clear();
+                serverUpdated.Applications = applications.ToList();
                 _context.SaveChanges();
                 msg = "Server information succesfully updated.";
                 return true;

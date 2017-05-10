@@ -41,7 +41,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label" })
             <div class="">
-                @Html.DropDownListFor(m => m.LocationID, ViewBag.LocationList as SelectList, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.LocationID, Model.LocationList as SelectList, htmlAttributes: new { @class = "form-control" })
 
             </div>
         </div>
@@ -49,14 +49,28 @@
         <div class="form-group">
             @Html.LabelFor(model => model.StatusID, htmlAttributes: new { @class = "control-label" })
             <div class="">
-                @Html.DropDownListFor(m => m.StatusID, ViewBag.StatusList as SelectList, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.StatusID, Model.StatusList as SelectList, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.ServerTypeID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="">
-                @Html.DropDownListFor(m => m.ServerTypeID, ViewBag.ServerTypeList as SelectList, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.ServerTypeID, Model.ServerTypeList as SelectList, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApplicationsReferenceIDs, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
+                <select class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false">
+                    @foreach (var item in Model.ApplicationList)
+                    {
+                        <option value="@Html.DisplayFor(modelItem => item.ReferenceID)" class="ApplicationListItem @Html.DisplayFor(modelItem => item.ReferenceID)">@Html.DisplayFor(modelItem => item.ApplicationName)</option>
+
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.ApplicationsReferenceIDs, "", new { @class = "text-danger" })
             </div>
         </div>
 
