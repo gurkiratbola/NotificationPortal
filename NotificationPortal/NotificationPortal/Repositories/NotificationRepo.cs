@@ -226,6 +226,31 @@ namespace NotificationPortal.Repositories
             try
             {
                 IEnumerable<Notification> allNotifications = _context.Notification;
+                if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
+                {
+                    string userId = HttpContext.Current.User.Identity.GetUserId();
+                    var uesrApps = _context.UserDetail
+                        .Where(u => u.UserID == userId)
+                        .FirstOrDefault().Applications;
+                    allNotifications = uesrApps
+                    .Select(x => new { Application = x, x.Servers })
+                    .SelectMany(x => x.Servers
+                    .SelectMany(n => n.Notifications
+                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
+                }
+                else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
+                {
+                    string userId = HttpContext.Current.User.Identity.GetUserId();
+                    var uesrApps = _context.UserDetail
+                        .Where(u => u.UserID == userId)
+                        .FirstOrDefault().Client.Applications;
+                    allNotifications = uesrApps
+                    .Select(x => new { Application = x, x.Servers })
+                    .SelectMany(x => x.Servers
+                    .SelectMany(n => n.Notifications
+                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
+                }
+
                 IEnumerable<NotificationThreadVM> allThreads = allNotifications
                     .GroupBy(n => n.IncidentNumber)
                     .Select(t => t.OrderBy(i => i.SentDateTime))
@@ -499,7 +524,7 @@ namespace NotificationPortal.Repositories
                 case ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC:
                     list = list.OrderByDescending(n => n.Priority);
                     break;
-                    
+
                 case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
                     list = list.OrderBy(n => n.Status);
                     break;
@@ -589,10 +614,10 @@ namespace NotificationPortal.Repositories
             }
 
         }
-        
+
         public string NewIncidentNumber(int notificationTypeID)
         {
-            string notificationType = _slRepo.GetTypeList().Where(i=>i.Value==notificationTypeID.ToString()).Select(i=>i.Text).FirstOrDefault();
+            string notificationType = _slRepo.GetTypeList().Where(i => i.Value == notificationTypeID.ToString()).Select(i => i.Text).FirstOrDefault();
             string newIncidentNumber;
             if (notificationType == Key.NOTIFICATION_TYPE_INCIDENT)
             {
@@ -618,7 +643,7 @@ namespace NotificationPortal.Repositories
                 int result = 0;
                 string numberString = item.Substring(newIncidentNumber.Length);
                 string prefix = item.Substring(0, newIncidentNumber.Length);
-                if (prefix== newIncidentNumber&&int.TryParse(numberString,out result))
+                if (prefix == newIncidentNumber && int.TryParse(numberString, out result))
                 {
                     incidentNumberSet.Add(result);
                 }
