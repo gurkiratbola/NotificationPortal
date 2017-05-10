@@ -187,11 +187,10 @@ tbody {
 /* ==========================================================================
                             Header Styles
 ========================================================================== */
-    .navbar-brand {
-        text-transform: uppercase;
-        font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
-        font-weight: 700;
-    }
+.navbar-brand {
+    text-transform: uppercase;
+    font-weight: 700;
+}
 
 .fixed-top {
     background-color: #373e50;
