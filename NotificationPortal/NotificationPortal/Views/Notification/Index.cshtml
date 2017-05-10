@@ -99,7 +99,11 @@
 </table>
 @Html.PagedListPager(Model.Threads, page => Url.Action("Index",
         new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter, NotificationTypeIDs = Model.NotificationTypeIDs }))
-
+<div class="pageinfo-display">
+    <p>Displaying @Html.Raw(((Model.Page-1) * NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)+1) - 
+    @Html.Raw(((Model.Page - 1) * NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)+(NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE < Model.Threads.Count ? NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE: Model.Threads.Count))
+    of @Model.Threads.TotalItemCount item(s)</p>
+</div>
 <div class="hidden-menu">
     <ul>
         <li><a href="/Create/" class="btn btn-sm">Update</a></li>
