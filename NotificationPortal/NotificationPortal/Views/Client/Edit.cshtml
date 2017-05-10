@@ -27,7 +27,7 @@
         @Html.HiddenFor(model => model.ReferenceID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ClientName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            @Html.LabelFor(model => model.ClientName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.ClientName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ClientName, "", new { @class = "text-danger float-right" })
@@ -35,7 +35,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.StatusList, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            @Html.LabelFor(model => model.StatusList, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.DropDownListFor(m => m.StatusID, ViewBag.StatusNames as SelectList, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.StatusID, "", new { @class = "text-danger float-right" })
