@@ -1,10 +1,6 @@
 using PagedList;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace NotificationPortal.ViewModels
@@ -15,14 +11,18 @@ namespace NotificationPortal.ViewModels
 
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
-        public string ClientHeadingSort { get; set; }
-        public string FirstNameSort { get; set; }
-        public string StatusSort { get; set; }
         public int TotalItemCount { get; set; }
         public int ItemStart { get; set; }
         public int ItemEnd { get; set; }
+
+        public string RoleNameSort { get; set; }     
+        public string EmailSort { get; set; }
+        public string FirstNameSort { get; set; }
+        public string LastNameSort { get; set; }
+        public string ClientHeadingSort { get; set; }
+        public string StatusSort { get; set; }
     }
-    
+
     public class SetPassword
     {
         [Required]
@@ -33,7 +33,7 @@ namespace NotificationPortal.ViewModels
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
     

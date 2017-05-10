@@ -183,7 +183,7 @@ namespace NotificationPortal.Controllers
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
-        public 164async Task<ActionResult> ConfirmEmail(string userId, string code)
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
             {
