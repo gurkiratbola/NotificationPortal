@@ -7,6 +7,7 @@ using NotificationPortal.ViewModels;
 using System.Security.Principal;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PagedList;
 
 namespace NotificationPortal.Repositories
 {
@@ -14,40 +15,62 @@ namespace NotificationPortal.Repositories
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
-        public IEnumerable<DashboardVM> GetDashboard(IPrincipal User)
+        public DashboardIndexVM GetDashboard(IPrincipal User, string sortOrder, string currentFilter, string searchString, int? page)
         {
+            DashboardIndexVM model = null;
             IEnumerable<DashboardVM> dashboard = null;
             if (User != null)
             {
                 // if user is internal
                 if (HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN) || HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
                 {
+
                     IEnumerable<DashboardVM> notifications = _context.Notification
-                                                            .Where(n => n.Servers.Count() > 0)
-                                                            .SelectMany(a => a.Servers
                                                             .Select(s => new DashboardVM()
                                                             {
-
-                                                                SourceReferenceID = s.ReferenceID,
-                                                                SourceName = s.ServerName,
-                                                                ThreadID = a.IncidentNumber,
-                                                                LevelOfImpact = a.LevelOfImpact.LevelName,
-                                                                ImpactValue = a.LevelOfImpact.LevelValue,
-                                                                ThreadHeading = a.NotificationHeading,
-                                                                NotificationType = a.NotificationType.NotificationTypeName,
-                                                                SentDateTime = a.SentDateTime,
-                                                                Status = a.Status.StatusName
-
-                                                            })).OrderBy(x => x.LevelOfImpact);
+                                                                ThreadID = s.IncidentNumber,
+                                                                LevelOfImpact = s.LevelOfImpact.LevelName,
+                                                                ImpactValue = s.LevelOfImpact.LevelValue,
+                                                                ThreadHeading = s.NotificationHeading,
+                                                                NotificationType = s.NotificationType.NotificationTypeName,
+                                                                SentDateTime = s.SentDateTime,
+                                                                Status = s.Status.StatusName,
+                                                            })
+                                                            .OrderBy(x => x.LevelOfImpact);
 
                     dashboard = notifications
                                 .GroupBy(n => n.ThreadID)
                                 .Select(
                                     t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
                     );
+
+                    dashboard = from n in dashboard where n.Status == "Incomplete" select n;
                     //to do
                     //tabs that separate incident from maintainance 
                     //heading should show the first not last (from dakota)
+                    //remove hard-coded value above, after database has been fixed
+                    int totalNumOfNotifications = dashboard.Count();
+                    page = searchString == null ? page : 1;
+                    int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+                    searchString = searchString ?? currentFilter;
+                    int pageNumber = (page ?? 1);
+                    int defaultPageSize = ConstantsRepo.PAGE_SIZE;
+                    
+
+                    model = new DashboardIndexVM
+                    {
+                        Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
+                        CurrentFilter = searchString,
+                        CurrentSort = sortOrder,
+                        TotalItemCount = totalNumOfNotifications,
+                        ItemStart = currentPageIndex * 10 + 1,
+                        ItemEnd = totalNumOfNotifications - (10 * currentPageIndex) >= 10 ? 10 * (currentPageIndex + 1) : totalNumOfNotifications,
+                        IDSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_ID_ASCE? ConstantsRepo.SORT_NOTIFICATION_BY_ID_DESC : ConstantsRepo.SORT_NOTIFICATION_BY_ID_ASCE,
+                        DateSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_DATE_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_DATE_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_DATE_DESC,
+                        SubjectSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC,
+                        LevelOfImpactSort = sortOrder == ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC ? ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE : ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
+                    };
+
                 }
                 else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
                 {
@@ -58,18 +81,31 @@ namespace NotificationPortal.Repositories
                                 .FirstOrDefault().ClientID;
 
                     // get all notifications for all client apps
-                    var apps = _context.Client.Where(n => n.ClientID == clientID).SingleOrDefault().Applications;
+                    var apps = _context.Client
+                                .Where(n => n.ClientID == clientID)
+                                .SingleOrDefault()
+                                .Applications;
                     dashboard = GetAppNotifications(dashboard,apps);
+                    model = new DashboardIndexVM
+                    {
+                        Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(1, dashboard.Count()),
+                    };
                 }
                 else {
                     // if it's external user
                     var userId = User.Identity.GetUserId();
-                    var apps = _context.UserDetail.Where(u => u.UserID == userId).SingleOrDefault().Applications;
-                    dashboard = GetAppNotifications(dashboard, apps);
+                    var apps = _context.UserDetail
+                                .Where(u => u.UserID == userId)
+                                .SingleOrDefault()
+                                .Applications;
+                    model = new DashboardIndexVM
+                    {
+                        Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(1, dashboard.Count()),
+                    };
                 }
 
             }
-            return dashboard;
+            return model;
         }
         public IEnumerable<DashboardThreadDetailVM> GetThreadDetails(string threadID)
         {
@@ -84,31 +120,84 @@ namespace NotificationPortal.Repositories
             return details;
         }
 
-        public IEnumerable<DashboardVM> GetAppNotifications(IEnumerable<DashboardVM> dashboard, ICollection<Application>apps) {
+        public IEnumerable<DashboardVM> GetAppNotifications(IEnumerable<DashboardVM> dashboard, ICollection<Application> apps) {
             IEnumerable<DashboardVM> notifications = apps
-                                        .SelectMany(a => a.Notifications
-                                        .Select(s => new DashboardVM()
+                                        .Select(x=> new { Application = x, x.Servers })
+                                        .SelectMany(x => x.Servers.SelectMany(n => n.Notifications.Where(a=>a.Applications.Contains(x.Application)||a.Applications.Count()==0))
+                                        .Select(n => new DashboardVM()
                                         {
-                                            SourceReferenceID = s.ReferenceID,
-                                            SourceName = a.ApplicationName,
-                                            ThreadID = s.IncidentNumber,
-                                            LevelOfImpact = s.LevelOfImpact.LevelName,
-                                            ImpactValue = s.LevelOfImpact.LevelValue,
-                                            ThreadHeading = s.NotificationHeading,
-                                            NotificationType = s.NotificationType.NotificationTypeName,
-                                            SentDateTime = s.SentDateTime,
-                                            Status = s.Status.StatusName
+                                            ThreadID = n.IncidentNumber,
+                                            AppName = x.Application.ApplicationName,
+                                            LevelOfImpact = n.LevelOfImpact.LevelName,
+                                            ImpactValue = n.LevelOfImpact.LevelValue,
+                                            ThreadHeading = n.NotificationHeading,
+                                            NotificationType = n.NotificationType.NotificationTypeName,
+                                            SentDateTime = n.SentDateTime,
+                                            Status = n.Status.StatusName
                                         })).OrderBy(x => x.LevelOfImpact);
             dashboard = notifications.GroupBy(n => n.ThreadID)
                             .Select(
                                 t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
                             );
+            // To Do: remove the hard-coded value below once the database has been fixed
+            dashboard = from n in dashboard where n.Status == "Incomplete" select n;
+
             dashboard = dashboard.ToList();
+
             foreach (var item in dashboard)
             {
                 item.ThreadDetail = GetThreadDetails(item.ThreadID);
             }
             return dashboard;
+        }
+
+        public IEnumerable<DashboardVM> Sort(IEnumerable<DashboardVM> list, string sortOrder, string searchString = null)
+        {
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(c => c.LevelOfImpact.ToUpper().Contains(searchString.ToUpper())
+                                    || c.ThreadHeading.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC:
+                    list = list.OrderByDescending(c => c.LevelOfImpact);
+                    break;
+
+                case ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE:
+                    list = list.OrderBy(c => c.LevelOfImpact);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE:
+                    list = list.OrderBy(c => c.ThreadHeading);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC:
+                    list = list.OrderByDescending(c => c.ThreadHeading);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_ID_ASCE:
+                    list = list.OrderBy(c => c.ThreadID);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_ID_DESC:
+                    list = list.OrderByDescending(c => c.ThreadID);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_DATE_ASCE:
+                    list = list.OrderBy(c => c.SentDateTime);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_DATE_DESC:
+                    list = list.OrderByDescending(c => c.SentDateTime);
+                    break;
+
+                default:
+                    list = list.OrderByDescending(c => c.LevelOfImpact);
+                    break;
+            }
+            return list;
         }
     }
 }

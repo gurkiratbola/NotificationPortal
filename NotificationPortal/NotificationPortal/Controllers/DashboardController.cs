@@ -14,9 +14,9 @@ namespace NotificationPortal.Controllers
         private readonly DashboardRepo _dRepo = new DashboardRepo();
         // GET: Dashboard
         [Authorize]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            IEnumerable<DashboardVM> dashboard = _dRepo.GetDashboard(User);
+            DashboardIndexVM dashboard = _dRepo.GetDashboard(User, sortOrder, currentFilter, searchString, page);
             return View(dashboard);
         }
 

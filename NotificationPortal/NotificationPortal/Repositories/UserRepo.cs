@@ -2,24 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
 using System.Data.SqlClient;
-using System.Data.Entity;
 using PagedList;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using System.Security.Policy;
 
 namespace NotificationPortal.Repositories
 {
     public class UserRepo
     {
-        const string EMAIL_CONFIRMATION = "EmailConfirmation";
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
         private readonly SelectListRepo _selectRepo = new SelectListRepo();
 
@@ -32,28 +25,41 @@ namespace NotificationPortal.Repositories
 
             switch (sortOrder)
             {
-                case ConstantsRepo.SORT_CLIENT_BY_NAME_DESC:
-                    list = list.OrderByDescending(c => c.ClientName);
+                case ConstantsRepo.SORT_ROLE_NAME_BY_DESC:
+                    list = list.OrderByDescending(c => c.RoleName);
                     break;
-
+                case ConstantsRepo.SORT_EMAIL_BY_DESC:
+                    list = list.OrderByDescending(c => c.Email);
+                    break;
+                case ConstantsRepo.SORT_EMAIL_BY_ASCE:
+                    list = list.OrderBy(c => c.Email);
+                    break;
                 case ConstantsRepo.SORT_FIRST_NAME_BY_DESC:
                     list = list.OrderByDescending(c => c.FirstName);
                     break;
-
                 case ConstantsRepo.SORT_FIRST_NAME_BY_ASCE:
                     list = list.OrderBy(c => c.FirstName);
                     break;
-
+                case ConstantsRepo.SORT_LAST_NAME_BY_DESC:
+                    list = list.OrderByDescending(c => c.LastName);
+                    break;
+                case ConstantsRepo.SORT_LAST_NAME_BY_ASCE:
+                    list = list.OrderBy(c => c.LastName);
+                    break;
+                case ConstantsRepo.SORT_CLIENT_BY_NAME_DESC:
+                    list = list.OrderByDescending(c => c.ClientName);
+                    break;
+                case ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE:
+                    list = list.OrderBy(c => c.ClientName);
+                    break;
                 case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
                     list = list.OrderByDescending(c => c.StatusName);
                     break;
-
                 case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
                     list = list.OrderBy(c => c.StatusName);
                     break;
-
                 default:
-                    list = list.OrderBy(c => c.ClientName);
+                    list = list.OrderBy(c => c.RoleName);
                     break;
             }
 
@@ -103,8 +109,11 @@ namespace NotificationPortal.Repositories
                     TotalItemCount = totalNumOfUsers,
                     ItemStart = currentPageIndex * 10 + 1,
                     ItemEnd = totalNumOfUsers - (10 * currentPageIndex) >= 10 ? 10 * (currentPageIndex + 1) : totalNumOfUsers,
+                    RoleNameSort = sortOrder == ConstantsRepo.SORT_ROLE_NAME_BY_DESC ? ConstantsRepo.SORT_ROLE_NAME_BY_ASCE : ConstantsRepo.SORT_ROLE_NAME_BY_DESC,
+                    EmailSort = sortOrder == ConstantsRepo.SORT_EMAIL_BY_DESC ? ConstantsRepo.SORT_EMAIL_BY_ASCE : ConstantsRepo.SORT_EMAIL_BY_DESC,
                     ClientHeadingSort = sortOrder == ConstantsRepo.SORT_CLIENT_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_CLIENT_BY_NAME_DESC,
                     FirstNameSort = sortOrder == ConstantsRepo.SORT_FIRST_NAME_BY_DESC ? ConstantsRepo.SORT_FIRST_NAME_BY_ASCE : ConstantsRepo.SORT_FIRST_NAME_BY_DESC,
+                    LastNameSort = sortOrder == ConstantsRepo.SORT_LAST_NAME_BY_DESC ? ConstantsRepo.SORT_LAST_NAME_BY_ASCE : ConstantsRepo.SORT_LAST_NAME_BY_DESC,
                     StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
                 };
 
@@ -160,7 +169,7 @@ namespace NotificationPortal.Repositories
             return details;
         }
 
-        public bool AddUser(AddUserVM model, UrlHelper url, HttpRequestBase request, out string msg)
+        public bool AddUser(AddUserVM model, out string msg, out string userId)
         {
             // Get the user manager 
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
@@ -181,25 +190,10 @@ namespace NotificationPortal.Repositories
                     };
 
                     // make the user at this point
-                    var result = userManager.Create(user);
+                    userManager.Create(user);
 
-                    if(result.Succeeded)
-                    {
-                        CreateTokenProvider(userManager, EMAIL_CONFIRMATION);
-
-                        string verificationCode = userManager.GenerateEmailConfirmationToken(user.Id);
-
-                        var callbackUrl = url.Action("ConfirmEmail", "Account", new { user.Id, code = verificationCode }, protocol: request.Url.Scheme);
-
-                        var subject = "Confirm your account";
-                        var message = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
-                        userManager.SendEmail(user.Id, subject, message);
-                    }
-                    else
-                    {
-                        msg = "Failed to add the user.";
-                        return false;
-                    }
+                    // pass the userId to controller to send the email
+                    userId = user.Id;
 
                     // find the client id with the reference id passed with the viewmodel and add the new client to that
                     var clientID = _context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
@@ -242,12 +236,14 @@ namespace NotificationPortal.Repositories
                 {
                     // if error show this msg
                     msg = "The email address is already in use.";
+                    userId = "";
                     return false;
                 }
             }
             catch(Exception e)
             {
                 msg = "Failed to add the user!";
+                userId = "";
                 return false;
             }
         }
@@ -422,11 +418,6 @@ namespace NotificationPortal.Repositories
             });
 
             return apps;
-        }
-
-        void CreateTokenProvider(UserManager<ApplicationUser> manager, string tokenType)
-        {
-            manager.UserTokenProvider = new EmailTokenProvider<ApplicationUser>();
         }
     }
 }

@@ -22,14 +22,37 @@ namespace NotificationPortal.ViewModels
         public string NotificationHeading { get; set; }
         [Display(Name = "Status")]
         public string Status { get; set; }
+        [Display(Name = "Priority")]
+        public string Priority { get; set; }
 
         public IPagedList<NotificationThreadVM> Threads { get; set; }
+
         
+        public int[] NotificationTypeIDs { get; set; }
+        public int[] LevelOfImpactIDs { get; set; }
+        public int[] StatusIDs { get; set; }
+        public int[] PriorityIDs { get; set; }
+
+        [Display(Name = "Type")]
+        public SelectList NotificationTypeList { get; set; }
+
+        [Display(Name = "Level of Impact")]
+        public SelectList LevelOfImpactList { get; set; }
+
+        [Display(Name = "Status")]
+        public SelectList StatusList { get; set; }
+
+        [Display(Name = "Proirity")]
+        public SelectList PriorityList { get; set; }
+
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
+        public string SearchString { get; set; }
+        public int Page { get; set; }
         public string LevelOfImpactSort { get; set; }
         public string NotificationHeadingSort { get; set; }
         public string NotificationTypeSort { get; set; }
+        public string PrioritySort { get; set; }
         public string StatusSort { get; set; }
     }
 
@@ -42,6 +65,7 @@ namespace NotificationPortal.ViewModels
         public string LevelOfImpact { get; set; }
         public string NotificationHeading { get; set; }
         public string Status { get; set; }
+        public string Priority { get; set; }
         public DateTime SentDateTime { get; set; }
     }
 

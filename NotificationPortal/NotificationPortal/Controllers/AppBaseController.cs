@@ -18,8 +18,16 @@ namespace NotificationPortal.Controllers
 
                 if (!string.IsNullOrEmpty(username))
                 {
+                    string fullName = "";
                     var user = _context.Users.SingleOrDefault(u => u.UserName == username);
-                    string fullName = string.Concat(new string[] { user.UserDetail.FirstName, " ", user.UserDetail.LastName });
+                    if (user != null)
+                    {
+                        fullName = string.Concat(new string[] { user.UserDetail.FirstName, " ", user.UserDetail.LastName });
+
+                    }
+                    else {
+                        fullName = "user";
+                    }
                     ViewData.Add("FullName", fullName);
                 }
             }
