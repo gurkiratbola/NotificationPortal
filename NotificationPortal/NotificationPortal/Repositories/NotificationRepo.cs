@@ -29,7 +29,7 @@ namespace NotificationPortal.Repositories
 
             model = new NotificationIndexVM
             {
-                Threads = Sort(allThreads, sortOrder, searchString).ToPagedList(pageNumber, 3),
+                Threads = Sort(allThreads, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
                 CurrentFilter = searchString,
                 CurrentSort = sortOrder,
                 LevelOfImpactSort = sortOrder == ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC ? ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE : ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
