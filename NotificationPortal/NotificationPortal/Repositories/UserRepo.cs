@@ -229,7 +229,7 @@ namespace NotificationPortal.Repositories
                     userManager.AddToRole(user.Id, model.RoleName);
 
                     // if the client was added successfully pass this msg out
-                    msg = "Client added successfully!";
+                    msg = "User added successfully!";
                     return true;
                 }
                 else
