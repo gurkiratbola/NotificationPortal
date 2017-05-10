@@ -33,7 +33,8 @@ namespace NotificationPortal.Controllers
             {
                 StatusList = _sRepo.GetStatusList(),
                 LocationList = _sRepo.GetLocationList(),
-                ServerTypeList = _lRepo.GetTypeList()
+                ServerTypeList = _lRepo.GetTypeList(),
+                ApplicationList = _sRepo.GetApplicationList()
             };
             return View(model);
         }
@@ -63,6 +64,7 @@ namespace NotificationPortal.Controllers
             model.StatusList = _sRepo.GetStatusList();
             model.LocationList = _sRepo.GetLocationList();
             model.ServerTypeList = _sRepo.GetServerTypeList();
+            model.ApplicationList = _sRepo.GetApplicationList();
             return View(model);
         }
 
@@ -71,9 +73,10 @@ namespace NotificationPortal.Controllers
         {
             ServerVM server = _sRepo.GetServer(id);
             // To be modified: global method for status in development
-            ViewBag.StatusList = _sRepo.GetStatusList();
-            ViewBag.ServerTypeList = _sRepo.GetServerTypeList();
-            ViewBag.LocationList = _sRepo.GetLocationList();
+            server.StatusList = _sRepo.GetStatusList();
+            server.ServerTypeList = _sRepo.GetServerTypeList();
+            server.LocationList = _sRepo.GetLocationList();
+            server.ApplicationList = _sRepo.GetApplicationList();
             return View(server);
         }
 
@@ -95,9 +98,9 @@ namespace NotificationPortal.Controllers
                 }
             }
             ServerVM server = _sRepo.GetServer(model.ReferenceID);
-            ViewBag.StatusList = _sRepo.GetStatusList();
-            ViewBag.LocationList = _sRepo.GetLocationList();
-            ViewBag.ServerTypeList = _sRepo.GetServerTypeList();
+            server.StatusList = _sRepo.GetStatusList();
+            server.LocationList = _sRepo.GetLocationList();
+            server.ServerTypeList = _sRepo.GetServerTypeList();
             return View(server);
         }
 
