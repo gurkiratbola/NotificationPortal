@@ -14,12 +14,13 @@ using PagedList;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Security.Policy;
+using System.Net.Mail;
+using Microsoft.Owin.Host.SystemWeb;
 
 namespace NotificationPortal.Repositories
 {
     public class UserRepo
     {
-        const string EMAIL_CONFIRMATION = "EmailConfirmation";
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
         private readonly SelectListRepo _selectRepo = new SelectListRepo();
 
@@ -160,7 +161,7 @@ namespace NotificationPortal.Repositories
             return details;
         }
 
-        public bool AddUser(AddUserVM model, UrlHelper url, HttpRequestBase request, out string msg)
+        public bool AddUser(AddUserVM model, out string msg, out string userId)
         {
             // Get the user manager 
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
@@ -183,23 +184,27 @@ namespace NotificationPortal.Repositories
                     // make the user at this point
                     var result = userManager.Create(user);
 
-                    if(result.Succeeded)
-                    {
-                        CreateTokenProvider(userManager, EMAIL_CONFIRMATION);
+                    // pass the userId to controller to send the email
+                    userId = user.Id;
 
-                        string verificationCode = userManager.GenerateEmailConfirmationToken(user.Id);
+                    //if(result.Succeeded)
+                    //{
+                    //    // CreateTokenProvider(userManager, EMAIL_CONFIRMATION);
 
-                        var callbackUrl = url.Action("ConfirmEmail", "Account", new { user.Id, code = verificationCode }, protocol: request.Url.Scheme);
+                    //    string verificationCode = UserManager.GenerateEmailConfirmationToken(user.Id);
 
-                        var subject = "Confirm your account";
-                        var message = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
-                        userManager.SendEmail(user.Id, subject, message);
-                    }
-                    else
-                    {
-                        msg = "Failed to add the user.";
-                        return false;
-                    }
+                    //    var callbackUrl = url.Action("ConfirmEmail", "Account", new { user.Id, code = verificationCode }, protocol: request.Url.Scheme);
+
+                    //    var subject = "Confirm your account";
+                    //    var message = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
+
+                    //    UserManager.SendEmail(user.Id, subject, message);
+                    //}
+                    //else
+                    //{
+                    //    msg = "Failed to add the user.";
+                    //    return false;
+                    //}
 
                     // find the client id with the reference id passed with the viewmodel and add the new client to that
                     var clientID = _context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
@@ -242,12 +247,14 @@ namespace NotificationPortal.Repositories
                 {
                     // if error show this msg
                     msg = "The email address is already in use.";
+                    userId = "";
                     return false;
                 }
             }
             catch(Exception e)
             {
                 msg = "Failed to add the user!";
+                userId = "";
                 return false;
             }
         }
@@ -422,11 +429,6 @@ namespace NotificationPortal.Repositories
             });
 
             return apps;
-        }
-
-        void CreateTokenProvider(UserManager<ApplicationUser> manager, string tokenType)
-        {
-            manager.UserTokenProvider = new EmailTokenProvider<ApplicationUser>();
         }
     }
 }

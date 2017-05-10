@@ -12,13 +12,29 @@ using NotificationPortal.ViewModels;
 using System.Net.Mail;
 using System.Net;
 using PagedList;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
 
 namespace NotificationPortal.Controllers
 {
     public class UserController : AppBaseController
     {
+        private ApplicationUserManager _userManager;
+
         private readonly UserRepo _userRepo = new UserRepo();
         private readonly SelectListRepo _selectRepo = new SelectListRepo();
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         // GET: UserDetails/Index
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
@@ -48,15 +64,21 @@ namespace NotificationPortal.Controllers
         // POST: UserDetails/Add
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Add(AddUserVM model)
+        public async Task<ActionResult> Add(AddUserVM model)
         {
             if (ModelState.IsValid)
             {
                 string msg = "";
+                string userId = "";
 
-                if (_userRepo.AddUser(model, Url, Request, out msg))
+                if (_userRepo.AddUser(model, out msg, out userId))
                 {
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(userId);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = userId, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(userId, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
                     TempData["SuccessMsg"] = msg;
                   
                     return RedirectToAction("Index");
