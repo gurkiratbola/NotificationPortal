@@ -56,11 +56,11 @@ namespace NotificationPortal.Repositories
         public const string SORT_SERVER_BY_LOCATION_NAME_ASCE = "server_location_name_asce";
         public const string SORT_SERVER_BY_LOCATION_NAME_DESC = "server_location_name_desc";
 
-<<<<<<< HEAD
+
         public const string SORT_SERVERTYPE_BY_NAME_ASCE = "server_servertype_name_asce";
         public const string SORT_SERVERTYPE_BY_NAME_DESC = "server_servertype_name_desc";
 
-=======
+
         // User Repository Constants
         public const string SORT_FIRST_NAME_BY_ASCE = "first_name_asce";
         public const string SORT_FIRST_NAME_BY_DESC = "first_name_desc";
@@ -73,6 +73,6 @@ namespace NotificationPortal.Repositories
 
         public const string SORT_EMAIL_BY_ASCE = "email_asce";
         public const string SORT_EMAIL_BY_DESC = "email_desc";
->>>>>>> a28970728f7fd1eb30a5a3442dd1c25414ea9d79
+
     }
 }
