@@ -44,8 +44,11 @@ namespace NotificationPortal.ViewModels
 
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
-        public string ClientHeadingSort { get; set; }
+        public string ApplicationSort { get; set; }
+        public string ClientSort { get; set; }
         public string StatusSort { get; set; }
+        public string DescriptionSort { get; set; }
+        public string URLSort { get; set; }
     }
 
 
