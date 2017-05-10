@@ -13,50 +13,49 @@
                 <div class="card-header card-inverse card-deck">
                         <div class="col-md-6 pl-0">
                                 <h5>
-                                    <a class="text-muted" href="@Url.Action("Details", "Application", new { id = item.SourceReferenceID })">
-                                        @Html.DisplayFor(modelItem => item.SourceName)
+                                    <a href="@Url.Action("DetailsThread", "Notification", new { id = item.ThreadID })">
+                                        @Html.DisplayFor(modelItem => item.ThreadHeading)
                                     </a>
-                                    <span class="@impactClass">
-                                        @Html.DisplayFor(modelItem => item.LevelOfImpact)
-                                    </span>
                                 </h5>
-
                         </div>
-                        <div class="col-md-6 pr-0">
-                                <span class="float-right external-status text-muted border-muted">
-                                    @Html.DisplayFor(modelItem => item.Status)
-                                </span>
+                        <div class="col-md-6 pr-4">
+                            <span class="float-right external-status @impactClass">
+                                    @Html.DisplayFor(modelItem => item.LevelOfImpact)
+                            </span>
                         </div>
                 </div>
                 <div class="card-block clickable-row-dashboard" data-href="/Notification/DetailsThread/@item.ThreadID">
-                    <div class="row">
-                        <div class="col-md-12">
+                    <div class="col-md-12">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <h3 class="heading-padding text-success">
-                                        @Html.DisplayFor(modelItem => item.ThreadHeading)
-                                    </h3>
-                                </div>
+                                <h3 class="heading-padding text-coral">
+                                    Application: @Html.DisplayFor(modelItem => item.AppName)
+                                </h3>
                             </div>
-                        </div>
 
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
                                     <ul>
-                                        @foreach (var detail in item.ThreadDetail)
-                                        {
-                                            <li class="notification-list">
-                                                <p class="text-muted">
-                                                    @Html.DisplayFor(modelItem => detail.SentDateTime)
-                                                    <span class="text-indent">
-                                                        @Html.DisplayFor(modelItem => detail.NotificationHeading)
-                                                    </span>
-                                                </p>
-                                            </li>
+                                        @{
+                                            var listItemNum = 0;
+                                            foreach (var detail in item.ThreadDetail)
+                                            {
+                                                listItemNum++;
+                                                var padding = listItemNum * 10 + "px";
+                                                <li class="notification-list">
+                                                    <p class="text-muted">
+                                                        <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+                                                        <span class="text-indent">
+                                                            @Html.DisplayFor(modelItem => detail.NotificationHeading)
+                                                        </span>
+                                                        <span class="float-right">
+                                                            @Html.DisplayFor(modelItem => detail.SentDateTime)
+                                                        </span>
+                                                    </p>
+                                                </li>
+                                            }
                                         }
                                     </ul>
-
                                 </div>
                                 <div class="col-md-12">
                                 </div>
@@ -66,7 +65,7 @@
                 </div>
             </div>
         </div>
-       }
-}else {
+                                                }
+                                            }else {
     <p>Currently, there are not notifications.</p>
 }

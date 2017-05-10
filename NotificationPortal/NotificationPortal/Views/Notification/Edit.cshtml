@@ -24,7 +24,7 @@
             </p>
         }
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ThreadID)
+        @Html.HiddenFor(model => model.IncidentNumber)
         @Html.HiddenFor(model => model.NotificationReferenceID)
         <!--notification server reference ID-->
         <div class="form-group">
@@ -131,7 +131,7 @@
         <div class="form-group">
             <div class="">
                 <input type="submit" value="Edit Notification" class="btn btn-mint text-white" />
-                @Html.ActionLink("Back", "DetailsThread", new { id = Model.ThreadID }, new { @class = "btn btn-danger" })
+                @Html.ActionLink("Back", "DetailsThread", new { id = Model.IncidentNumber }, new { @class = "btn btn-danger" })
 
             </div>
         </div>
