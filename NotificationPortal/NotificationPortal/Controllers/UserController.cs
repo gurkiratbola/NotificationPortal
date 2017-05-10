@@ -68,7 +68,7 @@ namespace NotificationPortal.Controllers
                 if (_userRepo.AddUser(model, out msg, out userId))
                 {
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(userId);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = userId, code = code }, protocol: Request.Url.Scheme);
+                    var callbackUrl = Url.Action("ConfirmEmail", "User", new { userId = userId, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(userId, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     TempData["SuccessMsg"] = msg;
@@ -89,11 +89,22 @@ namespace NotificationPortal.Controllers
             return View(model);
         }
 
-        // GET: User/SetPassword
+        // GET: /User/ConfirmEmail
         [AllowAnonymous]
-        [HttpGet]
-        public ActionResult SetPassword()
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }            
+
+            var result = await UserManager.ConfirmEmailAsync(userId, code);
+
+            //if (result.Succeeded)
+            //{
+            //    return RedirectToAction("Login", "Account");
+            //}
+
             return View();
         }
 
@@ -101,9 +112,30 @@ namespace NotificationPortal.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SetPassword(SetPasswordVM model)
+        public async Task<ActionResult> ConfirmEmail(SetPasswordVM model, string userId)
         {
-            return View();
+            if(ModelState.IsValid)
+            {
+                var user = await UserManager.FindByIdAsync(userId);
+
+                if(user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                {
+                    return RedirectToAction("ForgotPassword", "Account");
+                }
+
+                var result = await UserManager.AddPasswordAsync(user.Id, model.Password);
+
+                if(result.Succeeded)
+                {
+                    TempData["SuccessMsg"] = "Password set successfully, you may login!";
+
+                    return RedirectToAction("Login", "Account");
+                }
+
+                TempData["ErrorMsg"] = "Something went wrong, please contact an admin.";
+            }
+
+            return View(model);
         }
 
         // GET: UserDetails/Edit

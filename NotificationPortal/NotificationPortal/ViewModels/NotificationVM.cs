@@ -156,6 +156,7 @@ namespace NotificationPortal.ViewModels
         public IEnumerable<NotificationServerVM> Servers { get; set; }
         public IEnumerable<NotificationApplicationVM> Applications { get; set; }
     }
+
     public class NotificationDetailVM
     {
         public string ReferenceID { get; set; }
@@ -164,6 +165,7 @@ namespace NotificationPortal.ViewModels
         public DateTime SentDateTime { get; set; }
         public string IncidentNumber { get; set; }
     }
+
     public class NotificationServerVM
     {
         [Display(Name ="Server")]
@@ -174,6 +176,7 @@ namespace NotificationPortal.ViewModels
         public string ServerStatus { get; set; }
         public string ReferenceID { get; set; }
     }
+
     public class NotificationApplicationVM
     {
         [Display(Name = "Application")]

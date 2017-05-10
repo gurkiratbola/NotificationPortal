@@ -37,7 +37,7 @@
             @Html.LabelFor(model => model.ClientList, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.DropDownListFor(m => m.ClientReferenceID, Model.ClientList, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ClientReferenceID, "", new {@class = "text-danger"})
+                @Html.ValidationMessageFor(model => model.ClientReferenceID, "", new {@class = "text-danger float-right" })
             </div>
         </div>
 
@@ -51,7 +51,7 @@
                     }
                 </select>
 
-                @Html.ValidationMessageFor(model => model.ApplicationReferenceIDs, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.ApplicationReferenceIDs, "", new { @class = "text-danger float-right" })
             </div>
         </div>
         
@@ -59,7 +59,7 @@
             @Html.LabelFor(model => model.Email, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.Email, new {htmlAttributes = new {@class = "form-control" }})
-                @Html.ValidationMessageFor(model => model.Email, "", new {@class = "text-danger"})
+                @Html.ValidationMessageFor(model => model.Email, "", new {@class = "text-danger float-right" })
             </div>
         </div>
 
@@ -67,7 +67,7 @@
             @Html.LabelFor(model => model.RoleList, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.DropDownListFor(m => m.RoleName, Model.RoleList, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger float-right" })
             </div>
         </div>
 
@@ -75,7 +75,7 @@
             @Html.LabelFor(model => model.FirstName, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.FirstName, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.FirstName, "", new {@class = "text-danger"})
+                @Html.ValidationMessageFor(model => model.FirstName, "", new {@class = "text-danger float-right" })
             </div>
         </div>
 
@@ -83,7 +83,7 @@
             @Html.LabelFor(model => model.LastName, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.LastName, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.LastName, "", new {@class = "text-danger"})
+                @Html.ValidationMessageFor(model => model.LastName, "", new {@class = "text-danger float-right" })
             </div>
         </div>
 
@@ -91,7 +91,7 @@
             @Html.LabelFor(model => model.BusinessTitle, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.BusinessTitle, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.BusinessTitle, "", new {@class = "text-danger"})
+                @Html.ValidationMessageFor(model => model.BusinessTitle, "", new {@class = "text-danger float-right" })
             </div>
         </div>
 
@@ -99,7 +99,7 @@
             @Html.LabelFor(model => model.BusinessPhone, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.BusinessPhone, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.BusinessPhone, "", new {@class = "text-danger"})
+                @Html.ValidationMessageFor(model => model.BusinessPhone, "", new {@class = "text-danger float-right" })
             </div>
         </div>
 
@@ -107,7 +107,7 @@
             @Html.LabelFor(model => model.MobilePhone, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.MobilePhone, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.MobilePhone, "", new {@class = "text-danger"})
+                @Html.ValidationMessageFor(model => model.MobilePhone, "", new {@class = "text-danger float-right" })
             </div>
         </div>
 
@@ -115,7 +115,7 @@
             @Html.LabelFor(model => model.HomePhone, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.HomePhone, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.HomePhone, "", new {@class = "text-danger"})
+                @Html.ValidationMessageFor(model => model.HomePhone, "", new {@class = "text-danger float-right" })
             </div>
         </div>
 
@@ -123,7 +123,7 @@
             @Html.LabelFor(model => model.StatusList, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.DropDownListFor(m => m.StatusID, Model.StatusList, htmlAttributes: new {@class = "form-control"})
-                @Html.ValidationMessageFor(model => model.StatusID, "", new {@class = "text-danger"})
+                @Html.ValidationMessageFor(model => model.StatusID, "", new {@class = "text-danger float-right" })
             </div>
         </div>
 

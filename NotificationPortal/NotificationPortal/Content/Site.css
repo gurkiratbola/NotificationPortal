@@ -187,11 +187,10 @@ tbody {
 /* ==========================================================================
                             Header Styles
 ========================================================================== */
-    .navbar-brand {
-        text-transform: uppercase;
-        font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
-        font-weight: 700;
-    }
+.navbar-brand {
+    text-transform: uppercase;
+    font-weight: 700;
+}
 
 .fixed-top {
     background-color: #373e50;
@@ -324,7 +323,7 @@ footer a:hover {
                             Right Click Styles
 ========================================================================== */
 .clickable-row:hover,
-.clickable-row-dashboard :hover{
+.clickable-row-dashboard:hover{
     background: #f7f7f7;
     cursor: pointer;
 }
@@ -461,6 +460,11 @@ h5.col-12 {
 .card-header {
     border-bottom: 1px solid #ededed;
 }
+
+#dashboard-table .badge {
+    width: 100% !important;
+}
+
 .notification-list {
     padding-left: 20px;
     position: relative;

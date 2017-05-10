@@ -36,7 +36,7 @@
                 <select class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false">
                     @foreach (var item in Model.ApplicationList)
                     {
-                        <option value="@Html.DisplayFor(modelItem => item.ReferenceID)" class="ApplicationListItem @Html.DisplayFor(modelItem => item.ServerReferenceIDs)">@Html.DisplayFor(modelItem => item.ApplicationName)</option>
+                        <option style="display: none;" value="@Html.DisplayFor(modelItem => item.ReferenceID)" class="ApplicationListItem @Html.DisplayFor(modelItem => item.ServerReferenceIDs)">@Html.DisplayFor(modelItem => item.ApplicationName)</option>
                     }
                 </select>
                 @* @Html.ListBoxFor(m => m.ApplicationReferenceIDs, Model.ApplicationList, htmlAttributes: new { @class = "form-control" })*@

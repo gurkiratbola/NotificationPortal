@@ -359,7 +359,7 @@
     <Content Include="Views\Application\Details.cshtml" />
     <Content Include="Views\Application\Delete.cshtml" />
     <Content Include="Views\Dashboard\_external.cshtml" />
-    <Content Include="Views\User\SetPassword.cshtml" />
+    <Content Include="Views\User\ConfirmEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

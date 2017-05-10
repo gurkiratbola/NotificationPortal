@@ -67,8 +67,8 @@ namespace NotificationPortal.Repositories
                     CurrentFilter = searchString,
                     CurrentSort = sortOrder,
                     TotalItemCount = totalNumOfClients,
-                    ItemStart = currentPageIndex * 10 + 1,
-                    ItemEnd = totalNumOfClients - (10 * currentPageIndex) >= 10? 10 * (currentPageIndex + 1): totalNumOfClients,
+                    ItemStart = currentPageIndex * defaultPageSize + 1,
+                    ItemEnd = totalNumOfClients - (defaultPageSize * currentPageIndex) >= defaultPageSize ? defaultPageSize * (currentPageIndex + 1): totalNumOfClients,
                     ClientHeadingSort = sortOrder == ConstantsRepo.SORT_CLIENT_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_CLIENT_BY_NAME_DESC,
                     StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
                 };

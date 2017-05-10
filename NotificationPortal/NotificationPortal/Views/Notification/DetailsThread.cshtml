@@ -137,7 +137,7 @@
             <tbody>
             @foreach (var item in Model.Servers)
             {
-                <tr class="text-center"> @*clickable-row" id="@item.ThreadID" data-href="/Details/@item.ThreadID">*@
+                <tr class="text-center clickable-row-dashboard" id="@item.ReferenceID" data-href="/Server/Details/@item.ReferenceID">
                     <td>
                         @Html.DisplayFor(modelItem => item.ServerName)
                     </td>
@@ -177,7 +177,7 @@
                 <tbody>
                 @foreach (var item in Model.Applications)
                 {
-                    <tr class="text-center">
+                    <tr class="text-center clickable-row-dashboard" id="@item.ReferenceID" data-href="/Application/Details/@item.ReferenceID">
                         <td>
                             @Html.DisplayFor(modelItem => item.ApplicationName)
                         </td>
