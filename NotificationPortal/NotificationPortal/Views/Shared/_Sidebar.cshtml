@@ -31,6 +31,7 @@
                         @if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_CLIENT))
                         {
                             <li>@Html.ActionLink("User Control", "Index", "User", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Applications", "Index", "Application", null, new { @class = "nav-link" })</li>
                         }
                         else
                         {
