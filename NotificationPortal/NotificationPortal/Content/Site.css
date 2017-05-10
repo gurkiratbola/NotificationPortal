@@ -20,6 +20,7 @@ body {
 
 .required:after {
     content: "*";
+    padding-left: 3px;
     font-weight: bold;
     color: black;
 }
