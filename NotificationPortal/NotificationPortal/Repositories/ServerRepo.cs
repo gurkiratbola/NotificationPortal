@@ -51,11 +51,11 @@ namespace NotificationPortal.Repositories
                     break;
 
 
-                case ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE:
+                case ConstantsRepo.SORT_SERVERTYPE_BY_NAME_ASCE:
                     list = list.OrderBy(c => c.ServerTypeName);
                     break;
 
-                case ConstantsRepo.SORT_CLIENT_BY_NAME_DESC:
+                case ConstantsRepo.SORT_SERVERTYPE_BY_NAME_DESC:
                     list = list.OrderByDescending(c => c.ServerName);
                     break;
 
@@ -89,8 +89,11 @@ namespace NotificationPortal.Repositories
                     Servers = Sort(serverList, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
                     CurrentFilter = searchString,
                     CurrentSort = sortOrder,
-                    ClientHeadingSort = sortOrder == ConstantsRepo.SORT_CLIENT_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_CLIENT_BY_NAME_DESC,
+                    ClientSort = sortOrder == ConstantsRepo.SORT_CLIENT_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_CLIENT_BY_NAME_DESC,
                     StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
+                    ApplicationSort = sortOrder == ConstantsRepo.SORT_APP_BY_NAME_DESC ? ConstantsRepo.SORT_APP_BY_NAME_ASCE : ConstantsRepo.SORT_APP_BY_NAME_DESC,
+                    ServerTypeSort = sortOrder == ConstantsRepo.SORT_SERVERTYPE_BY_NAME_DESC ? ConstantsRepo.SORT_SERVERTYPE_BY_NAME_ASCE : ConstantsRepo.SORT_APP_BY_NAME_DESC,
+                    ServerSort = sortOrder == ConstantsRepo.SORT_SERVER_BY_NAME_DESC ? ConstantsRepo.SORT_SERVER_BY_NAME_ASCE : ConstantsRepo.SORT_SERVER_BY_NAME_DESC,
                 };
                 return model;
             }

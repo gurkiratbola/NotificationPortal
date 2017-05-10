@@ -50,5 +50,8 @@ namespace NotificationPortal.Repositories
         public const string SORT_SERVER_BY_LOCATION_NAME_ASCE = "server_location_name_asce";
         public const string SORT_SERVER_BY_LOCATION_NAME_DESC = "server_location_name_desc";
 
+        public const string SORT_SERVERTYPE_BY_NAME_ASCE = "server_servertype_name_asce";
+        public const string SORT_SERVERTYPE_BY_NAME_DESC = "server_servertype_name_desc";
+
     }
 }
