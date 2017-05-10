@@ -68,6 +68,7 @@ namespace NotificationPortal.Migrations
                         LevelOfImpactID = c.Int(nullable: false),
                         NotificationTypeID = c.Int(nullable: false),
                         PriorityID = c.Int(nullable: false),
+                        UserID = c.String(maxLength: 128),
                         ReferenceID = c.String(maxLength: 100),
                     })
                 .PrimaryKey(t => t.NotificationID)
@@ -76,11 +77,13 @@ namespace NotificationPortal.Migrations
                 .ForeignKey("dbo.Priorities", t => t.PriorityID, cascadeDelete: true)
                 .ForeignKey("dbo.SendMethods", t => t.SendMethodID, cascadeDelete: true)
                 .ForeignKey("dbo.Status", t => t.StatusID)
+                .ForeignKey("dbo.UserDetails", t => t.UserID)
                 .Index(t => t.StatusID)
                 .Index(t => t.SendMethodID)
                 .Index(t => t.LevelOfImpactID)
                 .Index(t => t.NotificationTypeID)
                 .Index(t => t.PriorityID)
+                .Index(t => t.UserID)
                 .Index(t => t.ReferenceID, unique: true);
             
             CreateTable(
@@ -163,15 +166,6 @@ namespace NotificationPortal.Migrations
                 .PrimaryKey(t => t.ServerTypeID);
             
             CreateTable(
-                "dbo.StatusTypes",
-                c => new
-                    {
-                        StatusTypeID = c.Int(nullable: false, identity: true),
-                        StatusTypeName = c.String(),
-                    })
-                .PrimaryKey(t => t.StatusTypeID);
-            
-            CreateTable(
                 "dbo.UserDetails",
                 c => new
                     {
@@ -252,6 +246,15 @@ namespace NotificationPortal.Migrations
                 .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
+            
+            CreateTable(
+                "dbo.StatusTypes",
+                c => new
+                    {
+                        StatusTypeID = c.Int(nullable: false, identity: true),
+                        StatusTypeName = c.String(),
+                    })
+                .PrimaryKey(t => t.StatusTypeID);
             
             CreateTable(
                 "dbo.Groups",
@@ -350,6 +353,8 @@ namespace NotificationPortal.Migrations
             DropForeignKey("dbo.Applications", "StatusID", "dbo.Status");
             DropForeignKey("dbo.Applications", "ClientID", "dbo.Clients");
             DropForeignKey("dbo.Clients", "StatusID", "dbo.Status");
+            DropForeignKey("dbo.Status", "StatusTypeID", "dbo.StatusTypes");
+            DropForeignKey("dbo.Notifications", "UserID", "dbo.UserDetails");
             DropForeignKey("dbo.UserDetails", "UserID", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
@@ -358,7 +363,6 @@ namespace NotificationPortal.Migrations
             DropForeignKey("dbo.UserDetails", "ClientID", "dbo.Clients");
             DropForeignKey("dbo.UserDetailApplications", "Application_ApplicationID", "dbo.Applications");
             DropForeignKey("dbo.UserDetailApplications", "UserDetail_UserID", "dbo.UserDetails");
-            DropForeignKey("dbo.Status", "StatusTypeID", "dbo.StatusTypes");
             DropForeignKey("dbo.Notifications", "StatusID", "dbo.Status");
             DropForeignKey("dbo.Servers", "StatusID", "dbo.Status");
             DropForeignKey("dbo.Servers", "ServerTypeID", "dbo.ServerTypes");
@@ -400,6 +404,7 @@ namespace NotificationPortal.Migrations
             DropIndex("dbo.Priorities", new[] { "PriorityValue" });
             DropIndex("dbo.LevelOfImpacts", new[] { "LevelValue" });
             DropIndex("dbo.Notifications", new[] { "ReferenceID" });
+            DropIndex("dbo.Notifications", new[] { "UserID" });
             DropIndex("dbo.Notifications", new[] { "PriorityID" });
             DropIndex("dbo.Notifications", new[] { "NotificationTypeID" });
             DropIndex("dbo.Notifications", new[] { "LevelOfImpactID" });
@@ -418,12 +423,12 @@ namespace NotificationPortal.Migrations
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.RoleDetails");
             DropTable("dbo.Groups");
+            DropTable("dbo.StatusTypes");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.UserDetails");
-            DropTable("dbo.StatusTypes");
             DropTable("dbo.ServerTypes");
             DropTable("dbo.DataCenterLocations");
             DropTable("dbo.Servers");

@@ -20,12 +20,17 @@ $(document).ready(function ($) {
     $(".clickable-row").contextmenu(function (e) {
         var rowId = $(this).attr("id");
         $('.hidden-menu li a').attr('href', function (i, str) {
-            return domain + str + rowId;
+            if (str.indexOf(rowId) >= 0) {
+                return str;
+            } else {
+                return domain + str + rowId;
+            }
         });
         $(".hidden-menu").css({ position: "absolute", top: e.pageY - HIDDEN_MENU_HEIGHT_OFFSET, left: e.pageX - HIDDEN_MENU_WIDTH_OFFSET });
         $(".hidden-menu").toggle();
         return false;
     });
+
 
     // for sidebar dropdown
     if (localStorage.getItem("isDropdownVisible") === null) {
@@ -44,4 +49,7 @@ $(document).ready(function ($) {
             localStorage.removeItem("isDropdownVisible");
         }
     })
+
+    // for profile email small print
+    $(".profile-email").append("<small class='float-right'>Updating email will log user out instantly</small>")
 });

@@ -24,7 +24,7 @@ namespace NotificationPortal.ViewModels
     public class ClientCreateVM
     {
         [Required]
-        [DisplayName("Client Name*")]
+        [DisplayName("Client Name")]
         public string ClientName { get; set; }
 
         [Required]
@@ -33,7 +33,7 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Status")]
         public string StatusName { get; set; }
 
-        [DisplayName("Select Status*")]
+        [DisplayName("Select Status")]
         public SelectList StatusList { get; set; }
     }
 

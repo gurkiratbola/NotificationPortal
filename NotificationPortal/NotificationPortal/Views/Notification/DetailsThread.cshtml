@@ -96,9 +96,12 @@
                     </div>
 
                     <div id="@collapseId" class="collapse show" role="tabpanel" aria-labelledby="@headingId">
-                        <div class="card-block">
+                        <div class="card-block float-left">
+                            @Html.Raw(item.NotificationDescription)
+                        </div>
+                        <div class="float-right">
                             @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
-                                    User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+                        User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
                             {
                                 <a class="" href="@Url.Action("Edit", "Notification", new { id = @item.ReferenceID })">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -110,7 +113,6 @@
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                 </a>
                             }
-                            @Html.Raw(item.NotificationDescription)
                         </div>
                     </div>
                 </div>

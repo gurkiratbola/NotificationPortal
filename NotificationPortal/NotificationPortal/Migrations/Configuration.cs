@@ -10,6 +10,7 @@ namespace NotificationPortal.Migrations
 
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
+        private string sampleAdminEmail = "admin@portal.com";
         private string sampleClientEmail = "client@portal.com";
         private string sameplUserEmail = "user@portal.com";
         private string sampleApplicationName1 = "Bank App";
@@ -206,21 +207,21 @@ namespace NotificationPortal.Migrations
                 RoleDescription = Key.GROUP_INTERNAL + " " + Key.ROLE_ADMIN
             };
 
-            staffRole.RoleDetail=new RoleDetail()
+            staffRole.RoleDetail = new RoleDetail()
             {
                 RoleID = staffRole.Id,
                 GroupID = internalGroup.GroupID,
                 RoleDescription = Key.GROUP_INTERNAL + " " + Key.ROLE_STAFF
             };
 
-            clientRole.RoleDetail=new RoleDetail()
+            clientRole.RoleDetail = new RoleDetail()
             {
                 RoleID = clientRole.Id,
                 GroupID = externalGroup.GroupID,
                 RoleDescription = Key.GROUP_EXTERNAL + " " + Key.ROLE_CLIENT
             };
 
-            userRole.RoleDetail=new RoleDetail()
+            userRole.RoleDetail = new RoleDetail()
             {
                 RoleID = userRole.Id,
                 GroupID = externalGroup.GroupID,
@@ -376,8 +377,8 @@ namespace NotificationPortal.Migrations
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             var admin = new ApplicationUser()
             {
-                UserName = "admin@portal.com",
-                Email = "admin@portal.com",
+                UserName = sampleAdminEmail,
+                Email = sampleAdminEmail,
                 EmailConfirmed = true,
             };
             admin.UserDetail = new UserDetail()
@@ -633,8 +634,10 @@ namespace NotificationPortal.Migrations
             var priorityLow = context.Priority
                 .Where(p => p.PriorityName == Key.PRIORITY_NAME_LOW)
                 .FirstOrDefault();
+            // Get Creator
+            var admin = context.Users.Where(u => u.Email == sampleAdminEmail).FirstOrDefault();
 
-            string sampleThread1 = Guid.NewGuid().ToString();
+            string sampleThread1 = "MAI-4561483";
             var notification = new Notification()
             {
                 StartDateTime = DateTime.Now.AddHours(-1),
@@ -648,7 +651,8 @@ namespace NotificationPortal.Migrations
                 StatusID = statusOpen.StatusID,
                 IncidentNumber = sampleThread1,
                 PriorityID = priorityHigh.PriorityID,
-                ReferenceID = Guid.NewGuid().ToString()
+                ReferenceID = Guid.NewGuid().ToString(),
+                UserID = admin.Id
             };
             notification.Servers = servers.ToList();
             context.Notification.Add(notification);
@@ -666,7 +670,8 @@ namespace NotificationPortal.Migrations
                 StatusID = statusClosed.StatusID,
                 IncidentNumber = sampleThread1,
                 PriorityID = priorityLow.PriorityID,
-                ReferenceID = Guid.NewGuid().ToString()
+                ReferenceID = Guid.NewGuid().ToString(),
+                UserID = admin.Id
             };
             notification.Servers = servers.ToList();
             context.Notification.Add(notification);
@@ -680,9 +685,10 @@ namespace NotificationPortal.Migrations
                 LevelOfImpactID = levelOfImpactImpacting.LevelOfImpactID,
                 SendMethodID = sendMethod.SendMethodID,
                 StatusID = statusOpen.StatusID,
-                IncidentNumber = Guid.NewGuid().ToString(),
+                IncidentNumber = "INC-6928376",
                 PriorityID = priorityNormal.PriorityID,
-                ReferenceID = Guid.NewGuid().ToString()
+                ReferenceID = Guid.NewGuid().ToString(),
+                UserID = admin.Id
             };
             notification.Applications = apps.ToList();
             notification.Servers = servers.ToList();

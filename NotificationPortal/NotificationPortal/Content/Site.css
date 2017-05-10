@@ -18,6 +18,13 @@ body {
     padding-top: 30px;
 }
 
+.required:after {
+    content: "*";
+    padding-left: 3px;
+    font-weight: bold;
+    color: black;
+}
+
 /* ==========================================================================
                             Font Styles
 ========================================================================== */
@@ -488,4 +495,10 @@ h3.heading-padding {
 h3.heading-padding.text-muted:hover {
     text-decoration: none;
     color: lightcoral !important;
+}
+/* ==========================================================================
+                            Page Styles: Profile
+========================================================================== */
+small.float-right {
+    margin-top: 5px !important;
 }

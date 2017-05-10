@@ -84,6 +84,7 @@ namespace NotificationPortal.Repositories
 
             Notification lastestNotification = notifications.LastOrDefault();
 
+            // TODO: filter servers ??
             IEnumerable<NotificationServerVM> servers =
                 lastestNotification.Servers.Select(
                     s => new NotificationServerVM
@@ -95,8 +96,33 @@ namespace NotificationPortal.Repositories
                     });
 
             // Get Applications that are associated to this notification
+            IEnumerable<Application> associatedNotificationApplications;
+            if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
+            {
+                string userId = HttpContext.Current.User.Identity.GetUserId();
+                var userApps = _context.UserDetail
+                    .Where(u => u.UserID == userId)
+                    .FirstOrDefault().Applications;
+
+                associatedNotificationApplications = lastestNotification.Applications
+                    .Where(a => userApps.Contains(a));
+            }
+            else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
+            {
+                string userId = HttpContext.Current.User.Identity.GetUserId();
+                var userApps = _context.UserDetail
+                    .Where(u => u.UserID == userId)
+                    .FirstOrDefault().Client.Applications;
+                associatedNotificationApplications = lastestNotification.Applications
+                    .Where(a => userApps.Contains(a));
+            }
+            else
+            {
+                associatedNotificationApplications = lastestNotification.Applications;
+            }
+
             IEnumerable<NotificationApplicationVM> apps =
-                lastestNotification.Applications.Select(
+                associatedNotificationApplications.Select(
                     a => new NotificationApplicationVM
                     {
                         ApplicationName = a.ApplicationName,
@@ -107,7 +133,10 @@ namespace NotificationPortal.Repositories
 
             // If there are no applications associated to this notification
             // get all application associated with server(s)
-            if (apps.Count() == 0)
+            // only for admin and staff
+            if (apps.Count() == 0
+                && HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN)
+                && HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
             {
                 apps =
                 lastestNotification.Servers.SelectMany(s => s.Applications.Select(
@@ -157,6 +186,7 @@ namespace NotificationPortal.Repositories
                     EndDateTime = lastestNotification.EndDateTime,
                     LevelOfImpactID = lastestNotification.LevelOfImpactID,
                     NotificationTypeID = lastestNotification.NotificationTypeID,
+                    ProirityID = lastestNotification.PriorityID,
                     SentMethodID = lastestNotification.SendMethodID,
                     StatusID = lastestNotification.StatusID,
                     NotificationDescription = lastestNotification.NotificationDescription,
@@ -188,6 +218,7 @@ namespace NotificationPortal.Repositories
                     EndDateTime = editingNotification.EndDateTime,
                     LevelOfImpactID = editingNotification.LevelOfImpactID,
                     NotificationTypeID = editingNotification.NotificationTypeID,
+                    ProirityID = editingNotification.PriorityID,
                     SentMethodID = editingNotification.SendMethodID,
                     StatusID = editingNotification.StatusID,
                     NotificationDescription = editingNotification.NotificationDescription,
@@ -201,6 +232,7 @@ namespace NotificationPortal.Repositories
             model.ServerList = _slRepo.GetServerList();
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
+            model.ProirityList = _slRepo.GetPriorityList();
             model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
             return model;
         }
@@ -226,6 +258,31 @@ namespace NotificationPortal.Repositories
             try
             {
                 IEnumerable<Notification> allNotifications = _context.Notification;
+                if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
+                {
+                    string userId = HttpContext.Current.User.Identity.GetUserId();
+                    var userApps = _context.UserDetail
+                        .Where(u => u.UserID == userId)
+                        .FirstOrDefault().Applications;
+                    allNotifications = userApps
+                    .Select(x => new { Application = x, x.Servers })
+                    .SelectMany(x => x.Servers
+                    .SelectMany(n => n.Notifications
+                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
+                }
+                else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
+                {
+                    string userId = HttpContext.Current.User.Identity.GetUserId();
+                    var userApps = _context.UserDetail
+                        .Where(u => u.UserID == userId)
+                        .FirstOrDefault().Client.Applications;
+                    allNotifications = userApps
+                    .Select(x => new { Application = x, x.Servers })
+                    .SelectMany(x => x.Servers
+                    .SelectMany(n => n.Notifications
+                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
+                }
+
                 IEnumerable<NotificationThreadVM> allThreads = allNotifications
                     .GroupBy(n => n.IncidentNumber)
                     .Select(t => t.OrderBy(i => i.SentDateTime))
@@ -260,6 +317,32 @@ namespace NotificationPortal.Repositories
                 model.PriorityIDs = model.PriorityIDs ?? _slRepo.GetPriorityList().Select(o => int.Parse(o.Value)).ToArray();
                 model.StatusIDs = model.StatusIDs ?? _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION).Select(o => int.Parse(o.Value)).ToArray();
                 IEnumerable<Notification> allNotifications = _context.Notification;
+
+                if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
+                {
+                    string userId = HttpContext.Current.User.Identity.GetUserId();
+                    var userApps = _context.UserDetail
+                        .Where(u => u.UserID == userId)
+                        .FirstOrDefault().Applications;
+                    allNotifications = userApps
+                    .Select(x => new { Application = x, x.Servers })
+                    .SelectMany(x => x.Servers
+                    .SelectMany(n => n.Notifications
+                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
+                }
+                else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
+                {
+                    string userId = HttpContext.Current.User.Identity.GetUserId();
+                    var userApps = _context.UserDetail
+                        .Where(u => u.UserID == userId)
+                        .FirstOrDefault().Client.Applications;
+                    allNotifications = userApps
+                    .Select(x => new { Application = x, x.Servers })
+                    .SelectMany(x => x.Servers
+                    .SelectMany(n => n.Notifications
+                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
+                }
+
                 IEnumerable<NotificationThreadVM> allThreads = allNotifications
                     .GroupBy(n => n.IncidentNumber)
                     .Select(t => t.OrderBy(i => i.SentDateTime))
@@ -327,7 +410,7 @@ namespace NotificationPortal.Repositories
                 {
                     notification.ApplicationReferenceIDs = new string[0];
                 }
-
+                string newIncidentNumber = NewIncidentNumber(notification.NotificationTypeID);
                 var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
                 var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
                 var priorityValue = _context.Notification.Where(n => notification.ProirityID == n.Priority.PriorityID)
@@ -344,7 +427,7 @@ namespace NotificationPortal.Repositories
                     SendMethodID = notification.SentMethodID,
                     //TO DO: discuss how referenceID is generated
                     ReferenceID = Guid.NewGuid().ToString(),
-                    IncidentNumber = notification.IncidentNumber ?? Guid.NewGuid().ToString(),
+                    IncidentNumber = notification.IncidentNumber ?? newIncidentNumber,
                     //TO DO: convert input time to UTC time
                     SentDateTime = DateTime.Now,
                     StartDateTime = notification.StartDateTime,
@@ -499,7 +582,7 @@ namespace NotificationPortal.Repositories
                 case ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC:
                     list = list.OrderByDescending(n => n.Priority);
                     break;
-                    
+
                 case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
                     list = list.OrderBy(n => n.Status);
                     break;
@@ -590,9 +673,9 @@ namespace NotificationPortal.Repositories
 
         }
 
-        // TODO verify the functionality
-        public string NewIncidentNumber(string notificationType)
+        public string NewIncidentNumber(int notificationTypeID)
         {
+            string notificationType = _slRepo.GetTypeList().Where(i => i.Value == notificationTypeID.ToString()).Select(i => i.Text).FirstOrDefault();
             string newIncidentNumber;
             if (notificationType == Key.NOTIFICATION_TYPE_INCIDENT)
             {
@@ -604,22 +687,33 @@ namespace NotificationPortal.Repositories
             }
             else
             {
+                // TODO 
                 newIncidentNumber = "UND-";
             }
 
-            int max = 20;
+            int max = 9999999;
             var incidentNumbers = _context.Notification
-                .Where(n => n.IncidentNumber.Substring(0, newIncidentNumber.Length) == newIncidentNumber)
-                .Select(n => int.Parse(n.IncidentNumber.Substring(newIncidentNumber.Length)));
-            var incidentNumberSet = new HashSet<int>(incidentNumbers);
+                .Select(n => n.IncidentNumber).Distinct();
+
+            var incidentNumberSet = new HashSet<int>();
+            foreach (var item in incidentNumbers)
+            {
+                int result = 0;
+                string numberString = item.Substring(newIncidentNumber.Length);
+                string prefix = item.Substring(0, newIncidentNumber.Length);
+                if (prefix == newIncidentNumber && int.TryParse(numberString, out result))
+                {
+                    incidentNumberSet.Add(result);
+                }
+            }
 
             var range = Enumerable.Range(1, max).Where(i => !incidentNumberSet.Contains(i));
 
             var rand = new Random();
-            int index = rand.Next(0, max - incidentNumberSet.Count);
+            int index = rand.Next(0, range.Count());
             int randNumber = range.ElementAt(index);
 
-            return newIncidentNumber + randNumber.ToString();
+            return newIncidentNumber + randNumber.ToString("D7");
         }
     }
 }

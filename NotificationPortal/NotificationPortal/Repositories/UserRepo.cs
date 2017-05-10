@@ -68,10 +68,15 @@ namespace NotificationPortal.Repositories
 
         public UserIndexVM GetAllUsers(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            var roleManager = new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole>(_context));
+
+            // get the current logged in user's id
+            var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+            // get the current logged in user's client id
+            var getClientId = _context.UserDetail.Where(u => u.UserID == currentUserId).Select(c => c.Client.ClientName).FirstOrDefault();
+
             try
             {
-                var roleManager = new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole>(_context));
-
                 IEnumerable<UserVM> users = _context.Users.Select(user => new UserVM()
                 {
                     ReferenceID = user.UserDetail.ReferenceID,
@@ -92,6 +97,16 @@ namespace NotificationPortal.Repositories
                 foreach (var user in users)
                 {
                     user.RoleName = roleManager.FindById(user.RoleName).Name.ToString();
+                }
+
+                if(HttpContext.Current.User.IsInRole("Staff"))
+                {
+                    users = users.Where(a => a.RoleName != "Admin");
+                }
+
+                if(HttpContext.Current.User.IsInRole("Client"))
+                {
+                    users = users.Where(u => u.RoleName != "Admin" && u.RoleName != "Staff" && u.ClientName==getClientId);
                 }
 
                 int totalNumOfUsers = users.Count();
@@ -229,7 +244,7 @@ namespace NotificationPortal.Repositories
                     userManager.AddToRole(user.Id, model.RoleName);
 
                     // if the client was added successfully pass this msg out
-                    msg = "Client added successfully!";
+                    msg = "User added successfully!";
                     return true;
                 }
                 else

@@ -11,6 +11,7 @@ namespace NotificationPortal.Repositories
     public class ProfileRepo
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
+        public const string USERNAME_UPDATED = "Username changed";
 
         public ProfileVM GetUserDetail(IPrincipal User)
         {
@@ -79,7 +80,7 @@ namespace NotificationPortal.Repositories
                         _context.SaveChanges();
                         if (email != model.Email)
                         {
-                            msg = "Username changed";
+                            msg = USERNAME_UPDATED;
                         }
                         else {
                             msg = "User profile updated.";

@@ -79,8 +79,6 @@ namespace NotificationPortal.Controllers
                 TempData["ErrorMsg"] = msg;
             }
 
-            //TempData["ErrorMsg"] = "Cannot add user at this time, please try again!";
-
             model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
             model.ClientList = _selectRepo.GetClientList();
             model.RolesList = _selectRepo.GetRolesList();
@@ -100,10 +98,12 @@ namespace NotificationPortal.Controllers
 
             var result = await UserManager.ConfirmEmailAsync(userId, code);
 
-            //if (result.Succeeded)
-            //{
-            //    return RedirectToAction("Login", "Account");
-            //}
+            if (!result.Succeeded)
+            {
+                TempData["ErrorMsg"] = "Something went wrong, please contact an admin.";
+
+                return RedirectToAction("Login", "Account");
+            }
 
             return View();
         }
