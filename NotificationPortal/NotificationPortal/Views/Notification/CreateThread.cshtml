@@ -22,7 +22,7 @@
 
         <!--notification server ID-->
         <div class="form-group">
-            @Html.LabelFor(model => model.ServerReferenceIDs, htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.ServerReferenceIDs, htmlAttributes: new { @class = "control-label required" })
             <div class="">
                 @Html.ListBoxFor(m => m.ServerReferenceIDs, Model.ServerList, htmlAttributes: new { @id = "ServerList", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ServerReferenceIDs, "", new { @class = "text-danger" })
@@ -47,47 +47,47 @@
         <div class="row">
             <!--notification type-->
             <div class="form-group col-md-3">
-                @Html.LabelFor(model => model.NotificationTypeList, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.NotificationTypeList, htmlAttributes: new { @class = "control-label required" })
                 <div class="">
-                    @Html.DropDownListFor(m => m.NotificationTypeID, Model.NotificationTypeList, htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.NotificationTypeID, Model.NotificationTypeList, "", htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
 
             <!--level of impact-->
             <div class="form-group col-md-3">
-                @Html.LabelFor(model => model.LevelOfImpactList, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.LevelOfImpactList, htmlAttributes: new { @class = "control-label required" })
                 <div class="">
-                    @Html.DropDownListFor(m => m.LevelOfImpactID, Model.LevelOfImpactList, htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.LevelOfImpactID, Model.LevelOfImpactList, "", htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
 
             <!--notification status-->
             <div class="form-group col-md-3">
-                @Html.LabelFor(model => model.StatusList, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.StatusList, htmlAttributes: new { @class = "control-label required" })
                 <div class="">
-                    @Html.DropDownListFor(m => m.StatusID, Model.StatusList, htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.StatusID, Model.StatusList, "", htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
 
             <!--send method-->
             <div class="form-group col-md-3">
-                @Html.LabelFor(model => model.SendMethodList, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.SendMethodList, htmlAttributes: new { @class = "control-label required" })
                 <div class="">
-                    @Html.DropDownListFor(m => m.SentMethodID, Model.SendMethodList, htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.SentMethodID, Model.SendMethodList, "", htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
 
             <!--priority list-->
             <div class="form-group col-md-3">
-                @Html.LabelFor(model => model.ProirityList, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.ProirityList, htmlAttributes: new { @class = "control-label required" })
                 <div class="">
-                    @Html.DropDownListFor(m => m.ProirityID, Model.ProirityList, htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.ProirityID, Model.ProirityList, "", htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
         </div>
         <!--heading-->
         <div class="form-group">
-            @Html.LabelFor(model => model.NotificationHeading, htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.NotificationHeading, htmlAttributes: new { @class = "control-label required" })
             <div class="">
                 @Html.EditorFor(model => model.NotificationHeading, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.NotificationHeading, "", new { @class = "text-danger" })
@@ -95,7 +95,7 @@
         </div>
         <!--description-->
         <div class="form-group">
-            @Html.LabelFor(model => model.NotificationDescription, htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.NotificationDescription, htmlAttributes: new { @class = "control-label required" })
             <div class="">
                 @Html.TextAreaFor(model => model.NotificationDescription, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.NotificationDescription, "", new { @class = "text-danger" })

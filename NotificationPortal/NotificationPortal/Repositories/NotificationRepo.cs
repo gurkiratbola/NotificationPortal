@@ -186,6 +186,7 @@ namespace NotificationPortal.Repositories
                     EndDateTime = lastestNotification.EndDateTime,
                     LevelOfImpactID = lastestNotification.LevelOfImpactID,
                     NotificationTypeID = lastestNotification.NotificationTypeID,
+                    ProirityID = lastestNotification.PriorityID,
                     SentMethodID = lastestNotification.SendMethodID,
                     StatusID = lastestNotification.StatusID,
                     NotificationDescription = lastestNotification.NotificationDescription,
@@ -217,6 +218,7 @@ namespace NotificationPortal.Repositories
                     EndDateTime = editingNotification.EndDateTime,
                     LevelOfImpactID = editingNotification.LevelOfImpactID,
                     NotificationTypeID = editingNotification.NotificationTypeID,
+                    ProirityID = editingNotification.PriorityID,
                     SentMethodID = editingNotification.SendMethodID,
                     StatusID = editingNotification.StatusID,
                     NotificationDescription = editingNotification.NotificationDescription,
@@ -230,6 +232,7 @@ namespace NotificationPortal.Repositories
             model.ServerList = _slRepo.GetServerList();
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
+            model.ProirityList = _slRepo.GetPriorityList();
             model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
             return model;
         }
