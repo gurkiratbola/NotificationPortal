@@ -50,7 +50,7 @@ namespace NotificationPortal.Repositories
                         //to do
                         //tabs that separate incident from maintainance 
                         //heading should show the first not last (from dakota)
-                        //remove hard-coded value above, after database has been fixed
+                     
                         int totalNumOfNotifications = dashboard.Count();
                         page = searchString == null ? page : 1;
                         int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
@@ -157,7 +157,7 @@ namespace NotificationPortal.Repositories
                             .Select(
                                 t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
                             );
-            // To Do: remove the hard-coded value below once the database has been fixed
+
             dashboard = from n in dashboard where n.Status == Key.STATUS_NOTIFICATION_OPEN select n;
 
             dashboard = dashboard.ToList();
