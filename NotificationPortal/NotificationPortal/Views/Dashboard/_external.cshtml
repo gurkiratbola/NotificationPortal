@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<NotificationPortal.ViewModels.DashboardVM>
 
-
-@if (Model.Count() > 0)
+@if (Model != null)
 {
-
-    foreach (var item in Model)
+    if (Model.Count() > 0)
     {
-        //var statusClass = item.Status == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INCOMPLETE ? "text-muted" : "text-muted";
-        var impactClass = item.LevelOfImpact == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING ? "badge badge-success" : "badge badge-danger";
+        foreach (var item in Model)
+        {
+            //var statusClass = item.Status == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INCOMPLETE ? "text-muted" : "text-muted";
+            var impactClass = item.LevelOfImpact == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING ? "badge badge-success" : "badge badge-danger";
         <div class="card-deck pb-3">
             <div class="card">
                 <div class="card-header card-inverse card-deck">
@@ -65,7 +65,14 @@
                 </div>
             </div>
         </div>
-                                                }
-                                            }else {
+        }
+    }
+    else
+    {
+        <p>Currently, there are not notifications.</p>
+    }
+}
+else
+{
     <p>Currently, there are not notifications.</p>
 }

@@ -13,101 +13,116 @@
 }
 else
 {
-    <div class="row">
-        <div class="col-md-12">
-            @using (Html.BeginForm("Index", "Dashboard", FormMethod.Get, new { @class = "form-inline pb-3" }))
-            {
-                @Html.TextBox("SearchString", Model.CurrentFilter, new { @class = "form-control mr-sm-2" })
-                <input class="btn btn-secondary" type="submit" value="Search" />
-            }
+    if (Model.Notifications != null)
+    {
+
+        if (Model.Notifications.Count() > 0)
+        {
+        <div class="row">
+            <div class="col-md-12">
+                @using (Html.BeginForm("Index", "Dashboard", FormMethod.Get, new { @class = "form-inline pb-3" }))
+                {
+                    @Html.TextBox("SearchString", Model.CurrentFilter, new { @class = "form-control mr-sm-2" })
+                    <input class="btn btn-secondary" type="submit" value="Search" />
+                }
+            </div>
         </div>
-    </div>
-    <table class="table table-bordered" style="position:relative;">
-        @{
-            var filterById = "";
-            var filterBySubject = "";
-            var filterByImpact= "";
-            var filterByDate = "";
-            if (Model.CurrentSort != null)
-            {
-                filterById = Model.CurrentSort.Contains("id") ? "bg-mint" : "";
-                filterBySubject = Model.CurrentSort.Contains("heading") ? "bg-mint" : "";
-                filterByImpact = Model.CurrentSort.Contains("impact") ? "bg-mint" : "";
-                filterByDate = Model.CurrentSort.Contains("date") ? "bg-mint" : "";
+        <table class="table table-bordered" style="position:relative;">
+            @{
+                var filterById = "";
+                var filterBySubject = "";
+                var filterByImpact = "";
+                var filterByDate = "";
+                if (Model.CurrentSort != null)
+                {
+                    filterById = Model.CurrentSort.Contains("id") ? "bg-mint" : "";
+                    filterBySubject = Model.CurrentSort.Contains("heading") ? "bg-mint" : "";
+                    filterByImpact = Model.CurrentSort.Contains("impact") ? "bg-mint" : "";
+                    filterByDate = Model.CurrentSort.Contains("date") ? "bg-mint" : "";
+                }
             }
-        }
-        <thead>
-            <tr class="bg-inverse text-white">
-                <th class="@filterById">
-                    <a href="@Url.Action("Index", "Dashboard", new { sortOrder = Model.IDSort, currentFilter = Model.CurrentFilter })">
-                        @Html.DisplayNameFor(model => model.Notifications.FirstOrDefault().ThreadID)
-                        <span class="filter-arrows">
-                            <i class="fa fa-caret-up" aria-hidden="true"></i>
-                            <i class="fa fa-caret-down" aria-hidden="true"></i>
-                        </span>
-                    </a>
-                </th>
-                <th class="@filterBySubject">
-                    <a href="@Url.Action("Index", "Dashboard", new { sortOrder = Model.SubjectSort, currentFilter = Model.CurrentFilter })">
-                        @Html.DisplayNameFor(model => model.Notifications.FirstOrDefault().ThreadHeading)
-                        <span class="filter-arrows">
-                            <i class="fa fa-caret-up" aria-hidden="true"></i>
-                            <i class="fa fa-caret-down" aria-hidden="true"></i>
-                        </span>
-                    </a>
-                </th>
-                <th class="@filterByImpact">
-                    <a href="@Url.Action("Index", "Dashboard", new { sortOrder = Model.LevelOfImpactSort, currentFilter = Model.CurrentFilter })">
-                        @Html.DisplayNameFor(model => model.Notifications.FirstOrDefault().LevelOfImpact)
-                        <span class="filter-arrows">
-                            <i class="fa fa-caret-up" aria-hidden="true"></i>
-                            <i class="fa fa-caret-down" aria-hidden="true"></i>
-                        </span>
-                    </a>
-                </th>
-                <th class="@filterByDate">
-                    <a href="@Url.Action("Index", "Dashboard", new { sortOrder = Model.DateSort, currentFilter = Model.CurrentFilter })">
-                        @Html.DisplayNameFor(model => model.Notifications.FirstOrDefault().SentDateTime)
-                        <span class="filter-arrows">
-                            <i class="fa fa-caret-up" aria-hidden="true"></i>
-                            <i class="fa fa-caret-down" aria-hidden="true"></i>
-                        </span>
-                    </a>
-                </th>
-            </tr>
-        </thead>
-        <tbody id="dashboard-table">
-            @foreach (var item in Model.Notifications)
-            {
-                var impactClass = item.LevelOfImpact.ToUpper() == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING.ToUpper() ? "badge badge-success" : "badge badge-danger";
-                <tr class="" data-href="/Notification/Details/@item.ThreadID">
-                    <td>
-                        <a href="@Url.Action("DetailsThread", "Notification", new { id = item.ThreadID })" class="">
-                            @Html.DisplayFor(modelItem => item.ThreadID)
+            <thead>
+                <tr class="bg-inverse text-white">
+                    <th class="@filterById">
+                        <a href="@Url.Action("Index", "Dashboard", new { sortOrder = Model.IDSort, currentFilter = Model.CurrentFilter })">
+                            @Html.DisplayNameFor(model => model.Notifications.FirstOrDefault().ThreadID)
+                            <span class="filter-arrows">
+                                <i class="fa fa-caret-up" aria-hidden="true"></i>
+                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                            </span>
                         </a>
-                    </td>
-                    <td>
-                        <a href="@Url.Action("DetailsThread", "Notification", new { id = item.ThreadID })" class="">
-                            @Html.DisplayFor(modelItem => item.ThreadHeading)
+                    </th>
+                    <th class="@filterBySubject">
+                        <a href="@Url.Action("Index", "Dashboard", new { sortOrder = Model.SubjectSort, currentFilter = Model.CurrentFilter })">
+                            @Html.DisplayNameFor(model => model.Notifications.FirstOrDefault().ThreadHeading)
+                            <span class="filter-arrows">
+                                <i class="fa fa-caret-up" aria-hidden="true"></i>
+                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                            </span>
                         </a>
-                    </td>
-                    <td>
-                        <span class="@impactClass">
-                            @Html.DisplayFor(modelItem => item.LevelOfImpact)
-                        </span>
-                    </td>
-                    <td>
-                        <span>
-                            @Html.DisplayFor(modelItem => item.SentDateTime)
-                        </span>
-                    </td>
+                    </th>
+                    <th class="@filterByImpact">
+                        <a href="@Url.Action("Index", "Dashboard", new { sortOrder = Model.LevelOfImpactSort, currentFilter = Model.CurrentFilter })">
+                            @Html.DisplayNameFor(model => model.Notifications.FirstOrDefault().LevelOfImpact)
+                            <span class="filter-arrows">
+                                <i class="fa fa-caret-up" aria-hidden="true"></i>
+                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th class="@filterByDate">
+                        <a href="@Url.Action("Index", "Dashboard", new { sortOrder = Model.DateSort, currentFilter = Model.CurrentFilter })">
+                            @Html.DisplayNameFor(model => model.Notifications.FirstOrDefault().SentDateTime)
+                            <span class="filter-arrows">
+                                <i class="fa fa-caret-up" aria-hidden="true"></i>
+                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="dashboard-table">
+                @foreach (var item in Model.Notifications)
+                {
+                    var impactClass = item.LevelOfImpact.ToUpper() == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING.ToUpper() ? "badge badge-success" : "badge badge-danger";
+                    <tr class="" data-href="/Notification/Details/@item.ThreadID">
+                        <td>
+                            <a href="@Url.Action("DetailsThread", "Notification", new { id = item.ThreadID })" class="">
+                                @Html.DisplayFor(modelItem => item.ThreadID)
+                            </a>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("DetailsThread", "Notification", new { id = item.ThreadID })" class="">
+                                @Html.DisplayFor(modelItem => item.ThreadHeading)
+                            </a>
+                        </td>
+                        <td>
+                            <span class="@impactClass">
+                                @Html.DisplayFor(modelItem => item.LevelOfImpact)
+                            </span>
+                        </td>
+                        <td>
+                            <span>
+                                @Html.DisplayFor(modelItem => item.SentDateTime)
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     @Html.PagedListPager(Model.Notifications, page => Url.Action("Index",
-        new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
+                                                                        new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
     <div class="pageinfo-display">
         <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
     </div>
+    }
+    else
+    {
+        <p>There no open notification(s) at the moment.</p>
+        }
+    }
+    else
+    {
+        <p>There no open notification(s) at the moment.</p>
+        }
 }

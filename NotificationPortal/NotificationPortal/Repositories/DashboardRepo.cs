@@ -44,7 +44,7 @@ namespace NotificationPortal.Repositories
                                     t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
                     );
 
-                    dashboard = from n in dashboard where n.Status == "Incomplete" select n;
+                    dashboard = from n in dashboard where n.Status == Key.STATUS_NOTIFICATION_OPEN select n;
                     //to do
                     //tabs that separate incident from maintainance 
                     //heading should show the first not last (from dakota)
@@ -140,7 +140,7 @@ namespace NotificationPortal.Repositories
                                 t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
                             );
             // To Do: remove the hard-coded value below once the database has been fixed
-            dashboard = from n in dashboard where n.Status == "Incomplete" select n;
+            dashboard = from n in dashboard where n.Status == Key.STATUS_NOTIFICATION_OPEN select n;
 
             dashboard = dashboard.ToList();
 
