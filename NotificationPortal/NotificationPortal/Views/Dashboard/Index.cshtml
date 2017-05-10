@@ -9,7 +9,11 @@
 
 @if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_USER) || HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_CLIENT))
 {
-    @Html.Partial("~/Views/Dashboard/_external.cshtml", Model.Notifications)
+    if (Model!=null)
+    {
+        @Html.Partial("~/Views/Dashboard/_external.cshtml", Model.Notifications)
+    }
+    //TODO: else show error message?
 }
 else
 {
