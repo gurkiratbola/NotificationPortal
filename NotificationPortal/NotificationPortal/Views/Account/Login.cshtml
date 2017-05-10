@@ -47,6 +47,12 @@
                     <p class="alert alert-success">@TempData["SuccessMsg"]</p>
                 }
             }
+
+            @{  if (TempData["ErrorMsg"] != null)
+                {
+                    <p class="alert alert-danger">@TempData["ErrorMsg"]</p>
+                }
+            }
         </div>
 
         <div class="form-group">

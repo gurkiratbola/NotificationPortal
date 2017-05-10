@@ -637,7 +637,7 @@ namespace NotificationPortal.Migrations
             // Get Creator
             var admin = context.Users.Where(u => u.Email == sampleAdminEmail).FirstOrDefault();
 
-            string sampleThread1 = "MAI-45619483";
+            string sampleThread1 = "MAI-4561483";
             var notification = new Notification()
             {
                 StartDateTime = DateTime.Now.AddHours(-1),
@@ -685,7 +685,7 @@ namespace NotificationPortal.Migrations
                 LevelOfImpactID = levelOfImpactImpacting.LevelOfImpactID,
                 SendMethodID = sendMethod.SendMethodID,
                 StatusID = statusOpen.StatusID,
-                IncidentNumber = "INC-69268376",
+                IncidentNumber = "INC-6928376",
                 PriorityID = priorityNormal.PriorityID,
                 ReferenceID = Guid.NewGuid().ToString(),
                 UserID = admin.Id
