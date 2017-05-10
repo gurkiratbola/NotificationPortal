@@ -20,6 +20,7 @@ namespace NotificationPortal.ViewModels
         public string StatusSort { get; set; }
         public string LocationSort { get; set; }
         public string ApplicationSort { get; set; }
+        public string DescriptionSort { get; set; }
         public string ServerTypeSort { get; set; }
         public string ServerSort { get; set; }
     }
