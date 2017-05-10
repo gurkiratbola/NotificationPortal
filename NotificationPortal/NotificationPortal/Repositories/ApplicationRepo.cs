@@ -109,6 +109,23 @@ namespace NotificationPortal.Repositories
             }
         }
 
+
+        public IEnumerable<ApplicationServerVM> GetServerList()
+        {
+            var apps = _context.Server.Select(a => new ApplicationServerVM
+            {
+                ServerName = a.ServerName,
+                ReferenceID = a.ReferenceID,
+                Location = a.DataCenterLocation.Location,
+                Description = a.Description,
+                Status = a.Status.StatusName,
+
+            });
+
+            return apps;
+        }
+
+
         public ApplicationDetailVM GetDetailApplication(string referenceID)
         {
             Application application = _context.Application
@@ -192,22 +209,6 @@ namespace NotificationPortal.Repositories
         }
 
 
-        //public IEnumerable<ApplicationVM> GetApplicationList()
-        //{
-        //    IEnumerable<ApplicationVM> applicationList = _context.Application
-        //                                        .Select(c => new ApplicationVM
-        //                                        {
-        //                                            ApplicationName = c.ApplicationName,
-        //                                            ReferenceID = c.ReferenceID,
-        //                                            Description = c.Description,
-        //                                            URL = c.URL,
-        //                                            StatusID = c.StatusID,
-        //                                            ClientRefID = c.Client.ReferenceID,
-        //                                        });
-        //    return applicationList;
-        //}
-
-
         public IEnumerable<ApplicationListVM> GetApplicationList()
         {
             IEnumerable<ApplicationListVM> applicationList = _context.Application
@@ -263,6 +264,9 @@ namespace NotificationPortal.Repositories
                 msg = "Application name already exist.";
                 return false;
             }
+
+         
+
             try
             {
                 Application newApplication = new Application();
@@ -274,6 +278,15 @@ namespace NotificationPortal.Repositories
                 newApplication.URL = application.URL;
 
                 newApplication.ReferenceID = Guid.NewGuid().ToString();
+
+                if (application.ServerReferenceIDs == null)
+                {
+                    application.ServerReferenceIDs = new string[0];
+                }
+
+                var servers = _context.Server.Where(b => application.ServerReferenceIDs.Contains(b.ReferenceID));
+                newApplication.Servers = servers.ToList();
+
                 _context.Application.Add(newApplication);
                 _context.SaveChanges();
                 msg = "Application successfully added";
@@ -344,6 +357,17 @@ namespace NotificationPortal.Repositories
                 applicationUpdated.Description = application.Description;
                 applicationUpdated.URL = application.URL;
                 applicationUpdated.ClientID = clientID;
+
+                if (application.ServerReferenceIDs == null)
+                {
+                    application.ServerReferenceIDs = new string[0];
+                }
+
+                var servers = _context.Server.Where(b => application.ServerReferenceIDs.Contains(b.ReferenceID));
+
+                applicationUpdated.Servers.Clear();
+                applicationUpdated.Servers = servers.ToList();
+
                 _context.SaveChanges();
                 msg = "Application information succesfully updated.";
                 return true;
