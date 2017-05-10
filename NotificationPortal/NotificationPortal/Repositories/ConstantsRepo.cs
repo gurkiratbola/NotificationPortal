@@ -14,6 +14,12 @@ namespace NotificationPortal.Repositories
         public const string SORT_LEVEL_OF_IMPACT_ASCE = "level_of_impact_asce";
         public const string SORT_LEVEL_OF_IMPACT_DESC = "level_of_impact_desc";
 
+        public const string SORT_NOTIFICATION_BY_ID_ASCE = "notification_id_asce";
+        public const string SORT_NOTIFICATION_BY_ID_DESC = "notification_id_desc";
+
+        public const string SORT_NOTIFICATION_BY_DATE_ASCE = "notification_date_asce";
+        public const string SORT_NOTIFICATION_BY_DATE_DESC = "notification_date_desc";
+
         public const string SORT_NOTIFICATION_BY_HEADING_ASCE = "notification_heading_asce";
         public const string SORT_NOTIFICATION_BY_HEADING_DESC = "notification_heading_desc";
 
@@ -34,6 +40,9 @@ namespace NotificationPortal.Repositories
 
         public const string SORT_APP_BY_DESCRIPTION_ASCE = "application_description_asce";
         public const string SORT_APP_BY_DESCRIPTION_DESC = "application_description_desc";
+
+        public const string SORT_NOTIFICATION_BY_PRIORITY_ASCE = "priority_value_asce";
+        public const string SORT_NOTIFICATION_BY_PRIORITY_DESC = "priority_value_desc";
 
         public const string SORT_SERVER_BY_NAME_ASCE = "server_name_asce";
         public const string SORT_SERVER_BY_NAME_DESC = "server_name_desc";

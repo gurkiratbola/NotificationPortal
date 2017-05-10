@@ -13,7 +13,7 @@ $(document).ready(function ($) {
         window.location = window.location.origin + $(this).data("href");
     });
     $('*').click(function (e) {
-        if (e.target.className != 'clickable-row') {
+        if (e.target.className !== 'clickable-row') {
             $(".hidden-menu").hide();
         }
     });
@@ -28,7 +28,7 @@ $(document).ready(function ($) {
     });
 
     // for sidebar dropdown
-    if (localStorage.getItem("isDropdownVisible") == null) {
+    if (localStorage.getItem("isDropdownVisible") === null) {
         localStorage.setItem("isDropdownVisible", false);
         //$(".sidebar-dropdown").hide();
     }

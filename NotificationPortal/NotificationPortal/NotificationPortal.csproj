@@ -266,6 +266,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\script.js" />
     <Content Include="Scripts\timezone.js" />
     <Content Include="Scripts\add-notification.js" />

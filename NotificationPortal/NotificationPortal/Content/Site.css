@@ -40,12 +40,17 @@ h3 {
     background-color: #44bbc1;
 }
 
+.text-coral {
+    color: lightcoral;
+}
+
 
 /* ==========================================================================
                             List Styles
 ========================================================================== */
 ul, li {
     list-style: none;
+    padding: 0;
 }
 
 .heading-padding {
@@ -118,10 +123,6 @@ button:focus {
 
 .text-success {
     color: #44bbc1 !important;
-}
-
-.card {
-    background-color: transparent;
 }
 
 /* ==========================================================================
@@ -247,7 +248,7 @@ tbody {
 
 .text-indent {
     display: inline;
-    padding-left: 30px;
+    padding-left: 10px;
 }
 /* ==========================================================================
                             Sidebar Styles
@@ -418,7 +419,7 @@ h5.col-12 {
                             Page Styles: Dashboard
 ========================================================================== */
 .card-deck .card {
-    border: none;
+    border: 2px solid lightsteelblue
 }
 
 .card-deck {
@@ -426,13 +427,31 @@ h5.col-12 {
     padding: 1em 0 5px;
 }
 
+.card-header {
+    background-color: lightsteelblue;
+}
+
 .card-block {
     padding: 0;
 }
 
+.card-header h5 {
+    padding-left: 0.75em;
+}
+
+.card-header h5 > a {
+    color: white;
+}
+
+.card-header h5 > a:hover {
+    color: coral !important;
+    text-decoration: none;
+}
+
 .external-status {
-    padding: 2px 5px;
+    padding: 2px 7px 5px;
     border-radius: 5px;
+    font-size: 1em;
 }
 
 .border-muted {
@@ -440,5 +459,29 @@ h5.col-12 {
 }
 
 .card-header {
-    border-bottom: 2px solid #6f7e95;
+    border-bottom: 1px solid #ededed;
+}
+.notification-list {
+    padding-left: 20px;
+    position: relative;
+}
+
+.notification-list:before {
+    content: "";
+    position: absolute;
+    top: -1.6em;
+    left: 0;
+    width: 1em;
+    height: 2.3em;
+    border-left: 1px dotted #6f7e95;
+    border-bottom: 1px dotted #6f7e95;
+}
+
+h3.heading-padding {
+    margin-bottom: 30px;
+}
+
+h3.heading-padding.text-muted:hover {
+    text-decoration: none;
+    color: lightcoral !important;
 }

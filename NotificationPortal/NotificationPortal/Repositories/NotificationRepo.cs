@@ -18,6 +18,35 @@ namespace NotificationPortal.Repositories
         ApplicationDbContext _context = new ApplicationDbContext();
         SelectListRepo _slRepo = new SelectListRepo();
 
+        public NotificationIndexVM CreateIndexModel(string sortOrder, string currentFilter, string searchString, int? page, NotificationIndexVM model = null)
+        {
+            IEnumerable<NotificationThreadVM> allThreads = model == null ? GetAllNotifications() : GetFilteredNotifications(model);
+
+            // build the index model based on sort/filter/page information
+            page = searchString == null ? page : 1;
+            searchString = searchString ?? currentFilter;
+            int pageNumber = (page ?? 1);
+
+            model = new NotificationIndexVM
+            {
+                Threads = Sort(allThreads, sortOrder, searchString).ToPagedList(pageNumber, 3),
+                CurrentFilter = searchString,
+                CurrentSort = sortOrder,
+                LevelOfImpactSort = sortOrder == ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC ? ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE : ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
+                NotificationHeadingSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC,
+                NotificationTypeSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC,
+                PrioritySort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC,
+                StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
+                SearchString = "",
+                Page = pageNumber
+            };
+            model.NotificationTypeList = _slRepo.GetTypeList();
+            model.LevelOfImpactList = _slRepo.GetImpactLevelList();
+            model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
+            model.PriorityList = _slRepo.GetPriorityList();
+            return model;
+        }
+
         public NotificationCreateVM CreateAddModel(NotificationCreateVM model = null)
         {
             if (model == null)
@@ -33,7 +62,7 @@ namespace NotificationPortal.Repositories
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
             model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
-            model.ProirityList =_slRepo.GetPriorityList();
+            model.ProirityList = _slRepo.GetPriorityList();
             return model;
         }
 
@@ -192,7 +221,7 @@ namespace NotificationPortal.Repositories
             return model;
         }
 
-        public NotificationIndexVM GetAllNotifications(string sortOrder, string currentFilter, string searchString, int? page)
+        public IEnumerable<NotificationThreadVM> GetAllNotifications()
         {
             try
             {
@@ -209,26 +238,51 @@ namespace NotificationPortal.Repositories
                             SentDateTime = t.FirstOrDefault().SentDateTime,
                             NotificationType = t.LastOrDefault().NotificationType.NotificationTypeName,
                             LevelOfImpact = t.LastOrDefault().LevelOfImpact.LevelName,
+                            Priority = t.LastOrDefault().Priority.PriorityName,
                             Status = t.LastOrDefault().Status.StatusName
                         })
                     .GroupBy(n => n.IncidentNumber)
                     .Select(t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault());
-                
-                // build the index model based on sort/filter/page information
-                page = searchString == null ? page:1;
-                searchString = searchString ?? currentFilter;
-                int pageNumber = (page ?? 1);
-                NotificationIndexVM model = new NotificationIndexVM
-                {
-                    Threads = Sort(allThreads, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
-                    CurrentFilter= searchString,
-                    CurrentSort= sortOrder,
-                    LevelOfImpactSort = sortOrder == ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC ? ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE : ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
-                    NotificationHeadingSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC,
-                    NotificationTypeSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC,
-                    StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
-                };
-                return model;
+                return allThreads;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public IEnumerable<NotificationThreadVM> GetFilteredNotifications(NotificationIndexVM model)
+        {
+            try
+            {
+                model.NotificationTypeIDs = model.NotificationTypeIDs ?? _slRepo.GetTypeList().Select(o => int.Parse(o.Value)).ToArray();
+                model.LevelOfImpactIDs = model.LevelOfImpactIDs ?? _slRepo.GetImpactLevelList().Select(o => int.Parse(o.Value)).ToArray();
+                model.PriorityIDs = model.PriorityIDs ?? _slRepo.GetPriorityList().Select(o => int.Parse(o.Value)).ToArray();
+                model.StatusIDs = model.StatusIDs ?? _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION).Select(o => int.Parse(o.Value)).ToArray();
+                IEnumerable<Notification> allNotifications = _context.Notification;
+                IEnumerable<NotificationThreadVM> allThreads = allNotifications
+                    .GroupBy(n => n.IncidentNumber)
+                    .Select(t => t.OrderBy(i => i.SentDateTime))
+                    .Select(n => new { First = n.FirstOrDefault(), Last = n.LastOrDefault() })
+                    .Where(t => model.NotificationTypeIDs.Contains(t.Last.NotificationTypeID)
+                    && model.LevelOfImpactIDs.Contains(t.Last.LevelOfImpactID)
+                    && model.StatusIDs.Contains(t.Last.StatusID)
+                    && model.PriorityIDs.Contains(t.Last.PriorityID))
+                    .Select(
+                        t => new NotificationThreadVM()
+                        {
+                            ReferenceID = t.First.ReferenceID,
+                            IncidentNumber = t.First.IncidentNumber,
+                            NotificationHeading = t.First.NotificationHeading,
+                            SentDateTime = t.First.SentDateTime,
+                            NotificationType = t.Last.NotificationType.NotificationTypeName,
+                            LevelOfImpact = t.Last.LevelOfImpact.LevelName,
+                            Priority = t.Last.Priority.PriorityName,
+                            Status = t.Last.Status.StatusName
+                        })
+                    .GroupBy(n => n.IncidentNumber)
+                    .Select(t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault());
+                return allThreads;
             }
             catch (Exception)
             {
@@ -238,7 +292,7 @@ namespace NotificationPortal.Repositories
 
         public IEnumerable<ApplicationServerOptionVM> GetApplicationList()
         {
-            var apps = _context.Application.Select(a=>new { Application=a, Servers=a.Servers });
+            var apps = _context.Application.Select(a => new { Application = a, Servers = a.Servers });
             var appList = new List<ApplicationServerOptionVM>() { };
             foreach (var app in apps)
             {
@@ -277,7 +331,7 @@ namespace NotificationPortal.Repositories
                 var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
                 var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
                 var priorityValue = _context.Notification.Where(n => notification.ProirityID == n.Priority.PriorityID)
-                    .Select(n=>n.Priority.PriorityValue)
+                    .Select(n => n.Priority.PriorityValue)
                     .FirstOrDefault();
                 Notification newNotification = new Notification()
                 {
@@ -409,7 +463,7 @@ namespace NotificationPortal.Repositories
 
         }
 
-        public IEnumerable<NotificationThreadVM> Sort(IEnumerable<NotificationThreadVM> list, string sortOrder, string searchString = null)
+        public IEnumerable<NotificationThreadVM> Sort(IEnumerable<NotificationThreadVM> list, string sortOrder, string searchString)
         {
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -438,6 +492,14 @@ namespace NotificationPortal.Repositories
                     list = list.OrderByDescending(n => n.NotificationType);
                     break;
 
+                case ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_ASCE:
+                    list = list.OrderBy(n => n.Priority);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC:
+                    list = list.OrderByDescending(n => n.Priority);
+                    break;
+                    
                 case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
                     list = list.OrderBy(n => n.Status);
                     break;
@@ -475,14 +537,14 @@ namespace NotificationPortal.Repositories
                     receivers = apps.SelectMany(a => a.UserDetails.Select(u => u.User.Email)).ToList();
                 }
                 receivers = receivers.Distinct().ToList();
-                
+
                 List<MailMessage> mails = new List<MailMessage>();
                 foreach (string receiver in receivers)
                 {
                     // check if user have confirmed their email
                     UserManager<ApplicationUser> manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
                     ApplicationUser user = manager.FindByEmail(receiver);
-                    if (user!=null)
+                    if (user != null)
                     {
                         if (user.EmailConfirmed)
                         {
@@ -532,10 +594,11 @@ namespace NotificationPortal.Repositories
         public string NewIncidentNumber(string notificationType)
         {
             string newIncidentNumber;
-            if (notificationType==Key.NOTIFICATION_TYPE_INCIDENT)
+            if (notificationType == Key.NOTIFICATION_TYPE_INCIDENT)
             {
                 newIncidentNumber = "INC-";
-            }else if (notificationType == Key.NOTIFICATION_TYPE_MAINTENANCE)
+            }
+            else if (notificationType == Key.NOTIFICATION_TYPE_MAINTENANCE)
             {
                 newIncidentNumber = "MAI-";
             }
@@ -543,10 +606,10 @@ namespace NotificationPortal.Repositories
             {
                 newIncidentNumber = "UND-";
             }
-            
+
             int max = 20;
             var incidentNumbers = _context.Notification
-                .Where(n => n.IncidentNumber.Substring(0,newIncidentNumber.Length) == newIncidentNumber)
+                .Where(n => n.IncidentNumber.Substring(0, newIncidentNumber.Length) == newIncidentNumber)
                 .Select(n => int.Parse(n.IncidentNumber.Substring(newIncidentNumber.Length)));
             var incidentNumberSet = new HashSet<int>(incidentNumbers);
 

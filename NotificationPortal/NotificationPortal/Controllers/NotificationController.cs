@@ -23,9 +23,24 @@ namespace NotificationPortal.Controllers
         //}
 
         [HttpGet]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int[] NotificationTypeIDs, int[] LevelOfImpactIDs, int[] StatusIDs, int[] PriorityIDs)
         {
-            NotificationIndexVM model = _nRepo.GetAllNotifications(sortOrder, currentFilter, searchString, page);
+            NotificationIndexVM model;
+            if (NotificationTypeIDs==null && LevelOfImpactIDs == null && StatusIDs == null && PriorityIDs == null)
+            {
+                model = null;
+            }
+            else
+            {
+                model = new NotificationIndexVM() {LevelOfImpactIDs= LevelOfImpactIDs, NotificationTypeIDs = NotificationTypeIDs , PriorityIDs = PriorityIDs ,StatusIDs= StatusIDs };
+            }
+            model = _nRepo.CreateIndexModel(sortOrder, currentFilter, searchString, page, model);
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Index(NotificationIndexVM model)
+        {
+            model = _nRepo.CreateIndexModel(model.CurrentSort, model.CurrentFilter, model.SearchString, model.Page, model);
             return View(model);
         }
 
