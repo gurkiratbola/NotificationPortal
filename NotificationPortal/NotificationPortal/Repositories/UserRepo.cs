@@ -2,20 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
 using System.Data.SqlClient;
-using System.Data.Entity;
 using PagedList;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using System.Security.Policy;
-using System.Net.Mail;
-using Microsoft.Owin.Host.SystemWeb;
 
 namespace NotificationPortal.Repositories
 {
@@ -198,7 +190,7 @@ namespace NotificationPortal.Repositories
                     };
 
                     // make the user at this point
-                    var result = userManager.Create(user);
+                    userManager.Create(user);
 
                     // pass the userId to controller to send the email
                     userId = user.Id;

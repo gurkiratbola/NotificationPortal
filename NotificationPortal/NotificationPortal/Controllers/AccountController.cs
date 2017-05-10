@@ -196,7 +196,7 @@ namespace NotificationPortal.Controllers
                 return RedirectToAction("SetPassword", "User");
             }
 
-            return RedirectToAction("Error");
+            return View("Error");
 
             //return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
