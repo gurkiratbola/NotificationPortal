@@ -1,4 +1,4 @@
-﻿@model NotificationPortal.ViewModels.UserIndexVM
+@model NotificationPortal.ViewModels.UserIndexVM
 @using PagedList.Mvc;
 
 @{
@@ -36,22 +36,40 @@
 
         <table class="table table-bordered">
             @{
+                var filterByRoleName = "";
+                var filterByEmail = "";
                 var filterByFirstName = "";
+                var filterByLastName = "";
                 var filterByClient = "";
                 var filterByStatus = "";
                 if (Model.CurrentSort != null)
                 {
-                    filterByFirstName = Model.CurrentSort.Contains("firstname") ? "bg-mint" : "";
+                    filterByRoleName = Model.CurrentSort.Contains("role") ? "bg-mint" : "";
+                    filterByEmail = Model.CurrentSort.Contains("email") ? "bg-mint" : "";
+                    filterByFirstName = Model.CurrentSort.Contains("first") ? "bg-mint" : "";
+                    filterByLastName = Model.CurrentSort.Contains("last") ? "bg-mint" : "";
                     filterByClient = Model.CurrentSort.Contains("client") ? "bg-mint" : "";
                     filterByStatus = Model.CurrentSort.Contains("status") ? "bg-mint" : "";
                 }
             }
             <tr class="bg-inverse text-white text-center">
-                <th>
-                    @Html.ActionLink("Role", "Index", new { sortOrder = ViewBag.ClientNameSort, currentFilter = ViewBag.CurrentFilter })
+                <th class="@filterByRoleName">
+                    <a href="@Url.Action("Index", "User", new { sortOrder = Model.RoleNameSort, currentFilter = Model.CurrentFilter })">
+                        Role
+                        <span class="filter-arrows">
+                            <i class="fa fa-caret-up" aria-hidden="true"></i>
+                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </span>
+                    </a>
                 </th>
-                <th>
-                    @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
+                <th class="@filterByEmail">
+                    <a href="@Url.Action("Index", "User", new { sortOrder = Model.EmailSort, currentFilter = Model.CurrentFilter })">
+                        Email
+                        <span class="filter-arrows">
+                            <i class="fa fa-caret-up" aria-hidden="true"></i>
+                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </span>
+                    </a>
                 </th>
                 <th class="@filterByFirstName">
                     <a href="@Url.Action("Index", "User", new { sortOrder = Model.FirstNameSort, currentFilter = Model.CurrentFilter })">
@@ -62,8 +80,14 @@
                         </span>
                     </a>
                 </th>
-                <th>
-                    @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.FirstNameSort, currentFilter = ViewBag.CurrentFilter })
+                <th class="@filterByLastName">
+                    <a href="@Url.Action("Index", "User", new { sortOrder = Model.LastNameSort, currentFilter = Model.CurrentFilter })">
+                        Last Name
+                        <span class="filter-arrows">
+                            <i class="fa fa-caret-up" aria-hidden="true"></i>
+                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </span>
+                    </a>
                 </th>
                 <th class="@filterByClient">
                     <a href="@Url.Action("Index", "User", new { sortOrder = Model.ClientHeadingSort, currentFilter = Model.CurrentFilter })">

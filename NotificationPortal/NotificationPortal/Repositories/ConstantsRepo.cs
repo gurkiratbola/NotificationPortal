@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -22,9 +22,6 @@ namespace NotificationPortal.Repositories
 
         public const string SORT_STATUS_BY_NAME_ASCE = "status_name_asce";
         public const string SORT_STATUS_BY_NAME_DESC = "status_name_desc";
-
-        public const string SORT_FIRST_NAME_BY_ASCE = "first_name_asce";
-        public const string SORT_FIRST_NAME_BY_DESC = "first_name_desc";
 
         public const string SORT_APP_BY_NAME_ASCE = "application_name_asce";
         public const string SORT_APP_BY_NAME_DESC = "application_name_desc";
@@ -50,5 +47,17 @@ namespace NotificationPortal.Repositories
         public const string SORT_SERVER_BY_LOCATION_NAME_ASCE = "server_location_name_asce";
         public const string SORT_SERVER_BY_LOCATION_NAME_DESC = "server_location_name_desc";
 
+        // User Repository Constants
+        public const string SORT_FIRST_NAME_BY_ASCE = "first_name_asce";
+        public const string SORT_FIRST_NAME_BY_DESC = "first_name_desc";
+
+        public const string SORT_LAST_NAME_BY_ASCE = "last_name_asce";
+        public const string SORT_LAST_NAME_BY_DESC = "last_name_desc";
+
+        public const string SORT_ROLE_NAME_BY_ASCE = "role_name_asce";
+        public const string SORT_ROLE_NAME_BY_DESC = "role_name_desc";
+
+        public const string SORT_EMAIL_BY_ASCE = "email_asce";
+        public const string SORT_EMAIL_BY_DESC = "email_desc";
     }
 }
