@@ -76,7 +76,7 @@ else
                 </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="dashboard-table">
             @foreach (var item in Model.Notifications)
             {
                 var impactClass = item.LevelOfImpact.ToUpper() == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING.ToUpper() ? "badge badge-success" : "badge badge-danger";
