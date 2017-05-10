@@ -26,8 +26,6 @@ namespace NotificationPortal.Repositories
             switch (sortOrder)
             {
              
-               
-
                 case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
                     list = list.OrderBy(c => c.StatusName);
                     break;
@@ -48,6 +46,7 @@ namespace NotificationPortal.Repositories
                                                     StatusName = c.StatusName,
                                                     StatusTypeID = c.StatusTypeID,
                                                     StatusID = c.StatusID,
+                                                    StatusTypeName = c.StatusType.StatusTypeName
                                                     //ClientRefID = c.Client.ReferenceID,
                                                 });
             return statusList;
@@ -71,6 +70,7 @@ namespace NotificationPortal.Repositories
                 Status newStatus = new Status();
                 newStatus.StatusName = status.StatusName;
                 newStatus.StatusTypeID = status.StatusTypeID;
+   
                 _context.Status.Add(newStatus);
                 _context.SaveChanges();
                 msg = "Application successfully added";
@@ -92,26 +92,11 @@ namespace NotificationPortal.Repositories
                                 StatusName = b.StatusName,
                                 StatusTypeID = b.StatusTypeID,
                                 StatusID = b.StatusID,
+                                StatusTypeName = b.StatusType.StatusTypeName
                             }).FirstOrDefault();
             return status;
         }
 
-        //public ApplicationVM GetDeleteStatus(int statusID)
-        //{
-        //    ApplicationVM application = _context.Application
-        //                    .Where(a => a.ReferenceID == referenceID)
-        //                    .Select(b => new ApplicationVM
-        //                    {
-        //                        ApplicationName = b.ApplicationName,
-        //                        ReferenceID = b.ReferenceID,
-        //                        Description = b.Description,
-        //                        URL = b.URL,
-        //                        StatusID = b.StatusID,
-        //                        ClientRefID = b.Client.ReferenceID,
-        //                        //ClientID = b.ClientID,
-        //                    }).FirstOrDefault();
-        //    return application;
-        //}
 
         public bool EditStatus(StatusVM status, out string msg)
         {
@@ -129,6 +114,7 @@ namespace NotificationPortal.Repositories
                                         .FirstOrDefault();
                 statusUpdated.StatusName = status.StatusName;
                 statusUpdated.StatusTypeID = status.StatusTypeID;
+                
                 _context.SaveChanges();
                 msg = "Application information succesfully updated.";
                 return true;
@@ -156,8 +142,7 @@ namespace NotificationPortal.Repositories
                 msg = "application could not be deleted.";
                 return false;
             }
-           
-
+          
             try
             {
                 _context.Status.Remove(statusToBeDeleted);
