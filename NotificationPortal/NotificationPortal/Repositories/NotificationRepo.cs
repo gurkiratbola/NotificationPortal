@@ -84,6 +84,7 @@ namespace NotificationPortal.Repositories
 
             Notification lastestNotification = notifications.LastOrDefault();
 
+            // TODO: filter servers ??
             IEnumerable<NotificationServerVM> servers =
                 lastestNotification.Servers.Select(
                     s => new NotificationServerVM
@@ -95,8 +96,33 @@ namespace NotificationPortal.Repositories
                     });
 
             // Get Applications that are associated to this notification
+            IEnumerable<Application> associatedNotificationApplications;
+            if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
+            {
+                string userId = HttpContext.Current.User.Identity.GetUserId();
+                var userApps = _context.UserDetail
+                    .Where(u => u.UserID == userId)
+                    .FirstOrDefault().Applications;
+
+                associatedNotificationApplications = lastestNotification.Applications
+                    .Where(a => userApps.Contains(a));
+            }
+            else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
+            {
+                string userId = HttpContext.Current.User.Identity.GetUserId();
+                var userApps = _context.UserDetail
+                    .Where(u => u.UserID == userId)
+                    .FirstOrDefault().Client.Applications;
+                associatedNotificationApplications = lastestNotification.Applications
+                    .Where(a => userApps.Contains(a));
+            }
+            else
+            {
+                associatedNotificationApplications = lastestNotification.Applications;
+            }
+
             IEnumerable<NotificationApplicationVM> apps =
-                lastestNotification.Applications.Select(
+                associatedNotificationApplications.Select(
                     a => new NotificationApplicationVM
                     {
                         ApplicationName = a.ApplicationName,
@@ -107,7 +133,10 @@ namespace NotificationPortal.Repositories
 
             // If there are no applications associated to this notification
             // get all application associated with server(s)
-            if (apps.Count() == 0)
+            // only for admin and staff
+            if (apps.Count() == 0
+                && HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN)
+                && HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
             {
                 apps =
                 lastestNotification.Servers.SelectMany(s => s.Applications.Select(
@@ -229,10 +258,10 @@ namespace NotificationPortal.Repositories
                 if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
                 {
                     string userId = HttpContext.Current.User.Identity.GetUserId();
-                    var uesrApps = _context.UserDetail
+                    var userApps = _context.UserDetail
                         .Where(u => u.UserID == userId)
                         .FirstOrDefault().Applications;
-                    allNotifications = uesrApps
+                    allNotifications = userApps
                     .Select(x => new { Application = x, x.Servers })
                     .SelectMany(x => x.Servers
                     .SelectMany(n => n.Notifications
@@ -241,10 +270,10 @@ namespace NotificationPortal.Repositories
                 else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
                 {
                     string userId = HttpContext.Current.User.Identity.GetUserId();
-                    var uesrApps = _context.UserDetail
+                    var userApps = _context.UserDetail
                         .Where(u => u.UserID == userId)
                         .FirstOrDefault().Client.Applications;
-                    allNotifications = uesrApps
+                    allNotifications = userApps
                     .Select(x => new { Application = x, x.Servers })
                     .SelectMany(x => x.Servers
                     .SelectMany(n => n.Notifications
@@ -285,6 +314,32 @@ namespace NotificationPortal.Repositories
                 model.PriorityIDs = model.PriorityIDs ?? _slRepo.GetPriorityList().Select(o => int.Parse(o.Value)).ToArray();
                 model.StatusIDs = model.StatusIDs ?? _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION).Select(o => int.Parse(o.Value)).ToArray();
                 IEnumerable<Notification> allNotifications = _context.Notification;
+
+                if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
+                {
+                    string userId = HttpContext.Current.User.Identity.GetUserId();
+                    var userApps = _context.UserDetail
+                        .Where(u => u.UserID == userId)
+                        .FirstOrDefault().Applications;
+                    allNotifications = userApps
+                    .Select(x => new { Application = x, x.Servers })
+                    .SelectMany(x => x.Servers
+                    .SelectMany(n => n.Notifications
+                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
+                }
+                else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
+                {
+                    string userId = HttpContext.Current.User.Identity.GetUserId();
+                    var userApps = _context.UserDetail
+                        .Where(u => u.UserID == userId)
+                        .FirstOrDefault().Client.Applications;
+                    allNotifications = userApps
+                    .Select(x => new { Application = x, x.Servers })
+                    .SelectMany(x => x.Servers
+                    .SelectMany(n => n.Notifications
+                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
+                }
+
                 IEnumerable<NotificationThreadVM> allThreads = allNotifications
                     .GroupBy(n => n.IncidentNumber)
                     .Select(t => t.OrderBy(i => i.SentDateTime))
