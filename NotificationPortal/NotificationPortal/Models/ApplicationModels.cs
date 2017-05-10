@@ -88,6 +88,7 @@ namespace NotificationPortal.Models
         public virtual SendMethod SendMethod { get; set; }
         public virtual ICollection<Server> Servers { get; set; }
         public virtual Status Status { get; set; }
+        public virtual UserDetail UserDetail { get; set; }
         [ForeignKey("Status")]
         public int StatusID { get; set; }
         [ForeignKey("SendMethod")]
@@ -98,6 +99,8 @@ namespace NotificationPortal.Models
         public int NotificationTypeID { get; set; }
         [ForeignKey("Priority")]
         public int PriorityID { get; set; }
+        [ForeignKey("UserDetail")]
+        public string UserID { get; set; }
         [StringLength(100)]
         [Index(IsUnique = true)]
         public string ReferenceID { get; set; }
@@ -205,6 +208,7 @@ namespace NotificationPortal.Models
         public string HomePhone { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
         public virtual Client Client { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
         public virtual Status Status { get; set; }
         public virtual ApplicationUser User { get; set; }
         [ForeignKey("Client")]
