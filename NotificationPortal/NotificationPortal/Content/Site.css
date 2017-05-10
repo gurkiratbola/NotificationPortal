@@ -496,3 +496,9 @@ h3.heading-padding.text-muted:hover {
     text-decoration: none;
     color: lightcoral !important;
 }
+/* ==========================================================================
+                            Page Styles: Profile
+========================================================================== */
+small.float-right {
+    margin-top: 5px !important;
+}

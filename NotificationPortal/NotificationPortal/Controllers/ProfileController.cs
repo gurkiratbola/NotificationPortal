@@ -28,8 +28,8 @@ namespace NotificationPortal.Controllers
                 bool success = _pRepo.EditProfile(model, out msg);
                 if (success)
                 {
-                    if (msg == "Username changed") {
-                        //return RedirectToAction("LogOff", "Account");
+                    if (msg == ProfileRepo.USERNAME_UPDATED) {
+                        // log off user when username/email has been changed
                         HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                         return RedirectToAction("Index", "Home");
                     }

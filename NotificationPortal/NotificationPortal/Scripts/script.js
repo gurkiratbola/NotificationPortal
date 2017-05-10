@@ -49,4 +49,7 @@ $(document).ready(function ($) {
             localStorage.removeItem("isDropdownVisible");
         }
     })
+
+    // for profile email small print
+    $(".profile-email").append("<small class='float-right'>Updating email will log user out instantly</small>")
 });

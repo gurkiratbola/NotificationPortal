@@ -37,12 +37,16 @@ else
                 var filterBySubject = "";
                 var filterByImpact = "";
                 var filterByDate = "";
+                const string ID_FILTER = "id";
+                const string HEADING_FILTER = "heading";
+                const string IMPACT_FILTER = "impact";
+                const string DATE_FILTER = "date";
                 if (Model.CurrentSort != null)
                 {
-                    filterById = Model.CurrentSort.Contains("id") ? "bg-mint" : "";
-                    filterBySubject = Model.CurrentSort.Contains("heading") ? "bg-mint" : "";
-                    filterByImpact = Model.CurrentSort.Contains("impact") ? "bg-mint" : "";
-                    filterByDate = Model.CurrentSort.Contains("date") ? "bg-mint" : "";
+                    filterById = Model.CurrentSort.Contains(ID_FILTER) ? "bg-mint" : "";
+                    filterBySubject = Model.CurrentSort.Contains(HEADING_FILTER) ? "bg-mint" : "";
+                    filterByImpact = Model.CurrentSort.Contains(IMPACT_FILTER) ? "bg-mint" : "";
+                    filterByDate = Model.CurrentSort.Contains(DATE_FILTER) ? "bg-mint" : "";
                 }
             }
             <thead>

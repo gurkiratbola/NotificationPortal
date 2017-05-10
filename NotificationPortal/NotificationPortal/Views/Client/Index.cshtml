@@ -38,9 +38,12 @@
         @{ 
             var filterByStatus = "";
             var filterByClient = "";
+            const string CLIENT_FILTER = "client";
+            const string STATUS_FILTER = "status";
+
             if (Model.CurrentSort != null) {
-                filterByStatus = Model.CurrentSort.Contains("status") ? "bg-mint" : "";
-                filterByClient = Model.CurrentSort.Contains("client") ? "bg-mint" : "";
+                filterByStatus = Model.CurrentSort.Contains(STATUS_FILTER) ? "bg-mint" : "";
+                filterByClient = Model.CurrentSort.Contains(CLIENT_FILTER) ? "bg-mint" : "";
             }
         }
         <tr class="bg-inverse text-white">
