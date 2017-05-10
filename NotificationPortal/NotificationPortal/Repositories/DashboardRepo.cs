@@ -24,53 +24,51 @@ namespace NotificationPortal.Repositories
                 // if user is internal
                 if (HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN) || HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
                 {
+                        IEnumerable<DashboardVM> notifications = _context.Notification
+                                                                .Select(s => new DashboardVM()
+                                                                {
+                                                                    ThreadID = s.IncidentNumber,
+                                                                    LevelOfImpact = s.LevelOfImpact.LevelName,
+                                                                    ImpactValue = s.LevelOfImpact.LevelValue,
+                                                                    ThreadHeading = s.NotificationHeading,
+                                                                    NotificationType = s.NotificationType.NotificationTypeName,
+                                                                    SentDateTime = s.SentDateTime,
+                                                                    Status = s.Status.StatusName,
+                                                                })
+                                                                .OrderBy(x => x.LevelOfImpact);
 
-                    IEnumerable<DashboardVM> notifications = _context.Notification
-                                                            .Select(s => new DashboardVM()
-                                                            {
-                                                                ThreadID = s.IncidentNumber,
-                                                                LevelOfImpact = s.LevelOfImpact.LevelName,
-                                                                ImpactValue = s.LevelOfImpact.LevelValue,
-                                                                ThreadHeading = s.NotificationHeading,
-                                                                NotificationType = s.NotificationType.NotificationTypeName,
-                                                                SentDateTime = s.SentDateTime,
-                                                                Status = s.Status.StatusName,
-                                                            })
-                                                            .OrderBy(x => x.LevelOfImpact);
+                        dashboard = notifications
+                                    .GroupBy(n => n.ThreadID)
+                                    .Select(
+                                        t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
+                        );
 
-                    dashboard = notifications
-                                .GroupBy(n => n.ThreadID)
-                                .Select(
-                                    t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
-                    );
+                        dashboard = from n in dashboard where n.Status == Key.STATUS_NOTIFICATION_OPEN select n;
+                        //to do
+                        //tabs that separate incident from maintainance 
+                        //heading should show the first not last (from dakota)
+                        //remove hard-coded value above, after database has been fixed
+                        int totalNumOfNotifications = dashboard.Count();
+                        page = searchString == null ? page : 1;
+                        int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+                        searchString = searchString ?? currentFilter;
+                        int pageNumber = (page ?? 1);
+                        int defaultPageSize = ConstantsRepo.PAGE_SIZE;
 
-                    dashboard = from n in dashboard where n.Status == Key.STATUS_NOTIFICATION_OPEN select n;
-                    //to do
-                    //tabs that separate incident from maintainance 
-                    //heading should show the first not last (from dakota)
-                    //remove hard-coded value above, after database has been fixed
-                    int totalNumOfNotifications = dashboard.Count();
-                    page = searchString == null ? page : 1;
-                    int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
-                    searchString = searchString ?? currentFilter;
-                    int pageNumber = (page ?? 1);
-                    int defaultPageSize = ConstantsRepo.PAGE_SIZE;
-                    
 
-                    model = new DashboardIndexVM
-                    {
-                        Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
-                        CurrentFilter = searchString,
-                        CurrentSort = sortOrder,
-                        TotalItemCount = totalNumOfNotifications,
-                        ItemStart = currentPageIndex * defaultPageSize + 1,
-                        ItemEnd = totalNumOfNotifications - (defaultPageSize * currentPageIndex) >= defaultPageSize ? defaultPageSize * (currentPageIndex + 1) : totalNumOfNotifications,
-                        IDSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_ID_ASCE? ConstantsRepo.SORT_NOTIFICATION_BY_ID_DESC : ConstantsRepo.SORT_NOTIFICATION_BY_ID_ASCE,
-                        DateSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_DATE_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_DATE_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_DATE_DESC,
-                        SubjectSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC,
-                        LevelOfImpactSort = sortOrder == ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC ? ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE : ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
-                    };
-
+                        model = new DashboardIndexVM
+                        {
+                            Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
+                            CurrentFilter = searchString,
+                            CurrentSort = sortOrder,
+                            TotalItemCount = totalNumOfNotifications,
+                            ItemStart = currentPageIndex * defaultPageSize + 1,
+                            ItemEnd = totalNumOfNotifications - (defaultPageSize * currentPageIndex) >= defaultPageSize ? defaultPageSize * (currentPageIndex + 1) : totalNumOfNotifications,
+                            IDSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_ID_ASCE ? ConstantsRepo.SORT_NOTIFICATION_BY_ID_DESC : ConstantsRepo.SORT_NOTIFICATION_BY_ID_ASCE,
+                            DateSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_DATE_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_DATE_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_DATE_DESC,
+                            SubjectSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC,
+                            LevelOfImpactSort = sortOrder == ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC ? ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE : ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
+                        };
                 }
                 else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
                 {
@@ -98,6 +96,7 @@ namespace NotificationPortal.Repositories
                                 .Where(u => u.UserID == userId)
                                 .SingleOrDefault()
                                 .Applications;
+                    dashboard = GetAppNotifications(dashboard, apps);
                     model = new DashboardIndexVM
                     {
                         Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(1, dashboard.Count()),
