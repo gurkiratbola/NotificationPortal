@@ -156,7 +156,27 @@ namespace NotificationPortal.ViewModels
 
         public IEnumerable<ApplicationServerVM> Servers { get; set; }
         public IEnumerable<ApplicationUsersVM> Users { get; set; }
+        public IEnumerable<ApplicationNotificationsVM> Notifications { get; set; }
         //public IEnumerable<ServerThreadVM> Threads { get; set; }
+    }
+
+    public class ApplicationNotificationsVM
+    {
+        public string ReferenceID { get; set; }
+
+        public string IncidentNumber { get; set; }
+
+        public string ThreadID { get; set; }
+
+
+
+        [DisplayName("Description")]
+        public string Description { get; set; }
+
+
+        [DisplayName("Status")]
+        public string Status { get; set; }
+
     }
 
     public class ApplicationServerVM
