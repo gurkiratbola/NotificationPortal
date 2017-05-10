@@ -21,9 +21,12 @@ namespace NotificationPortal.Repositories
             IEnumerable<DashboardVM> dashboard = null;
             if (User != null)
             {
+
                 // if user is internal
                 if (HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN) || HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
                 {
+                    try
+                    {
                         IEnumerable<DashboardVM> notifications = _context.Notification
                                                                 .Select(s => new DashboardVM()
                                                                 {
@@ -69,38 +72,54 @@ namespace NotificationPortal.Repositories
                             SubjectSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC,
                             LevelOfImpactSort = sortOrder == ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC ? ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE : ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
                         };
+                    }
+                    catch {
+                        model = null;
+                    }
                 }
                 else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
                 {
                     // if it's external admin
-                    var username = User.Identity.Name;
-                    var clientID = _context.UserDetail
-                                .Where(u => u.User.UserName == username)
-                                .FirstOrDefault().ClientID;
-
-                    // get all notifications for all client apps
-                    var apps = _context.Client
-                                .Where(n => n.ClientID == clientID)
-                                .SingleOrDefault()
-                                .Applications;
-                    dashboard = GetAppNotifications(dashboard,apps);
-                    model = new DashboardIndexVM
+                    try
                     {
-                        Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(1, dashboard.Count()),
-                    };
+                        var username = User.Identity.Name;
+                        var clientID = _context.UserDetail
+                                    .Where(u => u.User.UserName == username)
+                                    .FirstOrDefault().ClientID;
+
+                        // get all notifications for all client apps
+                        var apps = _context.Client
+                                    .Where(n => n.ClientID == clientID)
+                                    .SingleOrDefault()
+                                    .Applications;
+                        dashboard = GetAppNotifications(dashboard, apps);
+                        model = new DashboardIndexVM
+                        {
+                            Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(1, dashboard.Count()),
+                        };
+                    }
+                    catch {
+                        model = null;
+                    }
                 }
                 else {
                     // if it's external user
-                    var userId = User.Identity.GetUserId();
-                    var apps = _context.UserDetail
-                                .Where(u => u.UserID == userId)
-                                .SingleOrDefault()
-                                .Applications;
-                    dashboard = GetAppNotifications(dashboard, apps);
-                    model = new DashboardIndexVM
+                    try
                     {
-                        Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(1, dashboard.Count()),
-                    };
+                        var userId = User.Identity.GetUserId();
+                        var apps = _context.UserDetail
+                                    .Where(u => u.UserID == userId)
+                                    .SingleOrDefault()
+                                    .Applications;
+                        dashboard = GetAppNotifications(dashboard, apps);
+                        model = new DashboardIndexVM
+                        {
+                            Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(1, dashboard.Count()),
+                        };
+                    }
+                    catch {
+                        model = null;
+                    }
                 }
 
             }
