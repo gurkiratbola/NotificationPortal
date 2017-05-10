@@ -12,8 +12,8 @@ namespace NotificationPortal.ViewModels
 
     public class NotificationIndexVM
     {
-        [Display(Name = "Reference ID")]
-        public string ReferenceID { get; set; }
+        [Display(Name = "Incidence #")]
+        public string IncidenceNumber { get; set; }
         [Display(Name = "Type")]
         public string NotificationType { get; set; }
         [Display(Name = "Level of Impact")]

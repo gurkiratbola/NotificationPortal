@@ -327,7 +327,7 @@ namespace NotificationPortal.Repositories
                 {
                     notification.ApplicationReferenceIDs = new string[0];
                 }
-
+                string newIncidentNumber = NewIncidentNumber(notification.NotificationTypeID);
                 var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
                 var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
                 var priorityValue = _context.Notification.Where(n => notification.ProirityID == n.Priority.PriorityID)
@@ -344,7 +344,7 @@ namespace NotificationPortal.Repositories
                     SendMethodID = notification.SentMethodID,
                     //TO DO: discuss how referenceID is generated
                     ReferenceID = Guid.NewGuid().ToString(),
-                    IncidentNumber = notification.IncidentNumber ?? Guid.NewGuid().ToString(),
+                    IncidentNumber = notification.IncidentNumber ?? newIncidentNumber,
                     //TO DO: convert input time to UTC time
                     SentDateTime = DateTime.Now,
                     StartDateTime = notification.StartDateTime,
@@ -589,10 +589,10 @@ namespace NotificationPortal.Repositories
             }
 
         }
-
-        // TODO verify the functionality
-        public string NewIncidentNumber(string notificationType)
+        
+        public string NewIncidentNumber(int notificationTypeID)
         {
+            string notificationType = _slRepo.GetTypeList().Where(i=>i.Value==notificationTypeID.ToString()).Select(i=>i.Text).FirstOrDefault();
             string newIncidentNumber;
             if (notificationType == Key.NOTIFICATION_TYPE_INCIDENT)
             {
@@ -604,22 +604,33 @@ namespace NotificationPortal.Repositories
             }
             else
             {
+                // TODO 
                 newIncidentNumber = "UND-";
             }
 
-            int max = 20;
+            int max = 9999999;
             var incidentNumbers = _context.Notification
-                .Where(n => n.IncidentNumber.Substring(0, newIncidentNumber.Length) == newIncidentNumber)
-                .Select(n => int.Parse(n.IncidentNumber.Substring(newIncidentNumber.Length)));
-            var incidentNumberSet = new HashSet<int>(incidentNumbers);
+                .Select(n => n.IncidentNumber).Distinct();
+
+            var incidentNumberSet = new HashSet<int>();
+            foreach (var item in incidentNumbers)
+            {
+                int result = 0;
+                string numberString = item.Substring(newIncidentNumber.Length);
+                string prefix = item.Substring(0, newIncidentNumber.Length);
+                if (prefix== newIncidentNumber&&int.TryParse(numberString,out result))
+                {
+                    incidentNumberSet.Add(result);
+                }
+            }
 
             var range = Enumerable.Range(1, max).Where(i => !incidentNumberSet.Contains(i));
 
             var rand = new Random();
-            int index = rand.Next(0, max - incidentNumberSet.Count);
+            int index = rand.Next(0, range.Count());
             int randNumber = range.ElementAt(index);
 
-            return newIncidentNumber + randNumber.ToString();
+            return newIncidentNumber + randNumber.ToString("D7");
         }
     }
 }
