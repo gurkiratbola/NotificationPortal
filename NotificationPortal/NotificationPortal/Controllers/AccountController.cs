@@ -183,7 +183,7 @@ namespace NotificationPortal.Controllers
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
-        public 164async Task<ActionResult> ConfirmEmail(string userId, string code)
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
             {
@@ -196,7 +196,7 @@ namespace NotificationPortal.Controllers
                 return RedirectToAction("SetPassword", "User");
             }
 
-            return RedirectToAction("Error");
+            return View("Error");
 
             //return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }

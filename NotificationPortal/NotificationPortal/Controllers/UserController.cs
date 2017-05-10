@@ -1,19 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.Ajax.Utilities;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using NotificationPortal.Models;
 using NotificationPortal.Repositories;
 using NotificationPortal.ViewModels;
-using System.Net.Mail;
-using System.Net;
-using PagedList;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
+using System.Web.Security;
 
 namespace NotificationPortal.Controllers
 {
@@ -95,6 +87,23 @@ namespace NotificationPortal.Controllers
             model.ApplicationList = _userRepo.GetApplicationList();
 
             return View(model);
+        }
+
+        // GET: User/SetPassword
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult SetPassword()
+        {
+            return View();
+        }
+
+        // POST: User/SetPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SetPassword(SetPasswordVM model)
+        {
+            return View();
         }
 
         // GET: UserDetails/Edit
