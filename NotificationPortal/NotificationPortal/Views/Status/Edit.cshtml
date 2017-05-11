@@ -1,7 +1,7 @@
 ﻿@model NotificationPortal.ViewModels.StatusVM
 
 @{
-    ViewBag.Title = "Edit Server";
+    ViewBag.Title = "Edit Status";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,7 +9,7 @@
 
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="~/Server/Index" class="link-color">Servers</a></li>
+    <li class="breadcrumb-item"><a href="~/Status/Index" class="link-color">Status</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.StatusName)</li>
 </ol>
 
@@ -23,24 +23,25 @@
         @Html.HiddenFor(model => model.StatusID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.StatusName, htmlAttributes: new { @class = "control-label" })
-            <div class="">
+            @Html.LabelFor(model => model.StatusName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.StatusName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StatusName, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.StatusName, "", new { @class = "text-danger float-right" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.StatusTypeID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(m => m.StatusTypeID, ViewBag.StatusTypeList as SelectList, htmlAttributes: new { @class = "" })
+            @Html.LabelFor(model => model.StatusTypeID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
+                @Html.DropDownListFor(m => m.StatusTypeID, ViewBag.StatusTypeList as SelectList, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.StatusTypeID, "", new { @class = "text-danger float-right" })
 
             </div>
         </div>
 
 
         <div class="form-group">
-            <div class="">
+            <div class="offset-md-3 col-md-6">
                 <input type="submit" value="Save" class="btn btn-success" />
                 @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
             </div>

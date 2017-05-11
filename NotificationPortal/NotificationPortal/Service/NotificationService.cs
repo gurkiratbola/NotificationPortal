@@ -5,6 +5,9 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
+using Twilio;
+using Twilio.Types;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace NotificationPortal.Service
 {
@@ -12,10 +15,14 @@ namespace NotificationPortal.Service
     {
         public static Task SendEmail(MailMessage mail)
         {
-            //send the message 
-            SmtpClient smtp = new SmtpClient("mail.dakotajang.me");
+            // Pull Smtp config information from web.config
+            string smtpHost = System.Configuration.ConfigurationManager.AppSettings["SmtpHost"];
+            string smtpEmail = System.Configuration.ConfigurationManager.AppSettings["SmtpEmail"];
+            string smtpPassword = System.Configuration.ConfigurationManager.AppSettings["SmtpPassword"];
 
-            NetworkCredential Credentials = new NetworkCredential("admin_np@dakotajang.me", "P@ssw0rd!");
+            // send the message 
+            SmtpClient smtp = new SmtpClient(smtpHost);
+            NetworkCredential Credentials = new NetworkCredential(smtpEmail, smtpPassword);
             smtp.Credentials = Credentials;
             return smtp.SendMailAsync(mail);
         }
@@ -25,6 +32,31 @@ namespace NotificationPortal.Service
             foreach (MailMessage mail in mails)
             {
                 await SendEmail(mail);
+            }
+        }
+
+        public static async Task<MessageResource> SendSMS(PhoneNumber phoneNumber, string bodyText)
+        {
+            string accountSid = System.Configuration.ConfigurationManager.AppSettings["TwilioAccountSID"];
+            string authToken = System.Configuration.ConfigurationManager.AppSettings["TwilioAuthToken"];
+            string fromNumber = System.Configuration.ConfigurationManager.AppSettings["TwilioFromNumber"];
+
+            TwilioClient.Init(accountSid, authToken);
+            
+            var message = MessageResource.CreateAsync(
+                phoneNumber,
+                from: new PhoneNumber(fromNumber),
+                body: bodyText);
+
+            //Twilio doesn't currently have an async API, so return success.
+            return await message;
+        }
+
+        public static async Task SendSMS(List<PhoneNumber> phoneNumbers, string bodyText)
+        {
+            foreach (PhoneNumber phoneNumber in phoneNumbers)
+            {
+                await SendSMS(phoneNumber, bodyText);
             }
         }
     }

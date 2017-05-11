@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using NotificationPortal.Models;
+using NotificationPortal.Service;
 using NotificationPortal.ViewModels;
 using PagedList;
 using System;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using Twilio.Types;
 
 namespace NotificationPortal.Repositories
 {
@@ -613,11 +615,20 @@ namespace NotificationPortal.Repositories
                 List<string> receivers;
                 if (apps.Count() == 0)
                 {
-                    receivers = servers.SelectMany(s => s.Applications.SelectMany(a => a.UserDetails.Select(u => u.User.Email))).ToList();
+                    receivers = servers.SelectMany(
+                        s => s.Applications.SelectMany(
+                            a => a.UserDetails.Where(
+                            u => u.SendMethod.SendMethodName == Key.SEND_METHOD_EMAIL
+                            || u.SendMethod.SendMethodName == Key.SEND_METHOD_EMAIL_AND_SMS)
+                            .Select(u => u.User.Email))).ToList();
                 }
                 else
                 {
-                    receivers = apps.SelectMany(a => a.UserDetails.Select(u => u.User.Email)).ToList();
+                    receivers = apps.SelectMany(
+                        a => a.UserDetails.Where(
+                            u => u.SendMethod.SendMethodName == Key.SEND_METHOD_EMAIL
+                            || u.SendMethod.SendMethodName == Key.SEND_METHOD_EMAIL_AND_SMS)
+                            .Select(u => u.User.Email)).ToList();
                 }
                 receivers = receivers.Distinct().ToList();
 
@@ -641,7 +652,7 @@ namespace NotificationPortal.Repositories
                             //set the content 
                             mail.Subject = notification.NotificationHeading;
                             //TODO body needs to be improved
-                            mail.Body = notification.NotificationDescription;
+                            mail.Body = TemplateService.NotificationEmail(notification);
                             mail.IsBodyHtml = true;
 
                             switch (priorityValue)
@@ -670,7 +681,44 @@ namespace NotificationPortal.Repositories
             {
                 return null;
             }
+        }
 
+        public List<PhoneNumber> GetPhoneNumbers(NotificationCreateVM notification)
+        {
+            var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
+            var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
+            var priorityValue = _context.Notification.Where(n => notification.ProirityID == n.Priority.PriorityID)
+                .Select(n => n.Priority.PriorityValue)
+                .FirstOrDefault();
+
+            // Get recievers
+            List<string> receivers;
+            if (apps.Count() == 0)
+            {
+                receivers = servers.SelectMany(
+                    s => s.Applications.SelectMany(
+                        a => a.UserDetails.Where(
+                            u => u.SendMethod.SendMethodName == Key.SEND_METHOD_SMS
+                            || u.SendMethod.SendMethodName == Key.SEND_METHOD_EMAIL_AND_SMS)
+                            .Select(u => u.MobilePhone))).ToList();
+            }
+            else
+            {
+                receivers = apps.SelectMany(
+                    a => a.UserDetails.Where(
+                            u => u.SendMethod.SendMethodName == Key.SEND_METHOD_SMS
+                            || u.SendMethod.SendMethodName == Key.SEND_METHOD_EMAIL_AND_SMS)
+                            .Select(u => u.MobilePhone)).ToList();
+            }
+            receivers = receivers.Distinct().ToList();
+
+            // Get phone numbers
+            List<PhoneNumber> phoneNumbers = new List<PhoneNumber>();
+            foreach (var phoneNumber in receivers)
+            {
+                phoneNumbers.Add(new PhoneNumber(phoneNumber));
+            }
+            return phoneNumbers;
         }
 
         public string NewIncidentNumber(int notificationTypeID)

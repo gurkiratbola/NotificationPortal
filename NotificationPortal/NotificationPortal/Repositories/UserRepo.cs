@@ -214,6 +214,10 @@ namespace NotificationPortal.Repositories
                     var clientID = _context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
                                    .Select(client => client.ClientID).FirstOrDefault();
 
+                    // get default send method (Email)
+                    int defaultSendMethodID = _context.SendMethod.Where(s => s.SendMethodName == Key.SEND_METHOD_EMAIL)
+                                   .Select(s => s.SendMethodID).FirstOrDefault();
+
                     // duplicate the user from aspnetuser to userdetail
                     UserDetail details = new UserDetail()
                     {
@@ -223,7 +227,8 @@ namespace NotificationPortal.Repositories
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         StatusID = model.StatusID,
-                        ClientID = clientID
+                        ClientID = clientID,
+                        SendMethodID = defaultSendMethodID
                     };
 
                     if(model.ApplicationReferenceIDs == null)

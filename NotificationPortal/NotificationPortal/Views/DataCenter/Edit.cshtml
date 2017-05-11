@@ -1,0 +1,45 @@
+﻿@model NotificationPortal.ViewModels.DataCenterVM
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1 class="text-center display-4 pb-3">@Model.Location</h1>
+
+<ol class="breadcrumb bg-faded">
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="~/DataCenter/Index" class="link-color">Servers</a></li>
+    <li class="breadcrumb-item active">@Html.DisplayFor(model => model.Location)</li>
+</ol>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>DataCenterVM</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
+                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-success" />
+                @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

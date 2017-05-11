@@ -68,6 +68,8 @@ namespace NotificationPortal.Controllers
                 if (success)
                 {
                     await NotificationService.SendEmail(_nRepo.CreateMails(model));
+                    // TODO: crete template for sms
+                    await NotificationService.SendSMS(_nRepo.GetPhoneNumbers(model),model.NotificationDescription);
 
                     TempData["SuccessMsg"] = result;
                     return RedirectToAction("Index");

@@ -26,20 +26,6 @@ namespace NotificationPortal.Repositories
             return dataCenterList;
         }
 
-        //public SelectList GetServerList()
-        //{
-        //    IEnumerable<SelectListItem> serverList = _context.Server
-        //                            .Where(a => a.StatusType.StatusTypeName == APP_STATUS_TYPE_NAME)
-        //                            .Select(sv => new SelectListItem()
-        //                            {
-        //                                Value = sv.StatusID.ToString(),
-        //                                Text = sv.StatusName
-        //                            });
-
-        //    return new SelectList(statusList, "Value", "Text");
-        //}
-
-
         public bool AddDataCenter(DataCenterVM dataCenter, out string msg)
         {
             DataCenterLocation d = _context.DataCenterLocation.Where(a => a.Location == dataCenter.Location)
@@ -53,7 +39,7 @@ namespace NotificationPortal.Repositories
             {
                 DataCenterLocation newDataCenter = new DataCenterLocation();
                 newDataCenter.Location = dataCenter.Location;
-                newDataCenter.LocationID = dataCenter.LocationID;
+                //newDataCenter.LocationID = dataCenter.LocationID;
                 _context.DataCenterLocation.Add(newDataCenter);
                 _context.SaveChanges();
                 msg = "Data Center successfully added";
@@ -72,30 +58,15 @@ namespace NotificationPortal.Repositories
                             .Where(a => a.LocationID == referenceID)
                             .Select(b => new DataCenterVM
                             {
-                                Location = b.Location,                                            
+                                Location = b.Location,
                                 LocationID = b.LocationID,
 
                             }).FirstOrDefault();
             return dataCenter;
         }
 
-        //public ServerVM GetDeleteDataCenter(int referenceID)
-        //{
-        //    DataCenterVM server = _context.Server
-        //                    .Where(a => a.ReferenceID == referenceID)
-        //                    .Select(b => new ServerVM
-        //                    {
-        //                        ServerName = b.ServerName,
-        //                        ReferenceID = b.ReferenceID,
-        //                        Description = b.Description,
-        //                        StatusID = b.StatusID,
-        //                        LocationID = b.LocationID,
 
-        //                    }).FirstOrDefault();
-        //    return server;
-        //}
-
-        public bool EditDataCenter(DataCenterLocation dataCenter, out string msg)
+        public bool EditDataCenter(DataCenterVM dataCenter, out string msg)
         {
             DataCenterLocation d = _context.DataCenterLocation.Where(a => a.Location == dataCenter.Location).FirstOrDefault();
             if (d != null)
@@ -110,7 +81,7 @@ namespace NotificationPortal.Repositories
                                         .FirstOrDefault();
                 dataCenterUpdated.Location = dataCenter.Location;
                 dataCenterUpdated.LocationID = dataCenter.LocationID;
-         
+
                 _context.SaveChanges();
                 msg = "Data Center information succesfully updated.";
                 return true;
@@ -132,7 +103,7 @@ namespace NotificationPortal.Repositories
             var dataCenterServers = _context.Server
                                        .Where(a => a.LocationID == referenceID)
                                        .FirstOrDefault();
-          
+
             if (dataCenterToBeDeleted == null)
             {
                 msg = "Data Center could not be deleted.";
@@ -143,7 +114,7 @@ namespace NotificationPortal.Repositories
                 msg = "DataCenter has Server(s) associated, cannot be deleted";
                 return false;
             }
-         
+
 
             try
             {

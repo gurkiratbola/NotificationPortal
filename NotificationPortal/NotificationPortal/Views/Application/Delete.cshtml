@@ -5,11 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
+<h1 class="text-center display-4 pb-3">@Model.ApplicationName</h1>
 
 <ol class="breadcrumb bg-faded">
-    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
-    <li class="breadcrumb-item"><a href="~/Client/Index">Clients</a></li>
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="~/Application/Index" class="link-color">Applications</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.ApplicationName)</li>
 </ol>
 
@@ -81,8 +81,8 @@
             @Html.HiddenFor(model => model.ClientRefID)
 
             <div class="form-actions no-color">
-                <input type="submit" value="Delete" class="btn btn-success" /> |
-                @Html.ActionLink("Back to List", "Index")
+                <input type="submit" value="Delete" class="btn btn-mint text-white" />
+                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
             </div>
         }
     </div>

@@ -76,6 +76,7 @@ namespace NotificationPortal.Repositories
         {
             try
             {
+
                 IEnumerable<ApplicationListVM> applicationList = _context.Application
                                                 .Select(c => new ApplicationListVM
                                                 {

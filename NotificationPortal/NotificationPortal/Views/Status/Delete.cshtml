@@ -9,7 +9,7 @@
 
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
-    <li class="breadcrumb-item"><a href="~/Server/Index">Servers</a></li>
+    <li class="breadcrumb-item"><a href="~/Status/Index" class="link-color">Status</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.StatusName)</li>
 </ol>
 
@@ -49,8 +49,8 @@
         @Html.HiddenFor(model => model.StatusName)
         @Html.HiddenFor(model => model.StatusTypeID)
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-success" />
-            @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
+            <input type="submit" value="Delete" class="btn btn-mint text-white" />
+            @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
         </div>
     }
 </div>

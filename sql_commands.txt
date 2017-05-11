@@ -8,6 +8,7 @@ DROP TABLE [dbo].[AspNetRoles]
 DROP TABLE [dbo].[AspNetUsers]
 
 Update-Database –TargetMigration: $InitialDatabase
+add-migration init
 
 
 git rm -r --cached .
