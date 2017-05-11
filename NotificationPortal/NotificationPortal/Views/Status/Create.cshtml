@@ -1,13 +1,18 @@
 ﻿@model NotificationPortal.ViewModels.StatusVM
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Status";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<
+<h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
 
-
+<ol class="breadcrumb bg-faded">
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
+    <li class="breadcrumb-item"><a href="~/Status/Index">Status</a></li>
+    <li class="breadcrumb-item active">@ViewBag.Title</li>
+</ol>
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()

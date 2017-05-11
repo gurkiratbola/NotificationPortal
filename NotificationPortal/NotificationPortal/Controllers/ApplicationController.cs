@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.Controllers
 {
-    [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
+  
     public class ApplicationController : AppBaseController
     {
         private readonly ApplicationRepo _aRepo = new ApplicationRepo();
@@ -23,13 +23,15 @@ namespace NotificationPortal.Controllers
         //    IEnumerable<ApplicationListVM> applicationList = _aRepo.GetApplicationList();
         //    return View(applicationList);
         //}
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+
             ApplicationIndexVM model = _aRepo.GetApplicationList(sortOrder, currentFilter, searchString, page);
             return View(model);
         }
-
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Create()
         {
@@ -43,7 +45,7 @@ namespace NotificationPortal.Controllers
             };
             return View(model);
         }
-
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(ApplicationVM model)
@@ -72,6 +74,7 @@ namespace NotificationPortal.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Edit(string id)
         {
@@ -83,6 +86,7 @@ namespace NotificationPortal.Controllers
             return View(application);
         }
 
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
         [HttpPost]
         public ActionResult Edit(ApplicationVM model)
         {
@@ -110,18 +114,20 @@ namespace NotificationPortal.Controllers
             return View(application);
         }
 
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Details(string id)
         {
             return View(_aRepo.GetDetailApplication(id));
         }
-
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Delete(string id)
         {
             return View(_aRepo.GetApplication(id));
         }
 
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
         [HttpPost]
         public ActionResult Delete(ApplicationVM application)
         {

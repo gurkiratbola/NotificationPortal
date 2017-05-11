@@ -5,11 +5,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h1 class="text-center display-4 pb-3">@Model.StatusName</h1>
 
+<ol class="breadcrumb bg-faded">
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="~/Server/Index" class="link-color">Servers</a></li>
+    <li class="breadcrumb-item active">@Html.DisplayFor(model => model.StatusName)</li>
+</ol>
 <div>
-    <h4>Status</h4>
-    <hr />
+   
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.StatusName)
@@ -30,6 +34,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Edit", "Edit", new { id = Model.StatusID }, new { @class = "btn btn-success" })
     @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
 </p>
