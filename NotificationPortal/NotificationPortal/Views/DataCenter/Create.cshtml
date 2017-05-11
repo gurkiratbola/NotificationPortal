@@ -1,0 +1,53 @@
+﻿@model NotificationPortal.ViewModels.DataCenterVM
+
+@{
+    ViewBag.Title = "Add Data Center Location";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
+
+<ol class="breadcrumb bg-faded">
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
+    <li class="breadcrumb-item"><a href="~/Server/Index">Servers</a></li>
+    <li class="breadcrumb-item active">@ViewBag.Title</li>
+</ol>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>DataCenterVM</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LocationID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

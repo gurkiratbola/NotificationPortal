@@ -188,6 +188,7 @@
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\DataCenterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
@@ -371,6 +372,8 @@
     <Content Include="Views\Application\Delete.cshtml" />
     <Content Include="Views\Dashboard\_external.cshtml" />
     <Content Include="Views\User\ConfirmEmail.cshtml" />
+    <Content Include="Views\DataCenter\Index.cshtml" />
+    <Content Include="Views\DataCenter\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
