@@ -6,6 +6,7 @@ using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Web;
@@ -614,11 +615,20 @@ namespace NotificationPortal.Repositories
                 List<string> receivers;
                 if (apps.Count() == 0)
                 {
-                    receivers = servers.SelectMany(s => s.Applications.SelectMany(a => a.UserDetails.Select(u => u.User.Email))).ToList();
+                    receivers = servers.SelectMany(
+                        s => s.Applications.SelectMany(
+                            a => a.UserDetails.Where(
+                            u => u.SendMethod.SendMethodName == Key.SEND_METHOD_EMAIL
+                            || u.SendMethod.SendMethodName == Key.SEND_METHOD_EMAIL_AND_SMS)
+                            .Select(u => u.User.Email))).ToList();
                 }
                 else
                 {
-                    receivers = apps.SelectMany(a => a.UserDetails.Select(u => u.User.Email)).ToList();
+                    receivers = apps.SelectMany(
+                        a => a.UserDetails.Where(
+                            u => u.SendMethod.SendMethodName == Key.SEND_METHOD_EMAIL
+                            || u.SendMethod.SendMethodName == Key.SEND_METHOD_EMAIL_AND_SMS)
+                            .Select(u => u.User.Email)).ToList();
                 }
                 receivers = receivers.Distinct().ToList();
 
@@ -642,7 +652,7 @@ namespace NotificationPortal.Repositories
                             //set the content 
                             mail.Subject = notification.NotificationHeading;
                             //TODO body needs to be improved
-                            mail.Body = notification.NotificationDescription;
+                            mail.Body = EmailTemplate(notification);
                             mail.IsBodyHtml = true;
 
                             switch (priorityValue)
@@ -671,7 +681,19 @@ namespace NotificationPortal.Repositories
             {
                 return null;
             }
+        }
 
+        public static string EmailTemplate(NotificationCreateVM model)
+        {
+            string path = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Service/NotificationEmailTemplate.html"));
+
+            path = path.Replace("{Subject}", model.NotificationHeading) 
+                .Replace("{Description}", model.NotificationDescription)
+                .Replace("{IncidentNumber}", model.IncidentNumber)
+                .Replace("{StartTime}", model.StartDateTime == null ? DateTime.Now.ToString():model.StartDateTime.ToString())
+                .Replace("{EndTime}", model.EndDateTime == null? "TBA" : model.EndDateTime.ToString());
+
+            return path;
         }
 
         public List<PhoneNumber> GetPhoneNumbers(NotificationCreateVM notification)
@@ -686,11 +708,20 @@ namespace NotificationPortal.Repositories
             List<string> receivers;
             if (apps.Count() == 0)
             {
-                receivers = servers.SelectMany(s => s.Applications.SelectMany(a => a.UserDetails.Select(u => u.MobilePhone))).ToList();
+                receivers = servers.SelectMany(
+                    s => s.Applications.SelectMany(
+                        a => a.UserDetails.Where(
+                            u => u.SendMethod.SendMethodName == Key.SEND_METHOD_SMS
+                            || u.SendMethod.SendMethodName == Key.SEND_METHOD_EMAIL_AND_SMS)
+                            .Select(u => u.MobilePhone))).ToList();
             }
             else
             {
-                receivers = apps.SelectMany(a => a.UserDetails.Select(u => u.MobilePhone)).ToList();
+                receivers = apps.SelectMany(
+                    a => a.UserDetails.Where(
+                            u => u.SendMethod.SendMethodName == Key.SEND_METHOD_SMS
+                            || u.SendMethod.SendMethodName == Key.SEND_METHOD_EMAIL_AND_SMS)
+                            .Select(u => u.MobilePhone)).ToList();
             }
             receivers = receivers.Distinct().ToList();
 
