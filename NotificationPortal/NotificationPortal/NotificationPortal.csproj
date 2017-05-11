@@ -247,6 +247,7 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font\fontawesome-webfont.svg" />
     <Content Include="Content\images\favicon.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\sidebar.css" />
@@ -260,6 +261,14 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Content\font\fontawesome-webfont.eot" />
+    <Content Include="Content\font\fontawesome-webfont.ttf" />
+    <Content Include="Content\font\fontawesome-webfont.woff" />
+    <Content Include="Content\font\fontawesome-webfont.woff2" />
+    <Content Include="Content\font\FontAwesome.otf" />
+    <Content Include="Content\font\summernote.eot" />
+    <Content Include="Content\font\summernote.ttf" />
+    <Content Include="Content\font\summernote.woff" />
     <None Include="Properties\PublishProfiles\gurkiratbola.com - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\gurkiratbola.com - Web Deploy.pubxml" />
     <None Include="Properties\Settings.settings">
@@ -364,7 +373,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\fonts\" />
     <Folder Include="Views\AppBase\" />
   </ItemGroup>
   <ItemGroup>
