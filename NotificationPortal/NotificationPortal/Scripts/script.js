@@ -11,8 +11,7 @@ $(document).ready(function ($) {
     });
     $(".clickable-row-dashboard").click(function () {
         //window.location = window.location.origin + $(this).data("href");
-        var actualDomain = /:\/\/([^\/]+)/.exec(window.location.href)[1];
-        window.location = actualDomain + $(this).data("href");
+        window.location = $(this).data("href");
     });
     $('*').click(function (e) {
         if (e.target.className !== 'clickable-row') {
