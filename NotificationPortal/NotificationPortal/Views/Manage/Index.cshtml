@@ -7,23 +7,23 @@
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div class="offset-md-3 col-md-6 offset-md-3 text-center">
-    <div class="manage-btn">
+    <div>
         @if (Model.HasPassword)
         {
-            <a href="@Url.Action("ChangePassword", "Manage")">
+            <a class="manage-btn" href="@Url.Action("ChangePassword", "Manage")">
                 <i class="fa fa-id-card-o" aria-hidden="true"></i>
             </a>
         }
         else
         {
-            <a href="@Url.Action("SetPassword", "Manage")">
+            <a class="manage-btn" href="@Url.Action("SetPassword", "Manage")">
                 <i class="fa fa-id-card-o" aria-hidden="true"></i>
             </a>
         }
     </div>
 
-    <div class="manage-btn">
-        <a href="@Url.Action("Index", "Profile")">
+    <div>
+        <a class="manage-btn" href="@Url.Action("Index", "Profile")">
             <i class="fa fa-unlock-alt" aria-hidden="true"></i>
         </a>
     </div>

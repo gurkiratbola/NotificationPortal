@@ -10,9 +10,9 @@ $(document).ready(function ($) {
         window.location = domain + $(this).data("href");
     });
     $(".clickable-row-dashboard").click(function () {
-        console.log("origin:", window.location.origin);
-        console.log("domain", domain);
-        window.location = window.location.origin + $(this).data("href");
+        //window.location = window.location.origin + $(this).data("href");
+        var actualDomain = /:\/\/([^\/]+)/.exec(window.location.href)[1];
+        window.location = actualDomain + $(this).data("href");
     });
     $('*').click(function (e) {
         if (e.target.className !== 'clickable-row') {
