@@ -26,20 +26,6 @@ namespace NotificationPortal.Repositories
             return dataCenterList;
         }
 
-        //public SelectList GetServerList()
-        //{
-        //    IEnumerable<SelectListItem> serverList = _context.Server
-        //                            .Where(a => a.StatusType.StatusTypeName == APP_STATUS_TYPE_NAME)
-        //                            .Select(sv => new SelectListItem()
-        //                            {
-        //                                Value = sv.StatusID.ToString(),
-        //                                Text = sv.StatusName
-        //                            });
-
-        //    return new SelectList(statusList, "Value", "Text");
-        //}
-
-
         public bool AddDataCenter(DataCenterVM dataCenter, out string msg)
         {
             DataCenterLocation d = _context.DataCenterLocation.Where(a => a.Location == dataCenter.Location)
@@ -79,21 +65,6 @@ namespace NotificationPortal.Repositories
             return dataCenter;
         }
 
-        //public ServerVM GetDeleteDataCenter(int referenceID)
-        //{
-        //    DataCenterVM server = _context.Server
-        //                    .Where(a => a.ReferenceID == referenceID)
-        //                    .Select(b => new ServerVM
-        //                    {
-        //                        ServerName = b.ServerName,
-        //                        ReferenceID = b.ReferenceID,
-        //                        Description = b.Description,
-        //                        StatusID = b.StatusID,
-        //                        LocationID = b.LocationID,
-
-        //                    }).FirstOrDefault();
-        //    return server;
-        //}
 
         public bool EditDataCenter(DataCenterVM dataCenter, out string msg)
         {
