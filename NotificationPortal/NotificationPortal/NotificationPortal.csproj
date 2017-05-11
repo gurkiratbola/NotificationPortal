@@ -240,6 +240,7 @@
     <Compile Include="Repositories\UserRepo.cs" />
     <Compile Include="Service\EncryptionHelper.cs" />
     <Compile Include="Service\NotificationService.cs" />
+    <Compile Include="Service\TemplateService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\ApplicationVM.cs" />

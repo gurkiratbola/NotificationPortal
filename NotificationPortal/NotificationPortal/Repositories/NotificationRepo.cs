@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using NotificationPortal.Models;
+using NotificationPortal.Service;
 using NotificationPortal.ViewModels;
 using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Web;
@@ -652,7 +652,7 @@ namespace NotificationPortal.Repositories
                             //set the content 
                             mail.Subject = notification.NotificationHeading;
                             //TODO body needs to be improved
-                            mail.Body = EmailTemplate(notification);
+                            mail.Body = TemplateService.NotificationEmail(notification);
                             mail.IsBodyHtml = true;
 
                             switch (priorityValue)
@@ -681,19 +681,6 @@ namespace NotificationPortal.Repositories
             {
                 return null;
             }
-        }
-
-        public static string EmailTemplate(NotificationCreateVM model)
-        {
-            string path = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Service/NotificationEmailTemplate.html"));
-
-            path = path.Replace("{Subject}", model.NotificationHeading) 
-                .Replace("{Description}", model.NotificationDescription)
-                .Replace("{IncidentNumber}", model.IncidentNumber)
-                .Replace("{StartTime}", model.StartDateTime == null ? DateTime.Now.ToString():model.StartDateTime.ToString())
-                .Replace("{EndTime}", model.EndDateTime == null? "TBA" : model.EndDateTime.ToString());
-
-            return path;
         }
 
         public List<PhoneNumber> GetPhoneNumbers(NotificationCreateVM notification)
