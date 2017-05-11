@@ -674,10 +674,35 @@ namespace NotificationPortal.Repositories
 
         }
 
-        //public List<PhoneNumber> GetPhoneNumbers()
-        //{
+        public List<PhoneNumber> GetPhoneNumbers(NotificationCreateVM notification)
+        {
+            var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
+            var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
+            var priorityValue = _context.Notification.Where(n => notification.ProirityID == n.Priority.PriorityID)
+                .Select(n => n.Priority.PriorityValue)
+                .FirstOrDefault();
 
-        //}
+            // Get recievers
+            List<string> receivers;
+            if (apps.Count() == 0)
+            {
+                receivers = servers.SelectMany(s => s.Applications.SelectMany(a => a.UserDetails.Select(u => u.MobilePhone))).ToList();
+            }
+            else
+            {
+                receivers = apps.SelectMany(a => a.UserDetails.Select(u => u.MobilePhone)).ToList();
+            }
+            receivers = receivers.Distinct().ToList();
+
+            // Get phone numbers
+            List<PhoneNumber> phoneNumbers = new List<PhoneNumber>();
+            foreach (var phoneNumber in receivers)
+            {
+                phoneNumbers.Add(new PhoneNumber(phoneNumber));
+            }
+            return phoneNumbers;
+        }
+
         public string NewIncidentNumber(int notificationTypeID)
         {
             string notificationType = _slRepo.GetTypeList().Where(i => i.Value == notificationTypeID.ToString()).Select(i => i.Text).FirstOrDefault();
