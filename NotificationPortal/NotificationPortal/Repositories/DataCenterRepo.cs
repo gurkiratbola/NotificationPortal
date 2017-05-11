@@ -53,7 +53,7 @@ namespace NotificationPortal.Repositories
             {
                 DataCenterLocation newDataCenter = new DataCenterLocation();
                 newDataCenter.Location = dataCenter.Location;
-                newDataCenter.LocationID = dataCenter.LocationID;
+                //newDataCenter.LocationID = dataCenter.LocationID;
                 _context.DataCenterLocation.Add(newDataCenter);
                 _context.SaveChanges();
                 msg = "Data Center successfully added";

@@ -93,5 +93,43 @@ namespace NotificationPortal.Controllers
 
             return View(dataCenter);
         }
+
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            return View(_sRepo.GetDataCenter(id));
+        }
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            return View(_sRepo.GetDataCenter(id));
+        }
+
+        [HttpPost]
+        public ActionResult Delete(DataCenterVM dataCenter)
+        {
+            string msg = "";
+            if (ModelState.IsValid)
+            {
+                bool success = _sRepo.DeleteDataCenter(dataCenter.LocationID, out msg);
+                if (success)
+                {
+                    TempData["SuccessMsg"] = msg;
+                    return RedirectToAction("index");
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = msg;
+                }
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Data Center Location cannot be deleted at this time.";
+            }
+
+            return View(dataCenter);
+        }
+
     }
 }

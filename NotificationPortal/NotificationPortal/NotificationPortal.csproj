@@ -374,6 +374,9 @@
     <Content Include="Views\User\ConfirmEmail.cshtml" />
     <Content Include="Views\DataCenter\Index.cshtml" />
     <Content Include="Views\DataCenter\Create.cshtml" />
+    <Content Include="Views\DataCenter\Edit.cshtml" />
+    <Content Include="Views\DataCenter\Details.cshtml" />
+    <Content Include="Views\DataCenter\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

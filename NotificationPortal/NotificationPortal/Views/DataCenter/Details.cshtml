@@ -1,0 +1,30 @@
+﻿@model NotificationPortal.ViewModels.DataCenterVM
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
+
+<ol class="breadcrumb bg-faded">
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="~/Server/Index" class="link-color">Servers</a></li>
+    <li class="breadcrumb-item active">@Html.DisplayFor(model => model.Location)</li>
+</ol>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new {  id = Model.LocationID  }, new { @class = "btn btn-success" }) |
+    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
+</p>
