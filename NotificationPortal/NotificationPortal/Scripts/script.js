@@ -10,6 +10,8 @@ $(document).ready(function ($) {
         window.location = domain + $(this).data("href");
     });
     $(".clickable-row-dashboard").click(function () {
+        console.log("origin:", window.location.origin);
+        console.log("domain", domain);
         window.location = window.location.origin + $(this).data("href");
     });
     $('*').click(function (e) {
@@ -33,22 +35,39 @@ $(document).ready(function ($) {
 
 
     // for sidebar dropdown
-    if (localStorage.getItem("isDropdownVisible") === null) {
+    if (localStorage.getItem("isDropdownVisible") == null) {
         localStorage.setItem("isDropdownVisible", false);
         //$(".sidebar-dropdown").hide();
+    } else {
+        if (localStorage.getItem("isDropdownVisible") == false) {
+            $(".sidebar-dropdown").hide();
+        } else {
+            $(".sidebar-dropdown").show();
+        }
     }
     
     $(".sidebar-dropdown-button").click(function() {
         if ($(".sidebar-dropdown").is(":hidden")){
             localStorage.setItem("isDropdownVisible", true);
-            $(".fa-caret-down").addClass("arrow-rotate");
+            $(".sidebar-dropdown-button .fa-caret-down").addClass("arrow-rotate");
             $(".sidebar-dropdown").slideDown();
         } else {
             $(".sidebar-dropdown").slideUp();
-            $(".fa-caret-down").removeClass("arrow-rotate");
+            $(".sidebar-dropdown-button .fa-caret-down").removeClass("arrow-rotate");
             localStorage.removeItem("isDropdownVisible");
         }
     })
+
+    //sidebar state detection
+    var url = window.location.href;
+    var activePage = url;
+    $('.sidebar-dropdown a').each(function () {
+        var linkPage = this.href;
+
+        if (activePage == linkPage) {
+            $(this).closest("li").addClass("active");
+        }
+    });
 
     // for profile email small print
     $(".profile-email").append("<small class='float-right'>Updating email will log user out instantly</small>")

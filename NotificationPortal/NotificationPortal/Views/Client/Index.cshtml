@@ -36,32 +36,34 @@
 
     <table class="table table-bordered" style="position:relative;">
         @{ 
-            var filterByStatus = "";
-            var filterByClient = "";
-            const string CLIENT_FILTER = "client";
-            const string STATUS_FILTER = "status";
+            var filterByStatusAsce = "";
+            var filterByStatusDesc = "";
+            var filterByClientAsce = "";
+            var filterByClientDesc = "";
 
             if (Model.CurrentSort != null) {
-                filterByStatus = Model.CurrentSort.Contains(STATUS_FILTER) ? "bg-mint" : "";
-                filterByClient = Model.CurrentSort.Contains(CLIENT_FILTER) ? "bg-mint" : "";
+                filterByStatusAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_STATUS_BY_NAME_ASCE) ? "active-arrow" : "disabled-arrow";
+                filterByStatusDesc = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_STATUS_BY_NAME_DESC) ? "active-arrow" : "disabled-arrow";
+                filterByClientAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE) ? "active-arrow" : "disabled-arrow";
+                filterByClientDesc = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_CLIENT_BY_NAME_DESC) ? "active-arrow" : "disabled-arrow";
             }
         }
         <tr class="bg-inverse text-white">
-            <th class="@filterByClient">
+            <th>
                 <a href="@Url.Action("Index", "Client", new { sortOrder = Model.ClientHeadingSort, currentFilter = Model.CurrentFilter })">
                     Client
                     <span class="filter-arrows">
-                        <i class="fa fa-caret-up" aria-hidden="true"></i>
-                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        <i class="fa fa-caret-up @filterByClientAsce" aria-hidden="true"></i>
+                        <i class="fa fa-caret-down @filterByClientDesc" aria-hidden="true"></i>
                     </span>
                 </a>
             </th>
-            <th class="@filterByStatus">
+            <th>
                 <a href="@Url.Action("Index", "Client", new { sortOrder = Model.StatusSort, currentFilter = Model.CurrentFilter })">
                     Status
                     <span class="filter-arrows">
-                        <i class="fa fa-caret-up" aria-hidden="true"></i>
-                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        <i class="fa fa-caret-up @filterByStatusAsce" aria-hidden="true"></i>
+                        <i class="fa fa-caret-down @filterByStatusDesc" aria-hidden="true"></i>
                     </span>
                 </a>
             </th>
