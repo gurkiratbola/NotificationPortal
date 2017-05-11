@@ -8,6 +8,8 @@ using System.Web;
 using Twilio;
 using Twilio.Types;
 using Twilio.Rest.Api.V2010.Account;
+using NotificationPortal.ViewModels;
+using System.IO;
 
 namespace NotificationPortal.Service
 {
@@ -58,6 +60,19 @@ namespace NotificationPortal.Service
             {
                 await SendSMS(phoneNumber, bodyText);
             }
+        }
+
+        public static string EmailTemplate(NotificationCreateVM model)
+        {
+            string path = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Service/NotificationEmailTemplate.html"));
+
+            path.Replace("{Subject}", model.NotificationHeading);
+            path.Replace("{Description}", model.NotificationDescription);
+            path.Replace("{IncidentNumber}", model.IncidentNumber);
+            path.Replace("{StartTime}", model.StartDateTime.ToString());
+            path.Replace("{EndTime}", model.EndDateTime.ToString());
+
+            return path;
         }
     }
 }
