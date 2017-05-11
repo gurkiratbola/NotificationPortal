@@ -58,6 +58,9 @@
     <thead>
     <tr class="bg-inverse text-white">
         <th>
+            <a href="javascript:void(0)">@Html.DisplayNameFor(model => Model.IncidenceNumber)</a>
+        </th>
+        <th>
             <a href="javascript:void(0)" onclick="sort('@Model.NotificationTypeSort')">@Html.DisplayNameFor(model => Model.NotificationType)</a>
         </th>
         <th>
@@ -79,6 +82,9 @@
     @foreach (var item in Model.Threads)
     {
         <tr class="clickable-row" id="@item.IncidentNumber" data-href="/DetailsThread/@item.IncidentNumber">
+            <td>
+                @Html.DisplayFor(modelItem => item.IncidentNumber)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NotificationType)
             </td>

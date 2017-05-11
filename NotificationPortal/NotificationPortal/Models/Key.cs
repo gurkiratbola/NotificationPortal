@@ -41,6 +41,7 @@ namespace NotificationPortal.Models
 
         public const string SEND_METHOD_EMAIL = "Email";
         public const string SEND_METHOD_SMS = "SMS";
+        public const string SEND_METHOD_EMAIL_AND_SMS = "Email & SMS";
 
         public const string SERVER_TYPE_APPLICATION = "Application";
         public const string SERVER_TYPE_DATABASE = "Database";

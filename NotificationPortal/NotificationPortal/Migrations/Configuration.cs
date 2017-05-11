@@ -51,16 +51,17 @@ namespace NotificationPortal.Migrations
 
         private void SeedSendMethod(ApplicationDbContext context)
         {
-            string[] notificationTypes = new string[] {
+            string[] sendMethods = new string[] {
                 Key.SEND_METHOD_EMAIL,
-                Key.SEND_METHOD_SMS
+                Key.SEND_METHOD_SMS,
+                Key.SEND_METHOD_EMAIL_AND_SMS
             };
-            foreach (string type in notificationTypes)
+            foreach (string method in sendMethods)
             {
                 context.SendMethod.Add(
                     new SendMethod()
                     {
-                        SendMethodName = type
+                        SendMethodName = method
                     });
             }
             context.SaveChanges();
@@ -373,6 +374,9 @@ namespace NotificationPortal.Migrations
                 && s.StatusName == Key.STATUS_USER_DISABLED)
                 .FirstOrDefault();
 
+            // Get send method
+            var sendMethodEmail = context.SendMethod.Where(m => m.SendMethodName == Key.SEND_METHOD_EMAIL).FirstOrDefault();
+
             // Create a user on start
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             var admin = new ApplicationUser()
@@ -391,7 +395,8 @@ namespace NotificationPortal.Migrations
                 MobilePhone = "778-990-2234",
                 HomePhone = "604-773-9908",
                 BusinessTitle = "Network Administrator",
-                ReferenceID = Guid.NewGuid().ToString()
+                ReferenceID = Guid.NewGuid().ToString(),
+                SendMethodID = sendMethodEmail.SendMethodID
 
             };
 
@@ -411,7 +416,8 @@ namespace NotificationPortal.Migrations
                 MobilePhone = "778-230-2349",
                 HomePhone = "604-433-9945",
                 BusinessTitle = "Client Manager",
-                ReferenceID = Guid.NewGuid().ToString()
+                ReferenceID = Guid.NewGuid().ToString(),
+                SendMethodID = sendMethodEmail.SendMethodID
             };
 
             var client = new ApplicationUser()
@@ -431,7 +437,8 @@ namespace NotificationPortal.Migrations
                 MobilePhone = "778-223-4456",
                 HomePhone = "604-253-5567",
                 BusinessTitle = "Technical Director",
-                ReferenceID = Guid.NewGuid().ToString()
+                ReferenceID = Guid.NewGuid().ToString(),
+                SendMethodID = sendMethodEmail.SendMethodID
             };
 
             var user = new ApplicationUser()
@@ -450,7 +457,8 @@ namespace NotificationPortal.Migrations
                 MobilePhone = "604-456-0090",
                 HomePhone = "778-123-2445",
                 BusinessTitle = "Project Manager",
-                ReferenceID = Guid.NewGuid().ToString()
+                ReferenceID = Guid.NewGuid().ToString(),
+                SendMethodID = sendMethodEmail.SendMethodID
             };
 
             userManager.Create(admin, "password");

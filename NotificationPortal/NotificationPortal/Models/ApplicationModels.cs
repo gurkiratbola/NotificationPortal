@@ -141,6 +141,7 @@ namespace NotificationPortal.Models
         public int SendMethodID { get; set; }
         public string SendMethodName { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
+        public virtual ICollection<UserDetail> UserDetails { get; set; }
     }
 
     public class Server
@@ -209,10 +210,13 @@ namespace NotificationPortal.Models
         public virtual ICollection<Application> Applications { get; set; }
         public virtual Client Client { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
+        public virtual SendMethod SendMethod { get; set; }
         public virtual Status Status { get; set; }
         public virtual ApplicationUser User { get; set; }
         [ForeignKey("Client")]
         public int? ClientID { get; set; }
+        [ForeignKey("SendMethod")]
+        public int SendMethodID { get; set; }
         [ForeignKey("Status")]
         public int StatusID { get; set; }
         [StringLength(100)]

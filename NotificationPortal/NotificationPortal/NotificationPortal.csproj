@@ -198,11 +198,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705102308127_init.cs" />
-    <Compile Include="Migrations\201705102308127_init.Designer.cs">
-      <DependentUpon>201705102308127_init.cs</DependentUpon>
+    <Compile Include="Migrations\201705111800131_init.cs" />
+    <Compile Include="Migrations\201705111800131_init.Designer.cs">
+      <DependentUpon>201705111800131_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Key.cs" />
     <Compile Include="Models\ApplicationModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -385,8 +386,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705102308127_init.resx">
-      <DependentUpon>201705102308127_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705111800131_init.resx">
+      <DependentUpon>201705111800131_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
