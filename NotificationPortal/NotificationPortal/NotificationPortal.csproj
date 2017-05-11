@@ -240,6 +240,7 @@
     <Compile Include="Repositories\UserRepo.cs" />
     <Compile Include="Service\EncryptionHelper.cs" />
     <Compile Include="Service\NotificationService.cs" />
+    <Compile Include="Service\TemplateService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\ApplicationVM.cs" />
@@ -313,7 +314,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\summernote.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Service\notificationEmailTemplate.html" />
+    <Content Include="Service\NotificationEmailTemplate.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

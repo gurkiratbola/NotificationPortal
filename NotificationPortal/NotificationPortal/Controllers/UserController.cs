@@ -6,6 +6,7 @@ using NotificationPortal.ViewModels;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using System.Web.Security;
+using NotificationPortal.Service;
 
 namespace NotificationPortal.Controllers
 {
