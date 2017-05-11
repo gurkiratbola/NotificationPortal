@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using Twilio.Types;
 
 namespace NotificationPortal.Repositories
 {
@@ -673,6 +674,10 @@ namespace NotificationPortal.Repositories
 
         }
 
+        //public List<PhoneNumber> GetPhoneNumbers()
+        //{
+
+        //}
         public string NewIncidentNumber(int notificationTypeID)
         {
             string notificationType = _slRepo.GetTypeList().Where(i => i.Value == notificationTypeID.ToString()).Select(i => i.Text).FirstOrDefault();

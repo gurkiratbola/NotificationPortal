@@ -20,7 +20,8 @@ namespace NotificationPortal
         public Task SendAsync(IdentityMessage message)
         {
             // Create the message:
-            var mail = new System.Net.Mail.MailMessage("no-reply@notification-portal.com", message.Destination);
+            string smtpNoReplyEmail = System.Configuration.ConfigurationManager.AppSettings["SmtpNoReplyEmail"];
+            var mail = new System.Net.Mail.MailMessage(smtpNoReplyEmail, message.Destination);
             mail.IsBodyHtml = true;
 
             mail.Subject = message.Subject;
