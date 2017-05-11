@@ -54,11 +54,11 @@ namespace NotificationPortal.ViewModels
         [Key]
         public string ReferenceID { get; set; }
         [Required]
-        [DisplayName("Server Name*")]
+        [DisplayName("Server Name")]
         public string ServerName { get; set; }
 
         [Required]
-        [DisplayName("Description*")]
+        [DisplayName("Description")]
         public string Description { get; set; }
 
         [Required]
@@ -66,11 +66,11 @@ namespace NotificationPortal.ViewModels
         public int LocationID { get; set; }
 
         [Required]
-        [DisplayName("Server Type*")]
+        [DisplayName("Server Type")]
         public int ServerTypeID { get; set; }
 
         [Required]
-        [DisplayName("Status*")]
+        [DisplayName("Status")]
         public int StatusID { get; set; }
 
         [Display(Name = "Applications Reference")]

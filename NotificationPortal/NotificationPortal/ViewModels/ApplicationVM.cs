@@ -58,35 +58,35 @@ namespace NotificationPortal.ViewModels
         public string ReferenceID { get; set; }
 
         [Required]
-        [DisplayName("Application Name*")]
+        [DisplayName("Application Name")]
         public string ApplicationName { get; set; }
 
         [Required]
-        [DisplayName("Description*")]
+        [DisplayName("Description")]
         public string Description { get; set; }
 
 
         [Required]
-        [DisplayName("URL*")]
+        [DisplayName("URL")]
         public string URL { get; set; }
 
 
         [Required]
-        [DisplayName("Client*")]
+        [DisplayName("Client")]
         public string ClientRefID { get; set; }
 
         [Required]
-        [DisplayName("Status*")]
+        [DisplayName("Status")]
         public int StatusID { get; set; }
 
 
 
         
-        [DisplayName("Status*")]
+        [DisplayName("Status")]
         public string StatusName { get; set; }
 
         
-        [DisplayName("Client*")]
+        [DisplayName("Client")]
         public string ClientName { get; set; }
 
 

@@ -23,39 +23,39 @@
         @Html.HiddenFor(model => model.ReferenceID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ServerName, htmlAttributes: new { @class = "control-label" })
-            <div class="">
+            @Html.LabelFor(model => model.ServerName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.ServerName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ServerName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
-            <div class="">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label" })
-            <div class="">
+            @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.DropDownListFor(m => m.LocationID, Model.LocationList as SelectList, htmlAttributes: new { @class = "form-control" })
 
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.StatusID, htmlAttributes: new { @class = "control-label" })
-            <div class="">
+            @Html.LabelFor(model => model.StatusID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.DropDownListFor(m => m.StatusID, Model.StatusList as SelectList, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ServerTypeID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="">
+            @Html.LabelFor(model => model.ServerTypeID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.DropDownListFor(m => m.ServerTypeID, Model.ServerTypeList as SelectList, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
@@ -75,7 +75,7 @@
         </div>
 
         <div class="form-group">
-            <div class="">
+            <div class="offset-md-3 col-md-6">
                 <input type="submit" value="Save" class="btn btn-success" />
                 @Html.ActionLink("Back", "Index", null, new {@class = "btn btn-danger"})
             </div>
