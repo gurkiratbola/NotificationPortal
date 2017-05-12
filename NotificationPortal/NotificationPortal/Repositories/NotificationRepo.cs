@@ -400,12 +400,12 @@ namespace NotificationPortal.Repositories
             return appList;
         }
 
-        public bool CreateNotification(NotificationCreateVM notification, IPrincipal User, out string msg)
+        public bool CreateNotification(NotificationCreateVM notification, out string msg)
         {
 
             try
             {
-                var userId = User.Identity.GetUserId();
+                var userId = HttpContext.Current.User.Identity.GetUserId();
                 var sendMethodId = _context.UserDetail
                                 .Where(a => a.UserID == userId)
                                 .FirstOrDefault().SendMethodID;

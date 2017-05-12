@@ -64,7 +64,7 @@ namespace NotificationPortal.Controllers
             string result = "";
             if (ModelState.IsValid)
             {
-                bool success = _nRepo.CreateNotification(model, User, out result);
+                bool success = _nRepo.CreateNotification(model, out result);
                 if (success)
                 {
                     await NotificationService.SendEmail(_nRepo.CreateMails(model));
@@ -98,7 +98,7 @@ namespace NotificationPortal.Controllers
             string result = "";
             if (ModelState.IsValid)
             {
-                bool success = _nRepo.CreateNotification(model, User, out result);
+                bool success = _nRepo.CreateNotification(model, out result);
                 if (success)
                 {
                     await NotificationService.SendEmail(_nRepo.CreateMails(model));
