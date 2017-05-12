@@ -137,6 +137,11 @@ button:focus {
     font-size: 0.9em;
 }
 
+.card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
 
 /* ==========================================================================
                             Table Styles
@@ -461,7 +466,7 @@ h5.col-12 {
                             Page Styles: Dashboard
 ========================================================================== */
 .card-deck .card {
-    border: 2px solid lightsteelblue
+    border: 2px solid #36c2dd;
 }
 
 .card-deck {
@@ -470,7 +475,7 @@ h5.col-12 {
 }
 
 .card-header {
-    background-color: lightsteelblue;
+    background-color: #36c2dd;
 }
 
 .card-block {
