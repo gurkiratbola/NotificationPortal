@@ -11,19 +11,13 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.Controllers
 {
-  
+    [Authorize]
     public class ApplicationController : AppBaseController
     {
         private readonly ApplicationRepo _aRepo = new ApplicationRepo();
         private readonly SelectListRepo _sRepo = new SelectListRepo();
 
-        //[HttpGet]
-        //public ActionResult Index()
-        //{
-        //    IEnumerable<ApplicationListVM> applicationList = _aRepo.GetApplicationList();
-        //    return View(applicationList);
-        //}
-        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT + "," + Key.ROLE_USER)]
+        
         [HttpGet]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -31,7 +25,7 @@ namespace NotificationPortal.Controllers
             ApplicationIndexVM model = _aRepo.GetApplicationList(sortOrder, currentFilter, searchString, page);
             return View(model);
         }
-        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         [HttpGet]
         public ActionResult Create()
         {
@@ -45,7 +39,7 @@ namespace NotificationPortal.Controllers
             };
             return View(model);
         }
-        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(ApplicationVM model)
@@ -74,7 +68,7 @@ namespace NotificationPortal.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         [HttpGet]
         public ActionResult Edit(string id)
         {
@@ -86,7 +80,7 @@ namespace NotificationPortal.Controllers
             return View(application);
         }
 
-        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         [HttpPost]
         public ActionResult Edit(ApplicationVM model)
         {
@@ -105,29 +99,26 @@ namespace NotificationPortal.Controllers
                 }
             }
             ApplicationVM application = _aRepo.GetApplication(model.ReferenceID);
-            //ViewBag.ClientRefID = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
-            //ViewBag.StatusID = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
-            // ViewBag.ClientID = _sRepo.GetClientList();
             application.StatusList = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
             application.ClientList = _sRepo.GetClientList();
             application.ServerList = _aRepo.GetServerList();
             return View(application);
         }
 
-        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
+       
         [HttpGet]
         public ActionResult Details(string id)
         {
             return View(_aRepo.GetDetailApplication(id));
         }
-        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         [HttpGet]
         public ActionResult Delete(string id)
         {
             return View(_aRepo.GetApplication(id));
         }
 
-        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         [HttpPost]
         public ActionResult Delete(ApplicationVM application)
         {
