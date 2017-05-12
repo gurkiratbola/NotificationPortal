@@ -20,11 +20,15 @@
             <input class="btn btn-secondary" type="submit" value="Search">
         </form>
     </div>
+@if (Request.IsAuthenticated && User.IsInRole("Admin") || (Request.IsAuthenticated && User.IsInRole("Staff")))
+{
     <div class="offset-md-4 col-md-2">
         <div class="float-create">
             @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-mint text-white" })
         </div>
     </div>
+}
+
 </div>
 
 <table class="table table-bordered">

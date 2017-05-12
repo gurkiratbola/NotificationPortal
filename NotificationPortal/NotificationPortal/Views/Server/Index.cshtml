@@ -22,11 +22,14 @@
             <input class="btn btn-secondary" type="submit" value="Search" />
         }
     </div>
+@if (Request.IsAuthenticated && User.IsInRole("Admin") || (Request.IsAuthenticated && User.IsInRole("Staff")))
+{
     <div class="offset-md-4 col-md-2">
         <div class="float-create">
             @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-mint text-white" })
         </div>
     </div>
+}
 </div>
 
 @if (Model.Servers.Count() > 0)
@@ -90,7 +93,7 @@
 
         @foreach (var item in Model.Servers)
         {
-            var statusClass = item.StatusName.ToUpper() == NotificationPortal.Models.Key.STATUS_CLIENT_ENABLED.ToUpper() ? "<i class='fa fa-check text-success' aria-hidden='true'></i>" : "<i class='fa fa-times text-danger' aria-hidden='true'></i>";
+            //var statusClass = item.StatusName.ToUpper() == NotificationPortal.Models.Key.STATUS_CLIENT_ENABLED.ToUpper() ? "<i class='fa fa-check text-success' aria-hidden='true'></i>" : "<i class='fa fa-times text-danger' aria-hidden='true'></i>";
             <tr class="text-center clickable-row" id="@item.ReferenceID" data-href="/Details/@item.ReferenceID">
                 <td>
                     @Html.DisplayFor(modelItem => item.ServerName)
@@ -102,10 +105,10 @@
                     @Html.DisplayFor(modelItem => item.LocationName)
                 </td>
                 @{
-                    var className = item.StatusName == "Disabled" ? "badge badge-danger" : "badge badge-success";
+                    var className = item.StatusName == "Offline" ? "badge badge-danger" : "badge badge-success";
                 }
                 <td>
-                    <span>@Html.Raw(statusClass)</span>
+                    @*<span>@Html.Raw(statusClass)</span>*@
                     <span class="@className">@Html.DisplayFor(modelItem => item.StatusName)</span>
                 </td>
 

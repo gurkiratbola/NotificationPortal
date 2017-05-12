@@ -68,6 +68,7 @@ namespace NotificationPortal.Repositories
                 ClientID = a.Client.ClientName,
                 Description = a.Description,
                 Status = a.Status.StatusName,
+                
 
             });
 
