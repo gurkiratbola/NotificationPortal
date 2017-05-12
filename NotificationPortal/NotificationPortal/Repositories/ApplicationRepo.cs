@@ -1,4 +1,5 @@
-﻿using NotificationPortal.Models;
+﻿using Microsoft.AspNet.Identity;
+using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
 using PagedList;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace NotificationPortal.Repositories
@@ -76,17 +78,49 @@ namespace NotificationPortal.Repositories
         {
             try
             {
+                // get the current logged in user's id
+                var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+                // get the current logged in user's client id
 
-                IEnumerable<ApplicationListVM> applicationList = _context.Application
-                                                .Select(c => new ApplicationListVM
-                                                {
-                                                    ApplicationName = c.ApplicationName,
-                                                    ReferenceID = c.ReferenceID,
-                                                    Description = c.Description,
-                                                    URL = c.URL,
-                                                    StatusName = c.Status.StatusName,
-                                                    ClientName = c.Client.ClientName,
-                                                });
+                var getClientId = _context.UserDetail.Where(u => u.UserID == currentUserId).Select(c => c.Client.ClientName).FirstOrDefault();
+                IEnumerable<ApplicationListVM> applicationList = null;
+                if (getClientId == null)
+                {
+                    applicationList = _context.Application
+                    .Select(c => new ApplicationListVM
+                    {
+                        ApplicationName = c.ApplicationName,
+                        ReferenceID = c.ReferenceID,
+                        Description = c.Description,
+                        URL = c.URL,
+                        StatusName = c.Status.StatusName,
+                        ClientName = c.Client.ClientName,
+                    });
+                }
+                else
+                {
+                    applicationList = _context.UserDetail
+                   .Where(c => c.UserID == currentUserId).FirstOrDefault().Applications
+                   .Select(c => new ApplicationListVM
+                   {
+                       ApplicationName = c.ApplicationName,
+                       ReferenceID = c.ReferenceID,
+                       Description = c.Description,
+                       URL = c.URL,
+                       StatusName = c.Status.StatusName,
+                       ClientName = c.Client.ClientName,
+                   });
+                    //applicationList = _context.Application.Where(a=>a.ReferenceID == currentUserId)
+                    //.Select(c => new ApplicationListVM
+                    //{
+                    //    ApplicationName = c.ApplicationName,
+                    //    ReferenceID = c.ReferenceID,
+                    //    Description = c.Description,
+                    //    URL = c.URL,
+                    //    StatusName = c.Status.StatusName,
+                    //    ClientName = c.Client.ClientName,
+                    //});
+                }
 
                 page = searchString == null ? page : 1;
                 searchString = searchString ?? currentFilter;
@@ -147,8 +181,8 @@ namespace NotificationPortal.Repositories
                         Status = t.Status.StatusName,
 
                     });
-                //.GroupBy(n => n.ServerName)
-                //.Select(t => t.OrderByDescending(i => i.ServerName).FirstOrDefault());
+            //.GroupBy(n => n.ServerName)
+            //.Select(t => t.OrderByDescending(i => i.ServerName).FirstOrDefault());
 
             IEnumerable<UserDetail> allApplicationUsers = application.UserDetails;
             IEnumerable<ApplicationUsersVM> applicationUser = allApplicationUsers
@@ -170,8 +204,8 @@ namespace NotificationPortal.Repositories
                         BusinessTitle = t.BusinessTitle
 
                     });
-                //.GroupBy(n => n.RoleName)
-                //.Select(t => t.OrderByDescending(i => i.ClientReferenceID).FirstOrDefault());
+            //.GroupBy(n => n.RoleName)
+            //.Select(t => t.OrderByDescending(i => i.ClientReferenceID).FirstOrDefault());
 
             IEnumerable<Notification> allApplicationNotifications = application.Notifications;
             IEnumerable<ApplicationNotificationsVM> applicationNotifications = allApplicationNotifications
@@ -188,7 +222,7 @@ namespace NotificationPortal.Repositories
 
 
                     });
-  
+
 
             ApplicationDetailVM model = new ApplicationDetailVM
             {
@@ -264,7 +298,7 @@ namespace NotificationPortal.Repositories
                 return false;
             }
 
-         
+
 
             try
             {
@@ -330,7 +364,7 @@ namespace NotificationPortal.Repositories
                                 ClientName = b.Client.ClientName,
                                 StatusID = b.StatusID,
                                 ClientRefID = b.Client.ReferenceID,
-                                
+
                             }).FirstOrDefault();
             return application;
         }
@@ -436,5 +470,5 @@ namespace NotificationPortal.Repositories
         }
     }
 }
-    
+
 
