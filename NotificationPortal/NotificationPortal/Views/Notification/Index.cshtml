@@ -36,14 +36,12 @@
                 <div>
                     @Html.ListBoxFor(m => m.PriorityIDs, Model.PriorityList, new { style = "display: none;" })
                 </div>
-                <a class="btn" href="javascript:void(0)" onclick="sort('reset')">Reset Filters</a>
-                @Html.TextBoxFor(model => model.SearchString, Model.CurrentFilter, new { @class = "form-control mr-sm-2" })
-                <input class="btn btn-secondary" type="submit" value="Search" />
+                @Html.TextBoxFor(model => model.SearchString, Model.CurrentFilter, new { @class = "form-control mr-sm-2", placeholder = "Search" })
             }
         </div>
 
         @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
-             User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+                 User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
         {
             <div style="float: right">
                 <p>
@@ -56,57 +54,41 @@
 
 <table class="table table-bordered">
     <thead>
-    <tr class="bg-inverse text-white">
-        <th>
-            <a href="javascript:void(0)">@Html.DisplayNameFor(model => Model.IncidenceNumber)</a>
-        </th>
-        <th>
-            <a href="javascript:void(0)" onclick="sort('@Model.NotificationTypeSort')">@Html.DisplayNameFor(model => Model.NotificationType)</a>
-        </th>
-        <th>
-            <a href="javascript:void(0)" onclick="sort('@Model.LevelOfImpactSort')">@Html.DisplayNameFor(model => Model.LevelOfImpact)</a>
-        </th>
-        <th>
-            <a href="javascript:void(0)" onclick="sort('@Model.NotificationHeadingSort')">@Html.DisplayNameFor(model => Model.NotificationHeading)</a>
-        </th>
-        <th>
-            <a href="javascript:void(0)" onclick="sort('@Model.PrioritySort')">@Html.DisplayNameFor(model => Model.Priority)</a>
-        </th>
-        <th>
-            <a href="javascript:void(0)" onclick="sort('@Model.StatusSort')">@Html.DisplayNameFor(model => Model.Status)</a>
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-
-    @foreach (var item in Model.Threads)
-    {
-        <tr class="clickable-row" id="@item.IncidentNumber" data-href="/DetailsThread/@item.IncidentNumber">
-            <td>
-                @Html.DisplayFor(modelItem => item.IncidentNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NotificationType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LevelOfImpact)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NotificationHeading)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Priority)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
+        <tr class="bg-inverse text-white">
+            <th>
+                <a href="javascript:void(0)" onclick="sort('IncidenceNumber')">@Html.DisplayNameFor(model => Model.IncidenceNumber)</a>
+            </th>
+            <th>
+                <a href="javascript:void(0)" onclick="sort('NotificationTypeIDs')">@Html.DisplayNameFor(model => Model.NotificationType)</a>
+            </th>
+            <th>
+                <a href="javascript:void(0)" onclick="sort('LevelOfImpactIDs')">@Html.DisplayNameFor(model => Model.LevelOfImpact)</a>
+            </th>
+            <th>
+                <a href="javascript:void(0)" onclick="sort('NotificationHeading')">@Html.DisplayNameFor(model => Model.NotificationHeading)</a>
+            </th>
+            <th>
+                <a href="javascript:void(0)" onclick="sort('PriorityIDs')">@Html.DisplayNameFor(model => Model.Priority)</a>
+            </th>
+            <th>
+                <a href="javascript:void(0)" onclick="sort('StatusIDs')">@Html.DisplayNameFor(model => Model.Status)</a>
+            </th>
         </tr>
-    }
-    </tbody>
-
+    </thead>
+    <tbody id="model"></tbody>
 </table>
 
-@Html.PagedListPager(Model.Threads, page => Url.Action("Index", new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter, NotificationTypeIDs = Model.NotificationTypeIDs }))
+<div class="pagination-container">
+    <ul class="pagination">
+        <li class="active">
+            <a>1</a>
+        </li>
+        <li>
+            <a>2</a>
+        </li>
+    </ul>
+</div>
+
 <div class="pageinfo-display">
     <p>
         Displaying @Html.Raw(((Model.Page - 1) * NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE) + 1) -
@@ -122,36 +104,246 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    var filteredModel = [];
+    var currentSort = "";
+    var filter = { NotificationTypeIDs: [], LevelOfImpactIDs: [], PriorityIDs: [], StatusIDs: [] };
+    var models =
+        [
+            @foreach (var item in Model.Threads)
+            {
+                @Html.Raw("{IncidenceNumber:'" + item.IncidentNumber + "',");
+                @Html.Raw("NotificationTypeIDs:'" + item.NotificationType + "',");
+                @Html.Raw("LevelOfImpactIDs:'" + item.LevelOfImpact + "',");
+                @Html.Raw("NotificationHeading:'" + item.NotificationHeading + "',");
+                @Html.Raw("PriorityIDs:'" + item.Priority + "',");
+                @Html.Raw("StatusIDs:'" + item.Status + "'},");
+            }
+        ];
+    var addRow = function (model) {
+        $('<tr class="clickable-row" id="' + model.IncidenceNumber + '" data-href="/DetailsThread/' + model.IncidenceNumber + '"/>').appendTo($('#model'));
+        $('<td/>', { text: model.IncidenceNumber }).appendTo($('#' + model.IncidenceNumber));
+        $('<td/>', { text: model.NotificationTypeIDs }).appendTo($('#' + model.IncidenceNumber));
+        $('<td/>', { text: model.LevelOfImpactIDs }).appendTo($('#' + model.IncidenceNumber));
+        $('<td/>', { text: model.NotificationHeading }).appendTo($('#' + model.IncidenceNumber));
+        $('<td/>', { text: model.PriorityIDs }).appendTo($('#' + model.IncidenceNumber));
+        $('<td/>', { text: model.StatusIDs }).appendTo($('#' + model.IncidenceNumber));
+    }
+
+    var sort = function (x) {
+        currentSort = x;
+
+
+
+        if (filteredModel.length == 0) {
+            if (currentSort) {
+                models.sort(function (a, b) {
+                    return a[currentSort].localeCompare(b[currentSort]);
+                });
+            }
+            refillTable(models);
+        } else {
+            if (currentSort) {
+                filteredModel.sort(function (a, b) {
+                    return a[currentSort].localeCompare(b[currentSort]);
+                });
+            }
+            refillTable(filteredModel);
+        }
+    }
+
+    //TODO use the one defined in scripts
+    var clickableRow = function () {
+        const HIDDEN_MENU_WIDTH_OFFSET = 130;
+        const HIDDEN_MENU_HEIGHT_OFFSET = 80;
+        $(".hidden-menu").hide();
+        $(".clickable-row").click(function () {
+            window.location = domain + $(this).data("href");
+        });
+        $(".clickable-row-dashboard").click(function () {
+            //window.location = window.location.origin + $(this).data("href");
+            var x = document.URL;
+            var index = document.URL.indexOf(domain);
+            var d = document.URL.substr(0, index)
+            window.location = d + $(this).data("href");
+        });
+        $('*').click(function (e) {
+            if (e.target.className !== 'clickable-row') {
+                $(".hidden-menu").hide();
+            }
+        });
+        $(".clickable-row").contextmenu(function (e) {
+            var rowId = $(this).attr("id");
+            $('.hidden-menu li a').attr('href', function (i, str) {
+                if (str.indexOf(rowId) >= 0) {
+                    return str;
+                } else {
+                    return domain + str + rowId;
+                }
+            });
+            $(".hidden-menu").css({ position: "absolute", top: e.pageY - HIDDEN_MENU_HEIGHT_OFFSET, left: e.pageX - HIDDEN_MENU_WIDTH_OFFSET });
+            $(".hidden-menu").toggle();
+            return false;
+        });
+    }
+
+    var filterDropDown = function () {
         $('#NotificationTypeIDs').multiselect({
+            includeSelectAllOption: true,
             buttonText: function (options, select) {
                 return 'Type (' + options.length + ')';
             }
         });
         $('#LevelOfImpactIDs').multiselect({
+            includeSelectAllOption: true,
             buttonText: function (options, select) {
                 return 'Level of Impact (' + options.length + ')';
             }
         });
         $('#StatusIDs').multiselect({
+            includeSelectAllOption: true,
             buttonText: function (options, select) {
                 return 'Status (' + options.length + ')';
             }
         });
         $('#PriorityIDs').multiselect({
+            includeSelectAllOption: true,
             buttonText: function (options, select) {
                 return 'Priority (' + options.length + ')';
             }
         });
-    });
-    sort = function (sortOrder) {
-        if (sortOrder == 'reset') {
-            $('#NotificationTypeIDs').val(null);
-            $('#LevelOfImpactIDs').val(null);
-            $('#StatusIDs').val(null);
-            $('#PriorityIDs').val(null);
-        }
-        $('#CurrentSort').val(sortOrder)
-        document.getElementById("filterForm").submit();
+
+
+        $('#NotificationTypeIDs').change(function () {
+            filter["NotificationTypeIDs"] = []
+            $('#NotificationTypeIDs option:selected').each(function () {
+                var $this = $(this);
+                if ($this.length) {
+                    filter["NotificationTypeIDs"].push($this.text());
+                }
+            });
+            filterModel();
+        });
+        $('#LevelOfImpactIDs').change(function () {
+            filter["LevelOfImpactIDs"] = []
+            $('#LevelOfImpactIDs option:selected').each(function () {
+                var $this = $(this);
+                if ($this.length) {
+                    filter["LevelOfImpactIDs"].push($this.text());
+                }
+            });
+            filterModel();
+        });
+        $('#StatusIDs').change(function () {
+            filter["StatusIDs"] = []
+            $('#StatusIDs option:selected').each(function () {
+                var $this = $(this);
+                if ($this.length) {
+                    filter["StatusIDs"].push($this.text());
+                }
+            });
+            filterModel();
+        });
+        $('#PriorityIDs').change(function () {
+            filter["PriorityIDs"] = []
+            $('#PriorityIDs option:selected').each(function () {
+                var $this = $(this);
+                if ($this.length) {
+                    filter["PriorityIDs"].push($this.text());
+                }
+            });
+            filterModel();
+        });
     }
+
+    var refillTable = function (models) {
+        $('#model').replaceWith('<tbody id="model" />');
+        // add rows to table
+        models.forEach(
+            function (model) {
+                addRow(model);
+            }
+        );
+        // make the row (right)clickable
+        clickableRow();
+    }
+
+    var filterModel = function () {
+        filteredModel = [];
+        $.each(filter, function (key, data) {
+            $.each(data, function (index, text) {
+                $.each(
+                    $.grep(models, function (n, i) {
+                        return n[key] === text && filteredModel.indexOf(n) == -1;
+                    }),
+                    function (index, filteredRow) {
+                        filteredModel.push(filteredRow);
+                    });
+            })
+        })
+        if (filteredModel.length==0){
+            refillTable(models);
+        } else {
+            refillTable(filteredModel);
+        }
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "http://localhost:58475/api/Notification",
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (error) {
+
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("error" + error.responseText);
+            }
+        });
+    }
+
+    var setupSearch = function () {
+        $('#SearchString').on('input', function () {
+            var searchString = $(this).val().toLowerCase();
+
+            if (filteredModel.length == 0) {
+                searchModel = $.grep(models, function (n, i) {
+                    var found = false;
+                    $.each(n, function (key, value) {
+                        console.log(value)
+                        if (value.toLowerCase().indexOf(searchString) > -1){
+                            found = true;
+                        }
+                    })
+                    return found;
+                });
+            } else {
+                searchModel = $.grep(filteredModel, function (n, i) {
+                    $.each(n, function (key, value) {
+                        if (value.toLowerCase().indexOf(searchString) > -1) {
+                            return true;
+                        }
+                    })
+                    return n["NotificationHeading"].toLowerCase().indexOf(searchString) > -1;
+                });
+            }
+            refillTable(searchModel);
+        })
+
+    }
+
+    $(document).ready(function () {
+        // create dropdowns for filter
+        filterDropDown();
+
+        // add rows to table
+        models.forEach(
+            function (model) {
+                addRow(model);
+            }
+        );
+        // make the row (right)clickable
+        clickableRow();
+        //setup Search
+        setupSearch();
+    });
 </script>
