@@ -11,13 +11,13 @@ namespace NotificationPortal.Service
     {
         public static string NotificationEmail(NotificationCreateVM model)
         {
-            string path = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Service/NotificationEmailTemplate.html"));
+            string path = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Service/templates/NotificationEmailTemplate.html"));
 
             path = path.Replace("{Subject}", model.NotificationHeading)
-                .Replace("{Description}", model.NotificationDescription)
-                .Replace("{IncidentNumber}", model.IncidentNumber)
-                .Replace("{StartTime}", model.StartDateTime == null ? DateTime.Now.ToString() : model.StartDateTime.ToString())
-                .Replace("{EndTime}", model.EndDateTime == null ? "TBA" : model.EndDateTime.ToString());
+                   .Replace("{Description}", model.NotificationDescription)
+                   .Replace("{IncidentNumber}", model.IncidentNumber)
+                   .Replace("{StartTime}", model.StartDateTime == null ? DateTime.Now.ToString() : model.StartDateTime.ToString())
+                   .Replace("{EndTime}", model.EndDateTime == null ? "To Be Announced" : model.EndDateTime.ToString());
 
             return path;
         }
