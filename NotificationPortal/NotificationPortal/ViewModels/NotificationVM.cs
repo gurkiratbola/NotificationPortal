@@ -42,7 +42,7 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Status")]
         public SelectList StatusList { get; set; }
 
-        [Display(Name = "Proirity")]
+        [Display(Name = "Priority")]
         public SelectList PriorityList { get; set; }
 
         public string CurrentFilter { get; set; }
@@ -103,7 +103,7 @@ namespace NotificationPortal.ViewModels
         public int StatusID { get; set; }
 
         [Required]
-        public int ProirityID { get; set; }
+        public int PriorityID { get; set; }
 
         [Display(Name = "Select Server")]
         public string[] ServerReferenceIDs { get; set; }
@@ -127,8 +127,8 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Send Method")]
         public SelectList SendMethodList { get; set; }
 
-        [Display(Name = "Proirity")]
-        public SelectList ProirityList { get; set; }
+        [Display(Name = "Priority")]
+        public SelectList PriorityList { get; set; }
     }
     
     public class NotificationEditVM : NotificationCreateVM

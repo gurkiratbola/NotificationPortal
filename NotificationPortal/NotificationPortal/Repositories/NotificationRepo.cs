@@ -65,7 +65,7 @@ namespace NotificationPortal.Repositories
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
             model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
-            model.ProirityList = _slRepo.GetPriorityList();
+            model.PriorityList = _slRepo.GetPriorityList();
             return model;
         }
 
@@ -192,7 +192,7 @@ namespace NotificationPortal.Repositories
                     EndDateTime = lastestNotification.EndDateTime,
                     LevelOfImpactID = lastestNotification.LevelOfImpactID,
                     NotificationTypeID = lastestNotification.NotificationTypeID,
-                    ProirityID = lastestNotification.PriorityID,
+                    PriorityID = lastestNotification.PriorityID,
                     SentMethodID = lastestNotification.SendMethodID,
                     StatusID = lastestNotification.StatusID,
                     NotificationDescription = lastestNotification.NotificationDescription,
@@ -224,7 +224,7 @@ namespace NotificationPortal.Repositories
                     EndDateTime = editingNotification.EndDateTime,
                     LevelOfImpactID = editingNotification.LevelOfImpactID,
                     NotificationTypeID = editingNotification.NotificationTypeID,
-                    ProirityID = editingNotification.PriorityID,
+                    PriorityID = editingNotification.PriorityID,
                     SentMethodID = editingNotification.SendMethodID,
                     StatusID = editingNotification.StatusID,
                     NotificationDescription = editingNotification.NotificationDescription,
@@ -238,7 +238,7 @@ namespace NotificationPortal.Repositories
             model.ServerList = _slRepo.GetServerList();
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
-            model.ProirityList = _slRepo.GetPriorityList();
+            model.PriorityList = _slRepo.GetPriorityList();
             model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
             return model;
         }
@@ -421,7 +421,7 @@ namespace NotificationPortal.Repositories
                 string newIncidentNumber = NewIncidentNumber(notification.NotificationTypeID);
                 var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
                 var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
-                var priorityValue = _context.Notification.Where(n => notification.ProirityID == n.Priority.PriorityID)
+                var priorityValue = _context.Notification.Where(n => notification.PriorityID == n.Priority.PriorityID)
                     .Select(n => n.Priority.PriorityValue)
                     .FirstOrDefault();
                 Notification newNotification = new Notification()
@@ -431,7 +431,7 @@ namespace NotificationPortal.Repositories
                     NotificationHeading = notification.NotificationHeading,
                     NotificationDescription = notification.NotificationDescription,
                     StatusID = notification.StatusID,
-                    PriorityID = notification.ProirityID,
+                    PriorityID = notification.PriorityID,
                     SendMethodID = notification.SentMethodID,
                     UserID = userId,
                     //TO DO: discuss how referenceID is generated
@@ -614,7 +614,7 @@ namespace NotificationPortal.Repositories
             {
                 var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
                 var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
-                var priorityValue = _context.Notification.Where(n => notification.ProirityID == n.Priority.PriorityID)
+                var priorityValue = _context.Notification.Where(n => notification.PriorityID == n.Priority.PriorityID)
                     .Select(n => n.Priority.PriorityValue)
                     .FirstOrDefault();
 
@@ -694,7 +694,7 @@ namespace NotificationPortal.Repositories
         {
             var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
             var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
-            var priorityValue = _context.Notification.Where(n => notification.ProirityID == n.Priority.PriorityID)
+            var priorityValue = _context.Notification.Where(n => notification.PriorityID == n.Priority.PriorityID)
                 .Select(n => n.Priority.PriorityValue)
                 .FirstOrDefault();
 
