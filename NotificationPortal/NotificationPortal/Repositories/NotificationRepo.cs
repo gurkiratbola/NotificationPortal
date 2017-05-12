@@ -73,7 +73,7 @@ namespace NotificationPortal.Repositories
         {
             IEnumerable<Notification> notifications =
                 _context.Notification.Where(n => n.IncidentNumber == incidentNumber)
-                .OrderBy(n => n.SentDateTime);
+                .OrderBy(n => n.SentDateTime).ToList();
 
             IEnumerable<NotificationDetailVM> thread =
                 notifications.Select(

@@ -3,7 +3,7 @@
 ========================================================================== */
 /*
 mint: #44bbc1 
-darker mint: #3EA2C3
+
 light-blue: #edf2f6 
 dark-navy: #373e50 
 sidebar-grey: #6f7e95
@@ -12,6 +12,7 @@ sidebar-grey: #6f7e95
 /*
     brand-color: #36c2dd
     light-brand-color: #afe7f1
+    darker-brand-color: #3EA2C3
     highlight: #e0e77a
     dark-grey: #6d6b69
     grey: #84807c
@@ -422,6 +423,14 @@ h5.col-12 {
     padding: 0.5em 1em;
 }
 
+.nav-tabs a {
+    color: #36c2dd;
+}
+
+.nav-tabs a:hover {
+    color: #3EA2C3;
+}
+
 .tab-pane {
     padding: 1em;
     padding-top: 25px;
@@ -441,9 +450,16 @@ h5.col-12 {
 #editor {
     min-height: 220px !important;
 }
+.single-thread {
+    margin-bottom: 10px;
+}
 
+.single-thread:first-child {
+    margin-bottom:20px;
+} 
+    
 .single-thread .float-right a {
-    color: #36c2dd;
+    color: #3EA2C3;
     font-size: 1.1em;
 }
 
@@ -453,17 +469,17 @@ h5.col-12 {
 }
 
 .single-thread:not(:first-child) .float-left {
-    padding-left: 25px;
+    padding-left: 30px;
 }
 
 .single-thread:not(:first-child) .float-left:before {
     content: "";
     position: absolute;
     display: inline-block;
-    top: -1em;
+    top: -1.2em;
     left: 20px;
     width: 1em;
-    height: 1.8em;
+    height: 2em;
     border-left: 1px dotted #6f7e95;
     border-bottom: 1px dotted #6f7e95;
 }
