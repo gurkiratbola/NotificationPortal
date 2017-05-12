@@ -31,7 +31,9 @@ namespace NotificationPortal.Repositories
                                 LastName = a.LastName,
                                 HomePhone = a.HomePhone,
                                 MobilePhone = a.MobilePhone,
+                                SendMethodID = a.SendMethodID
                             }).FirstOrDefault();
+                
                 return user;
             }
             else
@@ -50,6 +52,7 @@ namespace NotificationPortal.Repositories
                             || original.HomePhone != model.HomePhone
                             || original.FirstName != model.FirstName
                             || original.LastName != model.LastName
+                            || original.SendMethodID != model.SendMethodID
                             || original.User.Email != model.Email;
             if (changed)
             {
@@ -76,6 +79,7 @@ namespace NotificationPortal.Repositories
                         userUpdated.BusinessPhone = model.BusinessPhone;
                         userUpdated.HomePhone = model.HomePhone;
                         userUpdated.MobilePhone = model.MobilePhone;
+                        userUpdated.SendMethodID = model.SendMethodID;
 
                         _context.SaveChanges();
                         if (email != model.Email)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace NotificationPortal.ViewModels
 {
@@ -35,6 +36,12 @@ namespace NotificationPortal.ViewModels
         [Required]
         [Display(Name = "Mobile Phone")]
         public string MobilePhone { get; set; }
+
+        [Required]
+        public int SendMethodID { get; set; }
+
+        [Display(Name ="Notification Send Method")]
+        public SelectList SendMethodList { get; set; }
 
         [Display(Name = "Home Phone")]
         public string HomePhone { get; set; }

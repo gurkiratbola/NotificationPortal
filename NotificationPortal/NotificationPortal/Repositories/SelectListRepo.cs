@@ -58,7 +58,7 @@ namespace NotificationPortal.Repositories
                                                      {
                                                          Value = s.StatusID.ToString(),
                                                          Text = s.StatusName
-                                                     });
+                                                     }).OrderByDescending(o => o.Value);
 
             return new SelectList(statusList, "Value", "Text");
         }
