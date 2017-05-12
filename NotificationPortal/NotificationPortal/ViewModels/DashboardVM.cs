@@ -16,6 +16,7 @@ namespace NotificationPortal.ViewModels
         public string CurrentSort { get; set; }
         public string LevelOfImpactSort { get; set; }
         public string SubjectSort { get; set; }
+        public string SenderSort { get; set; }
         public string IDSort { get; set; }
         public string DateSort { get; set; }
         public int TotalItemCount { get; set; }
@@ -26,6 +27,9 @@ namespace NotificationPortal.ViewModels
     {
         [Display(Name = "Incident #")]
         public string ThreadID { get; set; }
+
+        [Display(Name = "Sender")]
+        public string SenderName { get; set; }
 
         [Display(Name = "Level of Impact")]
         public string LevelOfImpact { get; set; }
@@ -54,7 +58,7 @@ namespace NotificationPortal.ViewModels
 
     public class DashboardThreadDetailVM
     {
-        public string NotificationHeading { get; set; }
+        public string NotificationDetail{ get; set; }
         public DateTime SentDateTime { get; set; }
     }
 }

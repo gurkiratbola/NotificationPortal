@@ -8,6 +8,7 @@ namespace NotificationPortal.Repositories
     public static class ConstantsRepo
     {
         public const int PAGE_SIZE = 10;
+        public const int DASHBOARD_CLENT_SIDE_LIMIT = 3;
 
         public const string SORT_CLIENT_BY_NAME_ASCE = "client_name_asce";
         public const string SORT_CLIENT_BY_NAME_DESC = "client_name_desc";
@@ -26,6 +27,9 @@ namespace NotificationPortal.Repositories
 
         public const string SORT_NOTIFICATION_BY_TYPE_ASCE = "notification_type_asce";
         public const string SORT_NOTIFICATION_BY_TYPE_DESC = "notification_type_desc";
+
+        public const string SORT_NOTIFICATION_BY_SENDER_ASCE = "notification_sender_asce";
+        public const string SORT_NOTIFICATION_BY_SENDER_DESC = "notification_sender_desc";
 
         public const string SORT_STATUS_BY_NAME_ASCE = "status_name_asce";
         public const string SORT_STATUS_BY_NAME_DESC = "status_name_desc";
