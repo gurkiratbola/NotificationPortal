@@ -54,6 +54,12 @@ h3 {
     font-size: 1em;
 }
 
+h4 {
+    margin-bottom: 20px;
+    color: #36c2dd;
+    font-weight: 700;
+}
+
 /* ==========================================================================
                             Color Styles
 ========================================================================== */
@@ -314,6 +320,7 @@ tbody {
     border-bottom: 1px solid #6d6b69;
     font-size: 0.9em;
     color: lightgrey;
+    padding-left: 25px;
 }
 
 .sidebar-dropdown .nav-link:hover {
@@ -406,36 +413,9 @@ footer a:hover {
     float: right !important;
 }
 
-#accordion {
-    margin-bottom: 30px !important;
-}
-
 h5.col-12 {
     color: #44bbc1;
     padding-left: 0;
-}
-
-#accordion .card-block a {
-    color: black !important;
-}
-
-#accordion .card-block a:hover {
-    text-decoration: none !important;
-}
-
-#accordion .badge {
-    background-color: #44bbc1;
-    padding: 5px;
-}
-
-#accordion .card {
-    margin-bottom: 15px;
-    border: none;
-}
-#accordion .card-header {
-    border-bottom: 2px solid #44bbc1;
-    padding: 0;
-    background-color: transparent;
 }
     
 .left-padding {
@@ -462,6 +442,31 @@ h5.col-12 {
     min-height: 220px !important;
 }
 
+.single-thread .float-right a {
+    color: #36c2dd;
+    font-size: 1.1em;
+}
+
+.single-thread .float-right a:hover {
+    color: #afe7f1;
+    text-decoration: none;
+}
+
+.single-thread:not(:first-child) .float-left {
+    padding-left: 25px;
+}
+
+.single-thread:not(:first-child) .float-left:before {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    top: -1em;
+    left: 20px;
+    width: 1em;
+    height: 1.8em;
+    border-left: 1px dotted #6f7e95;
+    border-bottom: 1px dotted #6f7e95;
+}
 /* ==========================================================================
                             Page Styles: Dashboard
 ========================================================================== */

@@ -9,7 +9,7 @@
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="~/Notification/Index" class="link-color">Notifications</a></li>
-    <li class="breadcrumb-item active">Notification Details</li>
+    <li class="breadcrumb-item active">@Html.Raw(Model.IncidentNumber)</li>
 </ol>
 
 <!-- Nav tabs -->
@@ -28,98 +28,80 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div class="tab-pane active" id="Notifications" role="tabpanel">
-        <dl class="row">
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NotificationType)</dt>
-            <dd class="col-sm-10">@Html.DisplayFor(model => model.NotificationType)</dd>
+    <h4>@Html.DisplayFor(model => model.Subject)</h4>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.IncidentNumber)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.IncidentNumber)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NotificationType)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.NotificationType)</dd>
 
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.LevelOfImpact)</dt>
-            <dd class="col-sm-10">@Html.DisplayFor(model => model.LevelOfImpact)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.LevelOfImpact)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.LevelOfImpact)</dd>
 
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Status)</dt>
-            <dd class="col-sm-10">@Html.DisplayFor(model => model.Status)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Status)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Status)</dd>
+        @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) || User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+        {
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.SenderName)</dt>
+                    <dd class="col-sm-10">@Html.DisplayFor(model => model.SenderName)</dd>
+        }
 
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.StartDateTime)</dt>
-            <dd class="col-sm-10">
-                @if (Model.StartDateTime != null)
-                {
-                    @Html.DisplayFor(model => model.StartDateTime)
-                }
-                else
-                {
-                    @Html.Raw("TBA")
-                }
-            </dd>
-
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.EndDateTime)</dt>
-            <dd class="col-sm-10">
-                @if (Model.EndDateTime != null)
-                {
-                    @Html.DisplayFor(model => model.EndDateTime)
-                }
-                else
-                {
-                    @Html.Raw("TBA")
-                }
-            </dd>
-
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.IncidentNumber)</dt>
-            <dd class="col-sm-10">@Html.DisplayFor(model => model.IncidentNumber)</dd>
-        </dl>
-        <!-- list of threads-->
-        <div id="accordion" role="tablist" aria-multiselectable="true">
-            @{ int cardIndex = 0; }
-            @foreach (var item in Model.Thread)
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.StartDateTime)</dt>
+        <dd class="col-sm-10">
+            @if (Model.StartDateTime != null)
             {
-                string collapseId = "collapse" + cardIndex.ToString();
-                string headingId = "heading" + cardIndex.ToString();
-                <div class="card">
-                    <div class="card-header" role="tab" id="@headingId">
-                        <div data-toggle="collapse" class="d-flex justify-content-between bd-highlight md-3" data-parent="#accordion" href="#@collapseId" aria-expanded="true" aria-controls="@collapseId">
-                            <div>
-                                <h5 class="col-12">
-                                    <span class="bd-highlight">
-                                        @Html.DisplayFor(modelItem => item.NotificationHeading)
-                                    </span>
-
-                                    @*<p class="small">
-            @Html.DisplayFor(modelItem => item.ReferenceID)
-        </p>*@
-                                </h5>
-
-                            </div>
-                            <h5>
-                                <span class="badge bd-highlight">
-                                    @Html.DisplayFor(modelItem => item.SentDateTime)
-                                </span>
-                            </h5>
-                        </div>
-                    </div>
-
-                    <div id="@collapseId" class="collapse show" role="tabpanel" aria-labelledby="@headingId">
-                        <div class="card-block float-left">
-                            @Html.Raw(item.NotificationDescription)
-                        </div>
-                        <div class="float-right">
-                            @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
-                        User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
-                            {
-                                <a class="" href="@Url.Action("Edit", "Notification", new { id = @item.ReferenceID })">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </a>
-                            }
-                            @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN))
-                            {
-                                <a class="" href="@Url.Action("Delete", "Notification", new { id = @item.ReferenceID })">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </a>
-                            }
-                        </div>
-                    </div>
-                </div>
-                cardIndex++;
+                @Html.DisplayFor(model => model.StartDateTime)
             }
+            else
+            {
+                @Html.Raw("TBA")
+            }
+        </dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.EndDateTime)</dt>
+        <dd class="col-sm-10">
+            @if (Model.EndDateTime != null)
+            {
+
+                @Html.DisplayFor(model => model.EndDateTime)
+            }
+            else
+            {
+                @Html.Raw("TBA")
+            }
+        </dd>
+    </dl>
+    <hr />
+    <!-- list of threads-->
+    <div class="row">
+        @foreach (var item in Model.Thread)
+        {
+            var statusClass = item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED.ToUpper() ? "badge badge-success" : "badge badge-danger";
+            <div class="col-sm-12 single-thread">
+                <span class="float-left">
+                    @Html.Raw(item.NotificationDescription)
+                </span>
+                <span class="float-right">
+                    @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
+                         User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+                    {
+                        <a class="" href="@Url.Action("Edit", "Notification", new { id = @item.ReferenceID })">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </a>
+                    }
+                    @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN))
+                    {
+                        <a class="" href="@Url.Action("Delete", "Notification", new { id = @item.ReferenceID })">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>
+                    }
+                    @Html.Raw(item.SentDateTime)
+                    <span class="@statusClass">@Html.Raw(item.Status)</span>
+                </span>
+            </div>
+        }
+     </div>
         </div>
-    </div>
     <div class="tab-pane" id="Servers" role="tabpanel">
         <table class="table table-bordered">
             @{ var serverModel = Model.Servers.FirstOrDefault();}

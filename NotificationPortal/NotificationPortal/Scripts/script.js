@@ -37,11 +37,11 @@ $(document).ready(function ($) {
 
 
     // for sidebar dropdown
-    if (localStorage.getItem("isDropdownVisible") == null) {
+    if (localStorage.getItem("isDropdownVisible") === null) {
         localStorage.setItem("isDropdownVisible", false);
         //$(".sidebar-dropdown").hide();
     } else {
-        if (localStorage.getItem("isDropdownVisible") == false) {
+        if (localStorage.getItem("isDropdownVisible") === false) {
             $(".sidebar-dropdown").hide();
         } else {
             $(".sidebar-dropdown").show();
@@ -66,7 +66,7 @@ $(document).ready(function ($) {
     $('.sidebar-dropdown a').each(function () {
         var linkPage = this.href;
 
-        if (activePage == linkPage) {
+        if (activePage === linkPage) {
             $(this).closest("li").addClass("active");
         }
     });

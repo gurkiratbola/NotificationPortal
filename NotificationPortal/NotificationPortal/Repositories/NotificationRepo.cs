@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using Twilio.Types;
@@ -81,7 +82,8 @@ namespace NotificationPortal.Repositories
                         ReferenceID = n.ReferenceID,
                         NotificationHeading = n.NotificationHeading,
                         NotificationDescription = n.NotificationDescription,
-                        SentDateTime = n.SentDateTime
+                        SentDateTime = n.SentDateTime,
+                        Status = n.Status.StatusName
                     });
 
             Notification lastestNotification = notifications.LastOrDefault();
@@ -166,7 +168,9 @@ namespace NotificationPortal.Repositories
                 EndDateTime = lastestNotification.EndDateTime,
                 Thread = thread,
                 Servers = servers,
-                Applications = apps
+                Applications = apps,
+                Subject = notifications.FirstOrDefault().NotificationHeading,
+                SenderName = notifications.FirstOrDefault().UserDetail.FirstName + " " + notifications.FirstOrDefault().UserDetail.LastName
             };
             return model;
         }
@@ -250,7 +254,8 @@ namespace NotificationPortal.Repositories
                 NotificationDescription = deletingNotification.NotificationDescription,
                 NotificationHeading = deletingNotification.NotificationHeading,
                 SentDateTime = deletingNotification.SentDateTime,
-                IncidentNumber = deletingNotification.IncidentNumber
+                IncidentNumber = deletingNotification.IncidentNumber,
+                Status = deletingNotification.Status.StatusName
             };
             return model;
         }
@@ -397,11 +402,12 @@ namespace NotificationPortal.Repositories
             return appList;
         }
 
-        public bool CreateNotification(NotificationCreateVM notification, out string msg)
+        public bool CreateNotification(NotificationCreateVM notification, IPrincipal User, out string msg)
         {
 
             try
             {
+                var userId = User.Identity.GetUserId();
                 //TO DO: check if it's by server or by Application
                 if (notification.ServerReferenceIDs == null)
                 {
@@ -427,6 +433,7 @@ namespace NotificationPortal.Repositories
                     StatusID = notification.StatusID,
                     PriorityID = notification.ProirityID,
                     SendMethodID = notification.SentMethodID,
+                    UserID = userId,
                     //TO DO: discuss how referenceID is generated
                     ReferenceID = Guid.NewGuid().ToString(),
                     IncidentNumber = notification.IncidentNumber ?? newIncidentNumber,

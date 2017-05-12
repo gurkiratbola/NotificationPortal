@@ -152,6 +152,10 @@ namespace NotificationPortal.ViewModels
         public DateTime? StartDateTime { get; set; }
         [Display(Name = "End Time")]
         public DateTime? EndDateTime { get; set; }
+        [Display(Name = "Sender")]
+        public string SenderName { get; set; }
+        [Display(Name = "Subject")]
+        public string Subject { get; set; }
         public IEnumerable<NotificationDetailVM> Thread { get; set; }
         public IEnumerable<NotificationServerVM> Servers { get; set; }
         public IEnumerable<NotificationApplicationVM> Applications { get; set; }
@@ -160,8 +164,11 @@ namespace NotificationPortal.ViewModels
     public class NotificationDetailVM
     {
         public string ReferenceID { get; set; }
+        public string Status { get; set; }
         public string NotificationHeading { get; set; }
+        [Display(Name = "Details")]
         public string NotificationDescription { get; set; }
+        [Display(Name = "Send Time")]
         public DateTime SentDateTime { get; set; }
         public string IncidentNumber { get; set; }
     }
