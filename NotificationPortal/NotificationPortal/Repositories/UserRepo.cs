@@ -101,12 +101,12 @@ namespace NotificationPortal.Repositories
 
                 if(HttpContext.Current.User.IsInRole("Staff"))
                 {
-                    users = users.Where(a => a.RoleName != "Admin");
+                    users = users.Where(a => a.RoleName != "Admin" && a.RoleName != "Staff");
                 }
 
                 if(HttpContext.Current.User.IsInRole("Client"))
                 {
-                    users = users.Where(u => u.RoleName != "Admin" && u.RoleName != "Staff" && u.ClientName==getClientId);
+                    users = users.Where(u => u.RoleName != "Admin" && u.RoleName != "Staff" && u.ClientName == getClientId);
                 }
 
                 int totalNumOfUsers = users.Count();

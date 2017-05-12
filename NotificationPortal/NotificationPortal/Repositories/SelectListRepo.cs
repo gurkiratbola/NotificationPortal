@@ -20,19 +20,21 @@ namespace NotificationPortal.Repositories
                                                         Text = roles.Name
                                                     });
 
+            // Check if user is admin, if true display all roles selection
             if (HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN))
             {
                 return new SelectList(rolesList, "Value", "Text");
             }
 
-            rolesList = rolesList.Where(r => r.Value != Key.ROLE_ADMIN);
+            rolesList = rolesList.Where(r => r.Value != Key.ROLE_ADMIN && r.Value != Key.ROLE_STAFF);
 
+            // if user is in staff role, don't display admin role
             if (HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
             {
                 return new SelectList(rolesList, "Value", "Text");
             }
 
-            rolesList = rolesList.Where(r => r.Value != Key.ROLE_STAFF);
+            rolesList = rolesList.Where(r => r.Value != Key.ROLE_ADMIN && r.Value != Key.ROLE_STAFF && r.Value != Key.ROLE_CLIENT);
 
             return new SelectList(rolesList, "Value", "Text");
         }
