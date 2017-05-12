@@ -484,6 +484,11 @@ h5.col-12 {
 
 .card-header h5 {
     padding-left: 0.75em;
+    display: inline-block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card-header h5 > a {
@@ -491,7 +496,7 @@ h5.col-12 {
 }
 
 .card-header h5 > a:hover {
-    color: coral !important;
+    color: #ededed !important;
     text-decoration: none;
 }
 
@@ -518,15 +523,28 @@ h5.col-12 {
     position: relative;
 }
 
+.notification-list p > .truncate {
+    display: inline-block;
+    width: 70%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+    
 .notification-list:before {
     content: "";
     position: absolute;
-    top: -1.6em;
+    display: inline-block;
+    top: -1.8em;
     left: 0;
     width: 1em;
-    height: 2.3em;
+    height: 2.5em;
     border-left: 1px dotted #6f7e95;
     border-bottom: 1px dotted #6f7e95;
+}
+
+i.fa.fa-sticky-note-o {
+    transform: translateY(-5px);
 }
 
 h3.heading-padding {

@@ -6,9 +6,8 @@ using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
 using System.Security.Principal;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using PagedList;
-using System.Text.RegularExpressions;
+using NotificationPortal.Service;
 
 namespace NotificationPortal.Repositories
 {
@@ -136,19 +135,13 @@ namespace NotificationPortal.Repositories
                                                            {
                                                                SentDateTime = c.SentDateTime,
                                                                NotificationDetail = c.NotificationDescription
-                                                            }).OrderByDescending(a => a.SentDateTime).ToList().Take(ConstantsRepo.DASHBOARD_CLENT_SIDE_LIMIT);
+                                                            }).OrderByDescending(a => a.SentDateTime).ToList()
+                                                           .Take(ConstantsRepo.DASHBOARD_CLENT_SIDE_LIMIT);
             foreach (var item in details)
             {
-                item.NotificationDetail = RemoveTags(item.NotificationDetail);
+                item.NotificationDetail = StringHelper.RemoveTags(item.NotificationDetail);
             }
             return details;
-        }
-
-        public string RemoveTags(string text)
-        {
-            string s = Regex.Replace(text, @"<.*?>", string.Empty);
-            s = s.Replace("&nbsp;", " ");
-            return s;
         }
 
         public IEnumerable<DashboardVM> GetAppNotifications(IEnumerable<DashboardVM> dashboard, ICollection<Application> apps) {
@@ -165,11 +158,18 @@ namespace NotificationPortal.Repositories
                                             NotificationType = n.NotificationType.NotificationTypeName,
                                             SentDateTime = n.SentDateTime,
                                             Status = n.Status.StatusName
-                                        })).OrderBy(x => x.LevelOfImpact);
-            dashboard = notifications.GroupBy(n => n.ThreadID)
-                            .Select(
-                                t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
-                            );
+                                        }))
+                                        .OrderBy(x => x.LevelOfImpact).ToList();
+            foreach (var item in notifications)
+            {
+                item.ThreadHeading = GetFirstHeading(item.ThreadID);
+            }
+
+            dashboard = notifications
+                        .GroupBy(n => n.ThreadID)
+                        .Select(
+                            t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
+                        );
 
             dashboard = from n in dashboard where n.Status == Key.STATUS_NOTIFICATION_OPEN select n;
 
@@ -180,6 +180,14 @@ namespace NotificationPortal.Repositories
                 item.ThreadDetail = GetThreadDetails(item.ThreadID);
             }
             return dashboard;
+        }
+
+        public string GetFirstHeading(string threadID) {
+            string firstHeading = "";
+            firstHeading = _context.Notification
+                            .Where(a => a.IncidentNumber == threadID)
+                            .FirstOrDefault().NotificationHeading;
+            return firstHeading;
         }
 
         public IEnumerable<DashboardVM> Sort(IEnumerable<DashboardVM> list, string sortOrder, string searchString = null)
