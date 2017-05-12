@@ -19,7 +19,6 @@ namespace NotificationPortal.Controllers
         public ActionResult Index()
         {
             ProfileVM user = _pRepo.GetUserDetail(User);
-            user.SendMethodList = _selectListRepo.GetSendMethodList();
             return View(user);
         }
         [HttpPost]

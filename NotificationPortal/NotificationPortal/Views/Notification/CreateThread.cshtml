@@ -69,19 +69,11 @@
                 </div>
             </div>
 
-            <!--send method-->
-            <div class="form-group col-md-3">
-                @Html.LabelFor(model => model.SendMethodList, htmlAttributes: new { @class = "control-label required" })
-                <div class="">
-                    @Html.DropDownListFor(m => m.SentMethodID, Model.SendMethodList, "", htmlAttributes: new { @class = "form-control" })
-                </div>
-            </div>
-
             <!--priority list-->
             <div class="form-group col-md-3">
-                @Html.LabelFor(model => model.ProirityList, htmlAttributes: new { @class = "control-label required" })
+                @Html.LabelFor(model => model.PriorityList, htmlAttributes: new { @class = "control-label required" })
                 <div class="">
-                    @Html.DropDownListFor(m => m.ProirityID, Model.ProirityList, "", htmlAttributes: new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.PriorityID, Model.PriorityList, "", htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
         </div>

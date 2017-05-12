@@ -60,7 +60,6 @@ namespace NotificationPortal.Repositories
                 };
             }
             model.ApplicationList = GetApplicationList();
-            model.SendMethodList = _slRepo.GetSendMethodList();
             model.ServerList = _slRepo.GetServerList();
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
@@ -234,7 +233,6 @@ namespace NotificationPortal.Repositories
                 model.ApplicationReferenceIDs = editingNotification.Applications.Select(a => a.ReferenceID).ToArray();
             }
             model.ApplicationList = GetApplicationList();
-            model.SendMethodList = _slRepo.GetSendMethodList();
             model.ServerList = _slRepo.GetServerList();
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
@@ -408,6 +406,9 @@ namespace NotificationPortal.Repositories
             try
             {
                 var userId = User.Identity.GetUserId();
+                var sendMethodId = _context.UserDetail
+                                .Where(a => a.UserID == userId)
+                                .FirstOrDefault().SendMethodID;
                 //TO DO: check if it's by server or by Application
                 if (notification.ServerReferenceIDs == null)
                 {
@@ -432,7 +433,7 @@ namespace NotificationPortal.Repositories
                     NotificationDescription = notification.NotificationDescription,
                     StatusID = notification.StatusID,
                     PriorityID = notification.PriorityID,
-                    SendMethodID = notification.SentMethodID,
+                    SendMethodID = sendMethodId,
                     UserID = userId,
                     //TO DO: discuss how referenceID is generated
                     ReferenceID = Guid.NewGuid().ToString(),

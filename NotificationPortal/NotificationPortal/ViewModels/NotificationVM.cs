@@ -96,7 +96,6 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int NotificationTypeID { get; set; }
 
-        [Required]
         public int SentMethodID { get; set; }
 
         [Required]
@@ -123,9 +122,6 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name = "Status")]
         public SelectList StatusList { get; set; }
-
-        [Display(Name = "Send Method")]
-        public SelectList SendMethodList { get; set; }
 
         [Display(Name = "Priority")]
         public SelectList PriorityList { get; set; }
