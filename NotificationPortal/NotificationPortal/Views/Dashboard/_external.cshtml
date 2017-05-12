@@ -12,14 +12,14 @@
         <div class="card-deck pb-3">
             <div class="card">
                 <div class="card-header card-inverse card-deck">
-                        <div class="col-md-6 pl-0">
+                        <div class="col-md-10 pl-0">
                                 <h5>
                                     <a href="@Url.Action("DetailsThread", "Notification", new { id = item.ThreadID })">
                                         @Html.DisplayFor(modelItem => item.ThreadHeading)
                                     </a>
                                 </h5>
                         </div>
-                        <div class="col-md-6 pr-4">
+                        <div class="col-md-2 pr-4">
                             <span class="float-right external-status @impactClass">
                                     @Html.DisplayFor(modelItem => item.LevelOfImpact)
                             </span>
@@ -46,7 +46,7 @@
                                                 <li class="notification-list">
                                                     <p class="text-muted">
                                                         <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
-                                                        <span class="text-indent">
+                                                        <span class="text-indent truncate">
                                                             @Html.DisplayFor(modelItem => detail.NotificationDetail)
                                                         </span>
                                                         <span class="float-right">
