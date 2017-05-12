@@ -11,7 +11,10 @@ $(document).ready(function ($) {
     });
     $(".clickable-row-dashboard").click(function () {
         //window.location = window.location.origin + $(this).data("href");
-        window.location = $(this).data("href");
+        var x = document.URL;
+        var index = document.URL.indexOf(domain);
+        var d = document.URL.substr(0, index)
+        window.location = d + $(this).data("href");
     });
     $('*').click(function (e) {
         if (e.target.className !== 'clickable-row') {

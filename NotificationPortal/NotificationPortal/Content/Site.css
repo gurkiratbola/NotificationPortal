@@ -311,6 +311,10 @@ tbody {
     color: lightgrey;
 }
 
+.sidebar-dropdown .nav-link:hover {
+    color: #e0e77a;
+}
+    
 .sidebar-dropdown .active {
     background-color: #ededed;
 }

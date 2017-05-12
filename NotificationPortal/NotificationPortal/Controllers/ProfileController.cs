@@ -13,11 +13,13 @@ namespace NotificationPortal.Controllers
     public class ProfileController : AppBaseController
     {
         private readonly ProfileRepo _pRepo = new ProfileRepo();
+        private readonly SelectListRepo _selectListRepo = new SelectListRepo();
         // GET: Profile
         [HttpGet]
         public ActionResult Index()
         {
             ProfileVM user = _pRepo.GetUserDetail(User);
+            user.SendMethodList = _selectListRepo.GetSendMethodList();
             return View(user);
         }
         [HttpPost]
@@ -39,6 +41,7 @@ namespace NotificationPortal.Controllers
                 else
                 {
                     TempData["ErrorMsg"] = msg;
+                    // to do, add the list if fails
                 }
             }
             return View(model);
