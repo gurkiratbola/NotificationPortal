@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
 using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -81,6 +83,11 @@ namespace NotificationPortal.Repositories
                 // get the current logged in user's id
                 var currentUserId = HttpContext.Current.User.Identity.GetUserId();
                 // get the current logged in user's client id
+                var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                //var inrole = um.IsInRole(HttpContext.Current.User.Identity.GetUserId(), "Admin");
+                var au = um.FindByEmail((HttpContext.Current.User.Identity.GetUserName()));
+                var inAdmin = um.IsInRole(au.Id, "Admin");
+                var inUser = um.IsInRole(au.Id, "User");
 
                 var getClientId = _context.UserDetail.Where(u => u.UserID == currentUserId).Select(c => c.Client.ClientName).FirstOrDefault();
                 IEnumerable<ApplicationListVM> applicationList = null;
@@ -97,7 +104,7 @@ namespace NotificationPortal.Repositories
                         ClientName = c.Client.ClientName,
                     });
                 }
-                else
+                else if (getClientId != null && inUser)
                 {
                     applicationList = _context.UserDetail
                    .Where(c => c.UserID == currentUserId).FirstOrDefault().Applications
@@ -110,17 +117,22 @@ namespace NotificationPortal.Repositories
                        StatusName = c.Status.StatusName,
                        ClientName = c.Client.ClientName,
                    });
-                    //applicationList = _context.Application.Where(a=>a.ReferenceID == currentUserId)
-                    //.Select(c => new ApplicationListVM
-                    //{
-                    //    ApplicationName = c.ApplicationName,
-                    //    ReferenceID = c.ReferenceID,
-                    //    Description = c.Description,
-                    //    URL = c.URL,
-                    //    StatusName = c.Status.StatusName,
-                    //    ClientName = c.Client.ClientName,
-                    //});
                 }
+                else
+                    {
+                        applicationList = _context.Application
+                   .Where(c => c.Client.ClientName == getClientId)
+                   .Select(c => new ApplicationListVM
+                   {
+                       ApplicationName = c.ApplicationName,
+                       ReferenceID = c.ReferenceID,
+                       Description = c.Description,
+                       URL = c.URL,
+                       StatusName = c.Status.StatusName,
+                       ClientName = c.Client.ClientName,
+                   });
+                    }
+                
 
                 page = searchString == null ? page : 1;
                 searchString = searchString ?? currentFilter;

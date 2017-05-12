@@ -23,7 +23,7 @@ namespace NotificationPortal.Controllers
         //    IEnumerable<ApplicationListVM> applicationList = _aRepo.GetApplicationList();
         //    return View(applicationList);
         //}
-        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT)]
+        [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF + "," + Key.ROLE_CLIENT + "," + Key.ROLE_USER)]
         [HttpGet]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
