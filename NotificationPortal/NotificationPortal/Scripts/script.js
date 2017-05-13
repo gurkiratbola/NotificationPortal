@@ -83,4 +83,5 @@ $(document).ready(function ($) {
             alertDanger.parent('.form-group > div').slideUp();
         }, 2000);
     }
+
 });
