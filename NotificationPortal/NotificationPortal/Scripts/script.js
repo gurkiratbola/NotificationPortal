@@ -73,4 +73,14 @@ $(document).ready(function ($) {
 
     // for profile email small print
     $(".profile-email").append("<small class='float-right'>Updating email will log user out instantly</small>")
+
+    // hiding alert boxes after 3.5s
+    var alertSuccess = $(".alert-success");
+    var alertDanger = $(".alert-danger");
+    if (alertSuccess.css('display') !== 'none' || alertDanger.css('display') !== 'none'){
+        setTimeout(function () {
+            alertSuccess.parent('.form-group > div').slideUp();
+            alertDanger.parent('.form-group > div').slideUp();
+        }, 2000);
+    }
 });

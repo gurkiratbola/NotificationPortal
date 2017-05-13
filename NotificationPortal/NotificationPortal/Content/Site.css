@@ -103,6 +103,11 @@ i.fa.fa-check.text-success {
     padding-top: 0.75rem;
     padding-left: 0;
 }
+
+.breadcrumb-item a {
+    text-decoration: underline !important;
+}
+    
 .bg-inverse {
     background-color: #6d6b69 !important;
 }
@@ -148,7 +153,6 @@ button:focus {
     list-style: none;
     padding-left: 0;
 }
-
 
 /* ==========================================================================
                             Table Styles
