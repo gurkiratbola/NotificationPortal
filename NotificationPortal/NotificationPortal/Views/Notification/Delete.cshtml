@@ -19,8 +19,8 @@
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ReferenceID)</dt>
     <dd class="col-sm-10">@Html.DisplayFor(model => model.ReferenceID)</dd>
 
-    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ThreadID)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(model => model.ThreadID)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.IncidentNumber)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.IncidentNumber)</dd>
 
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.SentDateTime)</dt>
     <dd class="col-sm-10">@Html.DisplayFor(model => model.SentDateTime)</dd>
@@ -44,13 +44,13 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.NotificationHeading)
         @Html.HiddenFor(model => model.ReferenceID)
-        @Html.HiddenFor(model => model.ThreadID)
+        @Html.HiddenFor(model => model.IncidentNumber)
         @Html.HiddenFor(model => model.SentDateTime)
 
         <div class="form-group">
             <div class="">
                 <input type="submit" value="Delete Notification" class="btn btn-mint text-white" />
-                @Html.ActionLink("Back", "DetailsThread", new { id = Model.ThreadID }, new { @class = "btn btn-danger" })
+                @Html.ActionLink("Back", "DetailsThread", new { id = Model.IncidentNumber}, new { @class = "btn btn-danger" })
 
             </div>
         </div>

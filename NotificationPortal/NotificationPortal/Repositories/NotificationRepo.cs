@@ -64,6 +64,7 @@ namespace NotificationPortal.Repositories
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
             model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
+            model.StartDateTime = DateTime.Now;
             model.PriorityList = _slRepo.GetPriorityList();
             return model;
         }
