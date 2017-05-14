@@ -209,15 +209,28 @@ body.Home {
         display: block;
     }
 
-        /* Hide table headers (but not display: none;, for accessibility) */
-        .container thead tr {
-            position: absolute;
-            top: -9999px;
-            left: -9999px;
-        }
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .container thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
 
+    .table-bordered {
+        border: none;
+    }
+    
     .container tr {
         border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+
+    .container tr:nth-child(even) {
+        background-color: #ededed;
+    }
+
+    .container tr:nth-child(odd) {
+        background-color: #fff;
     }
 
     .container td {
@@ -234,13 +247,15 @@ body.Home {
             /* Now like a table header */
             position: absolute;
             /* Top/left values mimic padding */
-            top: 6px;
-            left: 6px;
+            left: 10px;
             width: 45%;
             padding-right: 10px;
             white-space: nowrap;
             text-align: left;
+            font-size: 0.8em;
             font-weight: bold;
+            color: #6d6b69;
+            position: absolute;
         }
 
         /*

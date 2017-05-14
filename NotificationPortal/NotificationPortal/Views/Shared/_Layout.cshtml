@@ -48,7 +48,7 @@
     </div>
 
     @{
-        string offset = Request.IsAuthenticated?"col-md-11 offset-md-1":"";
+        string offset = Request.IsAuthenticated? "col-lg-11 offset-lg-1" : "";
         if (Request.IsAuthenticated)
         {
             @Html.Partial("~/Views/Shared/_Sidebar.cshtml")
@@ -56,12 +56,12 @@
 
     }
 
-    <div class="container-fluid col-sm-9 @offset">
+    <div class="container-fluid col-md-12 @offset">
         <div class="container">
             @RenderBody()
         </div>
     </div>
-    <footer>
+    <footer class="col-md-12 @offset">
         <p class="text-center">@Html.Raw("Latest Build: " + File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString()) - <a href="~/Home/Documentation">Documentation</a></p>
     </footer>
 

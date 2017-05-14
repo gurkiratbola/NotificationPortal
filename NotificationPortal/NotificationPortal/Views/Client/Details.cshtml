@@ -74,13 +74,13 @@
                         @foreach (var item in Model.Applications)
                         {
                             <tr class="clickable-row-dashboard" id="@item.ReferenceID" data-href="/Application/Details/@item.ReferenceID">
-                                <td>
+                                <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationName)">
                                     @Html.DisplayFor(modelItem => item.ApplicationName)
                                 </td>
-                                <td>
+                                <td data-title="@Html.DisplayNameFor(model => applicationModel.URL)">
                                     @Html.DisplayFor(modelItem => item.URL)
                                 </td>
-                                <td>
+                                <td data-title="@Html.DisplayNameFor(model => applicationModel.Description)">
                                     @Html.DisplayFor(modelItem => item.Description)
                                 </td>
                             </tr>
