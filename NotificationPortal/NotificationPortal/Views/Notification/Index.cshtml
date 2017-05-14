@@ -20,7 +20,7 @@
 }
 
 
-    <div class="row">
+    <div class="row pl-3">
         <!--notification type-->
         <div>
             @Html.ListBoxFor(m => m.NotificationTypeIDs, Model.NotificationTypeList, new { style = "display: none;" })
@@ -86,13 +86,13 @@
 </div>
 
 <div class="pageinfo-display">
-    <label class="float-left mr-sm-2" for="inlineFormCustomSelect">Items per page</label>
     <select id="ItemsPerPage" class="form-control float-left custom-select-sm mb-2 mr-sm-2 mb-sm-0">
         <option value="10">10</option>
         <option value="25">25</option>
         <option value="50">50</option>
         <option value="100">100</option>
     </select>
+    <label class="float-left" for="inlineFormCustomSelect">Items per page</label>
     <p id="pageinfo-display" class="float-left"></p>
 </div>
 
@@ -184,9 +184,15 @@
         $('<td/>', { text: model.Priority }).appendTo($('#' + model.IncidentNumber));
         switch (model.Status) {
             case '@NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN':
-                $('<td/>', { text: model.Status }).appendTo($('#' + model.IncidentNumber)).addClass('bg-closed td-status text-white');
+                $('<td/>', { text: model.Status }).appendTo($('#' + model.IncidentNumber)).addClass('bg-danger td-status text-white');
                 break;
             case '@NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED':
+                $('<td/>', { text: model.Status }).appendTo($('#' + model.IncidentNumber)).addClass('bg-closed td-status text-white');
+                break;
+            case '@NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING':
+                $('<td/>', { text: model.Status }).appendTo($('#' + model.IncidentNumber)).addClass('bg-invest td-status text-white');
+                break;
+            case '@NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED':
                 $('<td/>', { text: model.Status }).appendTo($('#' + model.IncidentNumber)).addClass('bg-success td-status text-white');
                 break;
             default:

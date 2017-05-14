@@ -20,7 +20,7 @@ var refillTBody = function (threads) {
 
 var refillPagination = function (model) {
     // refill page info (Displaying x - y of z items)
-    $('#pageinfo-display').replaceWith('<p id="pageinfo-display">' + model.ItemStart + " - " + model.ItemEnd + " of " + model.TotalItemsCount + (model.TotalItemsCount === 1 ? " item" : " items") + '</p>');
+    $('#pageinfo-display').replaceWith('<p id="pageinfo-display">' + "[Displaying " + model.ItemStart + " - " + model.ItemEnd + " of " + model.TotalItemsCount + (model.TotalItemsCount === 1 ? " item" : " items") + ']</p>');
     // refill page numbers
     $('#pagination').replaceWith('<ul id="pagination" class="pagination" />');
 
@@ -51,7 +51,7 @@ var refillPagination = function (model) {
     if (model.PageNumber > 1) {
         $('<a onclick="changePage(' + (model.PageNumber - 1) + ')"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>').appendTo($('<li/>').appendTo($('#pagination')));
     }
-    for (var i = leftBound; i <= rightBound; i++) {
+    for (var i = leftBound; i <= rightBound && model.PageCount != 1; i++) {
         var pageAnchor = '<a onclick="changePage(' + i + ')">' + i + '</a>';
         var pageListItem = '<li/>';
         if (model.PageNumber === i) {
