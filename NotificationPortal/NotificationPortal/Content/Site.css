@@ -21,6 +21,7 @@ sidebar-grey: #6f7e95
 body {
     line-height: 1.4;
     background-color: #ededed;
+    font-family: "Open Sans", Arial, sans-serif;
 }
 
 .container {
@@ -42,7 +43,7 @@ h1, h2, h3, h4, h5 {
     font-family:"Open Sans", Arial, sans-serif;
 }
 
-a, p, th, td, dd, dt {
+a, p, th, td, dd, dt, label, input {
     font-family: "Open Sans", Arial, sans-serif;
 }
 
@@ -66,6 +67,10 @@ h4 {
 ========================================================================== */
 .bg-mint {
     background-color: #36c2dd;
+}
+
+.bg-closed {
+    background-color: #adadad;
 }
 
 .text-coral {
@@ -164,6 +169,15 @@ button:focus {
 /* ==========================================================================
                             Table Styles
 ========================================================================== */
+
+.table td {
+    padding: 0.3em 10px 5px !important;
+}
+
+.table .td-status {
+    font-weight: bold;
+}
+
 th {
     text-transform: uppercase; font-size: 0.9em; font-weight: 700;
 }
@@ -193,6 +207,7 @@ tbody {
 ========================================================================== */
 .pagination-container {
     float: right;
+    padding: 0.5rem;
 }
 
 .pagination a {
@@ -207,12 +222,24 @@ tbody {
     margin: 40px 0;
 }
 
+.pageinfo-display > label,
+#pageinfo-display {
+    padding: 0.5rem;
+}
+
+#pageinfo-display {
+    display: inline-block;
+}
+
+#ItemsPerPage {
+    width: 70px;
+}
+
+
 .filter-arrows {
-    display: flex;
-    flex-direction: column;
     float: right;
     font-size: 1.6em;
-    margin-bottom: -12px;
+    line-height: 0.8;
     color: rgba(255, 255, 255, 0.5);
 }
 
@@ -471,8 +498,12 @@ footer a:hover {
 /* ==========================================================================
                             Right Click Styles
 ========================================================================== */
+.clickable-row {
+    border: 1px solid #eceeef;
+}
+
 .clickable-row:hover,
-.clickable-row-dashboard:hover{
+.clickable-row-dashboard:hover {
     background: #f7f7f7;
     cursor: pointer;
 }

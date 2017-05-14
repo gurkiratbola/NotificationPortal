@@ -20,7 +20,7 @@ var refillTBody = function (threads) {
 
 var refillPagination = function (model) {
     // refill page info (Displaying x - y of z items)
-    $('#pageinfo-display').replaceWith('<p id="pageinfo-display">' + "Displaying " + model.ItemStart + " - " + model.ItemEnd + " of " + model.TotalItemsCount + (model.TotalItemsCount === 1 ? " item" : " items") + '</p>');
+    $('#pageinfo-display').replaceWith('<p id="pageinfo-display">' + model.ItemStart + " - " + model.ItemEnd + " of " + model.TotalItemsCount + (model.TotalItemsCount === 1 ? " item" : " items") + '</p>');
     // refill page numbers
     $('#pagination').replaceWith('<ul id="pagination" class="pagination" />');
 
