@@ -16,6 +16,9 @@ namespace NotificationPortal.Repositories
         public const string SORT_LEVEL_OF_IMPACT_ASCE = "level_of_impact_asce";
         public const string SORT_LEVEL_OF_IMPACT_DESC = "level_of_impact_desc";
 
+        public const string SORT_INCIDENT_NUMBER_ASCE = "incident_number_asce";
+        public const string SORT_INCIDENT_NUMBER_DESC = "incident_number_desc";
+
         public const string SORT_NOTIFICATION_BY_ID_ASCE = "notification_id_asce";
         public const string SORT_NOTIFICATION_BY_ID_DESC = "notification_id_desc";
 

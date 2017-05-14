@@ -619,7 +619,7 @@ namespace NotificationPortal.Migrations
                 .FirstOrDefault();
             // Get server
             var servers = context.Server.Where(s => s.ServerName == sampleServerName1);
-            // Get server
+            // Get sendmoethod
             var sendMethod = context.SendMethod
                 .Where(s => s.SendMethodName == Key.SEND_METHOD_EMAIL)
                 .FirstOrDefault();

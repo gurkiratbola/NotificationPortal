@@ -1,8 +1,7 @@
 ﻿var domain = window.location.pathname;
 domain = domain.substr(0, domain.lastIndexOf('/'));
 
-$(document).ready(function ($) {
-    // for right click functinoality
+var clickableRow = function () {
     const HIDDEN_MENU_WIDTH_OFFSET = 130;
     const HIDDEN_MENU_HEIGHT_OFFSET = 80;
     $(".hidden-menu").hide();
@@ -10,11 +9,7 @@ $(document).ready(function ($) {
         window.location = domain + $(this).data("href");
     });
     $(".clickable-row-dashboard").click(function () {
-        //window.location = window.location.origin + $(this).data("href");
-        var x = document.URL;
-        var index = document.URL.indexOf(domain);
-        var d = document.URL.substr(0, index)
-        window.location = d + $(this).data("href");
+        window.location = domain.substr(0, domain.lastIndexOf('/')) + $(this).data("href");
     });
     $('*').click(function (e) {
         if (e.target.className !== 'clickable-row') {
@@ -34,7 +29,11 @@ $(document).ready(function ($) {
         $(".hidden-menu").toggle();
         return false;
     });
+}
 
+$(document).ready(function ($) {
+    // for clickable table rows
+    clickableRow();
 
     // for sidebar dropdown
     if (localStorage.getItem("isDropdownVisible") === null) {

@@ -32,12 +32,13 @@ namespace NotificationPortal.Repositories
 
             model = new NotificationIndexVM
             {
-                Threads = Sort(allThreads, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
+                //Threads = Sort(allThreads, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
                 CurrentFilter = searchString,
                 CurrentSort = sortOrder,
+                IncidentNumberSort = sortOrder == ConstantsRepo.SORT_INCIDENT_NUMBER_ASCE ? ConstantsRepo.SORT_INCIDENT_NUMBER_DESC : ConstantsRepo.SORT_INCIDENT_NUMBER_ASCE,
                 LevelOfImpactSort = sortOrder == ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC ? ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE : ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
-                NotificationHeadingSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC,
-                NotificationTypeSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC,
+                NotificationHeadingSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE ? ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC : ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE,
+                NotificationTypeSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE ? ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC : ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE,
                 PrioritySort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC,
                 StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
                 SearchString = "",
@@ -301,7 +302,9 @@ namespace NotificationPortal.Repositories
                             SentDateTime = t.FirstOrDefault().SentDateTime,
                             NotificationType = t.LastOrDefault().NotificationType.NotificationTypeName,
                             LevelOfImpact = t.LastOrDefault().LevelOfImpact.LevelName,
+                            LevelOfImpactValue = t.LastOrDefault().LevelOfImpact.LevelValue,
                             Priority = t.LastOrDefault().Priority.PriorityName,
+                            PriorityValue = t.LastOrDefault().Priority.PriorityValue,
                             Status = t.LastOrDefault().Status.StatusName
                         })
                     .GroupBy(n => n.IncidentNumber)
@@ -366,7 +369,9 @@ namespace NotificationPortal.Repositories
                             SentDateTime = t.First.SentDateTime,
                             NotificationType = t.Last.NotificationType.NotificationTypeName,
                             LevelOfImpact = t.Last.LevelOfImpact.LevelName,
+                            LevelOfImpactValue = t.Last.LevelOfImpact.LevelValue,
                             Priority = t.Last.Priority.PriorityName,
+                            PriorityValue = t.Last.Priority.PriorityValue,
                             Status = t.Last.Status.StatusName
                         })
                     .GroupBy(n => n.IncidentNumber)
@@ -561,13 +566,22 @@ namespace NotificationPortal.Repositories
         {
             if (!String.IsNullOrEmpty(searchString))
             {
-                list = list.Where(n => n.NotificationHeading.ToUpper().Contains(searchString.ToUpper()));
+                list = list.Where(
+                    n => n.IncidentNumber.ToUpper().Contains(searchString.ToUpper())
+                    || n.NotificationHeading.ToUpper().Contains(searchString.ToUpper()));
             }
             switch (sortOrder)
             {
+                case ConstantsRepo.SORT_INCIDENT_NUMBER_ASCE:
+                    list = list.OrderBy(n => n.IncidentNumber);
+                    break;
+
+                case ConstantsRepo.SORT_INCIDENT_NUMBER_DESC:
+                    list = list.OrderByDescending(n => n.IncidentNumber);
+                    break;
+
                 case ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE:
-                    // TODO: modify to severity value if implement in table later
-                    list = list.OrderBy(n => n.LevelOfImpact);
+                    list = list.OrderBy(n => n.LevelOfImpactValue);
                     break;
 
                 case ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE:
@@ -587,11 +601,11 @@ namespace NotificationPortal.Repositories
                     break;
 
                 case ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_ASCE:
-                    list = list.OrderBy(n => n.Priority);
+                    list = list.OrderBy(n => n.PriorityValue);
                     break;
 
                 case ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC:
-                    list = list.OrderByDescending(n => n.Priority);
+                    list = list.OrderByDescending(n => n.PriorityValue);
                     break;
 
                 case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
@@ -603,8 +617,7 @@ namespace NotificationPortal.Repositories
                     break;
 
                 default:
-                    // TODO: modify to severity value if implement in table later
-                    list = list.OrderByDescending(n => n.LevelOfImpact);
+                    list = list.OrderByDescending(n => n.LevelOfImpactValue);
                     break;
             }
             return list;
