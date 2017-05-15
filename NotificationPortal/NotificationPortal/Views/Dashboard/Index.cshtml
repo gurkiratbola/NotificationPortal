@@ -204,7 +204,7 @@ else
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "http://localhost:58475/api/Dashboard",
+                url: domain+"api/Dashboard",
                 data: JSON.stringify(newData),
                 contentType: 'application/json',
                 success: function (data) {

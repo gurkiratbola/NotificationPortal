@@ -1,17 +1,19 @@
 ﻿var subdir = '/';
+if (window.location.origin.indexOf('localhost')) {
+    subdir = '/';
+} else {
+    subdir = '/notificationportal/'
+}
+// used for clickable row and ajax scripts
+var domain = window.location.origin + subdir;
 
 var clickableRow = function () {
-    if (window.location.origin.indexOf('localhost')) {
-        subdir = '/';
-    } else {
-        subdir = '/notificationportal/'
-    }
     const HIDDEN_MENU_WIDTH_OFFSET = 130;
     const HIDDEN_MENU_HEIGHT_OFFSET = 80;
     $(".hidden-menu").hide();
     $(".clickable-row").click(function () {
         var x = $(this).data("href");
-        window.location = window.location.origin + subdir + $(this).data("href");
+        window.location =  domain + $(this).data("href");
     });
     //$(".clickable-row-dashboard").click(function () {
     //    window.location = window.location.origin + subdir + $(this).data("href");
