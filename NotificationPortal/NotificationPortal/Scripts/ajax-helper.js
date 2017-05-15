@@ -7,15 +7,17 @@ var sort = function (x) {
 }
 
 var refillTBody = function (threads) {
-    $('#tbody').replaceWith('<tbody id="tbody" />');
-    // add rows to table
-    threads.forEach(
-        function (thread) {
-            addRow(thread);
-        }
-    );
-    // make the row (right)clickable
-    clickableRow();
+    if (threads.length > 0) {
+        $('#tbody').replaceWith('<tbody id="tbody" />');
+        // add rows to table
+        threads.forEach(
+            function (thread) {
+                addRow(thread);
+            }
+        );
+        // make the row (right)clickable
+        clickableRow();
+    }
 }
 
 var refillPagination = function (model) {
