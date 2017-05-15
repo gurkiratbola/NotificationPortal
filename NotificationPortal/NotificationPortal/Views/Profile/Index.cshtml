@@ -59,7 +59,6 @@
         <div class="form-group">
             @Html.LabelFor(model => model.SendMethodList, htmlAttributes: new { @class = "control-label offset-md-3 col-md-9 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
-           
                 @Html.DropDownListFor(m => m.SendMethodID, Model.SendMethodList, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.SendMethodID, "", new { @class = "text-danger float-right" })
             </div>
