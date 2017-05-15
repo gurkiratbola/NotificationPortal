@@ -105,8 +105,8 @@
 
 <div class="hidden-menu">
     <ul>
-        <li><a href="/Create/" class="btn btn-sm">Update</a></li>
-        <li><a href="/DeleteThread/" class="btn btn-sm">Delete</a></li>
+        <li><a href="Notification/Create/" class="btn btn-sm">Update</a></li>
+        <li><a href="Notification/DeleteThread/" class="btn btn-sm">Delete</a></li>
     </ul>
 </div>
 
@@ -183,7 +183,7 @@
     };
 
     var addRow = function (model) {
-        $('<tr class="clickable-row" id="' + model.IncidentNumber + '" data-href="/DetailsThread/' + model.IncidentNumber + '"/>').appendTo($('#tbody'));
+        $('<tr class="clickable-row" id="' + model.IncidentNumber + '" data-href="Notification/DetailsThread/' + model.IncidentNumber + '"/>').appendTo($('#tbody'));
         $('<td/>', { text: model.IncidentNumber }).addClass('first-row').attr('data-title','@Html.DisplayNameFor(model => Model.IncidentNumber)').appendTo($('#' + model.IncidentNumber));
         $('<td/>', { text: model.NotificationType }).attr('data-title','@Html.DisplayNameFor(model => Model.NotificationType)').appendTo($('#' + model.IncidentNumber));
         $('<td/>', { text: model.LevelOfImpact }).attr('data-title','@Html.DisplayNameFor(model => Model.LevelOfImpact)').appendTo($('#' + model.IncidentNumber));

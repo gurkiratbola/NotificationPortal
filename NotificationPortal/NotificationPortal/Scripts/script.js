@@ -1,15 +1,15 @@
-﻿var domain = window.location.pathname;
-domain = domain.substr(0, domain.lastIndexOf('/'));
+﻿var subdir = '/';
 
 var clickableRow = function () {
     const HIDDEN_MENU_WIDTH_OFFSET = 130;
     const HIDDEN_MENU_HEIGHT_OFFSET = 80;
     $(".hidden-menu").hide();
     $(".clickable-row").click(function () {
-        window.location = domain + $(this).data("href");
+        var x = $(this).data("href");
+        window.location = window.location.origin + subdir + $(this).data("href");
     });
     $(".clickable-row-dashboard").click(function () {
-        window.location = domain.substr(0, domain.lastIndexOf('/')) + $(this).data("href");
+        window.location = window.location.origin + subdir + $(this).data("href");
     });
     $('*').click(function (e) {
         if (e.target.className !== 'clickable-row') {
@@ -22,7 +22,7 @@ var clickableRow = function () {
             if (str.indexOf(rowId) >= 0) {
                 return str;
             } else {
-                return domain + str + rowId;
+                return window.location.origin + subdir + str + rowId;
             }
         });
         $(".hidden-menu").css({ position: "absolute", top: e.pageY - HIDDEN_MENU_HEIGHT_OFFSET, left: e.pageX - HIDDEN_MENU_WIDTH_OFFSET });

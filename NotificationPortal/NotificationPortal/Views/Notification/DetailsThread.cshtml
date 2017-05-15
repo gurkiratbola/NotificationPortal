@@ -13,15 +13,15 @@
 </ol>
 
 <!-- Nav tabs -->
-<ul class="nav nav-tabs" role="tablist">
+<ul class="nav nav-tabs flex-xs-row" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#Notifications" role="tab">Notifications</a>
+        <a class="nav-link flex-xs-fill text-sm-center active" data-toggle="tab" href="#Notifications" role="tab">Notifications</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#Servers" role="tab">Servers</a>
+        <a class="nav-link flex-xs-fill text-sm-center" data-toggle="tab" href="#Servers" role="tab">Servers</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#Applications" role="tab">Applications</a>
+        <a class="nav-link flex-xs-fill text-sm-center" data-toggle="tab" href="#Applications" role="tab">Applications</a>
     </li>
 </ul>
 
@@ -122,13 +122,13 @@
             @foreach (var item in Model.Servers)
             {
                 <tr class="text-center clickable-row-dashboard" id="@item.ReferenceID" data-href="/Server/Details/@item.ReferenceID">
-                    <td>
+                    <td data-title="@Html.DisplayNameFor(model => serverModel.ServerName)" class="first-row">
                         @Html.DisplayFor(modelItem => item.ServerName)
                     </td>
-                    <td>
+                    <td data-title="@Html.DisplayNameFor(model => serverModel.ServerType)">
                         @Html.DisplayFor(modelItem => item.ServerType)
                     </td>
-                    <td>
+                    <td data-title="@Html.DisplayNameFor(model => serverModel.ServerStatus)">
                         @Html.DisplayFor(modelItem => item.ServerStatus)
                     </td>
                 </tr>
@@ -162,13 +162,13 @@
                 @foreach (var item in Model.Applications)
                 {
                     <tr class="text-center clickable-row-dashboard" id="@item.ReferenceID" data-href="/Application/Details/@item.ReferenceID">
-                        <td>
+                        <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationName)" class="first-row">
                             @Html.DisplayFor(modelItem => item.ApplicationName)
                         </td>
-                        <td>
+                        <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationURL)">
                             @Html.DisplayFor(modelItem => item.ApplicationURL)
                         </td>
-                        <td>
+                        <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationStatus)">
                             @Html.DisplayFor(modelItem => item.ApplicationStatus)
                         </td>
                     </tr>
