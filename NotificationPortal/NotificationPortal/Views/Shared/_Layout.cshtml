@@ -35,14 +35,14 @@
                 <a href="@Url.Action("Index", "Dashboard")" class="nav-brand">
                     <img src="~/Content/images/logo.png" alt="logo for notification portal" />
                 </a>
-                @*@Html.ActionLink("Notification Portal", "Index", "Dashboard", new { area = "" }, new { @class = "navbar-brand" })*@
+                        @*@Html.ActionLink("Notification Portal", "Index", "Dashboard", new { area = "" }, new { @class = "navbar-brand" })*@
             }
             else
             {
                 <a href="@Url.Action("Login", "Account")" class="nav-brand">
                     <img src="~/Content/images/logo.png" alt="logo for notification portal" />
                 </a>
-                @*@Html.ActionLink("Notification Portal", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })*@
+                        @*@Html.ActionLink("Notification Portal", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })*@
             }
         }
 
@@ -53,7 +53,7 @@
     </div>
 
     @{
-        string offset = Request.IsAuthenticated? "col-lg-11 offset-lg-1" : "";
+        string offset = Request.IsAuthenticated ? "col-lg-11 offset-lg-1" : "";
         if (Request.IsAuthenticated)
         {
             @Html.Partial("~/Views/Shared/_Sidebar.cshtml")
