@@ -836,6 +836,13 @@ h5.col-12 {
     padding: 1em 0 5px;
 }
 
+@media (max-width: 610px) {
+    .card-deck {
+        padding: 0.5em 0 0;
+    }
+}
+
+
 .card-header {
     background-color: #36c2dd;
 }
@@ -845,7 +852,6 @@ h5.col-12 {
 }
 
 .card-header h5 {
-    padding-left: 0.75em;
     display: inline-block;
     width: 100%;
     white-space: nowrap;
@@ -866,6 +872,20 @@ h5.col-12 {
     padding: 2px 7px 5px;
     border-radius: 5px;
     font-size: 1em;
+}
+
+@media (max-width: 610px) {
+    .external-status {
+        float: left !important;
+        margin-bottom: 10px;
+    }
+
+    .text-muted .float-right {
+        font-size: 0.7em;
+        float: left !important;
+        padding-left: 30px;
+        margin-top: -40px;
+    }
 }
 
 .border-muted {
@@ -891,6 +911,18 @@ h5.col-12 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+@media (max-width: 760px) {
+    .notification-list p > .truncate {
+        width: 60%;
+    }
+}
+
+@media (max-width: 610px) {
+    .notification-list p > .truncate {
+        width: 80%;
+    }
 }
 
 .notification-list:before {
@@ -919,7 +951,6 @@ h3.heading-padding.text-muted:hover {
 }
 
 @media (max-width: 768px) {
-
     .single-thread > .float-right {
         font-size: 0.7em;
     }
