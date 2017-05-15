@@ -24,6 +24,8 @@ namespace NotificationPortal.ViewModels
         public string BusinessTitle { get; set; }
 
         [Required]
+        [Phone]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         [Display(Name = "Business Phone")]
         public string BusinessPhone { get; set; }
 
@@ -34,6 +36,8 @@ namespace NotificationPortal.ViewModels
         public string Email { get; set; }
 
         [Required]
+        [Phone]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         [Display(Name = "Mobile Phone")]
         public string MobilePhone { get; set; }
 
@@ -44,6 +48,8 @@ namespace NotificationPortal.ViewModels
         public SelectList SendMethodList { get; set; }
 
         [Display(Name = "Home Phone")]
+        [Phone]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         public string HomePhone { get; set; }
     }
 }

@@ -57,7 +57,8 @@ namespace NotificationPortal.Repositories
             {
                 model = new NotificationCreateVM()
                 {
-                    IncidentNumber = Guid.NewGuid().ToString()
+                    IncidentNumber = Guid.NewGuid().ToString(),
+                    StartDateTime = DateTime.Now
                 };
             }
             model.ApplicationList = GetApplicationList();
@@ -65,7 +66,6 @@ namespace NotificationPortal.Repositories
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
             model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
-            model.StartDateTime = DateTime.Now;
             model.PriorityList = _slRepo.GetPriorityList();
             return model;
         }
@@ -464,7 +464,6 @@ namespace NotificationPortal.Repositories
 
         public bool EditNotification(NotificationEditVM notification, out string msg)
         {
-
             try
             {
                 //TO DO: check if it's by server or by Application

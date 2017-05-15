@@ -44,6 +44,7 @@ namespace NotificationPortal.Controllers
                     // to do, add the list if fails
                 }
             }
+            model.SendMethodList = _selectListRepo.GetSendMethodList();
             return View(model);
         }
     }

@@ -41,7 +41,7 @@
 
     @foreach (var item in Model)
     {
-        <tr class="text-center clickable-row" id="@item.LocationID" data-href="/Details/@item.LocationID">
+        <tr class="text-center clickable-row" id="@item.LocationID" data-href="DataCenter/Details/@item.LocationID">
             <td>
                 @Html.DisplayFor(modelItem => item.Location)
             </td>
@@ -52,7 +52,7 @@
 
 <div class="hidden-menu">
     <ul>
-        <li><a href="/Edit/" class="btn btn-sm">Edit</a></li>
-        <li><a href="/Delete/" class="btn btn-sm">Delete</a></li>
+        <li><a href="DataCenter/Edit/" class="btn btn-sm">Edit</a></li>
+        <li><a href="DataCenter/Delete/" class="btn btn-sm">Delete</a></li>
     </ul>
 </div>

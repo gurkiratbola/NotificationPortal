@@ -35,6 +35,7 @@ else
                 <span class="hidden-xs-down">
                     <input onclick="getNewList()" class="btn btn-secondary" type="submit" value="Search" />
                 </span>
+                <i id="preloader" class="fa fa-spinner fa-spin" style="font-size:24px"></i>
             </div>
         </div>
 
@@ -164,11 +165,14 @@ else
         $('<a href="javascript:void(0)" onclick="sort(' + "'" + model.LevelOfImpactSort + "'" + ')">@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().LevelOfImpact)' + levelOfImpactArrows + '</a>').appendTo($('<th/>', { text: model.IncidentNumber }).appendTo(theadRow));
     };
 
-    var addRow = function (model) {
+        var addRow = function (model) {
+            var date = new Date(model.SentDateTime);
+        var formattedDate = date.getUTCFullYear() + "/" + (date.getUTCMonth() + 1) + "/" + date.getUTCDate()
+            + " " + (date.getUTCHours()%12) + ":" + date.getUTCMinutes() + (date.getUTCHours() >= 12 ? 'PM' : 'AM');
         $('<tr class="clickable-row" id="' + model.IncidentNumber + '" data-href="Notification/DetailsThread/' + model.IncidentNumber + '"/>').appendTo($('#tbody'));
         $('<td/>', { text: model.IncidentNumber }).addClass('first-row').attr('data-title','@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().ThreadID)').appendTo($('#' + model.IncidentNumber));
         $('<td/>', { text: model.ThreadHeading }).attr('data-title','@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().ThreadHeading)').appendTo($('#' + model.IncidentNumber));
-        $('<td/>', { text: model.SentDateTime }).attr('data-title','@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().SentDateTime)').appendTo($('#' + model.IncidentNumber));
+        $('<td/>', { text: formattedDate }).attr('data-title','@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().SentDateTime)').appendTo($('#' + model.IncidentNumber));
         $('<td/>', { text: model.SenderName }).attr('data-title', '@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().SenderName)').appendTo($('#' + model.IncidentNumber));
         switch (model.LevelOfImpact) {
             case '@NotificationPortal.Models.Key.LEVEL_OF_IMPACT_IMPACTING':
@@ -204,7 +208,7 @@ else
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "http://localhost:58475/api/Dashboard",
+                url: domain+"api/Dashboard",
                 data: JSON.stringify(newData),
                 contentType: 'application/json',
                 success: function (data) {

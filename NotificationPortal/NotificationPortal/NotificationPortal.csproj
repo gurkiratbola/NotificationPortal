@@ -284,6 +284,7 @@
     <Content Include="Content\font\fontawesome-webfont.svg" />
     <Content Include="Content\images\favicon.png" />
     <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\preloader.gif" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\sidebar.css" />
     <Content Include="Content\summernote.css" />
@@ -335,6 +336,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\summernote.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Service\templates\AccountEmailTemplate.html" />
     <Content Include="Service\templates\NotificationEmailTemplate.html" />
     <Content Include="Service\templates\NotificationSMSTemplate.txt" />
     <Content Include="Web.config" />
