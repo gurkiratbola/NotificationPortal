@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using NotificationPortal.Models;
+using NotificationPortal.Service;
 
 namespace NotificationPortal.Controllers
 {
@@ -251,7 +252,10 @@ namespace NotificationPortal.Controllers
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                string body = "We have processed your forgotten password request from the Notification Portal. Reset your password by clicking the link below.";
+
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", TemplateService.AccountEmail(callbackUrl, body, "Reset Password"));
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
@@ -287,6 +291,7 @@ namespace NotificationPortal.Controllers
                 return View(model);
             }
             var user = await UserManager.FindByNameAsync(model.Email);
+
             if (user == null)
             {
                 // Don't reveal that the user does not exist
@@ -298,6 +303,7 @@ namespace NotificationPortal.Controllers
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
+
             AddErrors(result);
             return View();
         }
