@@ -202,6 +202,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\ApiModels.cs" />
+    <Compile Include="Api\DashboardApiRepo.cs" />
+    <Compile Include="Api\DashboardController.cs" />
+    <Compile Include="Api\NotificationApiRepo.cs" />
     <Compile Include="Api\NotificationController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
