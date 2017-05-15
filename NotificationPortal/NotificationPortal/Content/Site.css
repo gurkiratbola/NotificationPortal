@@ -257,9 +257,11 @@ td a:hover {
 /* ==========================================================================
                             Pagination/Filter/Sort Styles
 ========================================================================== */
-.pagination-container {
-    float: right;
-    padding: 0.25rem;
+@media screen and (max-width: 992px) {
+    .form-inline.search {
+        width: 100%;
+        padding-bottom: 0 !important;
+    }
 }
 
 .pagination a {
@@ -350,6 +352,10 @@ td a:hover {
 
 .filter-arrows .fa-caret-down {
     margin-top: -12px;
+}
+
+.disabled-arrow {
+    display: none !important;
 }
 
 .active-arrow {
