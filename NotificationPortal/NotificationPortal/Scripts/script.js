@@ -87,6 +87,8 @@ $(document).ready(function ($) {
         setTimeout(function () {
             alertSuccess.parent('.form-group > div').slideUp();
             alertDanger.parent('.form-group > div').slideUp();
+            alertSuccess.slideUp();
+            alertDanger.slideUp();
         }, 2000);
     }
 
