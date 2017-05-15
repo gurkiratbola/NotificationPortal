@@ -83,7 +83,7 @@ h4 {
     color: lightcoral;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 805px) {
     .bg-closed.td-status,
     .bg-invest.td-status,
     .bg-success.td-status,
@@ -200,7 +200,7 @@ button:focus {
     padding: 0.5em 0.75rem !important;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 805px) {
     .table td {
         padding: 0.3em 10px 5px !important;
     }
@@ -209,7 +209,7 @@ button:focus {
     font-size: 0.9em;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 805px) {
     .first-row {
         background-color: #36c2dd;
         color: white;
@@ -224,6 +224,7 @@ button:focus {
 
 .table-bordered thead th, .table-bordered thead td {
     vertical-align: middle;
+    font-size: 0.9em;
 }
 
 th {
@@ -248,7 +249,7 @@ td a:hover {
     color: #6f7e95;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 805px) {
     tbody {
         background-color: white;
     }
@@ -361,6 +362,12 @@ td a:hover {
 .nav-brand img {
     max-width: 200px;
     padding: 4px 0;
+}
+
+@media screen and (max-width: 992px) {
+    .nav-brand img {
+        margin-left: 20px;
+    }
 }
 
 .navbar-inverse .navbar-nav .nav-link {
