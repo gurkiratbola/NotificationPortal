@@ -53,6 +53,7 @@ namespace NotificationPortal.ViewModels
         public int StatusID { get; set; }
 
         [Required]
+        [EmailAddress]
         public string Email  { get; set; }
 
         [Display(Name = "Applications")]
@@ -73,12 +74,18 @@ namespace NotificationPortal.ViewModels
         public string BusinessTitle { get; set; }
 
         [Display(Name = "Business Phone")]
+        [Phone]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         public string BusinessPhone { get; set; }
 
         [Display(Name = "Mobile Phone")]
+        [Phone]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         public string MobilePhone { get; set; }
 
         [Display(Name = "Home Phone")]
+        [Phone]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         public string HomePhone { get; set; }
 
         [Display(Name = "Role")]

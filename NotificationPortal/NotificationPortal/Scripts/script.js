@@ -1,7 +1,7 @@
 ﻿var subdir = '/';
 
 var clickableRow = function () {
-    if (window.location.origin.indexOf('localhost')) {
+    if (window.location.origin.indexOf('localhost') != -1) {
         subdir = '/';
     } else {
         subdir = '/notificationportal/'
@@ -51,9 +51,9 @@ $(document).ready(function ($) {
             $(".sidebar-dropdown").show();
         }
     }
-    
-    $(".sidebar-dropdown-button").click(function() {
-        if ($(".sidebar-dropdown").is(":hidden")){
+
+    $(".sidebar-dropdown-button").click(function () {
+        if ($(".sidebar-dropdown").is(":hidden")) {
             localStorage.setItem("isDropdownVisible", true);
             $(".sidebar-dropdown-button .fa-caret-down").addClass("arrow-rotate");
             $(".sidebar-dropdown").slideDown();
@@ -81,7 +81,7 @@ $(document).ready(function ($) {
     // hiding alert boxes after 3.5s
     var alertSuccess = $(".alert-success");
     var alertDanger = $(".alert-danger");
-    if (alertSuccess.css('display') !== 'none' || alertDanger.css('display') !== 'none'){
+    if (alertSuccess.css('display') !== 'none' || alertDanger.css('display') !== 'none') {
         setTimeout(function () {
             alertSuccess.parent('.form-group > div').slideUp();
             alertDanger.parent('.form-group > div').slideUp();
