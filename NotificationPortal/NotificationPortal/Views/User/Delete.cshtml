@@ -4,7 +4,12 @@
     ViewBag.Title = "Delete User";
 }
 
-<h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
+@{
+    var className = Model.StatusName == "Disabled" ? "badge badge-danger" : "badge badge-success";
+}
+
+<h1 class="display-4 text-center pb-3">@Model.FirstName @Model.LastName <span class="@className">@Model.StatusName</span></h1>
+
 
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
@@ -19,112 +24,131 @@
     }
 }
 
-<h3 class="text-danger pb-2">Are you sure you want to delete this user?</h3>
+<h4 class="text-danger pb-2">Are you sure you want to delete this user?</h4>
 
-@if (Model.ReferenceID != null)
-{
-    <dl class="row">
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ClientName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ClientName)
-        </dd>
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#User" role="tab">User</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#Applications" role="tab">Applications</a>
+    </li>
+</ul>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RoleName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RoleName)
-        </dd>
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="User" role="tabpanel">
+        @if (Model.ReferenceID != null)
+        {
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.LastName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+        
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ClientName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ClientName)
+                </dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.RoleName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.RoleName)
+                </dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BusinessTitle)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.BusinessTitle)
-        </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.BusinessTitle)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.BusinessTitle)
+                </dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BusinessPhone)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.BusinessPhone)
-        </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.BusinessPhone)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.BusinessPhone)
+                </dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MobilePhone)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MobilePhone)
-        </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.MobilePhone)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.MobilePhone)
+                </dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.HomePhone)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.HomePhone)
-        </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.HomePhone)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.HomePhone)
+                </dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StatusName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StatusName)
-        </dd>
-    </dl>
-}
-else
-{
-    <p>Client information unavailable</p>
-}
-
-@{ if (Model.Applications != null)
-    {
-        <table class="table table-bordered">
-            <tr class="bg-inverse text-white text-center">
-                <th>@Html.DisplayNameFor(model => Model.Applications.FirstOrDefault().ApplicationName)</th>
-                <th>@Html.DisplayNameFor(model => Model.Applications.FirstOrDefault().Description)</th>
-                <th>@Html.DisplayNameFor(model => Model.Applications.FirstOrDefault().URL)</th>
-            </tr>
-            @{ foreach (var item in Model.Applications)
-                {
-                    <tr class="clickable-row-dashboard" id="@item.ReferenceID" data-href="/Application/Details/@item.ReferenceID">
-                        <td>@Html.DisplayFor(modelItem => item.ApplicationName)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                        <td>@Html.DisplayFor(modelItem => item.URL)</td>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.StatusName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.StatusName)
+                </dd>
+            </dl>
+        }
+        else
+        {
+            <p>User information unavailable</p>
+        }
+    </div>
+    
+    <div class="tab-pane" id="Applications" role="Applications">
+        @{ 
+            if (Model.Applications.Any())
+            {
+                <table class="table table-bordered">
+                    <tr class="bg-inverse text-white text-center">
+                        <th>@Html.DisplayNameFor(model => Model.Applications.FirstOrDefault().ApplicationName)</th>
+                        <th>@Html.DisplayNameFor(model => Model.Applications.FirstOrDefault().Description)</th>
+                        <th>@Html.DisplayNameFor(model => Model.Applications.FirstOrDefault().URL)</th>
                     </tr>
-                }
+                    @{ foreach (var item in Model.Applications)
+                       {
+                           <tr class="clickable-row-dashboard" id="@item.ReferenceID" data-href="/Application/Details/@item.ReferenceID">
+                               <td>@Html.DisplayFor(modelItem => item.ApplicationName)</td>
+                               <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                               <td>@Html.DisplayFor(modelItem => item.URL)</td>
+                           </tr>
+                       }
+                    }
+                </table>
             }
-        </table>
-    }
-    else
-    {
-        <p>This user is not associated with any applications.</p>
-    }
-}
+            else
+            {
+                <p>This user is not associated with any applications.</p>
+            }
+        }
+    
+    </div>
+</div>
 
 @using (Html.BeginForm())
 {
