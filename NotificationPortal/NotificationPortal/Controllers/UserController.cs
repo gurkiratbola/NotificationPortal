@@ -70,7 +70,7 @@ namespace NotificationPortal.Controllers
                 {
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(userId);
                     var callbackUrl = Url.Action("ConfirmEmail", "User", new { userId = userId, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(userId, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    await UserManager.SendEmailAsync(userId, "Confirm your account", TemplateService.AccountEmail(callbackUrl));
 
                     TempData["SuccessMsg"] = msg;
                   
