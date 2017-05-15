@@ -82,11 +82,11 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Description")]
         public string NotificationDescription { get; set; }
         
-        [DisplayFormat(DataFormatString = "{0:yyy-MM-ddThh:mm}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
         [Display(Name = "Start Date")]
         public DateTime? StartDateTime { get; set; }
         
-        [DisplayFormat(DataFormatString = "{0:yyy-MM-ddThh:mm}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
         [Display(Name = "End Date")]
         public DateTime? EndDateTime { get; set; }
 
