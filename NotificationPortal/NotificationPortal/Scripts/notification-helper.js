@@ -12,6 +12,9 @@ var setupFilterDropDown = function () {
         includeSelectAllOption: true,
         buttonText: function (options, select) {
             return 'Server (' + options.length + ')';
+        },
+        onChange: function (option, checked, select) {
+            filterAppsBasedOnServer();
         }
     });
 
@@ -21,10 +24,6 @@ var setupFilterDropDown = function () {
         buttonText: function (options, select) {
             return 'Application (' + options.length + ')';
         }
-    });
-
-    $("#ServerList").change(function () {
-        filterAppsBasedOnServer();
     });
 };
 
