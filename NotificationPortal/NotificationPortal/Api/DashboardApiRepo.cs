@@ -76,7 +76,7 @@ namespace NotificationPortal.Api
                                     .GroupBy(n => n.IncidentNumber)
                                     .Select(
                                         t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault())
-                                        .Where(n=>n.Status == Key.STATUS_NOTIFICATION_OPEN);
+                                        .Where(n=>n.Status != Key.STATUS_NOTIFICATION_CLOSED);
             }
             return dashboard;
         }
