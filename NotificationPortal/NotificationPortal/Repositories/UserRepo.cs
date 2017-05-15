@@ -134,8 +134,11 @@ namespace NotificationPortal.Repositories
 
                 return model;
             }
-            catch (SqlException e)
+            catch (Exception e)
             {
+                if (e is SqlException)
+                { }
+
                 return null;
             }
         }
@@ -184,6 +187,9 @@ namespace NotificationPortal.Repositories
             }
             catch (Exception e)
             {
+                if (e is SqlException)
+                { }
+
                 return null;
             }
         }
@@ -288,6 +294,9 @@ namespace NotificationPortal.Repositories
             }
             catch (Exception e)
             {
+                if (e is SqlException)
+                { }
+
                 msg = "Failed to add the user!";
                 userId = "";
                 return false;
@@ -389,8 +398,11 @@ namespace NotificationPortal.Repositories
                 msg = "Failed to update the user.";
                 return false;
             }
-            catch
+            catch(Exception e)
             {
+                if (e is SqlException)
+                { }
+
                 msg = "Failed to update the user.";
                 return false;
             }
@@ -473,8 +485,11 @@ namespace NotificationPortal.Repositories
                 msg = "User cannot delete own account, Please contact an admin to delete your account.";
                 return false;
             }
-            catch
+            catch(Exception e)
             {
+                if (e is SqlException)
+                { }
+
                 msg = "Failed to delete user.";
                 return false;
             }

@@ -245,7 +245,6 @@
     <Compile Include="Repositories\ConstantsRepo.cs" />
     <Compile Include="Repositories\DashboardRepo.cs" />
     <Compile Include="Repositories\DataCenterRepo.cs" />
-    <Compile Include="Repositories\IInterfaceRepo.cs" />
     <Compile Include="Repositories\ProfileRepo.cs" />
     <Compile Include="Repositories\SelectListRepo.cs" />
     <Compile Include="Repositories\NotificationRepo.cs" />
