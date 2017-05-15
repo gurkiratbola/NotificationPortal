@@ -96,8 +96,6 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int NotificationTypeID { get; set; }
 
-        public int SentMethodID { get; set; }
-
         [Required]
         public int StatusID { get; set; }
 

@@ -85,14 +85,11 @@ namespace NotificationPortal.Models
         public virtual LevelOfImpact LevelOfImpact { get; set; }
         public virtual NotificationType NotificationType { get; set; }
         public virtual Priority Priority { get; set; }
-        public virtual SendMethod SendMethod { get; set; }
         public virtual ICollection<Server> Servers { get; set; }
         public virtual Status Status { get; set; }
         public virtual UserDetail UserDetail { get; set; }
         [ForeignKey("Status")]
         public int StatusID { get; set; }
-        [ForeignKey("SendMethod")]
-        public int SendMethodID { get; set; }
         [ForeignKey("LevelOfImpact")]
         public int LevelOfImpactID { get; set; }
         [ForeignKey("NotificationType")]
@@ -140,7 +137,6 @@ namespace NotificationPortal.Models
         [Key]
         public int SendMethodID { get; set; }
         public string SendMethodName { get; set; }
-        public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<UserDetail> UserDetails { get; set; }
     }
 

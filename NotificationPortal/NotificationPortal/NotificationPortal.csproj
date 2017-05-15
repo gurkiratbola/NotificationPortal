@@ -225,9 +225,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705111800131_init.cs" />
-    <Compile Include="Migrations\201705111800131_init.Designer.cs">
-      <DependentUpon>201705111800131_init.cs</DependentUpon>
+    <Compile Include="Migrations\201705150814012_init.cs" />
+    <Compile Include="Migrations\201705150814012_init.Designer.cs">
+      <DependentUpon>201705150814012_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -331,6 +331,7 @@
     <Content Include="Scripts\summernote.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Service\templates\NotificationEmailTemplate.html" />
+    <Content Include="Service\templates\NotificationSMSTemplate.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -423,8 +424,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705111800131_init.resx">
-      <DependentUpon>201705111800131_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705150814012_init.resx">
+      <DependentUpon>201705150814012_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
