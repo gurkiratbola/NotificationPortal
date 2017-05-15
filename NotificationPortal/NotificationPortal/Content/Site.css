@@ -358,6 +358,11 @@ td a:hover {
 /* ==========================================================================
                         Header Styles
 ========================================================================== */
+.nav-brand img {
+    max-width: 200px;
+    padding: 4px 0;
+}
+
 .navbar-inverse .navbar-nav .nav-link {
     color: white;
 }
@@ -527,8 +532,8 @@ td a:hover {
         padding: 0.5rem 0 0;
     }
 
-    .navbar-brand {
-        padding: 0.5rem 1rem 0.75rem;
+    a.nav-brand {
+        padding: 0 0.5rem 0.5rem;
     }
 
     .navbar-nav li {
@@ -829,6 +834,7 @@ h5.col-12 {
 ========================================================================== */
 .card-deck .card {
     border: 2px solid #36c2dd;
+    border-radius: 5px;
 }
 
 .card-deck {
@@ -924,7 +930,6 @@ h5.col-12 {
         width: 80%;
     }
 }
-
 .notification-list:before {
     content: "";
     position: absolute;
@@ -954,6 +959,10 @@ h3.heading-padding.text-muted:hover {
     .single-thread > .float-right {
         font-size: 0.7em;
     }
+}
+
+.container td#no-threads {
+    padding: 0.5rem 0.75rem !important;
 }
 
 /* ==========================================================================

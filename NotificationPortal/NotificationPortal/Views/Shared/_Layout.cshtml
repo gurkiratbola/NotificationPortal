@@ -26,18 +26,23 @@
 <body>
     <div class="navbar navbar-toggleable-md navbar-inverse fixed-top">
         <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            @*<span class="navbar-toggler-icon"></span>*@
             <i class="fa fa-bars" aria-hidden="true"></i>
         </button>
 
         @{
             if (Request.IsAuthenticated)
             {
-                @Html.ActionLink("Notification Portal", "Index", "Dashboard", new { area = "" }, new { @class = "navbar-brand" })
+                <a href="@Url.Action("Index", "Dashboard")" class="nav-brand">
+                    <img src="~/Content/images/logo.png" alt="logo for notification portal" />
+                </a>
+                @*@Html.ActionLink("Notification Portal", "Index", "Dashboard", new { area = "" }, new { @class = "navbar-brand" })*@
             }
             else
             {
-                @Html.ActionLink("Notification Portal", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })
+                <a href="@Url.Action("Login", "Account")" class="nav-brand">
+                    <img src="~/Content/images/logo.png" alt="logo for notification portal" />
+                </a>
+                @*@Html.ActionLink("Notification Portal", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })*@
             }
         }
 
