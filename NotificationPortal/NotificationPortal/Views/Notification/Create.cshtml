@@ -30,7 +30,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ServerReferenceIDs, htmlAttributes: new { @class = "control-label required" })
             <div class="">
-                @Html.ListBoxFor(m => m.ServerReferenceIDs, Model.ServerList, htmlAttributes: new { @id = "ServerList", @class = "form-control" })
+                @Html.ListBoxFor(m => m.ServerReferenceIDs, Model.ServerList, htmlAttributes: new { @id = "ServerList", style = "display: none;" })
                 @Html.ValidationMessageFor(model => model.ServerReferenceIDs, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -39,7 +39,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label" })
             <div class="">
-                <select class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false">
+                <select style="display: none;" class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false">
                     @foreach (var item in Model.ApplicationList)
                     {
                         var selected = "";
@@ -131,21 +131,7 @@
     </div>
 }
 
-<script>
-    $(document).ready(function () {
-        $("#ServerList").change(function () {
-            var serverRefIDs = $(this).val();
-            $(".ApplicationListItem").hide();
-            $.each(serverRefIDs, function (index, value) {
-                $("." + value).show();
-            });
-        });
-        var serverRefIDs = $('#ServerList').val();
-        $.each(serverRefIDs, function (index, value) {
-            $("." + value).show();
-        });
-    });
-</script>
+<script src="~/Scripts/notification-helper.js" type="text/javascript"></script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval",
