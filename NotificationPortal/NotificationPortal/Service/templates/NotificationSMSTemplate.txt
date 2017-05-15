@@ -1,5 +1,5 @@
-﻿Subject:{Subject}
-Incident#:{IncidentNumber}
-LevelOfImpact:{LevelOfImpact}
-Status:{Status}
+﻿Subject: {Subject}
+Incident #: {IncidentNumber}
+Level Of Impact: {LevelOfImpact}
+Status: {Status}
 more info at {Url}

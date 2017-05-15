@@ -12,15 +12,34 @@ namespace NotificationPortal.Service
     {
         public static string NotificationEmail(NotificationCreateVM model)
         {
+            ApplicationDbContext _context = new ApplicationDbContext();
+
+            var apps = _context.Application.Where(a => model.ApplicationReferenceIDs.Contains(a.ReferenceID)).Select(app => app.ApplicationName);
+            string levelOfImpact = _context.LevelOfImpact.FirstOrDefault(l => l.LevelOfImpactID == model.LevelOfImpactID).LevelName;
+            string status = _context.Status.FirstOrDefault(s => s.StatusID == model.StatusID).StatusName;
+
+            string test = "";
+            foreach (var item in apps)
+            {
+                test = item.ToString();
+            }
+
+            TimeSpan? duration = (model.EndDateTime - model.StartDateTime);
+
             string path = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Service/templates/NotificationEmailTemplate.html"));
 
-            path = path.Replace("{Subject}", model.NotificationHeading)
-                   .Replace("{Description}", model.NotificationDescription)
-                   .Replace("{IncidentNumber}", model.IncidentNumber)
-                   .Replace("{StartTime}", model.StartDateTime == null ? DateTime.Now.ToString() : model.StartDateTime.ToString())
-                   .Replace("{EndTime}", model.EndDateTime == null ? "To Be Announced" : model.EndDateTime.ToString());
+            string message = path.Replace("{Subject}", model.NotificationHeading)
+                             .Replace("{Description}", model.NotificationDescription)
+                             .Replace("{IncidentNumber}", model.IncidentNumber)
+                             .Replace("{ServiceAffected}", test)
+                             .Replace("{ServiceImpact}", levelOfImpact)
+                             .Replace("{CurrentState}", status)
+                             .Replace("{StartTime}", model.StartDateTime == null ? DateTime.Now.ToString() : model.StartDateTime.ToString())
+                             .Replace("{EndTime}", model.EndDateTime == null ? "Not avaiable at this time" : model.EndDateTime.ToString())
+                             .Replace("{Duration}", model.StartDateTime == null || model.EndDateTime == null ? "Not available at this time" : duration.ToString())
+                             .Replace("{URL}", "http://" + HttpContext.Current.Request.Url.Authority + "/Notification/DetailsThread/" + model.IncidentNumber);
 
-            return path;
+            return message;
         }
 
         public static string NotificationSMS(NotificationCreateVM model)
