@@ -48,6 +48,7 @@
             <span class="hidden-xs-down">
                 <input onclick="getNewList()" class="btn btn-secondary" type="submit" value="Search" />
             </span>
+            <i id="preloader" class="fa fa-spinner fa-spin" style="font-size:24px"></i>
         </div>
         @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
                              User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
