@@ -1,6 +1,11 @@
 ﻿var subdir = '/';
 
 var clickableRow = function () {
+    if (window.location.origin.indexOf('localhost')) {
+        subdir = '/';
+    } else {
+        subdir = '/notificationportal/'
+    }
     const HIDDEN_MENU_WIDTH_OFFSET = 130;
     const HIDDEN_MENU_HEIGHT_OFFSET = 80;
     $(".hidden-menu").hide();
