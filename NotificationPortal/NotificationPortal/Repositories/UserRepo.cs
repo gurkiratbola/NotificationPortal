@@ -106,7 +106,7 @@ namespace NotificationPortal.Repositories
 
                 if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
                 {
-                    users = users.Where(u => u.RoleName != Key.ROLE_ADMIN && u.RoleName != Key.ROLE_STAFF && u.ClientName == getClientId);
+                    users = users.Where(u => u.RoleName != Key.ROLE_ADMIN && u.RoleName != Key.ROLE_STAFF && u.RoleName != Key.ROLE_CLIENT && u.ClientName == getClientId);
                 }
 
                 int totalNumOfUsers = users.Count();
@@ -147,29 +147,31 @@ namespace NotificationPortal.Repositories
                 var roleManager = new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole>(_context));
 
                 var details = _context.Users.Where(u => u.UserDetail.ReferenceID == id)
-                    .Select(user => new UserVM()
-                    {
-                        ReferenceID = user.UserDetail.ReferenceID,
-                        Email = user.Email,
-                        RoleName = user.Roles.FirstOrDefault().RoleId.ToString(),
-                        FirstName = user.UserDetail.FirstName,
-                        LastName = user.UserDetail.LastName,
-                        BusinessTitle = user.UserDetail.BusinessTitle,
-                        BusinessPhone = user.UserDetail.BusinessPhone,
-                        MobilePhone = user.UserDetail.MobilePhone,
-                        HomePhone = user.UserDetail.HomePhone,
-                        ClientReferenceID = user.UserDetail.Client.ReferenceID,
-                        ClientName = user.UserDetail.Client.ClientName,
-                        StatusID = user.UserDetail.Status.StatusID,
-                        StatusName = user.UserDetail.Status.StatusName,
-                        Applications = user.UserDetail.Applications.Select(a => new ApplicationVM()
-                        {
-                            ApplicationName = a.ApplicationName,
-                            Description = a.Description,
-                            URL = a.URL,
-                            ReferenceID = a.ReferenceID
-                        })
-                    }).FirstOrDefault();
+                              .Select(user => new UserVM()
+                              {
+                                  ReferenceID = user.UserDetail.ReferenceID,
+                                  Email = user.Email,
+                                  RoleName = user.Roles.FirstOrDefault().RoleId.ToString(),
+                                  FirstName = user.UserDetail.FirstName,
+                                  LastName = user.UserDetail.LastName,
+                                  BusinessTitle = user.UserDetail.BusinessTitle,
+                                  BusinessPhone = user.UserDetail.BusinessPhone,
+                                  MobilePhone = user.UserDetail.MobilePhone,
+                                  HomePhone = user.UserDetail.HomePhone,
+                                  ClientReferenceID = user.UserDetail.Client.ReferenceID,
+                                  ClientName = user.UserDetail.Client.ClientName,
+                                  StatusID = user.UserDetail.Status.StatusID,
+                                  StatusName = user.UserDetail.Status.StatusName,
+                                  Applications = user.UserDetail.Applications.Select(a => new ApplicationVM()
+                                  {
+                                      ApplicationName = a.ApplicationName,
+                                      Description = a.Description,
+                                      URL = a.URL,
+                                      ReferenceID = a.ReferenceID
+                                  })
+                              }).FirstOrDefault();
+
+                if (details == null) return null;
 
                 details.RoleName = roleManager.FindById(details.RoleName).Name.ToString();
 
@@ -206,14 +208,8 @@ namespace NotificationPortal.Repositories
                         Email = model.Email
                     };
 
-                    // make the user at this point
-                    userManager.Create(user);
-
-                    // pass the userId to controller to send the email
-                    userId = user.Id;
-
                     // find the client id with the reference id passed with the viewmodel and add the new client to that
-                    var clientID = _context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
+                    var clientId = _context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
                                    .Select(client => client.ClientID).FirstOrDefault();
 
                     // get default send method (Email)
@@ -229,9 +225,32 @@ namespace NotificationPortal.Repositories
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         StatusID = model.StatusID,
-                        ClientID = clientID,
+                        ClientID = clientId,
                         SendMethodID = defaultSendMethodID
                     };
+
+                    // check what role the user is adding otherwise throw error
+                    if (HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
+                    {
+                        if (model.RoleName == Key.ROLE_ADMIN || model.RoleName == Key.ROLE_STAFF)
+                        {
+                            msg = "Something went wrong, try again!";
+                            userId = "";
+
+                            return false;
+                        }
+                    }
+
+                    if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
+                    {
+                        if (model.RoleName == Key.ROLE_ADMIN || model.RoleName == Key.ROLE_STAFF || model.RoleName == Key.ROLE_CLIENT)
+                        {
+                            msg = "Something went wrong, try again!";
+                            userId = "";
+
+                            return false;
+                        }
+                    }
 
                     if (model.ApplicationReferenceIDs == null)
                     {
@@ -243,6 +262,11 @@ namespace NotificationPortal.Repositories
 
                     details.Applications = apps.ToList();
 
+                    // make the user at this point
+                    userManager.Create(user);
+
+                    // pass the userId to controller to send the email
+                    userId = user.Id;
                     // add the user details to the database 
                     _context.UserDetail.Add(details);
                     _context.SaveChanges();
@@ -300,9 +324,28 @@ namespace NotificationPortal.Repositories
                     {
                         var oldRoleId = identityUserRole.RoleId;
                         IdentityRole singleOrDefault = _context.Roles.SingleOrDefault(a => a.Id == oldRoleId);
+
                         if (singleOrDefault != null)
                         {
                             var oldRoleName = singleOrDefault.Name;
+
+                            if (HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
+                            {
+                                if (model.RoleName == Key.ROLE_ADMIN || model.RoleName == Key.ROLE_STAFF)
+                                {
+                                    msg = "Something went wrong, try again!";
+                                    return false;
+                                }
+                            }
+
+                            if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
+                            {
+                                if (model.RoleName == Key.ROLE_ADMIN || model.RoleName == Key.ROLE_STAFF || model.RoleName == Key.ROLE_CLIENT)
+                                {
+                                    msg = "Something went wrong, try again!";
+                                    return false;
+                                }
+                            }
 
                             if (oldRoleName != model.RoleName)
                             {
@@ -415,7 +458,7 @@ namespace NotificationPortal.Repositories
 
             try
             {
-                if (HttpContext.Current.User.Identity.GetUserId() != userToBeDeleted.UserID)
+                if (userToBeDeleted != null && HttpContext.Current.User.Identity.GetUserId() != userToBeDeleted.UserID)
                 {
                     _context.UserDetail.Remove(userToBeDeleted);
                     _context.SaveChanges();
