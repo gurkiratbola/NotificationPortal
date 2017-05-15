@@ -1,8 +1,7 @@
 ﻿var domain = window.location.pathname;
 domain = domain.substr(0, domain.lastIndexOf('/'));
 
-$(document).ready(function ($) {
-    // for right click functinoality
+var clickableRow = function () {
     const HIDDEN_MENU_WIDTH_OFFSET = 130;
     const HIDDEN_MENU_HEIGHT_OFFSET = 80;
     $(".hidden-menu").hide();
@@ -10,11 +9,7 @@ $(document).ready(function ($) {
         window.location = domain + $(this).data("href");
     });
     $(".clickable-row-dashboard").click(function () {
-        //window.location = window.location.origin + $(this).data("href");
-        var x = document.URL;
-        var index = document.URL.indexOf(domain);
-        var d = document.URL.substr(0, index)
-        window.location = d + $(this).data("href");
+        window.location = domain.substr(0, domain.lastIndexOf('/')) + $(this).data("href");
     });
     $('*').click(function (e) {
         if (e.target.className !== 'clickable-row') {
@@ -34,14 +29,18 @@ $(document).ready(function ($) {
         $(".hidden-menu").toggle();
         return false;
     });
+}
 
+$(document).ready(function ($) {
+    // for clickable table rows
+    clickableRow();
 
     // for sidebar dropdown
-    if (localStorage.getItem("isDropdownVisible") == null) {
+    if (localStorage.getItem("isDropdownVisible") === null) {
         localStorage.setItem("isDropdownVisible", false);
         //$(".sidebar-dropdown").hide();
     } else {
-        if (localStorage.getItem("isDropdownVisible") == false) {
+        if (localStorage.getItem("isDropdownVisible") === false) {
             $(".sidebar-dropdown").hide();
         } else {
             $(".sidebar-dropdown").show();
@@ -66,11 +65,22 @@ $(document).ready(function ($) {
     $('.sidebar-dropdown a').each(function () {
         var linkPage = this.href;
 
-        if (activePage == linkPage) {
+        if (activePage === linkPage) {
             $(this).closest("li").addClass("active");
         }
     });
 
     // for profile email small print
     $(".profile-email").append("<small class='float-right'>Updating email will log user out instantly</small>")
+
+    // hiding alert boxes after 3.5s
+    var alertSuccess = $(".alert-success");
+    var alertDanger = $(".alert-danger");
+    if (alertSuccess.css('display') !== 'none' || alertDanger.css('display') !== 'none'){
+        setTimeout(function () {
+            alertSuccess.parent('.form-group > div').slideUp();
+            alertDanger.parent('.form-group > div').slideUp();
+        }, 2000);
+    }
+
 });

@@ -124,14 +124,13 @@ namespace NotificationPortal.Repositories
         public SelectList GetSendMethodList()
         {
             IEnumerable<SelectListItem> sendMethodList = _context.SendMethod.Select(sendMethod => new SelectListItem()
-                                                         {
-                                                             Value = sendMethod.SendMethodID.ToString(),
-                                                             Text = sendMethod.SendMethodName
-                                                         });
+            {
+                Value = sendMethod.SendMethodID.ToString(),
+                Text = sendMethod.SendMethodName
+            });
 
             return new SelectList(sendMethodList, "Value", "Text");
         }
-
 
         public SelectList GetStatusTypeList()
         {

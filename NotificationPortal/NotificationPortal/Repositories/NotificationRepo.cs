@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using Twilio.Types;
@@ -31,12 +32,13 @@ namespace NotificationPortal.Repositories
 
             model = new NotificationIndexVM
             {
-                Threads = Sort(allThreads, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
+                //Threads = Sort(allThreads, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
                 CurrentFilter = searchString,
                 CurrentSort = sortOrder,
+                IncidentNumberSort = sortOrder == ConstantsRepo.SORT_INCIDENT_NUMBER_ASCE ? ConstantsRepo.SORT_INCIDENT_NUMBER_DESC : ConstantsRepo.SORT_INCIDENT_NUMBER_ASCE,
                 LevelOfImpactSort = sortOrder == ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC ? ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE : ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
-                NotificationHeadingSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC,
-                NotificationTypeSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC,
+                NotificationHeadingSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE ? ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC : ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE,
+                NotificationTypeSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE ? ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC : ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE,
                 PrioritySort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC,
                 StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
                 SearchString = "",
@@ -59,12 +61,12 @@ namespace NotificationPortal.Repositories
                 };
             }
             model.ApplicationList = GetApplicationList();
-            model.SendMethodList = _slRepo.GetSendMethodList();
             model.ServerList = _slRepo.GetServerList();
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
             model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
-            model.ProirityList = _slRepo.GetPriorityList();
+            model.StartDateTime = DateTime.Now;
+            model.PriorityList = _slRepo.GetPriorityList();
             return model;
         }
 
@@ -72,7 +74,7 @@ namespace NotificationPortal.Repositories
         {
             IEnumerable<Notification> notifications =
                 _context.Notification.Where(n => n.IncidentNumber == incidentNumber)
-                .OrderBy(n => n.SentDateTime);
+                .OrderBy(n => n.SentDateTime).ToList();
 
             IEnumerable<NotificationDetailVM> thread =
                 notifications.Select(
@@ -81,7 +83,8 @@ namespace NotificationPortal.Repositories
                         ReferenceID = n.ReferenceID,
                         NotificationHeading = n.NotificationHeading,
                         NotificationDescription = n.NotificationDescription,
-                        SentDateTime = n.SentDateTime
+                        SentDateTime = n.SentDateTime,
+                        Status = n.Status.StatusName
                     });
 
             Notification lastestNotification = notifications.LastOrDefault();
@@ -166,7 +169,9 @@ namespace NotificationPortal.Repositories
                 EndDateTime = lastestNotification.EndDateTime,
                 Thread = thread,
                 Servers = servers,
-                Applications = apps
+                Applications = apps,
+                Subject = notifications.FirstOrDefault().NotificationHeading,
+                SenderName = notifications.FirstOrDefault().UserDetail.FirstName + " " + notifications.FirstOrDefault().UserDetail.LastName
             };
             return model;
         }
@@ -188,7 +193,7 @@ namespace NotificationPortal.Repositories
                     EndDateTime = lastestNotification.EndDateTime,
                     LevelOfImpactID = lastestNotification.LevelOfImpactID,
                     NotificationTypeID = lastestNotification.NotificationTypeID,
-                    ProirityID = lastestNotification.PriorityID,
+                    PriorityID = lastestNotification.PriorityID,
                     SentMethodID = lastestNotification.SendMethodID,
                     StatusID = lastestNotification.StatusID,
                     NotificationDescription = lastestNotification.NotificationDescription,
@@ -220,7 +225,7 @@ namespace NotificationPortal.Repositories
                     EndDateTime = editingNotification.EndDateTime,
                     LevelOfImpactID = editingNotification.LevelOfImpactID,
                     NotificationTypeID = editingNotification.NotificationTypeID,
-                    ProirityID = editingNotification.PriorityID,
+                    PriorityID = editingNotification.PriorityID,
                     SentMethodID = editingNotification.SendMethodID,
                     StatusID = editingNotification.StatusID,
                     NotificationDescription = editingNotification.NotificationDescription,
@@ -230,11 +235,10 @@ namespace NotificationPortal.Repositories
                 model.ApplicationReferenceIDs = editingNotification.Applications.Select(a => a.ReferenceID).ToArray();
             }
             model.ApplicationList = GetApplicationList();
-            model.SendMethodList = _slRepo.GetSendMethodList();
             model.ServerList = _slRepo.GetServerList();
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
-            model.ProirityList = _slRepo.GetPriorityList();
+            model.PriorityList = _slRepo.GetPriorityList();
             model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
             return model;
         }
@@ -250,7 +254,8 @@ namespace NotificationPortal.Repositories
                 NotificationDescription = deletingNotification.NotificationDescription,
                 NotificationHeading = deletingNotification.NotificationHeading,
                 SentDateTime = deletingNotification.SentDateTime,
-                IncidentNumber = deletingNotification.IncidentNumber
+                IncidentNumber = deletingNotification.IncidentNumber,
+                Status = deletingNotification.Status.StatusName
             };
             return model;
         }
@@ -297,7 +302,9 @@ namespace NotificationPortal.Repositories
                             SentDateTime = t.FirstOrDefault().SentDateTime,
                             NotificationType = t.LastOrDefault().NotificationType.NotificationTypeName,
                             LevelOfImpact = t.LastOrDefault().LevelOfImpact.LevelName,
+                            LevelOfImpactValue = t.LastOrDefault().LevelOfImpact.LevelValue,
                             Priority = t.LastOrDefault().Priority.PriorityName,
+                            PriorityValue = t.LastOrDefault().Priority.PriorityValue,
                             Status = t.LastOrDefault().Status.StatusName
                         })
                     .GroupBy(n => n.IncidentNumber)
@@ -362,7 +369,9 @@ namespace NotificationPortal.Repositories
                             SentDateTime = t.First.SentDateTime,
                             NotificationType = t.Last.NotificationType.NotificationTypeName,
                             LevelOfImpact = t.Last.LevelOfImpact.LevelName,
+                            LevelOfImpactValue = t.Last.LevelOfImpact.LevelValue,
                             Priority = t.Last.Priority.PriorityName,
+                            PriorityValue = t.Last.Priority.PriorityValue,
                             Status = t.Last.Status.StatusName
                         })
                     .GroupBy(n => n.IncidentNumber)
@@ -402,6 +411,10 @@ namespace NotificationPortal.Repositories
 
             try
             {
+                var userId = HttpContext.Current.User.Identity.GetUserId();
+                var sendMethodId = _context.UserDetail
+                                .Where(a => a.UserID == userId)
+                                .FirstOrDefault().SendMethodID;
                 //TO DO: check if it's by server or by Application
                 if (notification.ServerReferenceIDs == null)
                 {
@@ -415,7 +428,7 @@ namespace NotificationPortal.Repositories
                 string newIncidentNumber = NewIncidentNumber(notification.NotificationTypeID);
                 var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
                 var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
-                var priorityValue = _context.Notification.Where(n => notification.ProirityID == n.Priority.PriorityID)
+                var priorityValue = _context.Notification.Where(n => notification.PriorityID == n.Priority.PriorityID)
                     .Select(n => n.Priority.PriorityValue)
                     .FirstOrDefault();
                 Notification newNotification = new Notification()
@@ -425,8 +438,9 @@ namespace NotificationPortal.Repositories
                     NotificationHeading = notification.NotificationHeading,
                     NotificationDescription = notification.NotificationDescription,
                     StatusID = notification.StatusID,
-                    PriorityID = notification.ProirityID,
-                    SendMethodID = notification.SentMethodID,
+                    PriorityID = notification.PriorityID,
+                    SendMethodID = sendMethodId,
+                    UserID = userId,
                     //TO DO: discuss how referenceID is generated
                     ReferenceID = Guid.NewGuid().ToString(),
                     IncidentNumber = notification.IncidentNumber ?? newIncidentNumber,
@@ -552,13 +566,22 @@ namespace NotificationPortal.Repositories
         {
             if (!String.IsNullOrEmpty(searchString))
             {
-                list = list.Where(n => n.NotificationHeading.ToUpper().Contains(searchString.ToUpper()));
+                list = list.Where(
+                    n => n.IncidentNumber.ToUpper().Contains(searchString.ToUpper())
+                    || n.NotificationHeading.ToUpper().Contains(searchString.ToUpper()));
             }
             switch (sortOrder)
             {
+                case ConstantsRepo.SORT_INCIDENT_NUMBER_ASCE:
+                    list = list.OrderBy(n => n.IncidentNumber);
+                    break;
+
+                case ConstantsRepo.SORT_INCIDENT_NUMBER_DESC:
+                    list = list.OrderByDescending(n => n.IncidentNumber);
+                    break;
+
                 case ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE:
-                    // TODO: modify to severity value if implement in table later
-                    list = list.OrderBy(n => n.LevelOfImpact);
+                    list = list.OrderBy(n => n.LevelOfImpactValue);
                     break;
 
                 case ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE:
@@ -578,11 +601,11 @@ namespace NotificationPortal.Repositories
                     break;
 
                 case ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_ASCE:
-                    list = list.OrderBy(n => n.Priority);
+                    list = list.OrderBy(n => n.PriorityValue);
                     break;
 
                 case ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC:
-                    list = list.OrderByDescending(n => n.Priority);
+                    list = list.OrderByDescending(n => n.PriorityValue);
                     break;
 
                 case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
@@ -594,8 +617,7 @@ namespace NotificationPortal.Repositories
                     break;
 
                 default:
-                    // TODO: modify to severity value if implement in table later
-                    list = list.OrderByDescending(n => n.LevelOfImpact);
+                    list = list.OrderByDescending(n => n.LevelOfImpactValue);
                     break;
             }
             return list;
@@ -607,7 +629,7 @@ namespace NotificationPortal.Repositories
             {
                 var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
                 var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
-                var priorityValue = _context.Notification.Where(n => notification.ProirityID == n.Priority.PriorityID)
+                var priorityValue = _context.Notification.Where(n => notification.PriorityID == n.Priority.PriorityID)
                     .Select(n => n.Priority.PriorityValue)
                     .FirstOrDefault();
 
@@ -687,7 +709,7 @@ namespace NotificationPortal.Repositories
         {
             var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
             var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
-            var priorityValue = _context.Notification.Where(n => notification.ProirityID == n.Priority.PriorityID)
+            var priorityValue = _context.Notification.Where(n => notification.PriorityID == n.Priority.PriorityID)
                 .Select(n => n.Priority.PriorityValue)
                 .FirstOrDefault();
 

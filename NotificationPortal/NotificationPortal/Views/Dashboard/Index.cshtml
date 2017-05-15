@@ -11,7 +11,7 @@
 {
     if (Model!=null)
     {
-        @Html.Partial("~/Views/Dashboard/_external.cshtml", Model.Notifications)
+       @Html.Partial("~/Views/Dashboard/_external.cshtml", Model.Notifications)
     }
     //TODO: else show error message?
 }
@@ -37,16 +37,19 @@ else
                 var filterBySubject = "";
                 var filterByImpact = "";
                 var filterByDate = "";
+                var filterBySender = "";
                 const string ID_FILTER = "id";
                 const string HEADING_FILTER = "heading";
                 const string IMPACT_FILTER = "impact";
                 const string DATE_FILTER = "date";
+                const string SENDER_FILTER = "sender";
                 if (Model.CurrentSort != null)
                 {
                     filterById = Model.CurrentSort.Contains(ID_FILTER) ? "bg-mint" : "";
                     filterBySubject = Model.CurrentSort.Contains(HEADING_FILTER) ? "bg-mint" : "";
                     filterByImpact = Model.CurrentSort.Contains(IMPACT_FILTER) ? "bg-mint" : "";
                     filterByDate = Model.CurrentSort.Contains(DATE_FILTER) ? "bg-mint" : "";
+                    filterBySender = Model.CurrentSort.Contains(SENDER_FILTER) ? "bg-mint" : "";
                 }
             }
             <thead>
@@ -69,18 +72,27 @@ else
                             </span>
                         </a>
                     </th>
-                    <th class="@filterByImpact">
-                        <a href="@Url.Action("Index", "Dashboard", new { sortOrder = Model.LevelOfImpactSort, currentFilter = Model.CurrentFilter })">
-                            @Html.DisplayNameFor(model => model.Notifications.FirstOrDefault().LevelOfImpact)
+                    <th class="@filterByDate">
+                        <a href="@Url.Action("Index", "Dashboard", new { sortOrder = Model.DateSort, currentFilter = Model.CurrentFilter })">
+                            @Html.DisplayNameFor(model => model.Notifications.FirstOrDefault().SentDateTime)
                             <span class="filter-arrows">
                                 <i class="fa fa-caret-up" aria-hidden="true"></i>
                                 <i class="fa fa-caret-down" aria-hidden="true"></i>
                             </span>
                         </a>
                     </th>
-                    <th class="@filterByDate">
-                        <a href="@Url.Action("Index", "Dashboard", new { sortOrder = Model.DateSort, currentFilter = Model.CurrentFilter })">
-                            @Html.DisplayNameFor(model => model.Notifications.FirstOrDefault().SentDateTime)
+                    <th class="@filterBySender">
+                        <a href="@Url.Action("Index", "Dashboard", new { sortOrder = Model.SenderSort, currentFilter = Model.CurrentFilter })">
+                            @Html.DisplayNameFor(model => model.Notifications.FirstOrDefault().SenderName)
+                            <span class="filter-arrows">
+                                <i class="fa fa-caret-up" aria-hidden="true"></i>
+                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th class="@filterByImpact">
+                        <a href="@Url.Action("Index", "Dashboard", new { sortOrder = Model.LevelOfImpactSort, currentFilter = Model.CurrentFilter })">
+                            @Html.DisplayNameFor(model => model.Notifications.FirstOrDefault().LevelOfImpact)
                             <span class="filter-arrows">
                                 <i class="fa fa-caret-up" aria-hidden="true"></i>
                                 <i class="fa fa-caret-down" aria-hidden="true"></i>
@@ -105,13 +117,14 @@ else
                             </a>
                         </td>
                         <td>
-                            <span class="@impactClass">
-                                @Html.DisplayFor(modelItem => item.LevelOfImpact)
-                            </span>
+                            @Html.DisplayFor(modelItem => item.SentDateTime)
                         </td>
                         <td>
-                            <span>
-                                @Html.DisplayFor(modelItem => item.SentDateTime)
+                            @Html.DisplayFor(modelItem => item.SenderName)
+                        </td>
+                        <td>
+                            <span class="@impactClass">
+                                @Html.DisplayFor(modelItem => item.LevelOfImpact)
                             </span>
                         </td>
                     </tr>

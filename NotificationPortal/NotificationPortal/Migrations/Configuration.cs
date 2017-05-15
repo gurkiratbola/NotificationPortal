@@ -29,7 +29,7 @@ namespace NotificationPortal.Migrations
         {
             RemoveAll(context);
 
-            // Lockup tables
+            // Lookup tables
             SeedSendMethod(context);
             SeedNotificationType(context);
             SeedLevelOfImpact(context);
@@ -297,12 +297,20 @@ namespace NotificationPortal.Migrations
             var statusTypeNotification = context.StatusType
                 .Where(s => s.StatusTypeName == Key.STATUS_TYPE_NOTIFICATION)
                 .FirstOrDefault();
-            status = new Status() { StatusName = Key.STATUS_NOTIFICATION_CLOSED };
-            status.StatusType = statusTypeNotification;
-            context.Status.Add(status);
-            status = new Status() { StatusName = Key.STATUS_NOTIFICATION_OPEN };
-            status.StatusType = statusTypeNotification;
-            context.Status.Add(status);
+            string[] notificationStatuses = new string[] {
+                Key.STATUS_NOTIFICATION_OPEN,
+                Key.STATUS_NOTIFICATION_INVESTIGATING,
+                Key.STATUS_NOTIFICATION_RESOLVED,
+                Key.STATUS_NOTIFICATION_CLOSED
+            };
+            foreach (string snotificationSatus in notificationStatuses)
+            {
+                context.Status.Add(
+                     new Status() {
+                         StatusName = snotificationSatus,
+                         StatusType = statusTypeNotification
+                     });
+            }
 
             // Server Satatus
             var statusTypeServer = context.StatusType
@@ -619,7 +627,7 @@ namespace NotificationPortal.Migrations
                 .FirstOrDefault();
             // Get server
             var servers = context.Server.Where(s => s.ServerName == sampleServerName1);
-            // Get server
+            // Get sendmoethod
             var sendMethod = context.SendMethod
                 .Where(s => s.SendMethodName == Key.SEND_METHOD_EMAIL)
                 .FirstOrDefault();

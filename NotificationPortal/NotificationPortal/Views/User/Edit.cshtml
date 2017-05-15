@@ -10,7 +10,7 @@
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
     <li class="breadcrumb-item"><a href="~/User/Index">User Management</a></li>
     <li class="breadcrumb-item active">@ViewBag.Title</li>
-    <li class="breadcrumb-item active">@Html.DisplayFor(model => model.FirstName)</li>
+    <li class="breadcrumb-item active">@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</li>
 </ol>
 
 @using (Html.BeginForm())

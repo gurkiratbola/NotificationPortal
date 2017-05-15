@@ -12,8 +12,8 @@ namespace NotificationPortal.ViewModels
 
     public class NotificationIndexVM
     {
-        [Display(Name = "Incidence #")]
-        public string IncidenceNumber { get; set; }
+        [Display(Name = "Incident #")]
+        public string IncidentNumber { get; set; }
         [Display(Name = "Type")]
         public string NotificationType { get; set; }
         [Display(Name = "Level of Impact")]
@@ -24,9 +24,6 @@ namespace NotificationPortal.ViewModels
         public string Status { get; set; }
         [Display(Name = "Priority")]
         public string Priority { get; set; }
-
-        public IPagedList<NotificationThreadVM> Threads { get; set; }
-
         
         public int[] NotificationTypeIDs { get; set; }
         public int[] LevelOfImpactIDs { get; set; }
@@ -42,13 +39,14 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Status")]
         public SelectList StatusList { get; set; }
 
-        [Display(Name = "Proirity")]
+        [Display(Name = "Priority")]
         public SelectList PriorityList { get; set; }
 
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public string SearchString { get; set; }
         public int Page { get; set; }
+        public string IncidentNumberSort { get; set; }
         public string LevelOfImpactSort { get; set; }
         public string NotificationHeadingSort { get; set; }
         public string NotificationTypeSort { get; set; }
@@ -63,9 +61,11 @@ namespace NotificationPortal.ViewModels
         public string ReferenceID { get; set; }
         public string NotificationType { get; set; }
         public string LevelOfImpact { get; set; }
+        public int LevelOfImpactValue { get; set; }
         public string NotificationHeading { get; set; }
         public string Status { get; set; }
         public string Priority { get; set; }
+        public int PriorityValue { get; set; }
         public DateTime SentDateTime { get; set; }
     }
 
@@ -96,14 +96,13 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int NotificationTypeID { get; set; }
 
-        [Required]
         public int SentMethodID { get; set; }
 
         [Required]
         public int StatusID { get; set; }
 
         [Required]
-        public int ProirityID { get; set; }
+        public int PriorityID { get; set; }
 
         [Display(Name = "Select Server")]
         public string[] ServerReferenceIDs { get; set; }
@@ -124,11 +123,8 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Status")]
         public SelectList StatusList { get; set; }
 
-        [Display(Name = "Send Method")]
-        public SelectList SendMethodList { get; set; }
-
-        [Display(Name = "Proirity")]
-        public SelectList ProirityList { get; set; }
+        [Display(Name = "Priority")]
+        public SelectList PriorityList { get; set; }
     }
     
     public class NotificationEditVM : NotificationCreateVM
@@ -152,6 +148,10 @@ namespace NotificationPortal.ViewModels
         public DateTime? StartDateTime { get; set; }
         [Display(Name = "End Time")]
         public DateTime? EndDateTime { get; set; }
+        [Display(Name = "Sender")]
+        public string SenderName { get; set; }
+        [Display(Name = "Subject")]
+        public string Subject { get; set; }
         public IEnumerable<NotificationDetailVM> Thread { get; set; }
         public IEnumerable<NotificationServerVM> Servers { get; set; }
         public IEnumerable<NotificationApplicationVM> Applications { get; set; }
@@ -160,8 +160,11 @@ namespace NotificationPortal.ViewModels
     public class NotificationDetailVM
     {
         public string ReferenceID { get; set; }
+        public string Status { get; set; }
         public string NotificationHeading { get; set; }
+        [Display(Name = "Details")]
         public string NotificationDescription { get; set; }
+        [Display(Name = "Send Time")]
         public DateTime SentDateTime { get; set; }
         public string IncidentNumber { get; set; }
     }

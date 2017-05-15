@@ -73,6 +73,7 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Status")]
         public int StatusID { get; set; }
 
+
         [Display(Name = "Applications Reference")]
         public string[] ApplicationsReferenceIDs { get; set; }
 
@@ -184,6 +185,8 @@ namespace NotificationPortal.ViewModels
         [Required]
         [DisplayName("Status")]
         public string StatusName { get; set; }
+
+      
 
 
     }

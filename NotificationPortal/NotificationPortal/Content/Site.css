@@ -3,7 +3,7 @@
 ========================================================================== */
 /*
 mint: #44bbc1 
-darker mint: #3EA2C3
+
 light-blue: #edf2f6 
 dark-navy: #373e50 
 sidebar-grey: #6f7e95
@@ -12,7 +12,9 @@ sidebar-grey: #6f7e95
 /*
     brand-color: #36c2dd
     light-brand-color: #afe7f1
+    darker-brand-color: #3EA2C3
     highlight: #e0e77a
+    dark-highlight: #d0d85f
     dark-grey: #6d6b69
     grey: #84807c
 */
@@ -20,6 +22,7 @@ sidebar-grey: #6f7e95
 body {
     line-height: 1.4;
     background-color: #ededed;
+    font-family: "Open Sans", Arial, sans-serif;
 }
 
 .container {
@@ -41,7 +44,7 @@ h1, h2, h3, h4, h5 {
     font-family:"Open Sans", Arial, sans-serif;
 }
 
-a, p, th, td, dd, dt {
+a, p, th, td, dd, dt, label, input {
     font-family: "Open Sans", Arial, sans-serif;
 }
 
@@ -54,6 +57,12 @@ h3 {
     font-size: 1em;
 }
 
+h4 {
+    margin-bottom: 20px;
+    color: #36c2dd;
+    font-weight: 700;
+}
+
 /* ==========================================================================
                             Color Styles
 ========================================================================== */
@@ -61,14 +70,42 @@ h3 {
     background-color: #36c2dd;
 }
 
+.bg-closed {
+    background-color: #adadad;
+}
+
+.bg-invest {
+    background-color: #e8a529;
+}
+
 .text-coral {
     color: lightcoral;
 }
 
+@media (max-width: 768px) {
+    .bg-closed.td-status,
+    .bg-invest.td-status,
+    .bg-success.td-status,
+    .bg-danger.td-status {
+        background-color: #fff !important;
+    }
+
+    .bg-closed.td-status {
+        color: #adadad !important;
+    }
+    .bg-invest.td-status {
+        color: #e8a529 !important;
+    }
+    .bg-success.td-status {
+        color: #5cb85c !important;
+    }
+    .bg-danger.td-status {
+        color: #d9534f !important;
+    }
+}
 /* ==========================================================================
                             Others
 ========================================================================== */
-
 .heading-padding {
     padding: 0.5rem 1rem;
 }
@@ -96,6 +133,11 @@ i.fa.fa-check.text-success {
     padding-top: 0.75rem;
     padding-left: 0;
 }
+
+.breadcrumb-item a {
+    text-decoration: underline !important;
+}
+    
 .bg-inverse {
     background-color: #6d6b69 !important;
 }
@@ -137,20 +179,61 @@ button:focus {
     font-size: 0.9em;
 }
 
+.card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+@media (min-width: 576px) {
+    .container {
+        width: 100% !important;
+    }
+}
+
 
 /* ==========================================================================
                             Table Styles
 ========================================================================== */
-th {
-    text-transform: uppercase;
+.table th {
+    padding: 0.5em 0.75rem !important;
+}
+
+@media (min-width: 768px) {
+    .table td {
+        padding: 0.3em 10px 5px !important;
+    }
+}
+.table td {
     font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+    .first-row {
+        background-color: #36c2dd;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2em !important; 
+    }
+}
+
+.table .td-status {
+    font-weight: bold;
+}
+
+.table-bordered thead th, .table-bordered thead td {
+    vertical-align: middle;
+}
+
+th {
     font-weight: 700;
 }
 
 th a {
-    color: white;
-    transition: 0.3s;
+color: white;
+transition: 0.3s;
+display: block;
 }
+
 th a:hover {
     color: #ededed;
 }
@@ -162,16 +245,18 @@ td a {
 td a:hover {
     color: #6f7e95;
 }
-    
-tbody {
-    background-color: white;
-}
 
+@media (min-width: 768px) {
+    tbody {
+        background-color: white;
+    }
+}
 /* ==========================================================================
                             Pagination/Filter/Sort Styles
 ========================================================================== */
 .pagination-container {
     float: right;
+    padding: 0.25rem;
 }
 
 .pagination a {
@@ -184,30 +269,78 @@ tbody {
 
 .pageinfo-display {
     margin: 40px 0;
+    padding-top: 0.25rem;
 }
 
+.pageinfo-display > label,
+#pageinfo-display {
+    padding: 0.5rem;
+}
+
+@media screen and (max-width: 576px) {
+    .pageinfo-display > label {
+        display: none;
+    }
+    #pageinfo-display {
+        text-align: center;
+        width: 100%;
+    }
+}
+
+
+#pageinfo-display {
+    display: inline-block;
+}
+
+#ItemsPerPage {
+    width: 70px;
+    height: 36.5px;
+}
+
+.filter-row {
+    border-top: 1px solid #6d6b69;
+    border-bottom: 1px solid #6d6b69;
+    margin: 20px 2px;
+}
+
+.filter-row button.multiselect.dropdown-toggle.btn.btn-default {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding-left: 0.5rem;
+}
+
+.show > .dropdown-menu {
+    padding: 0.5rem !important;
+}
+
+.show > .dropdown-menu > li a,
+.show > .dropdown-menu > li a:hover {
+    color: black;
+}
+
+
 .filter-arrows {
-    display: flex;
-    flex-direction: column;
     float: right;
     font-size: 1.6em;
-    margin-bottom: -12px;
+    line-height: 0.8;
     color: rgba(255, 255, 255, 0.5);
 }
 
 .filter-arrows .fa-caret-up {
     margin-top: -7px;
 }
+
 .filter-arrows .fa-caret-down {
     margin-top: -12px;
 }
 
 .active-arrow {
-    color: #36c2dd !important;
+    color: #fff !important;
 }
 
 /* ==========================================================================
-                            Header Styles
+                        Header Styles
 ========================================================================== */
 .navbar-inverse .navbar-nav .nav-link {
     color: white;
@@ -247,6 +380,7 @@ tbody {
     width: 0;
     border: 10px solid transparent;
 }
+
 .hover-dropdown-content:before {
     border-bottom-color: #fff; /* arrow color */
     /* positioning */
@@ -267,8 +401,10 @@ tbody {
     background-color: #f1f1f1;
 }
 
-.hover-dropdown:hover .hover-dropdown-content {
-    display: block;
+@media screen and (min-width: 992px) {
+    .hover-dropdown:hover .hover-dropdown-content {
+        display: block;
+    }
 }
 
 .text-indent {
@@ -276,14 +412,15 @@ tbody {
     padding-left: 10px;
 }
 
-.log-off > a{
-    border-left: 1px solid rgba(255, 255, 255, 0.5);
+@media screen and (min-width: 992px) {
+    .log-off > a {
+        border-left: 1px solid rgba(255, 255, 255, 0.5);
+    }
 }
 
 /* ==========================================================================
-                            Sidebar Styles
+                        Sidebar Styles
 ========================================================================== */
-
 .nav-pills > li {
     border-bottom: 1px solid #edf2f6;
 }
@@ -305,23 +442,24 @@ tbody {
     display: none;
 }
 
-.sidebar-dropdown .nav-link {
-    border-bottom: 1px solid #6d6b69;
-    font-size: 0.9em;
-    color: lightgrey;
-}
+    .sidebar-dropdown .nav-link {
+        border-bottom: 1px solid #6d6b69;
+        font-size: 0.9em;
+        color: lightgrey;
+        padding-left: 25px;
+    }
 
-.sidebar-dropdown .nav-link:hover {
-    color: #e0e77a;
-}
-    
-.sidebar-dropdown .active {
-    background-color: #ededed;
-}
+        .sidebar-dropdown .nav-link:hover {
+            color: #e0e77a;
+        }
 
-.sidebar-dropdown .active > a {
-    color: #6d6b69;
-}
+    .sidebar-dropdown .active {
+        background-color: #ededed;
+    }
+
+        .sidebar-dropdown .active > a {
+            color: #6d6b69;
+        }
 
 .fa-caret-down {
     transition: 0.3s;
@@ -336,8 +474,92 @@ tbody {
         max-width: 9.333333% !important;
     }
 }
+
+@media (min-width: 992px) and (max-width: 1200px) {
+    .sidebar-icon {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+
+        .sidebar-icon .fa {
+            font-size: 2em;
+        }
+
+        .sidebar-icon > small {
+            font-size: 0.5em;
+        }
+
+    .sidebar-dropdown .nav-link {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .sidebar-dropdown .active i,
+    .sidebar-dropdown .active small {
+        color: #6d6b69 !important;
+    }
+
+    .sidebar-dropdown li {
+        line-height: 0.5em;
+    }
+}
+
+
+@media (max-width: 992px) {
+    .navbar {
+        padding: 0.5rem 0 0;
+    }
+
+    .navbar-brand {
+        padding: 0.5rem 1rem 0.75rem;
+    }
+
+    .navbar-nav li {
+        padding-left: 30px;
+        font-size: 1.2em;
+        border-bottom: 1px solid white;
+        transition: 0.3s;
+    }
+
+        .navbar-nav li:hover {
+            background-color: #3EA2C3;
+        }
+
+    .navbar-inverse .navbar-nav .nav-link:hover {
+        color: #e0e77a !important;
+    }
+
+    .navbar-inverse .navbar-nav .nav-link:visited,
+    .navbar-inverse .navbar-nav .nav-link:focus, {
+        color: white;
+    }
+}
+
+.navbar-toggler {
+    background-color: #e0e77a;
+    transition: 0.3s;
+}
+
+.navbar-toggler i {
+    font-size: 1.4em;
+    color: #6d6b69;
+}
+
+.navbar-toggler i:hover {
+    color: #e0e77a;
+}
+
+.navbar-toggler:hover {
+    background-color: #6d6b69;
+    cursor: pointer;
+}
+
+.navbar-nav li i {
+    width: 30px;
+}
 /* ==========================================================================
-                            Footer Styles
+                        Footer Styles
 ========================================================================== */
 .container-fluid {
     min-height: calc(100vh - 130px);
@@ -363,13 +585,17 @@ footer a:hover {
 
 
 /* ==========================================================================
-                            Right Click Styles
+                        Right Click Styles
 ========================================================================== */
-.clickable-row:hover,
-.clickable-row-dashboard:hover{
-    background: #f7f7f7;
-    cursor: pointer;
+.clickable-row {
+    border: 1px solid #eceeef;
 }
+
+    .clickable-row:hover,
+    .clickable-row-dashboard:hover {
+        background: #f7f7f7;
+        cursor: pointer;
+    }
 
 .btn-sm {
     width: 100%;
@@ -395,14 +621,38 @@ footer a:hover {
     outline: 1px solid grey;
 }
 /* ==========================================================================
-                            Page Styles: Notifications
+                        Page Styles: Notifications
 ========================================================================== */
-.float-create {
-    float: right !important;
+@media (max-width: 576px) {
+    .float-create {
+        width: 100%;
+        float: none !important;
+        margin-bottom: 20px;
+    }
+    .float-create > a {
+        width: 100%;
+        background-color: #e0e77a;
+        color: #6d6b69 !important;
+    }
+
+    .float-create > a:hover {
+        background-color: #d0d85f;
+    }
+
+    #hidden-search {
+        position: absolute;
+        right: 15px;
+        top: 0;
+        height: 38px;
+        width: 38px;
+        border-radius: 0 5px 5px 0;
+        border: none;
+    }
+
 }
 
-#accordion {
-    margin-bottom: 30px !important;
+.float-create {
+    float: right !important;
 }
 
 h5.col-12 {
@@ -410,31 +660,16 @@ h5.col-12 {
     padding-left: 0;
 }
 
-#accordion .card-block a {
-    color: black !important;
-}
-
-#accordion .card-block a:hover {
-    text-decoration: none !important;
-}
-
-#accordion .badge {
-    background-color: #44bbc1;
-    padding: 5px;
-}
-
-#accordion .card {
-    margin-bottom: 15px;
-    border: none;
-}
-#accordion .card-header {
-    border-bottom: 2px solid #44bbc1;
-    padding: 0;
-    background-color: transparent;
-}
-    
 .left-padding {
     padding: 0.5em 1em;
+}
+
+.nav-tabs a {
+    color: #36c2dd;
+}
+
+.nav-tabs a:hover {
+    color: #3EA2C3;
 }
 
 .tab-pane {
@@ -457,11 +692,44 @@ h5.col-12 {
     min-height: 220px !important;
 }
 
+.single-thread {
+    margin-bottom: 10px;
+}
+
+.single-thread:first-child {
+    margin-bottom: 20px;
+}
+
+.single-thread .float-right a {
+    color: #3EA2C3;
+    font-size: 1.1em;
+}
+
+    .single-thread .float-right a:hover {
+        color: #afe7f1;
+        text-decoration: none;
+    }
+
+.single-thread:not(:first-child) .float-left {
+    padding-left: 30px;
+}
+
+.single-thread:not(:first-child) .float-left:before {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    top: -1.2em;
+    left: 20px;
+    width: 1em;
+    height: 2em;
+    border-left: 1px dotted #6f7e95;
+    border-bottom: 1px dotted #6f7e95;
+}
 /* ==========================================================================
-                            Page Styles: Dashboard
+                        Page Styles: Dashboard
 ========================================================================== */
 .card-deck .card {
-    border: 2px solid lightsteelblue
+    border: 2px solid #36c2dd;
 }
 
 .card-deck {
@@ -470,7 +738,7 @@ h5.col-12 {
 }
 
 .card-header {
-    background-color: lightsteelblue;
+    background-color: #36c2dd;
 }
 
 .card-block {
@@ -479,6 +747,11 @@ h5.col-12 {
 
 .card-header h5 {
     padding-left: 0.75em;
+    display: inline-block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card-header h5 > a {
@@ -486,7 +759,7 @@ h5.col-12 {
 }
 
 .card-header h5 > a:hover {
-    color: coral !important;
+    color: #ededed !important;
     text-decoration: none;
 }
 
@@ -513,15 +786,28 @@ h5.col-12 {
     position: relative;
 }
 
+.notification-list p > .truncate {
+    display: inline-block;
+    width: 70%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .notification-list:before {
     content: "";
     position: absolute;
-    top: -1.6em;
+    display: inline-block;
+    top: -1.8em;
     left: 0;
     width: 1em;
-    height: 2.3em;
+    height: 2.5em;
     border-left: 1px dotted #6f7e95;
     border-bottom: 1px dotted #6f7e95;
+}
+
+i.fa.fa-sticky-note-o {
+    transform: translateY(-5px);
 }
 
 h3.heading-padding {
@@ -534,7 +820,7 @@ h3.heading-padding.text-muted:hover {
 }
 
 /* ==========================================================================
-                            Page Styles: Manage & Profile
+                        Page Styles: Manage & Profile
 ========================================================================== */
 small.float-right {
     margin-top: 5px !important;
@@ -554,5 +840,12 @@ small.float-right {
 
 .manage-btn:hover {
     color: #ededed;
-} 
+}
 
+
+@media (max-width: 768px) {
+
+    .manage-btn {
+        width: 80%;
+    }
+}

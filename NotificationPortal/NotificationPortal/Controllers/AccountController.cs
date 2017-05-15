@@ -64,7 +64,14 @@ namespace NotificationPortal.Controllers
                 return RedirectToAction("Index", "Dashboard");
             }
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+
+            LoginViewModel model = Request.Cookies["UserName"] == null ?
+                new LoginViewModel():
+                new LoginViewModel() {
+                    Email = Request.Cookies["UserName"].Value,
+                    RememberMe = true
+                };
+            return View(model);
         }
 
         //
@@ -96,6 +103,9 @@ namespace NotificationPortal.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    Response.Cookies["UserName"].Value = model.Email;
+                    int expirationDays = model.RememberMe ? 100 : -1;
+                    Response.Cookies["UserName"].Expires = DateTime.Now.AddDays(expirationDays);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");

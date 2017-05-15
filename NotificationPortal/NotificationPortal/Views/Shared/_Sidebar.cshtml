@@ -1,54 +1,162 @@
 ﻿
-
- <nav class="col-sm-3 col-md-1 hidden-xs-down bg-inverse sidebar">
-    <ul class="nav nav-pills flex-column">
+@if (Request.IsAuthenticated)
+{
+ <nav class="hidden-md-down col-md-1 hidden-xs-down bg-inverse sidebar">
+     <ul class="nav nav-pills flex-column">
+         <li class="nav-item">
+            <span class="hidden-xl-up">
+                <a href="@Url.Action("Index", "Dashboard")" class="nav-link sidebar-icon">
+                    <i class="fa fa-tachometer" aria-hidden="true"></i>
+                    <small>Dashboard</small>
+                </a>
+            </span>
+            <span class="hidden-lg-down">
+                <a href="@Url.Action("Index", "Dashboard")" class="nav-link">
+                    Dashboard
+                </a>
+            </span>
+         </li>
         <li class="nav-item">
-            @{
-                if (Request.IsAuthenticated)
-                {
-                    @Html.ActionLink("Dashboard", "Index", "Dashboard", null, new { @class = "nav-link" })
-                }
-            }
+            <span class="hidden-xl-up">
+                <a href="@Url.Action("Index", "Notification")" class="nav-link sidebar-icon">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i>
+                    <small>Notifications</small>
+                </a>
+            </span>
+            <span class="hidden-lg-down">
+                <a href="@Url.Action("Index", "Notification")" class="nav-link">
+                    Notifications
+                </a>
+            </span>
         </li>
-
-        <li class="nav-item">
-            @{
-                if (Request.IsAuthenticated)
+@{if (!HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_USER))
+    {
+        <li class="nav-item hidden-md-down">
+            <button class="sidebar-dropdown-button bg-inverse">
+                <span class="hidden-xl-up sidebar-icon">
+                    <i class="fa fa-cog" aria-hidden="true"></i>
+                    <small>Settings&nbsp;</small>
+                </span>
+                <span class="hidden-lg-down">
+                    Settings&nbsp;
+                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                </span>
+            </button>
+            <ul class="sidebar-dropdown">
+                @if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_CLIENT))
                 {
-                    @Html.ActionLink("Notifications", "Index", "Notification", null, new { @class = "nav-link" })
+                    <li>
+                        <span class="hidden-xl-up">
+                            <a href="@Url.Action("Index", "User")" class="nav-link sidebar-icon">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <small>Users</small>
+                            </a>
+                        </span>
+                        <span class="hidden-lg-down">
+                            <a href="@Url.Action("Index", "User")" class="nav-link">
+                                User Control
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="hidden-xl-up">
+                            <a href="@Url.Action("Index", "Application")" class="nav-link sidebar-icon">
+                                <i class="fa fa-rocket" aria-hidden="true"></i>
+                                <small>Apps</small>
+                            </a>
+                        </span>
+                        <span class="hidden-lg-down">
+                            <a href="@Url.Action("Index", "Application")" class="nav-link">
+                                Applications
+                            </a>
+                        </span>
+                    </li>
                 }
-            }
+                else
+                {
+                    <li>
+                        <span class="hidden-xl-up">
+                            <a href="@Url.Action("Index", "User")" class="nav-link sidebar-icon">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <small>Users</small>
+                            </a>
+                        </span>
+                        <span class="hidden-lg-down">
+                            <a href="@Url.Action("Index", "User")" class="nav-link">
+                                User Control
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="hidden-xl-up">
+                            <a href="@Url.Action("Index", "Application")" class="nav-link sidebar-icon">
+                                <i class="fa fa-rocket" aria-hidden="true"></i>
+                                <small>Apps</small>
+                            </a>
+                        </span>
+                        <span class="hidden-lg-down">
+                            <a href="@Url.Action("Index", "Application")" class="nav-link">
+                                Applications
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="hidden-xl-up">
+                            <a href="@Url.Action("Index", "Client")" class="nav-link sidebar-icon">
+                                <i class="fa fa-briefcase" aria-hidden="true"></i>
+                                <small>Clients</small>
+                            </a>
+                        </span>
+                        <span class="hidden-lg-down">
+                            <a href="@Url.Action("Index", "Client")" class="nav-link">
+                                Clients
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="hidden-xl-up">
+                            <a href="@Url.Action("Index", "DataCenter")" class="nav-link sidebar-icon">
+                                <i class="fa fa-globe" aria-hidden="true"></i>
+                                <small>Data Centers</small>
+                            </a>
+                        </span>
+                        <span class="hidden-lg-down">
+                            <a href="@Url.Action("Index", "DataCenter")" class="nav-link">
+                                Data Centers
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="hidden-xl-up">
+                            <a href="@Url.Action("Index", "Server")" class="nav-link sidebar-icon">
+                                <i class="fa fa-server" aria-hidden="true"></i>
+                                <small>Servers</small>
+                            </a>
+                        </span>
+                        <span class="hidden-lg-down">
+                            <a href="@Url.Action("Index", "Server")" class="nav-link">
+                                Servers
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="hidden-xl-up">
+                            <a href="@Url.Action("Index", "Status")" class="nav-link sidebar-icon">
+                                <i class="fa fa-signal" aria-hidden="true"></i>
+                                <small>Status</small>
+                            </a>
+                        </span>
+                        <span class="hidden-lg-down">
+                            <a href="@Url.Action("Index", "Status")" class="nav-link">
+                                Status
+                            </a>
+                        </span>
+                    </li>
+                }
+            </ul>
         </li>
-
-        @{if (Request.IsAuthenticated && !HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_USER))
-            {
-                <li class="nav-item">
-                    <button class="sidebar-dropdown-button bg-inverse">
-                        Settings&nbsp;
-                        <i class="fa fa-caret-down" aria-hidden="true"></i>
-                    </button>
-                    <ul class="sidebar-dropdown">
-                        @if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_CLIENT))
-                        {
-                            <li>@Html.ActionLink("User Control", "Index", "User", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Applications", "Index", "Application", null, new { @class = "nav-link" })</li>
-                        }
-                        else
-                        {
-                            <li>@Html.ActionLink("User Control", "Index", "User", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Applications", "Index", "Application", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Clients", "Index", "Client", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Data Centers", "Index", "DataCenter", null, new { @class = "nav-link" })</li>
-
-                            <li>@Html.ActionLink("Servers", "Index", "Server", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Status", "Index", "Status", null, new { @class = "nav-link" })</li>
-                        }
-                    </ul>
-                </li>
-            }
-        }
-    </ul>
+    }
+}
+         </ul>
 </nav>
-
-@*<main class="col-sm-9 offset-sm-3 offset-md-0 col-md-12 offset-md-0 pt-3">*@
-
+}

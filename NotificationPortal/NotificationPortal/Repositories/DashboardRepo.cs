@@ -6,8 +6,8 @@ using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
 using System.Security.Principal;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using PagedList;
+using NotificationPortal.Service;
 
 namespace NotificationPortal.Repositories
 {
@@ -37,6 +37,7 @@ namespace NotificationPortal.Repositories
                                                                     NotificationType = s.NotificationType.NotificationTypeName,
                                                                     SentDateTime = s.SentDateTime,
                                                                     Status = s.Status.StatusName,
+                                                                    SenderName = s.UserDetail.FirstName + " " + s.UserDetail.LastName
                                                                 })
                                                                 .OrderBy(x => x.LevelOfImpact);
 
@@ -58,7 +59,6 @@ namespace NotificationPortal.Repositories
                         int pageNumber = (page ?? 1);
                         int defaultPageSize = ConstantsRepo.PAGE_SIZE;
 
-
                         model = new DashboardIndexVM
                         {
                             Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
@@ -71,6 +71,7 @@ namespace NotificationPortal.Repositories
                             DateSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_DATE_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_DATE_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_DATE_DESC,
                             SubjectSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC,
                             LevelOfImpactSort = sortOrder == ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC ? ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE : ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
+                            SenderSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_SENDER_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_SENDER_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_SENDER_DESC,
                         };
                     }
                     catch {
@@ -133,8 +134,13 @@ namespace NotificationPortal.Repositories
                                                            .Select(c => new DashboardThreadDetailVM
                                                            {
                                                                SentDateTime = c.SentDateTime,
-                                                               NotificationHeading = c.NotificationHeading
-                                                           });
+                                                               NotificationDetail = c.NotificationDescription
+                                                            }).OrderByDescending(a => a.SentDateTime).ToList()
+                                                           .Take(ConstantsRepo.DASHBOARD_CLENT_SIDE_LIMIT);
+            foreach (var item in details)
+            {
+                item.NotificationDetail = StringHelper.RemoveTags(item.NotificationDetail);
+            }
             return details;
         }
 
@@ -152,11 +158,18 @@ namespace NotificationPortal.Repositories
                                             NotificationType = n.NotificationType.NotificationTypeName,
                                             SentDateTime = n.SentDateTime,
                                             Status = n.Status.StatusName
-                                        })).OrderBy(x => x.LevelOfImpact);
-            dashboard = notifications.GroupBy(n => n.ThreadID)
-                            .Select(
-                                t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
-                            );
+                                        }))
+                                        .OrderBy(x => x.LevelOfImpact).ToList();
+            foreach (var item in notifications)
+            {
+                item.ThreadHeading = GetFirstHeading(item.ThreadID);
+            }
+
+            dashboard = notifications
+                        .GroupBy(n => n.ThreadID)
+                        .Select(
+                            t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
+                        );
 
             dashboard = from n in dashboard where n.Status == Key.STATUS_NOTIFICATION_OPEN select n;
 
@@ -167,6 +180,14 @@ namespace NotificationPortal.Repositories
                 item.ThreadDetail = GetThreadDetails(item.ThreadID);
             }
             return dashboard;
+        }
+
+        public string GetFirstHeading(string threadID) {
+            string firstHeading = "";
+            firstHeading = _context.Notification
+                            .Where(a => a.IncidentNumber == threadID)
+                            .FirstOrDefault().NotificationHeading;
+            return firstHeading;
         }
 
         public IEnumerable<DashboardVM> Sort(IEnumerable<DashboardVM> list, string sortOrder, string searchString = null)
@@ -209,6 +230,14 @@ namespace NotificationPortal.Repositories
 
                 case ConstantsRepo.SORT_NOTIFICATION_BY_DATE_DESC:
                     list = list.OrderByDescending(c => c.SentDateTime);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_SENDER_ASCE:
+                    list = list.OrderBy(c => c.SenderName);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_SENDER_DESC:
+                    list = list.OrderByDescending(c => c.SenderName);
                     break;
 
                 default:
