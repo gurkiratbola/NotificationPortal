@@ -15,7 +15,7 @@
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#clients" role="tab">Servers</a>
+        <a class="nav-link active" data-toggle="tab" href="#clients" role="tab">Clients</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#applications" role="tab">Applications</a>
@@ -73,8 +73,8 @@
                     <tbody>
                         @foreach (var item in Model.Applications)
                         {
-                            <tr class="clickable-row-dashboard" id="@item.ReferenceID" data-href="/Application/Details/@item.ReferenceID">
-                                <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationName)">
+                            <tr class="clickable-row" id="@item.ReferenceID" data-href="/Application/Details/@item.ReferenceID">
+                                <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationName)" class="first-row">
                                     @Html.DisplayFor(modelItem => item.ApplicationName)
                                 </td>
                                 <td data-title="@Html.DisplayNameFor(model => applicationModel.URL)">

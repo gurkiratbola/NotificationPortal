@@ -458,27 +458,27 @@ td a:hover {
     display: none;
 }
 
-    .sidebar-dropdown .nav-link {
-        border-bottom: 1px solid #6d6b69;
-        font-size: 0.9em;
-        color: lightgrey;
-        padding-left: 25px;
+.sidebar-dropdown .nav-link {
+    border-bottom: 1px solid #6d6b69;
+    font-size: 0.9em;
+    color: lightgrey;
+    padding-left: 25px;
+}
+
+    .sidebar-dropdown .nav-link:hover {
+        color: #e0e77a;
     }
 
-        .sidebar-dropdown .nav-link:hover {
-            color: #e0e77a;
-        }
+.sidebar-dropdown .active {
+    background-color: #ededed;
+}
 
-    .sidebar-dropdown .active {
-        background-color: #ededed;
-    }
+.sidebar-dropdown .active > a {
+    color: #6d6b69;
+}
 
-        .sidebar-dropdown .active > a {
-            color: #6d6b69;
-        }
-
-.fa-caret-down {
-    transition: 0.3s;
+.sidebar-dropdown .active a {
+    color: #6d6b69 !important;
 }
 
 .arrow-rotate {
@@ -796,7 +796,7 @@ h5.col-12 {
 @media (max-width: 767px) {
     .nav-tabs > li {
         float: none;
-        width: 33.33%;
+        flex-grow: 1;
         /*border: 1px solid #dddddd;*/
     }
 
