@@ -659,6 +659,11 @@ footer a:hover {
 /* ==========================================================================
                         Page Styles: Notifications
 ========================================================================== */
+
+button.note-btn.btn.btn-default.btn-sm {
+    background-color: transparent;
+}
+
 @media (max-width: 576px) {
     .float-create {
         width: 100%;
