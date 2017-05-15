@@ -64,12 +64,12 @@ namespace NotificationPortal.Controllers
             string result = "";
             if (ModelState.IsValid)
             {
+                model.IncidentNumber = _nRepo.NewIncidentNumber(model.NotificationTypeID);
                 bool success = _nRepo.CreateNotification(model, out result);
                 if (success)
                 {
                     await NotificationService.SendEmail(_nRepo.CreateMails(model));
-                    // TODO: crete template for sms
-                    await NotificationService.SendSMS(_nRepo.GetPhoneNumbers(model),model.NotificationDescription);
+                    await NotificationService.SendSMS(_nRepo.GetPhoneNumbers(model), TemplateService.NotificationSMS(model));
 
                     TempData["SuccessMsg"] = result;
                     return RedirectToAction("Index");
@@ -102,6 +102,7 @@ namespace NotificationPortal.Controllers
                 if (success)
                 {
                     await NotificationService.SendEmail(_nRepo.CreateMails(model));
+                    await NotificationService.SendSMS(_nRepo.GetPhoneNumbers(model), TemplateService.NotificationSMS(model));
 
                     TempData["SuccessMsg"] = result;
                     return RedirectToAction("DetailsThread",new { id = model.IncidentNumber });

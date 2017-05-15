@@ -49,8 +49,9 @@ a, p, th, td, dd, dt, label, input {
 }
 
 h1 {
-    font-size: 2em !important;
+    font-size: 1.5em !important;
     color: #6d6b69;
+    margin-bottom: 0;
 }
 
 h3 {
@@ -132,6 +133,7 @@ i.fa.fa-check.text-success {
 .breadcrumb {
     padding-top: 0.75rem;
     padding-left: 0;
+    padding-right: 0;
 }
 
 .breadcrumb-item a {
@@ -287,6 +289,20 @@ td a:hover {
     }
 }
 
+@media (max-width: 380px) {
+    .pagination-container {
+        width: 100%;
+        text-align: center;
+    }
+
+    .pageinfo-display > label {
+        display: inline-block;
+    }
+
+    #ItemsPerPage {
+        margin-left: calc((100% - 190px)/2) !important;
+    }
+}
 
 #pageinfo-display {
     display: inline-block;
@@ -342,6 +358,11 @@ td a:hover {
 /* ==========================================================================
                         Header Styles
 ========================================================================== */
+.nav-brand img {
+    max-width: 200px;
+    padding: 4px 0;
+}
+
 .navbar-inverse .navbar-nav .nav-link {
     color: white;
 }
@@ -442,27 +463,27 @@ td a:hover {
     display: none;
 }
 
-    .sidebar-dropdown .nav-link {
-        border-bottom: 1px solid #6d6b69;
-        font-size: 0.9em;
-        color: lightgrey;
-        padding-left: 25px;
+.sidebar-dropdown .nav-link {
+    border-bottom: 1px solid #6d6b69;
+    font-size: 0.9em;
+    color: lightgrey;
+    padding-left: 25px;
+}
+
+    .sidebar-dropdown .nav-link:hover {
+        color: #e0e77a;
     }
 
-        .sidebar-dropdown .nav-link:hover {
-            color: #e0e77a;
-        }
+.sidebar-dropdown .active {
+    background-color: #ededed;
+}
 
-    .sidebar-dropdown .active {
-        background-color: #ededed;
-    }
+.sidebar-dropdown .active > a {
+    color: #6d6b69;
+}
 
-        .sidebar-dropdown .active > a {
-            color: #6d6b69;
-        }
-
-.fa-caret-down {
-    transition: 0.3s;
+.sidebar-dropdown .active a {
+    color: #6d6b69 !important;
 }
 
 .arrow-rotate {
@@ -511,8 +532,8 @@ td a:hover {
         padding: 0.5rem 0 0;
     }
 
-    .navbar-brand {
-        padding: 0.5rem 1rem 0.75rem;
+    a.nav-brand {
+        padding: 0 0.5rem 0.5rem;
     }
 
     .navbar-nav li {
@@ -546,13 +567,13 @@ td a:hover {
     color: #6d6b69;
 }
 
-.navbar-toggler i:hover {
-    color: #e0e77a;
-}
-
 .navbar-toggler:hover {
     background-color: #6d6b69;
     cursor: pointer;
+}
+
+.navbar-toggler:hover i {
+    color: #e0e77a;
 }
 
 .navbar-nav li i {
@@ -582,6 +603,26 @@ footer a:hover {
     color: #3EA2C3;
 }
 
+@media (max-width: 768px) {
+    footer {
+        padding-top: 15px;
+        border-top: 1px dashed #6d6b69;
+    }
+    .container-fluid {
+        min-height: calc(100vh - 165px);
+    }
+}
+
+
+@media (max-width: 420px) {
+    footer {
+        padding-bottom: 20px;
+    }
+    .container-fluid {
+        min-height: calc(100vh - 150px);
+    }
+
+}
 
 
 /* ==========================================================================
@@ -623,6 +664,11 @@ footer a:hover {
 /* ==========================================================================
                         Page Styles: Notifications
 ========================================================================== */
+
+button.note-btn.btn.btn-default.btn-sm {
+    background-color: transparent;
+}
+
 @media (max-width: 576px) {
     .float-create {
         width: 100%;
@@ -656,7 +702,7 @@ footer a:hover {
 }
 
 h5.col-12 {
-    color: #44bbc1;
+    color: #36c2dd;
     padding-left: 0;
 }
 
@@ -666,6 +712,32 @@ h5.col-12 {
 
 .nav-tabs a {
     color: #36c2dd;
+}
+
+@media (max-width: 576px) {
+
+    .nav-tabs .nav-link.active {
+        background-color: #afe7f1;
+    }
+    
+    .nav-tabs a {
+        color: #fff;
+        border: none;
+    }
+
+    .nav-tabs a:hover {
+        color: #fff !important;
+    }
+
+    .nav-tabs {
+        background-color: #36c2dd;
+        margin-bottom: 20px;
+    }
+    .nav-tabs .nav-link {
+        border-radius: 0;
+        text-align: center;
+        border: none;
+    }
 }
 
 .nav-tabs a:hover {
@@ -705,10 +777,10 @@ h5.col-12 {
     font-size: 1.1em;
 }
 
-    .single-thread .float-right a:hover {
-        color: #afe7f1;
-        text-decoration: none;
-    }
+.single-thread .float-right a:hover {
+    color: #afe7f1;
+    text-decoration: none;
+}
 
 .single-thread:not(:first-child) .float-left {
     padding-left: 30px;
@@ -725,17 +797,57 @@ h5.col-12 {
     border-left: 1px dotted #6f7e95;
     border-bottom: 1px dotted #6f7e95;
 }
+
+@media (max-width: 767px) {
+    .nav-tabs > li {
+        float: none;
+        flex-grow: 1;
+        /*border: 1px solid #dddddd;*/
+    }
+
+    .nav-tabs > li.active > a {
+        border: none;
+    }
+
+    .nav > li > a:hover, .nav > li > a:focus,
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        background: none;
+        border: none;
+    }
+}
+
+@media (max-width: 430px) {
+    .nav-tabs {
+        display: flex;
+        flex-direction: column;
+    }
+    .nav-tabs > li {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+
+
 /* ==========================================================================
                         Page Styles: Dashboard
 ========================================================================== */
 .card-deck .card {
     border: 2px solid #36c2dd;
+    border-radius: 5px;
 }
 
 .card-deck {
     background-color: transparent;
     padding: 1em 0 5px;
 }
+
+@media (max-width: 610px) {
+    .card-deck {
+        padding: 0.5em 0 0;
+    }
+}
+
 
 .card-header {
     background-color: #36c2dd;
@@ -746,7 +858,6 @@ h5.col-12 {
 }
 
 .card-header h5 {
-    padding-left: 0.75em;
     display: inline-block;
     width: 100%;
     white-space: nowrap;
@@ -767,6 +878,20 @@ h5.col-12 {
     padding: 2px 7px 5px;
     border-radius: 5px;
     font-size: 1em;
+}
+
+@media (max-width: 610px) {
+    .external-status {
+        float: left !important;
+        margin-bottom: 10px;
+    }
+
+    .text-muted .float-right {
+        font-size: 0.7em;
+        float: left !important;
+        padding-left: 30px;
+        margin-top: -40px;
+    }
 }
 
 .border-muted {
@@ -794,6 +919,17 @@ h5.col-12 {
     text-overflow: ellipsis;
 }
 
+@media (max-width: 760px) {
+    .notification-list p > .truncate {
+        width: 60%;
+    }
+}
+
+@media (max-width: 610px) {
+    .notification-list p > .truncate {
+        width: 80%;
+    }
+}
 .notification-list:before {
     content: "";
     position: absolute;
@@ -817,6 +953,16 @@ h3.heading-padding {
 h3.heading-padding.text-muted:hover {
     text-decoration: none;
     color: lightcoral !important;
+}
+
+@media (max-width: 768px) {
+    .single-thread > .float-right {
+        font-size: 0.7em;
+    }
+}
+
+.container td#no-threads {
+    padding: 0.5rem 0.75rem !important;
 }
 
 /* ==========================================================================

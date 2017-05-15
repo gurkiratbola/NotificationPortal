@@ -262,6 +262,16 @@ body.Home {
         }
 }
 
+@media screen and (max-width: 480px) {
+    .container td:before {
+        width: 40%;
+    }
+
+    .container td {
+        padding-left: 42%;
+    }
+}
+
 
 @media screen and (max-width: 991px) {
     header #navbarsExampleDefault > ul:nth-of-type(2) .nav-item:first-child {

@@ -66,7 +66,7 @@ namespace NotificationPortal.ViewModels
     {
         public string ReferenceID { get; set; }
 
-        [DisplayName("Application Name")]
+        [DisplayName("App Name")]
         public string ApplicationName { get; set; }
 
         public string Description { get; set; }

@@ -96,8 +96,6 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int NotificationTypeID { get; set; }
 
-        public int SentMethodID { get; set; }
-
         [Required]
         public int StatusID { get; set; }
 
@@ -161,11 +159,13 @@ namespace NotificationPortal.ViewModels
     {
         public string ReferenceID { get; set; }
         public string Status { get; set; }
+        [Display(Name = "Heading")]
         public string NotificationHeading { get; set; }
         [Display(Name = "Details")]
         public string NotificationDescription { get; set; }
         [Display(Name = "Send Time")]
         public DateTime SentDateTime { get; set; }
+        [Display(Name = "Incident #")]
         public string IncidentNumber { get; set; }
     }
 

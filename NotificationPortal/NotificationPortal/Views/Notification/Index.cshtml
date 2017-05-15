@@ -48,7 +48,6 @@
             <span class="hidden-xs-down">
                 <input onclick="getNewList()" class="btn btn-secondary" type="submit" value="Search" />
             </span>
-            
         </div>
         @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
                              User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
@@ -85,7 +84,11 @@
             </th>
         </tr>
     </thead>
-    <tbody id="tbody"></tbody>
+    <tbody id="tbody">
+        <tr>
+            <td id="no-threads" colspan="6">There are no notifications at the moment.</td>
+        </tr>
+    </tbody>
 </table>
 
 <div class="pagination-container">
@@ -105,13 +108,14 @@
 
 <div class="hidden-menu">
     <ul>
-        <li><a href="/Create/" class="btn btn-sm">Update</a></li>
-        <li><a href="/DeleteThread/" class="btn btn-sm">Delete</a></li>
+        <li><a href="Notification/Create/" class="btn btn-sm">Update</a></li>
+        <li><a href="Notification/DeleteThread/" class="btn btn-sm">Delete</a></li>
     </ul>
 </div>
 
 <script>
     // defining page specific functions (refillTHead, addRow, getNewList, filterDropDown)
+    var waiting = false;
     var refillTHead = function (model) {
         $('#thead').replaceWith('<thead id="thead" />');
         var theadRow = $('<tr class="bg-inverse text-white">').appendTo($('#thead'));
@@ -183,7 +187,7 @@
     };
 
     var addRow = function (model) {
-        $('<tr class="clickable-row" id="' + model.IncidentNumber + '" data-href="/DetailsThread/' + model.IncidentNumber + '"/>').appendTo($('#tbody'));
+        $('<tr class="clickable-row" id="' + model.IncidentNumber + '" data-href="Notification/DetailsThread/' + model.IncidentNumber + '"/>').appendTo($('#tbody'));
         $('<td/>', { text: model.IncidentNumber }).addClass('first-row').attr('data-title','@Html.DisplayNameFor(model => Model.IncidentNumber)').appendTo($('#' + model.IncidentNumber));
         $('<td/>', { text: model.NotificationType }).attr('data-title','@Html.DisplayNameFor(model => Model.NotificationType)').appendTo($('#' + model.IncidentNumber));
         $('<td/>', { text: model.LevelOfImpact }).attr('data-title','@Html.DisplayNameFor(model => Model.LevelOfImpact)').appendTo($('#' + model.IncidentNumber));
@@ -248,34 +252,43 @@
     }
 
     var getNewList = function (isPageChange) {
-        var newData = {
-            NotificationTypeIDs: $('#NotificationTypeIDs').val(),
-            LevelOfImpactIDs: $('#LevelOfImpactIDs').val(),
-            StatusIDs: $('#StatusIDs').val(),
-            PriorityIDs: $('#PriorityIDs').val(),
-            CurrentFilter: "",
-            CurrentSort: currentSort,
-            SearchString: $('#SearchString').val().toLowerCase(),
-            Page: isPageChange ? pageNumber : 1,
-            ItemsPerPage: $('#ItemsPerPage').val()
-        };
+        if (!waiting) {
+            waiting = true;
+            $('#preloader').show();
 
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: "http://localhost:58475/api/Notification",
-            data: JSON.stringify(newData),
-            contentType: 'application/json',
-            success: function (data) {
-                refillTHead(data);
-                refillTBody(data.Threads);
-                refillPagination(data);
-            },
-            error: function (error) {
-                jsonValue = jQuery.parseJSON(error.responseText);
-                alert("error" + error.responseText);
-            }
-        });
+            var newData = {
+                NotificationTypeIDs: $('#NotificationTypeIDs').val(),
+                LevelOfImpactIDs: $('#LevelOfImpactIDs').val(),
+                StatusIDs: $('#StatusIDs').val(),
+                PriorityIDs: $('#PriorityIDs').val(),
+                CurrentFilter: "",
+                CurrentSort: currentSort,
+                SearchString: $('#SearchString').val().toLowerCase(),
+                Page: isPageChange ? pageNumber : 1,
+                ItemsPerPage: $('#ItemsPerPage').val()
+            };
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "http://localhost:58475/api/Notification",
+                data: JSON.stringify(newData),
+                contentType: 'application/json',
+                success: function (data) {
+                    refillTHead(data);
+                    refillTBody(data.Threads);
+                    refillPagination(data);
+                    waiting = false;
+                    $('#preloader').hide();
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    alert("error" + error.responseText);
+                    waiting = false;
+                    $('#preloader').hide();
+                }
+            });
+        }
     }
 
     $(document).ready(function () {

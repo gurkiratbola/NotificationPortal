@@ -194,7 +194,6 @@ namespace NotificationPortal.Repositories
                     LevelOfImpactID = lastestNotification.LevelOfImpactID,
                     NotificationTypeID = lastestNotification.NotificationTypeID,
                     PriorityID = lastestNotification.PriorityID,
-                    SentMethodID = lastestNotification.SendMethodID,
                     StatusID = lastestNotification.StatusID,
                     NotificationDescription = lastestNotification.NotificationDescription,
                     NotificationHeading = lastestNotification.NotificationHeading = headingLength == -1 ?
@@ -226,7 +225,6 @@ namespace NotificationPortal.Repositories
                     LevelOfImpactID = editingNotification.LevelOfImpactID,
                     NotificationTypeID = editingNotification.NotificationTypeID,
                     PriorityID = editingNotification.PriorityID,
-                    SentMethodID = editingNotification.SendMethodID,
                     StatusID = editingNotification.StatusID,
                     NotificationDescription = editingNotification.NotificationDescription,
                     NotificationHeading = editingNotification.NotificationHeading
@@ -425,7 +423,6 @@ namespace NotificationPortal.Repositories
                 {
                     notification.ApplicationReferenceIDs = new string[0];
                 }
-                string newIncidentNumber = NewIncidentNumber(notification.NotificationTypeID);
                 var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
                 var apps = _context.Application.Where(a => notification.ApplicationReferenceIDs.Contains(a.ReferenceID));
                 var priorityValue = _context.Notification.Where(n => notification.PriorityID == n.Priority.PriorityID)
@@ -439,11 +436,10 @@ namespace NotificationPortal.Repositories
                     NotificationDescription = notification.NotificationDescription,
                     StatusID = notification.StatusID,
                     PriorityID = notification.PriorityID,
-                    SendMethodID = sendMethodId,
                     UserID = userId,
                     //TO DO: discuss how referenceID is generated
                     ReferenceID = Guid.NewGuid().ToString(),
-                    IncidentNumber = notification.IncidentNumber ?? newIncidentNumber,
+                    IncidentNumber = notification.IncidentNumber,
                     //TO DO: convert input time to UTC time
                     SentDateTime = DateTime.Now,
                     StartDateTime = notification.StartDateTime,
@@ -498,7 +494,6 @@ namespace NotificationPortal.Repositories
                 editingNotification.NotificationTypeID = notification.NotificationTypeID;
                 editingNotification.NotificationDescription = notification.NotificationDescription;
                 editingNotification.StatusID = notification.StatusID;
-                editingNotification.SendMethodID = notification.SentMethodID;
                 editingNotification.StartDateTime = notification.StartDateTime;
                 editingNotification.EndDateTime = notification.EndDateTime;
 

@@ -306,7 +306,8 @@ namespace NotificationPortal.Migrations
             foreach (string snotificationSatus in notificationStatuses)
             {
                 context.Status.Add(
-                     new Status() {
+                     new Status()
+                     {
                          StatusName = snotificationSatus,
                          StatusType = statusTypeNotification
                      });
@@ -627,10 +628,6 @@ namespace NotificationPortal.Migrations
                 .FirstOrDefault();
             // Get server
             var servers = context.Server.Where(s => s.ServerName == sampleServerName1);
-            // Get sendmoethod
-            var sendMethod = context.SendMethod
-                .Where(s => s.SendMethodName == Key.SEND_METHOD_EMAIL)
-                .FirstOrDefault();
             // Get status
             var statusOpen = context.Status
                 .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_NOTIFICATION
@@ -663,7 +660,6 @@ namespace NotificationPortal.Migrations
                 NotificationDescription = "Server will be offline for maintenance",
                 NotificationTypeID = notificationTypeMaintenance.NotificationTypeID,
                 LevelOfImpactID = levelOfImpactNonImpacting.LevelOfImpactID,
-                SendMethodID = sendMethod.SendMethodID,
                 StatusID = statusOpen.StatusID,
                 IncidentNumber = sampleThread1,
                 PriorityID = priorityHigh.PriorityID,
@@ -682,7 +678,6 @@ namespace NotificationPortal.Migrations
                 NotificationDescription = "Maintenance complete",
                 NotificationTypeID = notificationTypeMaintenance.NotificationTypeID,
                 LevelOfImpactID = levelOfImpactNonImpacting.LevelOfImpactID,
-                SendMethodID = sendMethod.SendMethodID,
                 StatusID = statusClosed.StatusID,
                 IncidentNumber = sampleThread1,
                 PriorityID = priorityLow.PriorityID,
@@ -699,7 +694,6 @@ namespace NotificationPortal.Migrations
                 NotificationDescription = "Application has crashed",
                 NotificationTypeID = notificationTypeIncident.NotificationTypeID,
                 LevelOfImpactID = levelOfImpactImpacting.LevelOfImpactID,
-                SendMethodID = sendMethod.SendMethodID,
                 StatusID = statusOpen.StatusID,
                 IncidentNumber = "INC-6928376",
                 PriorityID = priorityNormal.PriorityID,
