@@ -1,8 +1,8 @@
 ﻿var subdir = '/';
-if (window.location.origin.indexOf('localhost')) {
-    subdir = '/';
-} else {
+if (window.location.origin.indexOf('localhost') == -1) {
     subdir = '/notificationportal/'
+} else {
+    subdir = '/';
 }
 // used for clickable row and ajax scripts
 var domain = window.location.origin + subdir;
