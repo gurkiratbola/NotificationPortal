@@ -10,12 +10,14 @@ namespace NotificationPortal.Service
 {
     public static class TemplateService
     {
-        public static string AccountEmail(string callBackURL)
+        public static string AccountEmail(string callBackURL, string body, string buttonText)
         {
             // load the html template and read the content to be replaced later.
             string path = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Service/templates/AccountEmailTemplate.html"));
 
-            string message = path.Replace("{URL}", callBackURL);
+            string message = path.Replace("{URL}", callBackURL)
+                             .Replace("{Body}", body)
+                             .Replace("{ButtonText}", buttonText);
 
             return message;
         }
