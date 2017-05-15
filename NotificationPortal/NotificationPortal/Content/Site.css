@@ -14,6 +14,7 @@ sidebar-grey: #6f7e95
     light-brand-color: #afe7f1
     darker-brand-color: #3EA2C3
     highlight: #e0e77a
+    dark-highlight: #d0d85f
     dark-grey: #6d6b69
     grey: #84807c
 */
@@ -81,10 +82,30 @@ h4 {
     color: lightcoral;
 }
 
+@media (max-width: 768px) {
+    .bg-closed.td-status,
+    .bg-invest.td-status,
+    .bg-success.td-status,
+    .bg-danger.td-status {
+        background-color: #fff !important;
+    }
+
+    .bg-closed.td-status {
+        color: #adadad !important;
+    }
+    .bg-invest.td-status {
+        color: #e8a529 !important;
+    }
+    .bg-success.td-status {
+        color: #5cb85c !important;
+    }
+    .bg-danger.td-status {
+        color: #d9534f !important;
+    }
+}
 /* ==========================================================================
                             Others
 ========================================================================== */
-
 .heading-padding {
     padding: 0.5rem 1rem;
 }
@@ -177,13 +198,30 @@ button:focus {
     padding: 0.5em 0.75rem !important;
 }
 
+@media (min-width: 768px) {
+    .table td {
+        padding: 0.3em 10px 5px !important;
+    }
+}
 .table td {
-    padding: 0.3em 10px 5px !important;
     font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+    .first-row {
+        background-color: #36c2dd;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2em !important; 
+    }
 }
 
 .table .td-status {
     font-weight: bold;
+}
+
+.table-bordered thead th, .table-bordered thead td {
+    vertical-align: middle;
 }
 
 th {
@@ -191,9 +229,9 @@ th {
 }
 
 th a {
-    color: white;
-    transition: 0.3s;
-    display: block;
+color: white;
+transition: 0.3s;
+display: block;
 }
 
 th a:hover {
@@ -207,17 +245,18 @@ td a {
 td a:hover {
     color: #6f7e95;
 }
-    
-tbody {
-    background-color: white;
-}
 
+@media (min-width: 768px) {
+    tbody {
+        background-color: white;
+    }
+}
 /* ==========================================================================
                             Pagination/Filter/Sort Styles
 ========================================================================== */
 .pagination-container {
     float: right;
-    padding: 0.5rem;
+    padding: 0.25rem;
 }
 
 .pagination a {
@@ -230,12 +269,24 @@ tbody {
 
 .pageinfo-display {
     margin: 40px 0;
+    padding-top: 0.25rem;
 }
 
 .pageinfo-display > label,
 #pageinfo-display {
     padding: 0.5rem;
 }
+
+@media screen and (max-width: 576px) {
+    .pageinfo-display > label {
+        display: none;
+    }
+    #pageinfo-display {
+        text-align: center;
+        width: 100%;
+    }
+}
+
 
 #pageinfo-display {
     display: inline-block;
@@ -244,6 +295,28 @@ tbody {
 #ItemsPerPage {
     width: 70px;
     height: 36.5px;
+}
+
+.filter-row {
+    border-top: 1px solid #6d6b69;
+    border-bottom: 1px solid #6d6b69;
+    margin: 20px 2px;
+}
+
+.filter-row button.multiselect.dropdown-toggle.btn.btn-default {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding-left: 0.5rem;
+}
+
+.show > .dropdown-menu {
+    padding: 0.5rem !important;
+}
+
+.show > .dropdown-menu > li a,
+.show > .dropdown-menu > li a:hover {
+    color: black;
 }
 
 
@@ -257,6 +330,7 @@ tbody {
 .filter-arrows .fa-caret-up {
     margin-top: -7px;
 }
+
 .filter-arrows .fa-caret-down {
     margin-top: -12px;
 }
@@ -266,7 +340,7 @@ tbody {
 }
 
 /* ==========================================================================
-                            Header Styles
+                        Header Styles
 ========================================================================== */
 .navbar-inverse .navbar-nav .nav-link {
     color: white;
@@ -306,6 +380,7 @@ tbody {
     width: 0;
     border: 10px solid transparent;
 }
+
 .hover-dropdown-content:before {
     border-bottom-color: #fff; /* arrow color */
     /* positioning */
@@ -344,7 +419,7 @@ tbody {
 }
 
 /* ==========================================================================
-                            Sidebar Styles
+                        Sidebar Styles
 ========================================================================== */
 .nav-pills > li {
     border-bottom: 1px solid #edf2f6;
@@ -367,24 +442,24 @@ tbody {
     display: none;
 }
 
-.sidebar-dropdown .nav-link {
-    border-bottom: 1px solid #6d6b69;
-    font-size: 0.9em;
-    color: lightgrey;
-    padding-left: 25px;
-}
+    .sidebar-dropdown .nav-link {
+        border-bottom: 1px solid #6d6b69;
+        font-size: 0.9em;
+        color: lightgrey;
+        padding-left: 25px;
+    }
 
-.sidebar-dropdown .nav-link:hover {
-    color: #e0e77a;
-}
-    
-.sidebar-dropdown .active {
-    background-color: #ededed;
-}
+        .sidebar-dropdown .nav-link:hover {
+            color: #e0e77a;
+        }
 
-.sidebar-dropdown .active > a {
-    color: #6d6b69;
-}
+    .sidebar-dropdown .active {
+        background-color: #ededed;
+    }
+
+        .sidebar-dropdown .active > a {
+            color: #6d6b69;
+        }
 
 .fa-caret-down {
     transition: 0.3s;
@@ -407,13 +482,13 @@ tbody {
         text-align: center;
     }
 
-    .sidebar-icon .fa {
-        font-size: 2em;
-    }
+        .sidebar-icon .fa {
+            font-size: 2em;
+        }
 
-    .sidebar-icon > small {
-        font-size: 0.5em;
-    }
+        .sidebar-icon > small {
+            font-size: 0.5em;
+        }
 
     .sidebar-dropdown .nav-link {
         padding-left: 0;
@@ -439,19 +514,22 @@ tbody {
     .navbar-brand {
         padding: 0.5rem 1rem 0.75rem;
     }
-    
+
     .navbar-nav li {
         padding-left: 30px;
         font-size: 1.2em;
         border-bottom: 1px solid white;
         transition: 0.3s;
     }
-    .navbar-nav li:hover {
-        background-color: #3EA2C3;
-    }
+
+        .navbar-nav li:hover {
+            background-color: #3EA2C3;
+        }
+
     .navbar-inverse .navbar-nav .nav-link:hover {
         color: #e0e77a !important;
     }
+
     .navbar-inverse .navbar-nav .nav-link:visited,
     .navbar-inverse .navbar-nav .nav-link:focus, {
         color: white;
@@ -475,13 +553,13 @@ tbody {
 .navbar-toggler:hover {
     background-color: #6d6b69;
     cursor: pointer;
-} 
+}
 
 .navbar-nav li i {
     width: 30px;
 }
 /* ==========================================================================
-                            Footer Styles
+                        Footer Styles
 ========================================================================== */
 .container-fluid {
     min-height: calc(100vh - 130px);
@@ -507,17 +585,17 @@ footer a:hover {
 
 
 /* ==========================================================================
-                            Right Click Styles
+                        Right Click Styles
 ========================================================================== */
 .clickable-row {
     border: 1px solid #eceeef;
 }
 
-.clickable-row:hover,
-.clickable-row-dashboard:hover {
-    background: #f7f7f7;
-    cursor: pointer;
-}
+    .clickable-row:hover,
+    .clickable-row-dashboard:hover {
+        background: #f7f7f7;
+        cursor: pointer;
+    }
 
 .btn-sm {
     width: 100%;
@@ -543,8 +621,36 @@ footer a:hover {
     outline: 1px solid grey;
 }
 /* ==========================================================================
-                            Page Styles: Notifications
+                        Page Styles: Notifications
 ========================================================================== */
+@media (max-width: 576px) {
+    .float-create {
+        width: 100%;
+        float: none !important;
+        margin-bottom: 20px;
+    }
+    .float-create > a {
+        width: 100%;
+        background-color: #e0e77a;
+        color: #6d6b69 !important;
+    }
+
+    .float-create > a:hover {
+        background-color: #d0d85f;
+    }
+
+    #hidden-search {
+        position: absolute;
+        right: 15px;
+        top: 0;
+        height: 38px;
+        width: 38px;
+        border-radius: 0 5px 5px 0;
+        border: none;
+    }
+
+}
+
 .float-create {
     float: right !important;
 }
@@ -553,7 +659,7 @@ h5.col-12 {
     color: #44bbc1;
     padding-left: 0;
 }
-    
+
 .left-padding {
     padding: 0.5em 1em;
 }
@@ -585,23 +691,24 @@ h5.col-12 {
 #editor {
     min-height: 220px !important;
 }
+
 .single-thread {
     margin-bottom: 10px;
 }
 
 .single-thread:first-child {
-    margin-bottom:20px;
-} 
-    
+    margin-bottom: 20px;
+}
+
 .single-thread .float-right a {
     color: #3EA2C3;
     font-size: 1.1em;
 }
 
-.single-thread .float-right a:hover {
-    color: #afe7f1;
-    text-decoration: none;
-}
+    .single-thread .float-right a:hover {
+        color: #afe7f1;
+        text-decoration: none;
+    }
 
 .single-thread:not(:first-child) .float-left {
     padding-left: 30px;
@@ -619,7 +726,7 @@ h5.col-12 {
     border-bottom: 1px dotted #6f7e95;
 }
 /* ==========================================================================
-                            Page Styles: Dashboard
+                        Page Styles: Dashboard
 ========================================================================== */
 .card-deck .card {
     border: 2px solid #36c2dd;
@@ -686,7 +793,7 @@ h5.col-12 {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-    
+
 .notification-list:before {
     content: "";
     position: absolute;
@@ -713,7 +820,7 @@ h3.heading-padding.text-muted:hover {
 }
 
 /* ==========================================================================
-                            Page Styles: Manage & Profile
+                        Page Styles: Manage & Profile
 ========================================================================== */
 small.float-right {
     margin-top: 5px !important;

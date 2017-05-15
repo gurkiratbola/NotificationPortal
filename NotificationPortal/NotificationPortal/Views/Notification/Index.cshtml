@@ -19,8 +19,7 @@
     </p>
 }
 
-
-    <div class="row pl-3">
+    <div class="row filter-row">
         <!--notification type-->
         <div>
             @Html.ListBoxFor(m => m.NotificationTypeIDs, Model.NotificationTypeList, new { style = "display: none;" })
@@ -39,14 +38,22 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-inline col-md-6 pb-3">
+        <div class="form-inline col-sm-8 col-xs-12 pb-3">
             @Html.TextBoxFor(model => model.SearchString, Model.CurrentFilter, new { @class = "form-control mr-sm-2", placeholder = "Search", onkeypress = "search(event)" })
-            <input onclick="getNewList()" class="btn btn-secondary" type="submit" value="Search" />
+            <span class="hidden-sm-up">
+                <button onclick="getNewList()" id="hidden-search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+            </span>
+            <span class="hidden-xs-down">
+                <input onclick="getNewList()" class="btn btn-secondary" type="submit" value="Search" />
+            </span>
+            
         </div>
         @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
                              User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
         {
-            <div class="offset-md-4 col-md-2">
+            <div class="offset-sm-2 col-sm-2 col-xs-12">
                 <div class="float-create">
                     @Html.ActionLink("Create New", "CreateThread", null, new { @class = "btn btn-mint text-white" })
                 </div>
@@ -177,23 +184,23 @@
 
     var addRow = function (model) {
         $('<tr class="clickable-row" id="' + model.IncidentNumber + '" data-href="/DetailsThread/' + model.IncidentNumber + '"/>').appendTo($('#tbody'));
-        $('<td/>', { text: model.IncidentNumber }).appendTo($('#' + model.IncidentNumber));
-        $('<td/>', { text: model.NotificationType }).appendTo($('#' + model.IncidentNumber));
-        $('<td/>', { text: model.LevelOfImpact }).appendTo($('#' + model.IncidentNumber));
-        $('<td/>', { text: model.NotificationHeading }).appendTo($('#' + model.IncidentNumber));
-        $('<td/>', { text: model.Priority }).appendTo($('#' + model.IncidentNumber));
+        $('<td/>', { text: model.IncidentNumber }).addClass('first-row').attr('data-title','@Html.DisplayNameFor(model => Model.IncidentNumber)').appendTo($('#' + model.IncidentNumber));
+        $('<td/>', { text: model.NotificationType }).attr('data-title','@Html.DisplayNameFor(model => Model.NotificationType)').appendTo($('#' + model.IncidentNumber));
+        $('<td/>', { text: model.LevelOfImpact }).attr('data-title','@Html.DisplayNameFor(model => Model.LevelOfImpact)').appendTo($('#' + model.IncidentNumber));
+        $('<td/>', { text: model.NotificationHeading }).attr('data-title','@Html.DisplayNameFor(model => Model.NotificationHeading)').appendTo($('#' + model.IncidentNumber));
+        $('<td/>', { text: model.Priority }).attr('data-title','@Html.DisplayNameFor(model => Model.Priority)').appendTo($('#' + model.IncidentNumber));
         switch (model.Status) {
             case '@NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN':
-                $('<td/>', { text: model.Status }).appendTo($('#' + model.IncidentNumber)).addClass('bg-danger td-status text-white');
+                $('<td/>', { text: model.Status }).appendTo($('#' + model.IncidentNumber)).addClass('bg-danger td-status text-white').attr('data-title','@Html.DisplayNameFor(model => Model.Status)');
                 break;
             case '@NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED':
-                $('<td/>', { text: model.Status }).appendTo($('#' + model.IncidentNumber)).addClass('bg-closed td-status text-white');
+                $('<td/>', { text: model.Status }).appendTo($('#' + model.IncidentNumber)).addClass('bg-closed td-status text-white').attr('data-title','@Html.DisplayNameFor(model => Model.Status)');
                 break;
             case '@NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING':
-                $('<td/>', { text: model.Status }).appendTo($('#' + model.IncidentNumber)).addClass('bg-invest td-status text-white');
+                $('<td/>', { text: model.Status }).appendTo($('#' + model.IncidentNumber)).addClass('bg-invest td-status text-white').attr('data-title','@Html.DisplayNameFor(model => Model.Status)');
                 break;
             case '@NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED':
-                $('<td/>', { text: model.Status }).appendTo($('#' + model.IncidentNumber)).addClass('bg-success td-status text-white');
+                $('<td/>', { text: model.Status }).appendTo($('#' + model.IncidentNumber)).addClass('bg-success td-status text-white').attr('data-title','@Html.DisplayNameFor(model => Model.Status)');
                 break;
             default:
                 break;

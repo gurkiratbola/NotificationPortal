@@ -197,6 +197,7 @@ body.Home {
 #custom-search-input .glyphicon-search{
     font-size: 23px;
 }
+
 @media screen and (max-width: 800px) {
 
     /* Force table to not be like tables anymore */
@@ -222,23 +223,18 @@ body.Home {
     
     .container tr {
         border: 1px solid #ccc;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
     }
 
-    .container tr:nth-child(even) {
-        background-color: #ededed;
-    }
-
-    .container tr:nth-child(odd) {
+    .container tr {
         background-color: #fff;
     }
 
     .container td {
         /* Behave  like a "row" */
         border: none;
-        border-bottom: 1px solid #eee;
         position: relative;
-        padding-left: 50%;
+        padding-left: 27%;
         white-space: normal;
         text-align: left;
     }
@@ -248,7 +244,7 @@ body.Home {
             position: absolute;
             /* Top/left values mimic padding */
             left: 10px;
-            width: 45%;
+            width: 25%;
             padding-right: 10px;
             white-space: nowrap;
             text-align: left;
