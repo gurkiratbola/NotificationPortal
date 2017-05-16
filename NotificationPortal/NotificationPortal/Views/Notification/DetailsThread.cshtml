@@ -121,7 +121,7 @@
             <tbody>
             @foreach (var item in Model.Servers)
             {
-                <tr class="text-center clickable-row-dashboard" id="@item.ReferenceID" data-href="/Server/Details/@item.ReferenceID">
+                <tr class="text-center clickable-row" id="@item.ReferenceID" data-href="Server/Details/@item.ReferenceID">
                     <td data-title="@Html.DisplayNameFor(model => serverModel.ServerName)" class="first-row">
                         @Html.DisplayFor(modelItem => item.ServerName)
                     </td>
@@ -161,7 +161,7 @@
                 <tbody>
                 @foreach (var item in Model.Applications)
                 {
-                    <tr class="text-center clickable-row-dashboard" id="@item.ReferenceID" data-href="/Application/Details/@item.ReferenceID">
+                    <tr class="text-center clickable-row" id="@item.ReferenceID" data-href="Application/Details/@item.ReferenceID">
                         <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationName)" class="first-row">
                             @Html.DisplayFor(modelItem => item.ApplicationName)
                         </td>

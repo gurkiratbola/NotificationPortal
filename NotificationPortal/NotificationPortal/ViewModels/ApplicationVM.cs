@@ -17,7 +17,7 @@ namespace NotificationPortal.ViewModels
         public string ReferenceID { get; set; }
 
         [Required]
-        [DisplayName("Application Name")]
+        [DisplayName("Application")]
         public string ApplicationName { get; set; }
 
         [Required]
