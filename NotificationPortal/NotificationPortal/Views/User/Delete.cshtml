@@ -10,9 +10,8 @@
 
 <h1 class="display-4 text-center pb-3">@Model.FirstName @Model.LastName <span class="@className">@Model.StatusName</span></h1>
 
-
 <ol class="breadcrumb bg-faded">
-    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
+    <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="~/User/Index" class="link-color">User Management</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</li>
 </ol>

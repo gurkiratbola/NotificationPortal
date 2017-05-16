@@ -119,20 +119,20 @@ namespace NotificationPortal.Repositories
                    });
                 }
                 else
-                    {
-                        applicationList = _context.Application
-                   .Where(c => c.Client.ClientName == getClientId)
-                   .Select(c => new ApplicationListVM
-                   {
-                       ApplicationName = c.ApplicationName,
-                       ReferenceID = c.ReferenceID,
-                       Description = c.Description,
-                       URL = c.URL,
-                       StatusName = c.Status.StatusName,
-                       ClientName = c.Client.ClientName,
-                   });
-                    }
-                
+                {
+                    applicationList = _context.Application
+               .Where(c => c.Client.ClientName == getClientId)
+               .Select(c => new ApplicationListVM
+               {
+                   ApplicationName = c.ApplicationName,
+                   ReferenceID = c.ReferenceID,
+                   Description = c.Description,
+                   URL = c.URL,
+                   StatusName = c.Status.StatusName,
+                   ClientName = c.Client.ClientName,
+               });
+                }
+
 
                 page = searchString == null ? page : 1;
                 searchString = searchString ?? currentFilter;

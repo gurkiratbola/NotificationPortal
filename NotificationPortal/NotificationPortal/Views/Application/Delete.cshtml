@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Delete";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1 class="text-center display-4 pb-3">@Model.ApplicationName</h1>
@@ -15,7 +14,7 @@
 
 
 <div class="container">
-    <h3 class="text-danger pb-2">Are you sure you want to delete this?</h3>
+    <h4 class="text-danger pb-2">Are you sure you want to delete this?</h4>
 
     @if (TempData["ErrorMsg"] != null)
     {
@@ -23,50 +22,61 @@
             @Html.Raw(TempData["ErrorMsg"])
         </p>
     }
-    <div>
 
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.ApplicationName)
-            </dt>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#Applications" role="tab">Application</a>
+        </li>
+    </ul>
 
-            <dd>
-                @Html.DisplayFor(model => model.ApplicationName)
-            </dd>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="User" role="tabpanel">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.ApplicationName)
+                    </dt>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.ApplicationName)
+                    </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.URL)
-            </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.URL)
-            </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.URL)
+                    </dt>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.StatusName)
-            </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.URL)
+                    </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.StatusName)
-            </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.StatusName)
+                    </dt>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.ClientName)
-            </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.StatusName)
+                    </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.ClientName)
-            </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.ClientName)
+                    </dt>
 
-        </dl>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.ClientName)
+                    </dd>
+
+                </dl>
+            </div>
+        </div>
 
         @using (Html.BeginForm())
         {
@@ -85,5 +95,4 @@
                 @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
             </div>
         }
-    </div>
 </div>

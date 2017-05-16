@@ -17,7 +17,7 @@ namespace NotificationPortal.Controllers
         private readonly ApplicationRepo _aRepo = new ApplicationRepo();
         private readonly SelectListRepo _sRepo = new SelectListRepo();
 
-        
+
         [HttpGet]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -25,6 +25,7 @@ namespace NotificationPortal.Controllers
             ApplicationIndexVM model = _aRepo.GetApplicationList(sortOrder, currentFilter, searchString, page);
             return View(model);
         }
+
         [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         [HttpGet]
         public ActionResult Create()
@@ -39,6 +40,7 @@ namespace NotificationPortal.Controllers
             };
             return View(model);
         }
+
         [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -105,12 +107,13 @@ namespace NotificationPortal.Controllers
             return View(application);
         }
 
-       
+
         [HttpGet]
         public ActionResult Details(string id)
         {
             return View(_aRepo.GetDetailApplication(id));
         }
+
         [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
         [HttpGet]
         public ActionResult Delete(string id)
@@ -143,7 +146,5 @@ namespace NotificationPortal.Controllers
 
             return View(application);
         }
-
-
     }
 }
