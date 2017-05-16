@@ -192,7 +192,7 @@ namespace NotificationPortal.Controllers
 
             if(user == null)
             {
-                TempData["ErrorMsg"] = "Cannot edit this user at this time";
+                TempData["ErrorMsg"] = "Cannot get this user at this time";
                 return RedirectToAction("Index");
             }
 
@@ -208,7 +208,7 @@ namespace NotificationPortal.Controllers
 
             if(user == null)
             {
-                TempData["ErrorMsg"] = "Cannot edit this user at this time";
+                TempData["ErrorMsg"] = "Cannot delete this user at this time";
                 return RedirectToAction("Index");
             }
 

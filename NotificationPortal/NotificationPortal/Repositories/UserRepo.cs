@@ -245,7 +245,7 @@ namespace NotificationPortal.Repositories
                     {
                         if (model.RoleName == Key.ROLE_ADMIN || model.RoleName == Key.ROLE_STAFF)
                         {
-                            msg = "Something went wrong, try again!";
+                            msg = "Something went wrong, try again";
                             userId = "";
 
                             return false;
@@ -256,7 +256,7 @@ namespace NotificationPortal.Repositories
                     {
                         if (model.RoleName == Key.ROLE_ADMIN || model.RoleName == Key.ROLE_STAFF || model.RoleName == Key.ROLE_CLIENT)
                         {
-                            msg = "Something went wrong, try again!";
+                            msg = "Something went wrong, try again";
                             userId = "";
 
                             return false;
@@ -286,13 +286,13 @@ namespace NotificationPortal.Repositories
                     userManager.AddToRole(user.Id, model.RoleName);
 
                     // if the client was added successfully pass this msg out
-                    msg = "User added successfully!";
+                    msg = "User added successfully";
                     return true;
                 }
                 else
                 {
                     // if error show this msg
-                    msg = "The email address is already in use.";
+                    msg = "The email address is already in use";
                     userId = "";
                     return false;
                 }
@@ -302,7 +302,7 @@ namespace NotificationPortal.Repositories
                 if (e is SqlException)
                 { }
 
-                msg = "Failed to add the user!";
+                msg = "Failed to add the user";
                 userId = "";
                 return false;
             }
@@ -347,7 +347,7 @@ namespace NotificationPortal.Repositories
                             {
                                 if (model.RoleName == Key.ROLE_ADMIN || model.RoleName == Key.ROLE_STAFF)
                                 {
-                                    msg = "Something went wrong, try again!";
+                                    msg = "Something went wrong, try again";
                                     return false;
                                 }
                             }
@@ -356,7 +356,7 @@ namespace NotificationPortal.Repositories
                             {
                                 if (model.RoleName == Key.ROLE_ADMIN || model.RoleName == Key.ROLE_STAFF || model.RoleName == Key.ROLE_CLIENT)
                                 {
-                                    msg = "Something went wrong, try again!";
+                                    msg = "Something went wrong, try again";
                                     return false;
                                 }
                             }
@@ -378,7 +378,7 @@ namespace NotificationPortal.Repositories
                     }
                     else
                     {
-                        msg = "User with the email address already exists.";
+                        msg = "User with the email address already exists";
                         return false;
                     }
 
@@ -396,11 +396,11 @@ namespace NotificationPortal.Repositories
                     // _context.Entry(model).State = EntityState.Modified;
                     _context.SaveChanges();
 
-                    msg = "User information successfully updated!";
+                    msg = "User information successfully updated";
                     return true;
                 }
 
-                msg = "Failed to update the user.";
+                msg = "Failed to update the user";
                 return false;
             }
             catch(Exception e)
@@ -408,7 +408,7 @@ namespace NotificationPortal.Repositories
                 if (e is SqlException)
                 { }
 
-                msg = "Failed to update the user.";
+                msg = "Failed to update the user";
                 return false;
             }
         }
@@ -469,7 +469,7 @@ namespace NotificationPortal.Repositories
 
             if (userToBeDeleted == null && appUserTobeDeleted == null && clientToBeDeleted == null)
             {
-                msg = "User cannot be deleted.";
+                msg = "User cannot be deleted";
                 return false;
             }
 
@@ -483,11 +483,11 @@ namespace NotificationPortal.Repositories
                     _context.Users.Remove(appUserTobeDeleted);
                     _context.SaveChanges();
 
-                    msg = "User deleted successfully!";
+                    msg = "User deleted successfully";
                     return true;
                 }
 
-                msg = "User cannot delete own account, Please contact an admin to delete your account.";
+                msg = "User cannot delete own account, Please contact an admin to delete your account";
                 return false;
             }
             catch(Exception e)
@@ -495,7 +495,7 @@ namespace NotificationPortal.Repositories
                 if (e is SqlException)
                 { }
 
-                msg = "Failed to delete user.";
+                msg = "Failed to delete user";
                 return false;
             }
         }
