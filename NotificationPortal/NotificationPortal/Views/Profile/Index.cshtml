@@ -13,7 +13,7 @@
         @Html.HiddenFor(model => model.ReferenceID)
         <!--alert message block-->
         <div class="form-group">
-            <div >
+            <div>
                 @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
                 @{  if (TempData["ErrorMsg"] != null)
@@ -28,56 +28,10 @@
                 }
             </div>
         </div>
-        <!-- ========================= contact info ========================= -->
-        <div class="profile-block">
-            <h2>Contact Info</h2>
-            <!--email input field-->
-            <div class="form-group">
-                <label class="profile-label">
-                    <span class="required">
-                        @Html.DisplayNameFor(model => model.Email)
-                    </span>
-                    <small class='float-right'>Updating email will log user out instantly</small>
-                </label>
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger float-right" })
-            </div>
-            <!--business phone input field-->
-            <div class="form-group">
-                <label class="profile-label">
-                    <span class="required">
-                        @Html.DisplayNameFor(model => model.BusinessPhone)
-                    </span>
-                    <small class='float-right'>Format: 604-123-7890</small>
-                </label>
-                @Html.EditorFor(model => model.BusinessPhone, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BusinessPhone, "", new { @class = "text-danger float-right" })
-            </div>
-            <!--mobile phone input field-->
-            <div class="form-group">
-                <label class="profile-label">
-                    <span class="required">
-                        @Html.DisplayNameFor(model => model.MobilePhone)
-                    </span>
-                    <small class='float-right'>Format: 604-123-7890</small>
-                </label>
-                @Html.EditorFor(model => model.MobilePhone, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MobilePhone, "", new { @class = "text-danger float-right" })
-            </div>
-        </div>
-        <!-- ========================= preference info ========================= -->
-        <div class="profile-block">
-            <h2>Preference</h2>
-            <!--send method dropdown list-->
-            <div class="form-group">
-                @Html.LabelFor(model => model.SendMethodList, htmlAttributes: new { @class = "required" })
-                @Html.DropDownListFor(m => m.SendMethodID, Model.SendMethodList, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SendMethodID, "", new { @class = "text-danger float-right" })
-            </div>
-        </div>
+
         <!-- ========================= basic info ========================= -->
-        <div class="profile-block">
-            <h2>Basic Info</h2>
+        <div class="form-block">
+            <h2 class="pb-3">Basic Information</h2>
             <!--first name input field-->
             <div class="form-group">
                 @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "required" })
@@ -109,13 +63,62 @@
                 @Html.ValidationMessageFor(model => model.HomePhone, "", new { @class = "text-danger float-right" })
             </div>
         </div>
+
+        <!-- ========================= contact info ========================= -->
+        <div class="form-block">
+            <h2 class="pb-3">Contact Information</h2>
+            <!--email input field-->
+            <div class="form-group">
+                <label class="profile-label">
+                    <span class="required">
+                        @Html.DisplayNameFor(model => model.Email)
+                    </span>
+                    <small class='float-right'>Updating will log user out</small>
+                </label>
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger float-right" })
+            </div>
+            <!--business phone input field-->
+            <div class="form-group">
+                <label class="profile-label">
+                    <span class="required">
+                        @Html.DisplayNameFor(model => model.BusinessPhone)
+                    </span>
+                    <small class='float-right'>Format: 604-123-7890</small>
+                </label>
+                @Html.EditorFor(model => model.BusinessPhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BusinessPhone, "", new { @class = "text-danger float-right" })
+            </div>
+            <!--mobile phone input field-->
+            <div class="form-group">
+                <label class="profile-label">
+                    <span class="required">
+                        @Html.DisplayNameFor(model => model.MobilePhone)
+                    </span>
+                    <small class='float-right'>Format: 604-123-7890</small>
+                </label>
+                @Html.EditorFor(model => model.MobilePhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MobilePhone, "", new { @class = "text-danger float-right" })
+            </div>
+        </div>
+        <!-- ========================= preference info ========================= -->
+        <div class="form-block">
+            <h2 class="pb-3">Preference</h2>
+            <!--send method dropdown list-->
+            <div class="form-group">
+                @Html.LabelFor(model => model.SendMethodList, htmlAttributes: new { @class = "required" })
+                @Html.DropDownListFor(m => m.SendMethodID, Model.SendMethodList, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SendMethodID, "", new { @class = "text-danger float-right" })
+            </div>
+        </div>
+ 
         <!-- submit button -->
         <div class="form-group">
             <input type="submit" value="Update" class="btn btn-success" />
             @Html.ActionLink("Back to Dashboard", "Index", "Dashboard", null, new { @class = "btn btn-danger" })
         </div>
     </div>
-}
+                    }
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

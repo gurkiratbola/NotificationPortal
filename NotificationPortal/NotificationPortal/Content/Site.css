@@ -45,7 +45,7 @@ a, p, th, td, dd, dt, label, input {
 }
 
 h1 {
-    font-size: 1.5em !important;
+    font-size: 1.7em !important;
     color: #6d6b69;
     margin-bottom: 0;
 }
@@ -58,7 +58,7 @@ h1 .badge {
 h2 {
     font-size: 1.2em;
     font-weight: bold;
-    color: #adadad;
+    color: #7d7e81;
 }
 
 h3 {
@@ -991,9 +991,9 @@ h3.heading-padding.text-muted:hover {
 /* ==========================================================================
                         Page Styles: Manage & Profile
 ========================================================================== */
-.profile-block {
+.form-block {
     border-radius: 10px;
-    border:1px solid #adadad;
+    border: .5px dashed #adadad;
     padding: 15px;
     margin-bottom: 20px;
 }

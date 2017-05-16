@@ -19,126 +19,126 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        
-        <div class="form-group">
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-                @{  if (TempData["ErrorMsg"] != null)
-                    {
-                        <p class="alert alert-danger">@TempData["ErrorMsg"]</p>
-                    }
+    <div class="form-horizontal offset-md-3 col-md-6 offset-md-3">
+
+        <div class="form-group">
+
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+            @{  if (TempData["ErrorMsg"] != null)
+                {
+                    <p class="alert alert-danger">@TempData["ErrorMsg"]</p>
                 }
-            </div>
+            }
         </div>
 
         @Html.HiddenFor(model => model.ReferenceID)
-        
-        <div class="form-group">
-            @Html.LabelFor(model => model.FirstName, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.FirstName, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.FirstName, "", new {@class = "text-danger float-right" })
+
+        <div class="form-block">
+            <h2 class="pb-3">Basic Information</h2>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label required" })
+
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger float-right" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label required" })
+
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger float-right" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BusinessTitle, htmlAttributes: new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.BusinessTitle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BusinessTitle, "", new { @class = "text-danger float-right" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.LastName, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.LastName, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.LastName, "", new {@class = "text-danger float-right" })
+        <div class="form-block">
+            <h2 class="pb-3">Contact Information</h2>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label required" })
+
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger float-right" })
             </div>
-        </div>
-        
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.Email, new {htmlAttributes = new {@class = "form-control" }})
-                @Html.ValidationMessageFor(model => model.Email, "", new {@class = "text-danger float-right" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BusinessPhone, htmlAttributes: new { @class = "control-label" })
+
+                <small class='float-right'>Format: 604-123-7890</small>
+
+                @Html.EditorFor(model => model.BusinessPhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BusinessPhone, "", new { @class = "text-danger float-right" })
             </div>
-        </div>
-        
-        <div class="container">
-            <div class="form-seperator offset-md-3 col-md-6 offset-md-3"></div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MobilePhone, htmlAttributes: new { @class = "control-label" })
+
+                <small class='float-right'>Format: 604-123-7890</small>
+
+                @Html.EditorFor(model => model.MobilePhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MobilePhone, "", new { @class = "text-danger float-right" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HomePhone, htmlAttributes: new { @class = "control-label " })
+
+                <small class='float-right'>Format: 604-123-7890</small>
+
+                @Html.EditorFor(model => model.HomePhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.HomePhone, "", new { @class = "text-danger float-right" })
+            </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.RoleList, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
+        <div class="form-block">
+            <h2 class="pb-3">Other Information</h2>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.RoleList, htmlAttributes: new { @class = "control-label required" })
+
                 @Html.DropDownListFor(m => m.RoleName, Model.RoleList, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger float-right" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ClientList, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.DropDownListFor(m => m.ClientReferenceID, Model.ClientList, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
-                @Html.ValidationMessageFor(model => model.ClientReferenceID, "", new {@class = "text-danger float-right" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.ClientList, htmlAttributes: new { @class = "control-label required" })
+
+                @Html.DropDownListFor(m => m.ClientReferenceID, Model.ClientList, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ClientReferenceID, "", new { @class = "text-danger float-right" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label required" })
+
                 <select class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false">
                     @foreach (var item in Model.ApplicationList)
-                    {
+                {
                         <option value="@Html.DisplayFor(modelItem => item.ReferenceID)" class="ApplicationListItem @Html.DisplayFor(modelItem => item.ClientReferenceID)">@Html.DisplayFor(modelItem => item.ApplicationName)</option>
                     }
                 </select>
 
                 @Html.ValidationMessageFor(model => model.ApplicationReferenceIDs, "", new { @class = "text-danger float-right required" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.BusinessTitle, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.BusinessTitle, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.BusinessTitle, "", new {@class = "text-danger float-right" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.StatusList, htmlAttributes: new { @class = "control-label  required" })
+
+                @Html.DropDownListFor(m => m.StatusID, Model.StatusList, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.StatusID, "", new { @class = "text-danger float-right" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BusinessPhone, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.BusinessPhone, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.BusinessPhone, "", new {@class = "text-danger float-right" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.MobilePhone, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.MobilePhone, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.MobilePhone, "", new {@class = "text-danger float-right" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.HomePhone, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2"})
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.HomePhone, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.HomePhone, "", new {@class = "text-danger float-right" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.StatusList, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.DropDownListFor(m => m.StatusID, Model.StatusList, htmlAttributes: new {@class = "form-control"})
-                @Html.ValidationMessageFor(model => model.StatusID, "", new {@class = "text-danger float-right" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="offset-md-3 col-md-6">
-                <input type="submit" value="Save" class="btn btn-mint text-white"/>
-                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
-            </div>
+            <input type="submit" value="Save" class="btn btn-mint text-white" />
+            @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
         </div>
     </div>
 }
@@ -147,7 +147,7 @@
     $(document).ready(function () {
         $(".ApplicationListItem").hide();
         $("." + $("#ClientReferenceID").val()).show();
-        $("#ClientReferenceID").change(function() {
+        $("#ClientReferenceID").change(function () {
             var clientRefIDs = $(this).val();
             $(".ApplicationListItem").hide();
             $("." + clientRefIDs).show();
