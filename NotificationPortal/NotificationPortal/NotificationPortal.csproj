@@ -203,6 +203,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ApiModels.cs" />
+    <Compile Include="Api\ApplicationApiRepo.cs" />
+    <Compile Include="Api\ApplicationController.cs" />
     <Compile Include="Api\DashboardApiRepo.cs" />
     <Compile Include="Api\DashboardController.cs" />
     <Compile Include="Api\NotificationApiRepo.cs" />
@@ -315,6 +317,7 @@
     <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\ajax-helper.js" />
     <Content Include="Scripts\notification-helper.js" />
+    <Content Include="Scripts\refresh-application-status.js" />
     <Content Include="Scripts\script.js" />
     <Content Include="Scripts\timezone.js" />
     <Content Include="Scripts\add-notification.js" />

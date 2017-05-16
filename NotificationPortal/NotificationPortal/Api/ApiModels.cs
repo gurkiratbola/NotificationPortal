@@ -23,6 +23,12 @@ namespace NotificationPortal.Api
         public int? ItemsPerPage { get; set; }
     }
 
+    public class ApplicationStatus
+    {
+        public string ReferenceID { get; set; }
+        public string Status { get; set; }
+    }
+
     public class DashboardVM
     {
         public string IncidentNumber { get; set; }
