@@ -27,6 +27,10 @@ namespace NotificationPortal.Repositories
                     list = list.OrderByDescending(c => c.ClientName);
                     break;
 
+                case ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE:
+                    list = list.OrderBy(c => c.ClientName);
+                    break;
+
                 case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
                     list = list.OrderByDescending(c => c.StatusName);
                     break;
@@ -62,6 +66,7 @@ namespace NotificationPortal.Repositories
                 searchString = searchString ?? currentFilter;
                 int pageNumber = (page ?? 1);
                 int defaultPageSize = ConstantsRepo.PAGE_SIZE;
+                sortOrder = sortOrder == null ? ConstantsRepo.SORT_STATUS_BY_NAME_DESC : sortOrder;
                 ClientIndexVM model = new ClientIndexVM
                 {
                     Clients = Sort(clientList, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),

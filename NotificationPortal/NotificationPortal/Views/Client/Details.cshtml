@@ -2,9 +2,15 @@
 
 @{
     ViewBag.Title = "Client Details";
+    var statusClass = Model.StatusName.ToUpper() == NotificationPortal.Models.Key.STATUS_CLIENT_DISABLED.ToUpper() ? "badge badge-danger" : "badge badge-success";
 }
 
-<h1 class="text-center display-4 pb-3">@Html.DisplayFor(model => model.ClientName)</h1>
+<h1 class="text-center display-4 pb-3">
+    @Html.DisplayFor(model => model.ClientName) | 
+    <span class="@statusClass">
+        @Html.DisplayFor(model => model.StatusName)
+    </span>
+</h1>
 <!-- ========================= breadcrumb ========================= -->
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
