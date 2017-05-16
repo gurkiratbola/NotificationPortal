@@ -1,5 +1,4 @@
-﻿waiting = false;
-// get all reference ids for applications on the page
+﻿// get all reference ids for applications on the page
 var getAppReferenceIDs = function () {
     var referenceIDs = [];
     $.each($('.clickable-row'), function (index, row) {
@@ -67,5 +66,7 @@ var refreshAppStatuses = function () {
 }
 
 $(document).ready(function ($) {
+    // initialize waiting as false
+    waiting = false;
     refreshAppStatuses()
 });
