@@ -11,12 +11,17 @@ namespace NotificationPortal.Api
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
+        // CheckStatus of the apps then RefreshStatusInDatabase for each apps
+        // based on the input referenceIDs of apps
+        // and return the result for Api
         public List<ApplicationStatus> RefreshApplicationStatuses(string[] referenceIDs)
         {
+            // get the referenceIds and url of the apps
             var apps = _context.Application
                 .Where(a => referenceIDs.Contains(a.ReferenceID))
                 .Select(a => new { ReferenceID=a.ReferenceID, URL=a.URL }).ToList();
 
+            // loop through all apps and check the status
             List<ApplicationStatus> listOfAppStatuses = new List<ApplicationStatus>();
             foreach (var app in apps)
             {
@@ -27,11 +32,13 @@ namespace NotificationPortal.Api
                     });
             }
 
+            // refresh the status of the apps in the database
             RefreshStatusInDatabase(listOfAppStatuses);
 
             return listOfAppStatuses;
         }
 
+        // refresh the status of the apps in the database
         public void RefreshStatusInDatabase(List<ApplicationStatus> listOfAppStatuses)
         {
             try
@@ -43,6 +50,7 @@ namespace NotificationPortal.Api
                     .Where(s => s.StatusType.StatusTypeName == Key.STATUS_TYPE_APPLICATION
                     && s.StatusName == Key.STATUS_APPLICATION_OFFLINE).FirstOrDefault().StatusID;
 
+                // loop through all apps and replace the value of the Status with new value from CheckStatus method
                 foreach (var app in listOfAppStatuses)
                 {
                     var updatingApp = _context.Application
@@ -70,22 +78,19 @@ namespace NotificationPortal.Api
         {
             WebRequest request = WebRequest.Create(url);
 
-            // request for a response to a surl 200 times until we recieve an OK status
-            for (int i = 0; i < 200; i++)
+            // request for a response to a url and check to recieve an OK status
+            try
             {
-                try
+                var x = request.GetResponse();
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var x = request.GetResponse();
-                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-                catch (Exception)
-                {
-                    // TODO: decide how to handle exception when there is no connection
-                }
+            }
+            catch (Exception)
+            {
+                // TODO: decide how to handle exception when there is no connection
             }
             return false;
         }
