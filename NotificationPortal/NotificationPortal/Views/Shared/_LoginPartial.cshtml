@@ -22,11 +22,13 @@
             <li class="nav-item hover-dropdown">
                 <a href="@Url.Action("Index", "Manage")" class="nav-link drop-btn">
                     <span class="hidden-md-down" id="username">
-                        Hello, 
-                        @if (ViewData["FullName"] != null) {
+                        Hello,
+                        @if (ViewData["FullName"] != null)
+                        {
                             @Html.Raw(ViewData["FullName"])
                         }
-                        else {
+                        else
+                        {
                             @Html.Raw("user");
                         }
                     </span>
@@ -46,7 +48,7 @@
                     <span class="hidden-lg-up">
                         <i class="fa fa-sign-out" aria-hidden="true"></i>
                     </span>
-                        Log Off
+                    Log Off
                 </a>
             </li>
         </ul>

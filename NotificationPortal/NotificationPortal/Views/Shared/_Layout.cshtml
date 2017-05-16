@@ -48,7 +48,7 @@
     </div>
     <!-- ========================= content  ========================= -->
     @{
-        string offset = Request.IsAuthenticated ? "col-lg-11 offset-lg-1" : "";
+        string offset = Request.IsAuthenticated ? "col-lg-10 offset-lg-2" : "";
         if (Request.IsAuthenticated)
         {
             @Html.Partial("~/Views/Shared/_Sidebar.cshtml")

@@ -196,6 +196,7 @@ button:focus {
 @media (min-width: 576px) {
     .container {
         width: 100% !important;
+        margin-left: -36px;
     }
 }
 /* ==========================================================================
@@ -521,7 +522,7 @@ td a:hover {
 
 @media (min-width: 768px) {
     .col-md-1 {
-        max-width: 9.333333% !important;
+        max-width: 11.333333% !important;
     }
 }
 
