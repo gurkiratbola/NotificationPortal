@@ -1,5 +1,6 @@
 ﻿using NotificationPortal.Models;
 using NotificationPortal.ViewModels;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,16 +15,65 @@ namespace NotificationPortal.Repositories
         const string APP_STATUS_TYPE_NAME = "DataCenter";
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
-        public IEnumerable<DataCenterVM> GetDataCenterList()
+        // sort function for data center
+        public IEnumerable<DataCenterVM> Sort(IEnumerable<DataCenterVM> list, string sortOrder, string searchString = null)
         {
-            IEnumerable<DataCenterVM> dataCenterList = _context.DataCenterLocation
-                                                .Select(c => new DataCenterVM
-                                                {
-                                                    Location = c.Location,
-                                                    LocationID = c.LocationID,
 
-                                                });
-            return dataCenterList;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(c => c.Location.ToUpper().Contains(searchString.ToUpper()));
+            }
+            switch (sortOrder)
+            {
+                case ConstantsRepo.SORT_DATACENTER_BY_NAME_DESC:
+                    list = list.OrderByDescending(c => c.Location);
+                    break;
+
+                case ConstantsRepo.SORT_DATACENTER_BY_NAME_ASCE:
+                    list = list.OrderBy(c => c.Location);
+                    break;
+
+                default:
+                    list = list.OrderBy(c => c.Location);
+                    break;
+            }
+            return list;
+        }
+
+        public DataCenterIndexVM GetDataCenterList(string sortOrder, string currentFilter, string searchString, int? page)
+        {
+            try
+            {
+                IEnumerable<DataCenterVM> dataCenterList = _context.DataCenterLocation
+                                                            .Select(c => new DataCenterVM
+                                                            {
+                                                                Location = c.Location,
+                                                                LocationID = c.LocationID,
+
+                                                            });
+                int totalNumOfCenters = dataCenterList.Count();
+                page = searchString == null ? page : 1;
+                int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+                searchString = searchString ?? currentFilter;
+                int pageNumber = (page ?? 1);
+                int defaultPageSize = ConstantsRepo.PAGE_SIZE;
+                sortOrder = sortOrder == null ? ConstantsRepo.SORT_DATACENTER_BY_NAME_DESC : sortOrder;
+                DataCenterIndexVM model = new DataCenterIndexVM
+                {
+                    DataCenters = Sort(dataCenterList, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
+                    LocationSort = sortOrder == ConstantsRepo.SORT_DATACENTER_BY_NAME_DESC ? ConstantsRepo.SORT_DATACENTER_BY_NAME_ASCE : ConstantsRepo.SORT_DATACENTER_BY_NAME_DESC,
+                    CurrentFilter = searchString,
+                    CurrentSort = sortOrder,
+                    TotalItemCount = totalNumOfCenters,
+                    ItemStart = currentPageIndex * defaultPageSize + 1,
+                    ItemEnd = totalNumOfCenters - (defaultPageSize * currentPageIndex) >= defaultPageSize ? defaultPageSize * (currentPageIndex + 1) : totalNumOfCenters,
+                };
+                return model;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public bool AddDataCenter(DataCenterVM dataCenter, out string msg)
@@ -32,14 +82,13 @@ namespace NotificationPortal.Repositories
                             .FirstOrDefault();
             if (d != null)
             {
-                msg = "DataCenter name already exist.";
+                msg = "Data Center name already exist.";
                 return false;
             }
             try
             {
                 DataCenterLocation newDataCenter = new DataCenterLocation();
                 newDataCenter.Location = dataCenter.Location;
-                //newDataCenter.LocationID = dataCenter.LocationID;
                 _context.DataCenterLocation.Add(newDataCenter);
                 _context.SaveChanges();
                 msg = "Data Center successfully added";
@@ -47,22 +96,28 @@ namespace NotificationPortal.Repositories
             }
             catch
             {
-                msg = "Failed to add server.";
+                msg = "Failed to add data center.";
                 return false;
             }
         }
 
         public DataCenterVM GetDataCenter(int referenceID)
         {
-            DataCenterVM dataCenter = _context.DataCenterLocation
-                            .Where(a => a.LocationID == referenceID)
-                            .Select(b => new DataCenterVM
-                            {
-                                Location = b.Location,
-                                LocationID = b.LocationID,
+            try
+            {
+                DataCenterVM dataCenter = _context.DataCenterLocation
+                                        .Where(a => a.LocationID == referenceID)
+                                        .Select(b => new DataCenterVM
+                                        {
+                                            Location = b.Location,
+                                            LocationID = b.LocationID,
 
-                            }).FirstOrDefault();
-            return dataCenter;
+                                        }).FirstOrDefault();
+                return dataCenter;
+            }
+            catch {
+                return null;
+            }
         }
 
 
@@ -71,35 +126,49 @@ namespace NotificationPortal.Repositories
             DataCenterLocation d = _context.DataCenterLocation.Where(a => a.Location == dataCenter.Location).FirstOrDefault();
             if (d != null)
             {
-                msg = "Data name already exist.";
-                return false;
+                if (d.LocationID != dataCenter.LocationID)
+                {
+                    msg = "Data Center name already exist.";
+                    return false;
+                }
             }
-            try
+            DataCenterLocation original = _context.DataCenterLocation.Where(a => a.LocationID == dataCenter.LocationID).FirstOrDefault();
+            bool changed = original.Location != dataCenter.Location;
+            // check if any data center info changed
+            if (changed)
             {
-                DataCenterLocation dataCenterUpdated = _context.DataCenterLocation
-                                        .Where(a => a.LocationID == dataCenter.LocationID)
-                                        .FirstOrDefault();
-                dataCenterUpdated.Location = dataCenter.Location;
-                dataCenterUpdated.LocationID = dataCenter.LocationID;
+                try
+                {
+                    DataCenterLocation dataCenterUpdated = _context.DataCenterLocation
+                                                            .Where(a => a.LocationID == dataCenter.LocationID)
+                                                            .FirstOrDefault();
+                    dataCenterUpdated.Location = dataCenter.Location;
+                    dataCenterUpdated.LocationID = dataCenter.LocationID;
 
-                _context.SaveChanges();
-                msg = "Data Center information succesfully updated.";
-                return true;
+                    _context.SaveChanges();
+                    msg = "Data Center information succesfully updated.";
+                    return true;
+                }
+                catch
+                {
+                    msg = "Failed to update data center.";
+                    return false;
+                }
             }
-            catch
+            else
             {
-                msg = "Failed to update data center.";
+                msg = "Information is identical, no update performed.";
                 return false;
             }
+
         }
 
         public bool DeleteDataCenter(int referenceID, out string msg)
         {
-            // check if server exists
             DataCenterLocation dataCenterToBeDeleted = _context.DataCenterLocation
                                     .Where(a => a.LocationID == referenceID)
                                     .FirstOrDefault();
-            // check applications associated with client
+            // check servers associated with the data center
             var dataCenterServers = _context.Server
                                        .Where(a => a.LocationID == referenceID)
                                        .FirstOrDefault();
@@ -109,23 +178,23 @@ namespace NotificationPortal.Repositories
                 msg = "Data Center could not be deleted.";
                 return false;
             }
+
             if (dataCenterServers != null)
             {
-                msg = "DataCenter has Server(s) associated, cannot be deleted";
+                msg = "Data Center has Server(s) associated, cannot be deleted";
                 return false;
             }
-
 
             try
             {
                 _context.DataCenterLocation.Remove(dataCenterToBeDeleted);
                 _context.SaveChanges();
-                msg = "Server Successfully Deleted";
+                msg = "Data Center Successfully Deleted";
                 return true;
             }
             catch
             {
-                msg = "Failed to update server.";
+                msg = "Failed to update Data Center.";
                 return false;
             }
 

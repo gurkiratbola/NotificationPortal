@@ -68,6 +68,9 @@ namespace NotificationPortal.Repositories
         public const string SORT_SERVERTYPE_BY_NAME_ASCE = "server_servertype_name_asce";
         public const string SORT_SERVERTYPE_BY_NAME_DESC = "server_servertype_name_desc";
 
+        public const string SORT_DATACENTER_BY_NAME_ASCE = "datacenter_name_asce";
+        public const string SORT_DATACENTER_BY_NAME_DESC = "datacenter_name_desc";
+
 
         // User Repository Constants
         public const string SORT_FIRST_NAME_BY_ASCE = "first_name_asce";

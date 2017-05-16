@@ -14,25 +14,24 @@ namespace NotificationPortal.Controllers
     {
         ApplicationDbContext _context = new ApplicationDbContext();
 
-        private readonly DataCenterRepo _sRepo = new DataCenterRepo();
+        private readonly DataCenterRepo _dRepo = new DataCenterRepo();
         private readonly SelectListRepo _lRepo = new SelectListRepo();
 
-        // GET: DataCenter
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            IEnumerable<DataCenterVM> dataCenterList = _sRepo.GetDataCenterList();
+            DataCenterIndexVM dataCenterList = _dRepo.GetDataCenterList(sortOrder, currentFilter, searchString, page);
             return View(dataCenterList);
         }
+
         [HttpGet]
         public ActionResult Create()
         {
-            // To be modified: global method for status in development
-            var model = new DataCenterVM
-            {
-
-                Servers = _lRepo.GetServerList()
-            };
-            return View(model);
+            //var model = new DataCenterVM
+            //{
+            //    Servers = _lRepo.GetServerList()
+            //};
+            return View();
         }
 
         [HttpPost]
@@ -42,7 +41,7 @@ namespace NotificationPortal.Controllers
             string msg = "";
             if (ModelState.IsValid)
             {
-                bool success = _sRepo.AddDataCenter(model, out msg);
+                bool success = _dRepo.AddDataCenter(model, out msg);
                 if (success)
                 {
                     TempData["SuccessMsg"] = msg;
@@ -55,20 +54,23 @@ namespace NotificationPortal.Controllers
             }
             else
             {
-                TempData["ErrorMsg"] = "Client cannot be added at this time.";
+                TempData["ErrorMsg"] = "Data Center Location cannot be added at this time.";
             }
-            model.Servers = _lRepo.GetServerList();
+            //model.Servers = _lRepo.GetServerList();
             return View(model);
         }
 
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            DataCenterVM datacenter = _sRepo.GetDataCenter(id);
-            // To be modified: global method for status in development
-            //ViewBag.ServerList = _lRepo.GetDataCenterList();
-
-            return View(datacenter);
+            DataCenterVM dataCenter = _dRepo.GetDataCenter(id);
+            if (dataCenter == null)
+            {
+                // if data center is null, redirect to a page
+                TempData["ErrorMsg"] = "Cannot edit this data center at the moment";
+                return RedirectToAction("Index");
+            }
+            return View(dataCenter);
         }
 
         [HttpPost]
@@ -77,7 +79,7 @@ namespace NotificationPortal.Controllers
             string msg = "";
             if (ModelState.IsValid)
             {
-                bool success = _sRepo.EditDataCenter(model, out msg);
+                bool success = _dRepo.EditDataCenter(model, out msg);
                 if (success)
                 {
                     TempData["SuccessMsg"] = msg;
@@ -88,22 +90,20 @@ namespace NotificationPortal.Controllers
                     TempData["ErrorMsg"] = msg;
                 }
             }
-            DataCenterVM dataCenter = _sRepo.GetDataCenter(model.LocationID);
-            // ViewBag.StatusTypeList = _lRepo.GetTypeList();
-
+            DataCenterVM dataCenter = _dRepo.GetDataCenter(model.LocationID);
             return View(dataCenter);
         }
 
         [HttpGet]
         public ActionResult Details(int id)
         {
-            return View(_sRepo.GetDataCenter(id));
+            return View(_dRepo.GetDataCenter(id));
         }
 
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            return View(_sRepo.GetDataCenter(id));
+            return View(_dRepo.GetDataCenter(id));
         }
 
         [HttpPost]
@@ -112,7 +112,7 @@ namespace NotificationPortal.Controllers
             string msg = "";
             if (ModelState.IsValid)
             {
-                bool success = _sRepo.DeleteDataCenter(dataCenter.LocationID, out msg);
+                bool success = _dRepo.DeleteDataCenter(dataCenter.LocationID, out msg);
                 if (success)
                 {
                     TempData["SuccessMsg"] = msg;

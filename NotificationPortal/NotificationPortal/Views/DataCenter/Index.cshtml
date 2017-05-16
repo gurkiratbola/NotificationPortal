@@ -1,55 +1,100 @@
-@model IEnumerable<NotificationPortal.ViewModels.DataCenterVM>
+@model NotificationPortal.ViewModels.DataCenterIndexVM
+@using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Data Center Locations's";
+    ViewBag.Title = "Data Center Locations";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
-
-
+<!-- ========================= breadcrumb ========================= -->
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
-
+<!-- ========================= search & create ========================= -->
 <div class="row">
-    <div class="col-md-6">
-        <form action="#" class="form-inline pb-3" method="get">
-            <input class="form-control mr-sm-2" id="SearchString" name="SearchString" type="text" value="">
-            <input class="btn btn-secondary" type="submit" value="Search">
-        </form>
+    <div class="form-inline col-sm-8 col-xs-12 pb-3">
+        @using (Html.BeginForm("Index", "DataCenter", FormMethod.Get, new { @class = "form-inline search pb-3" }))
+        {
+            @Html.TextBox("SearchString", Model.CurrentFilter, new { @class = "form-control mr-sm-2" })
+            <span class="hidden-xs-down">
+                <input class="btn btn-secondary" type="submit" value="Search" />
+            </span>
+            <span class="hidden-sm-up">
+                <button id="hidden-search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+            </span>
+        }
     </div>
-@if (Request.IsAuthenticated && User.IsInRole("Admin") || (Request.IsAuthenticated && User.IsInRole("Staff")))
-{
-    <div class="offset-md-4 col-md-2">
+    <div class="offset-sm-2 col-sm-2 col-xs-12">
         <div class="float-create">
             @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-mint text-white" })
         </div>
     </div>
-}
-
 </div>
 
-<table class="table table-bordered">
-    <tr class="bg-inverse text-white">
-        <th>
-            @Html.DisplayNameFor(model => model.Location)
-        </th>
-     
-    </tr>
+@if (TempData["SuccessMsg"] != null)
+{
+    <!-- alert message box -->
+    <p class="alert alert-success">
+        @Html.Raw(TempData["SuccessMsg"])
+    </p>
+}
 
-    @foreach (var item in Model)
+@if (TempData["ErrorMsg"] != null)
+{
+    <p class="alert alert-danger">
+        @Html.Raw(TempData["ErrorMsg"])
+    </p>
+}
+<!-- ========================= table ========================= -->
+<table class="table table-bordered">
+    @{
+        var filterByLocationAsce = "";
+        var filterByLocationDesc = "";
+        if (Model.CurrentSort != null)
+        {
+            <!-- class for the arrows:active or disabled -->
+            filterByLocationAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_DATACENTER_BY_NAME_ASCE) ? "active-arrow" : "disabled-arrow";
+            filterByLocationDesc = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_DATACENTER_BY_NAME_DESC) ? "active-arrow" : "disabled-arrow";
+        }
+    }
+    <thead>
+        <tr class="bg-inverse text-white">
+            <th>
+                <a href="@Url.Action("Index", "DataCenter", new { sortOrder = Model.LocationSort, currentFilter = Model.CurrentFilter })">
+                    Data Center Location
+                    <span class="filter-arrows">
+                        <i class="fa fa-caret-up @filterByLocationAsce" aria-hidden="true"></i>
+                        <i class="fa fa-caret-down @filterByLocationDesc" aria-hidden="true"></i>
+                    </span>
+                </a>
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model.DataCenters)
     {
+        <!-- loop for data centers -->
         <tr class="clickable-row" id="@item.LocationID" data-href="DataCenter/Details/@item.LocationID">
-            <td>
+            <td data-title="Data Center" class="first-row">
                 @Html.DisplayFor(modelItem => item.Location)
             </td>
-           
         </tr>
     }
 </table>
-
+<!-- ========================= pagination ========================= -->
+@if (Model.TotalItemCount > NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)
+{
+    <!-- hide pagination if only 1 page -->
+    @Html.PagedListPager(Model.DataCenters, page => Url.Action("Index",
+            new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
+    <div class="pageinfo-display">
+        <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
+    </div>
+}
+<!-- ========================= hidden-menu ========================= -->
 <div class="hidden-menu">
     <ul>
         <li><a href="DataCenter/Edit/" class="btn btn-sm">Edit</a></li>
