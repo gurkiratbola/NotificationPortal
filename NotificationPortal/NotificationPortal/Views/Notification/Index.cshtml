@@ -14,57 +14,66 @@
 
 @if (TempData["SuccessMsg"] != null)
 {
+    <!-- display success message -->
     <p class="alert alert-success">
         @Html.Raw(TempData["SuccessMsg"])
     </p>
 }
 @if (TempData["ErrorMsg"] != null)
 {
-    <p>
+    <!-- display error message -->
+    <p class="alert alert-danger">
         @Html.Raw(TempData["ErrorMsg"])
     </p>
 }
-    <div class="row filter-row">
-        <!--notification type-->
-        <div>
-            @Html.ListBoxFor(m => m.NotificationTypeIDs, Model.NotificationTypeList, new { style = "display: none;" })
-        </div>
-        <!--level of impact-->
-        <div>
-            @Html.ListBoxFor(m => m.LevelOfImpactIDs, Model.LevelOfImpactList, new { style = "display: none;" })
-        </div>
-        <!--notification status-->
-        <div>
-            @Html.ListBoxFor(m => m.StatusIDs, Model.StatusList, new { style = "display: none;" })
-        </div>
-        <!--priority list-->
-        <div>
-            @Html.ListBoxFor(m => m.PriorityIDs, Model.PriorityList, new { style = "display: none;" })
-        </div>
+
+@if (Model == null)
+{
+    <p>Something went wrong, notification database not available.</p>
+}
+else
+{
+<div class="row filter-row">
+    <!--notification type-->
+    <div>
+        @Html.ListBoxFor(m => m.NotificationTypeIDs, Model.NotificationTypeList, new { style = "display: none;" })
     </div>
-    <div class="row">
-        <div class="form-inline col-sm-8 col-xs-12 pb-3">
-            @Html.TextBoxFor(model => model.SearchString, Model.CurrentFilter, new { @class = "form-control mr-sm-2", placeholder = "Search", onkeypress = "search(event)" })
-            <span class="hidden-sm-up">
-                <button onclick="getNewList()" id="hidden-search">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                </button>
-            </span>
-            <span class="hidden-xs-down">
-                <input onclick="getNewList()" class="btn btn-secondary" type="submit" value="Search" />
-            </span>
-            <i id="preloader" class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-        </div>
-        @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
-                             User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
-        {
-            <div class="offset-sm-2 col-sm-2 col-xs-12">
-                <div class="float-create">
-                    @Html.ActionLink("Create New", "CreateThread", null, new { @class = "btn btn-mint text-white" })
-                </div>
+    <!--level of impact-->
+    <div>
+        @Html.ListBoxFor(m => m.LevelOfImpactIDs, Model.LevelOfImpactList, new { style = "display: none;" })
+    </div>
+    <!--notification status-->
+    <div>
+        @Html.ListBoxFor(m => m.StatusIDs, Model.StatusList, new { style = "display: none;" })
+    </div>
+    <!--priority list-->
+    <div>
+        @Html.ListBoxFor(m => m.PriorityIDs, Model.PriorityList, new { style = "display: none;" })
+    </div>
+</div>
+<div class="row">
+    <div class="form-inline col-sm-8 col-xs-12 pb-3">
+        @Html.TextBoxFor(model => model.SearchString, Model.CurrentFilter, new { @class = "form-control mr-sm-2", placeholder = "Search", onkeyup = "getNewList()" })
+        <span class="hidden-sm-up">
+            <button onclick="getNewList()" id="hidden-search">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+        </span>
+        <span class="hidden-xs-down">
+            <input onclick="getNewList()" class="btn btn-secondary" type="submit" value="Search" />
+        </span>
+        <i id="preloader" class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+    </div>
+    @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
+                            User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+    {
+        <div class="offset-sm-2 col-sm-2 col-xs-12">
+            <div class="float-create">
+                @Html.ActionLink("Create New", "CreateThread", null, new { @class = "btn btn-mint text-white" })
             </div>
-        }
-    </div>
+        </div>
+    }
+</div>
 
 
 <table class="table table-bordered">
@@ -309,3 +318,4 @@
     });
 </script>
 <script src="~/Scripts/ajax-helper.js" type="text/javascript"></script>
+}

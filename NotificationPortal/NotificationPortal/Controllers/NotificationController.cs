@@ -13,24 +13,12 @@ namespace NotificationPortal.Controllers
     public class NotificationController : AppBaseController
     {
         private readonly NotificationRepo _nRepo = new NotificationRepo();
-        //public string GetTimeZoneOffset() {
-        //    string timeOffsetString = "0";
-        //    if (Request.Cookies["timezoneoffset"] != null)
-        //    {
-        //        timeOffsetString = Request.Cookies["timezoneoffset"].Value;
-        //    }
-        //    return timeOffsetString;
-        //}
 
         [HttpGet]
         public ActionResult Index()
         {
             NotificationIndexVM model;
             model = _nRepo.CreateIndexModel();
-            if (model==null)
-            {
-                // TODO: handle when model == null (something went wrong while querying the database)
-            }
             return View(model);
         }
 
@@ -92,6 +80,8 @@ namespace NotificationPortal.Controllers
                 TempData["ErrorMsg"] = "Cannot create new thread at the moment";
                 return RedirectToAction("Index");
             }
+
+            TempData["ErrorMsg"] = result;
             return View(model);
         }
 
@@ -129,17 +119,19 @@ namespace NotificationPortal.Controllers
             }
             else
             {
-                ViewBag.ErrorMsg = "Cannot update Notification, model not valid.";
+                TempData["ErrorMsg"] = "Cannot update Notification, model not valid.";
             }
 
             // recreate model for the view
             model = _nRepo.CreateUpdateModel(model.IncidentNumber, model);
-            // if notification returns null, redirect to notification index
+            // if notification returns null, redirect to thread view
             if (model == null)
             {
                 TempData["ErrorMsg"] = "Cannot create new notification at the moment";
-                return RedirectToAction("Index");
+                return RedirectToAction("DetailsThread", new { id = model.IncidentNumber });
             }
+
+            TempData["ErrorMsg"] = result;
             return View(model);
         }
         
@@ -148,6 +140,11 @@ namespace NotificationPortal.Controllers
         public ActionResult Edit(string id)
         {
             var model = _nRepo.CreateEditModel(id);
+            if (model == null)
+            {
+                TempData["ErrorMsg"] = "Cannot edit this notification at the moment";
+                return RedirectToAction("DetailsThread", new { id = id });
+            }
             return View(model);
         }
 
@@ -169,8 +166,17 @@ namespace NotificationPortal.Controllers
             {
                 TempData["ErrorMsg"] = "Cannot edit Notification, model not valid.";
             }
-            TempData["ErrorMsg"] = result;
+
+            // recreate model for the view
             model = _nRepo.CreateEditModel(model.NotificationReferenceID, model);
+            // if notification returns null, redirect to thread view
+            if (model == null)
+            {
+                TempData["ErrorMsg"] = "Cannot create new notification at the moment";
+                return RedirectToAction("DetailsThread", new { id = model.IncidentNumber });
+            }
+
+            TempData["ErrorMsg"] = result;
             return View(model);
         }
         
@@ -179,6 +185,11 @@ namespace NotificationPortal.Controllers
         public ActionResult Delete(string id)
         {
             var model = _nRepo.CreateDeleteModel(id);
+            if (model == null)
+            {
+                TempData["ErrorMsg"] = "Cannot delete this notification at the moment";
+                return RedirectToAction("DetailsThread",new { id = id });
+            }
             return View(model);
         }
 
@@ -201,8 +212,17 @@ namespace NotificationPortal.Controllers
             {
                 TempData["ErrorMsg"] = "Cannot delete Notification, try again later.";
             }
-            TempData["ErrorMsg"] = result;
+
+            // recreate the model for the view
             model = _nRepo.CreateDeleteModel(model.ReferenceID);
+            // if notification returns null, redirect to thread view
+            if (model == null)
+            {
+                TempData["ErrorMsg"] = "Cannot delete this notification at the moment";
+                return RedirectToAction("DetailsThread", new { id = model.IncidentNumber });
+            }
+
+            TempData["ErrorMsg"] = result;
             return View(model);
         }
 
@@ -211,12 +231,10 @@ namespace NotificationPortal.Controllers
         public ActionResult DeleteThread(string id)
         {
             var model = _nRepo.CreateDetailModel(id);
-
-            // if notification returns null, redirect to notification index
             if (model==null)
             {
                 TempData["ErrorMsg"] = "Cannot delete this thread at the moment";
-                return RedirectToAction("Index");
+                return RedirectToAction("DetailsThread", new { id = id });
             }
             return View(model);
         }
@@ -246,7 +264,7 @@ namespace NotificationPortal.Controllers
             if (model == null)
             {
                 TempData["ErrorMsg"] = "Cannot delete this thread at the moment";
-                return RedirectToAction("Index");
+                return RedirectToAction("DetailsThread", new { id = model.IncidentNumber });
             }
             TempData["ErrorMsg"] = result;
             return View(model);

@@ -12,6 +12,22 @@
     <li class="breadcrumb-item active">Notification Details</li>
 </ol>
 
+
+@if (TempData["SuccessMsg"] != null)
+{
+    <!-- display success message -->
+    <p class="alert alert-success">
+        @Html.Raw(TempData["SuccessMsg"])
+    </p>
+}
+@if (TempData["ErrorMsg"] != null)
+{
+    <!-- display error message -->
+    <p class="alert alert-danger">
+        @Html.Raw(TempData["ErrorMsg"])
+    </p>
+}
+
 <!-- Nav tabs -->
 <ul class="nav nav-tabs flex-xs-row" role="tablist">
     <li class="nav-item">

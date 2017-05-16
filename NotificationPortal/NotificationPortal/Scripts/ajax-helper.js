@@ -1,22 +1,27 @@
-﻿var currentSort = "";
+﻿// initialize some variables
+var currentSort = "";
 var pageNumber = 1;
 
+// set global variable and request new sorted list
 var sort = function (x) {
     currentSort = x;
     getNewList();
 }
 
-var refillTBody = function (threads) {
-    if (threads.length > 0) {
+// refill body of the table: define addRow() function in the 
+var refillTBody = function (data) {
+    if (data && data.length > 0) {
         $('#tbody').replaceWith('<tbody id="tbody" />');
         // add rows to table
-        threads.forEach(
-            function (thread) {
-                addRow(thread);
+        data.forEach(
+            function (row) {
+                addRow(row);
             }
         );
         // make the row (right)clickable
         clickableRow();
+    } else {
+        $('#tbody').replaceWith('<tbody id="tbody"><tr><td id="no-threads" colspan="6">No notifications found.</td></tr></tbody>');
     }
 }
 
@@ -70,11 +75,4 @@ var refillPagination = function (model) {
 var changePage = function (x) {
     pageNumber = x;
     getNewList(true);
-}
-
-var search = function (e) {
-    var key = e.keyCode || e.which;
-    if (key === 13) {
-        getNewList();
-    }
 }
