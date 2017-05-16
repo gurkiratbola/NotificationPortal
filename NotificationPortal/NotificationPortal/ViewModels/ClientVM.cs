@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.ViewModels
 {
+    // view model for index page only
     public class ClientIndexVM {
         public IPagedList<ClientVM> Clients { get; set; }
 
@@ -20,7 +21,7 @@ namespace NotificationPortal.ViewModels
         public int ItemStart { get; set; }
         public int ItemEnd { get; set; }
     }
-
+    // view model for create page
     public class ClientCreateVM
     {
         [Required]
@@ -36,7 +37,7 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Select Status")]
         public SelectList StatusList { get; set; }
     }
-
+    // view model for the rest of the pages
     public class ClientVM
     {
         [Required]
@@ -62,6 +63,7 @@ namespace NotificationPortal.ViewModels
         public IEnumerable<ClientApplicationVM> Applications { get; set; }
     }
 
+    // view model for detail page tab
     public class ClientApplicationVM
     {
         public string ReferenceID { get; set; }

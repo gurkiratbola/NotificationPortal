@@ -3,6 +3,7 @@
 {
     <nav class="hidden-md-down col-md-1 hidden-xs-down bg-inverse sidebar">
         <ul class="nav nav-pills flex-column">
+            <!-- dashboard -->
             <li class="nav-item">
                 <span class="hidden-xl-up">
                     <a href="@Url.Action("Index", "Dashboard")" class="nav-link sidebar-icon">
@@ -16,6 +17,7 @@
                     </a>
                 </span>
             </li>
+            <!-- notification -->
             <li class="nav-item">
                 <span class="hidden-xl-up">
                     <a href="@Url.Action("Index", "Notification")" class="nav-link sidebar-icon">
@@ -29,8 +31,10 @@
                     </a>
                 </span>
             </li>
+            <!-- show/hide based on roles -->
             @{if (!HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_USER))
                 {
+                    <!-- setting -->
                     <li class="nav-item hidden-md-down">
                         <button class="sidebar-dropdown-button bg-inverse">
                             <span class="hidden-xl-up sidebar-icon">
@@ -42,9 +46,12 @@
                                 <i class="fa fa-caret-down" aria-hidden="true"></i>
                             </span>
                         </button>
+                        <!-- dropdown for setting -->
                         <ul class="sidebar-dropdown">
+                            <!-- show/hide based on roles -->
                             @if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_CLIENT))
                             {
+                                <!-- dashboard -->
                                 <li>
                                     <span class="hidden-xl-up">
                                         <a href="@Url.Action("Index", "User")" class="nav-link sidebar-icon">
@@ -58,6 +65,7 @@
                                         </a>
                                     </span>
                                 </li>
+                                <!-- application -->
                                 <li>
                                     <span class="hidden-xl-up">
                                         <a href="@Url.Action("Index", "Application")" class="nav-link sidebar-icon">
@@ -74,6 +82,7 @@
                             }
                             else
                             {
+                                <!-- user -->
                                 <li>
                                     <span class="hidden-xl-up">
                                         <a href="@Url.Action("Index", "User")" class="nav-link sidebar-icon">
@@ -87,6 +96,7 @@
                                         </a>
                                     </span>
                                 </li>
+                                <!-- application -->
                                 <li>
                                     <span class="hidden-xl-up">
                                         <a href="@Url.Action("Index", "Application")" class="nav-link sidebar-icon">
@@ -100,6 +110,7 @@
                                         </a>
                                     </span>
                                 </li>
+                                <!-- client -->
                                 <li>
                                     <span class="hidden-xl-up">
                                         <a href="@Url.Action("Index", "Client")" class="nav-link sidebar-icon">
@@ -113,6 +124,7 @@
                                         </a>
                                     </span>
                                 </li>
+                                <!-- data center-->
                                 <li>
                                     <span class="hidden-xl-up">
                                         <a href="@Url.Action("Index", "DataCenter")" class="nav-link sidebar-icon">
@@ -126,6 +138,7 @@
                                         </a>
                                     </span>
                                 </li>
+                                <!-- server -->
                                 <li>
                                     <span class="hidden-xl-up">
                                         <a href="@Url.Action("Index", "Server")" class="nav-link sidebar-icon">
@@ -139,6 +152,7 @@
                                         </a>
                                     </span>
                                 </li>
+                                <!-- status -->
                                 <li>
                                     <span class="hidden-xl-up">
                                         <a href="@Url.Action("Index", "Status")" class="nav-link sidebar-icon">

@@ -5,14 +5,14 @@
 }
 
 <h1 class="text-center display-4 pb-3">@Html.DisplayFor(model => model.ClientName)</h1>
-
+<!-- ========================= breadcrumb ========================= -->
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="~/Client/Index" class="link-color">Clients</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.ClientName)</li>
 </ol>
 
-<!-- Nav tabs -->
+<!-- ========================= tab buttons ========================= -->
 <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#clients" role="tab">Clients</a>
@@ -22,13 +22,16 @@
     </li>
 </ul>
 
+<!-- alert messages -->
 @if (TempData["SuccessMsg"] != null)
 {
     <p class="alert alert-success">
         @Html.Raw(TempData["SuccessMsg"])
     </p>
 }
+<!-- ========================= tab content ========================= -->
 <div class="tab-content">
+    <!-- tab content 1: client details -->
     <div class="tab-pane active" id="clients" role="tabpanel">
         <dl class="row">
             <dt class="col-sm-2">
@@ -49,8 +52,8 @@
 
         </dl>
     </div>
+    <!-- tab content 2: applications associated with this client -->
     <div class="tab-pane" id="applications" role="tabpanel">
-       
         @if (Model.Applications != null)
         {
             if (Model.Applications.Count() > 0)
@@ -71,6 +74,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- loop for the applications associated with this client-->
                         @foreach (var item in Model.Applications)
                         {
                             <tr class="clickable-row" id="@item.ReferenceID" data-href="/Application/Details/@item.ReferenceID">

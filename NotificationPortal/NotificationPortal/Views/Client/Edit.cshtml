@@ -5,19 +5,19 @@
 }
 
 <h1 class="text-center display-4 pb-3">@ViewBag.Title - @Html.DisplayFor(model => model.ClientName)</h1>
-
+<!-- ========================= breadcrumb ========================= -->
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="~/Client/Index" class="link-color">Clients</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.ClientName)</li>
 </ol>
-
+<!-- ========================= edit form ========================= -->
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <!-- alert message box -->
         @if (TempData["ErrorMsg"] != null)
         {
             <p class="alert alert-danger offset-md-3 col-md-6 offset-md-3">
@@ -25,7 +25,7 @@
             </p>
         }
         @Html.HiddenFor(model => model.ReferenceID)
-
+        <!-- client name input field -->
         <div class="form-group">
             @Html.LabelFor(model => model.ClientName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
@@ -33,7 +33,7 @@
                 @Html.ValidationMessageFor(model => model.ClientName, "", new { @class = "text-danger float-right" })
             </div>
         </div>
-
+        <!-- status list dropdown select -->
         <div class="form-group">
             @Html.LabelFor(model => model.StatusList, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
@@ -41,7 +41,7 @@
                 @Html.ValidationMessageFor(model => model.StatusID, "", new { @class = "text-danger float-right" })
             </div>
         </div>
-
+        <!-- submit button -->
         <div class="form-group">
             <div class="offset-md-3 col-md-6">
                 <input type="submit" value="Save" class="btn btn-mint text-white" />

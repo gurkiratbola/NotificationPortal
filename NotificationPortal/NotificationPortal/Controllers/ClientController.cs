@@ -60,10 +60,17 @@ namespace NotificationPortal.Controllers
 
         [HttpGet]
         public ActionResult Edit(string id) {
-            // TO DO: if it's null, redirect to a page
             ClientVM client = _cRepo.GetClient(id);
-            ViewBag.StatusNames = _sRepo.GetStatusList(Key.ROLE_CLIENT);
-            return View(client);
+            if (client == null)
+            {
+                // if client is null, redirect to a page
+                TempData["ErrorMsg"] = "Cannot edit this client at the moment";
+                return RedirectToAction("Index");
+            }
+            else {
+                ViewBag.StatusNames = _sRepo.GetStatusList(Key.ROLE_CLIENT);
+                return View(client);
+            }
         }
 
         [HttpPost]
@@ -82,22 +89,47 @@ namespace NotificationPortal.Controllers
                     TempData["ErrorMsg"] = msg;
                 }
             }
-            // TO DO: if it's null, redirect to a page
+            
             ClientVM client = _cRepo.GetClient(model.ReferenceID);
-            ViewBag.StatusNames = _sRepo.GetStatusList(Key.ROLE_CLIENT);
-            return View(client);
+            if (client == null)
+            {
+                // if client is null, redirect to a page
+                TempData["ErrorMsg"] = "Cannot edit this client at the moment";
+                return RedirectToAction("Index");
+            }
+            else {
+                ViewBag.StatusNames = _sRepo.GetStatusList(Key.ROLE_CLIENT);
+                return View(client);
+            }
         }
 
         [HttpGet]
         public ActionResult Details(string id) {
-            // TO DO: if it's null, redirect to a page
-            return View(_cRepo.GetClient(id));
+            ClientVM client = _cRepo.GetClient(id);
+            if (client == null)
+            {
+                // if client is null, redirect to a page
+                TempData["ErrorMsg"] = "Cannot view this client at the moment";
+                return RedirectToAction("Index");
+            }
+            else {
+                return View(client);
+            }
         }
 
         [HttpGet]
         public ActionResult Delete(string id) {
             // TO DO: if it's null, redirect to a page
-            return View(_cRepo.GetClient(id));
+            ClientVM client = _cRepo.GetClient(id);
+            if (client == null)
+            {
+                // if client is null, redirect to a page
+                TempData["ErrorMsg"] = "Cannot delete this client at the moment";
+                return RedirectToAction("Index");
+            }
+            else {
+                return View(client);
+            }
         }
 
         [HttpPost]

@@ -19,6 +19,7 @@ namespace NotificationPortal.Controllers
         public ActionResult Index()
         {
             ProfileVM user = _pRepo.GetUserDetail(User);
+            // get the dropdown list
             user.SendMethodList = _selectListRepo.GetSendMethodList();
             return View(user);
         }
@@ -31,7 +32,7 @@ namespace NotificationPortal.Controllers
                 if (success)
                 {
                     if (msg == ProfileRepo.USERNAME_UPDATED) {
-                        // log off user when username/email has been changed
+                        // log off user when username/email has been updated successfully
                         HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                         return RedirectToAction("Index", "Home");
                     }
@@ -44,6 +45,7 @@ namespace NotificationPortal.Controllers
                     // to do, add the list if fails
                 }
             }
+            // get the dropdown list
             model.SendMethodList = _selectListRepo.GetSendMethodList();
             return View(model);
         }

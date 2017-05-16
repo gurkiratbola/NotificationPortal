@@ -30,11 +30,12 @@ namespace NotificationPortal
                       "~/Content/summernote.css",
                       "~/Content/PagedList.css"
                       ));
-            // For the rtf editor 
-            bundles.Add(new ScriptBundle("~/bundles/summernote").Include(
-                      "~/Scripts/summernote.js"));
-            // For the timezone
-            bundles.Add(new ScriptBundle("~/bundles/timezone").Include("~/Scripts/timezone.js"));
+            // For the rtf editor/multi-select/timezone plugin
+            bundles.Add(new ScriptBundle("~/bundles/plugins").Include(
+                      "~/Scripts/summernote.js",
+                      "~/Scripts/bootstrap-multiselect.js",
+                      "~/Scripts/timezone.js"
+                      ));
 
         }
     }
