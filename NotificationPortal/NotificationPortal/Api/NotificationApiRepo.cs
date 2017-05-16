@@ -23,12 +23,22 @@ namespace NotificationPortal.Api
                 model.LevelOfImpactIDs = model.LevelOfImpactIDs.Length == 0 ? _slRepo.GetImpactLevelList().Select(o => int.Parse(o.Value)).ToArray() : model.LevelOfImpactIDs;
                 model.PriorityIDs = model.PriorityIDs.Length == 0 ? _slRepo.GetPriorityList().Select(o => int.Parse(o.Value)).ToArray() : model.PriorityIDs;
                 model.StatusIDs = model.StatusIDs.Length == 0 ? _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION).Select(o => int.Parse(o.Value)).ToArray() : model.StatusIDs;
-                IEnumerable<Notification> allNotifications = _context.Notification.Where(
-                    n=>n.IncidentNumber.ToLower().Contains(model.SearchString.ToLower())
-                    || n.NotificationHeading.ToLower().Contains(model.SearchString.ToLower())
-                    || n.NotificationDescription.ToLower().Contains(model.SearchString.ToLower())
-                    // TODO: add more columns for large index search
-                    );
+
+                IEnumerable<Notification> allNotifications;
+                if (String.IsNullOrEmpty(model.SearchString))
+                {
+
+                    allNotifications = _context.Notification;
+                }
+                else
+                {
+                    allNotifications = _context.Notification.Where(
+                        n => n.IncidentNumber.ToLower().Contains(model.SearchString.ToLower())
+                        || n.NotificationHeading.ToLower().Contains(model.SearchString.ToLower())
+                        || n.NotificationDescription.ToLower().Contains(model.SearchString.ToLower())
+                        // TODO: add more columns for large index search
+                        );
+                }
 
                 if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
                 {
