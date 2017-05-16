@@ -149,7 +149,11 @@
                         @Html.DisplayFor(modelItem => item.ClientName)
                     </td>
                     <td data-title="Status">
-                        <span class="@statusClass">
+                        <i class="preloader fa fa-spinner fa-spin" style="font-size:18px; display:none"></i>
+                        <span class="failed-status badge badge-danger" style="display:none">
+                            Failed Refresh
+                        </span>
+                        <span class="current-status @statusClass">
                             @Html.DisplayFor(modelItem => item.StatusName)
                         </span>
                     </td>
@@ -174,10 +178,11 @@
                             }
 
                         }
-
 <div class="hidden-menu">
     <ul>
         <li><a href="Application/Edit/" class="btn btn-sm">Edit</a></li>
         <li><a href="Application/Delete/" class="btn btn-sm">Delete</a></li>
     </ul>
 </div>
+
+<script src="~/Scripts/refresh-application-status.js"></script>

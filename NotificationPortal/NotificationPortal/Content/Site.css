@@ -45,9 +45,20 @@ a, p, th, td, dd, dt, label, input {
 }
 
 h1 {
-    font-size: 1.5em !important;
+    font-size: 1.7em !important;
     color: #6d6b69;
     margin-bottom: 0;
+}
+
+h1 .badge {
+    font-size: 0.8em;
+    transform: translateY(-3px);
+}
+
+h2 {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #7d7e81;
 }
 
 h3 {
@@ -185,6 +196,7 @@ button:focus {
 @media (min-width: 576px) {
     .container {
         width: 100% !important;
+        margin-left: -36px;
     }
 }
 /* ==========================================================================
@@ -510,7 +522,7 @@ td a:hover {
 
 @media (min-width: 768px) {
     .col-md-1 {
-        max-width: 9.333333% !important;
+        max-width: 11.333333% !important;
     }
 }
 
@@ -980,7 +992,19 @@ h3.heading-padding.text-muted:hover {
 /* ==========================================================================
                         Page Styles: Manage & Profile
 ========================================================================== */
+.form-block {
+    border-radius: 10px;
+    border: .5px dashed #adadad;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.profile-label {
+    display: block;
+}
+
 small.float-right {
+    color: #adadad;
     margin-top: 5px !important;
 }
 

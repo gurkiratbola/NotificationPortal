@@ -96,7 +96,4 @@ $(document).ready(function ($) {
     sidebarStateDetection();//sidebar state detection
     hideAlert();// hiding alert boxes after 2s
 
-    // insert profile email small print warning
-    $(".profile-email").append("<small class='float-right'>Updating email will log user out instantly</small>")
-
 });

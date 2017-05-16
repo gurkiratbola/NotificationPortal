@@ -8,7 +8,7 @@
 
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="~/User/Index" class="link-color">User Management</a></li>
+    <li class="breadcrumb-item"><a href="~/User/Index" class="link-color">User Control</a></li>
     <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
 
@@ -16,10 +16,11 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        
+    <div class="form-horizontal offset-md-3 col-md-6 offset-md-3">
+
+        <!-- ========================= Error Message Alert ========================= -->
         <div class="form-group">
-            <div class="offset-md-3 col-md-6 offset-md-3">
+            <div>
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                 @{  if (TempData["ErrorMsg"] != null)
@@ -30,25 +31,67 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.RolesList, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
+        <!-- ========================= Basic Information ========================= -->
+        <div class="form-block">
+            <h2 class="pb-3">Basic Information</h2>
+
+            <!-- Email Input Field -->
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label required" })
+
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger float-right" })
+            </div>
+
+            <!-- First Name Input Field -->
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label required" })
+
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger float-right" })
+            </div>
+
+            <!-- Last Name Input Field -->
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label required" })
+
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger float-right" })
+            </div>
+
+            <!-- Business Title Input Field -->
+            <div class="form-group">
+                @Html.LabelFor(model => model.BusinessTitle, htmlAttributes: new { @class = "control-label" })
+
+                @Html.EditorFor(model => model.BusinessTitle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BusinessTitle, "", new { @class = "text-danger float-right" })
+            </div>
+        </div>
+
+        <!-- ========================= Other Information ========================= -->
+        <div class="form-block">
+            <h2 class="pb-3">Other Information</h2>
+
+            <!-- Role Input Field -->
+            <div class="form-group">
+                @Html.LabelFor(model => model.RolesList, htmlAttributes: new { @class = "control-label required" })
+
                 @Html.DropDownListFor(m => m.RoleName, Model.RolesList, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.RolesList, "", new { @class = "text-danger float-right" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ClientList, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2 required"})
-            <div class="offset-md-3 col-md-6 offset-md-3">
+            <!-- Client Input Field -->
+            <div class="form-group">
+                @Html.LabelFor(model => model.ClientList, htmlAttributes: new { @class = "control-label required" })
+
                 @Html.DropDownListFor(m => m.ClientReferenceID, Model.ClientList, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ClientReferenceID, "", new {@class = "text-danger float-right" })
+                @Html.ValidationMessageFor(model => model.ClientReferenceID, "", new { @class = "text-danger float-right" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
+            <!-- Application Input Field -->
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label required" })
+
                 <select class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false">
                     @foreach (var item in Model.ApplicationList)
                     {
@@ -58,62 +101,29 @@
                 </select>
                 @Html.ValidationMessageFor(model => model.ApplicationReferenceIDs, "", new { @class = "text-danger float-right" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.Email, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger float-right" })
-            </div>
-        </div>
+            <!-- Status Input Field -->
+            <div class="form-group">
+                @Html.LabelFor(model => model.StatusList, htmlAttributes: new { @class = "control-label required" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.FirstName, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.FirstName, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.FirstName, "", new {@class = "text-danger float-right" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LastName, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.LastName, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.LastName, "", new {@class = "text-danger float-right" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.BusinessTitle, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.BusinessTitle, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.BusinessTitle, "", new {@class = "text-danger float-right" })
-            </div>
-        </div>
-        
-        <div class="form-group">
-            @Html.LabelFor(model => model.StatusList, htmlAttributes: new {@class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.DropDownListFor(m => m.StatusID, Model.StatusList, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.StatusID, "", new {@class = "text-danger float-right" })
+                @Html.ValidationMessageFor(model => model.StatusID, "", new { @class = "text-danger float-right" })
             </div>
         </div>
 
+        <!-- Submit Button -->
         <div class="form-group">
-            <div class="offset-md-3 col-md-6">
-                <input type="submit" value="Add" class="btn btn-mint text-white"/>
-                @Html.ActionLink("Cancel", "Index", null, new {@class = "btn btn-danger"})
-            </div>
+            <input type="submit" value="Add" class="btn btn-mint text-white" />
+            @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger" })
         </div>
     </div>
-}
+                    }
 
 <script>
     $(document).ready(function () {
         $(".ApplicationListItem").hide();
         $("." + $("#ClientReferenceID").val()).show();
-        $("#ClientReferenceID").change(function() {
+        $("#ClientReferenceID").change(function () {
             var clientRefIDs = $(this).val();
             $(".ApplicationListItem").hide();
             $("." + clientRefIDs).show();
