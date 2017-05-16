@@ -50,6 +50,17 @@ h1 {
     margin-bottom: 0;
 }
 
+h1 .badge {
+    font-size: 0.8em;
+    transform: translateY(-3px);
+}
+
+h2 {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #adadad;
+}
+
 h3 {
     font-size: 1em;
 }
@@ -980,7 +991,19 @@ h3.heading-padding.text-muted:hover {
 /* ==========================================================================
                         Page Styles: Manage & Profile
 ========================================================================== */
+.profile-block {
+    border-radius: 10px;
+    border:1px solid #adadad;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.profile-label {
+    display: block;
+}
+
 small.float-right {
+    color: #adadad;
     margin-top: 5px !important;
 }
 
