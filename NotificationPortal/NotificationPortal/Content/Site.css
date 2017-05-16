@@ -6,14 +6,6 @@
                             Colors used for the project
 ========================================================================== */
 /*
-mint: #44bbc1 
-
-light-blue: #edf2f6 
-dark-navy: #373e50 
-sidebar-grey: #6f7e95
-*/
-
-/*
     brand-color: #36c2dd
     light-brand-color: #afe7f1
     darker-brand-color: #3EA2C3
@@ -21,6 +13,7 @@ sidebar-grey: #6f7e95
     dark-highlight: #d0d85f
     dark-grey: #6d6b69
     grey: #84807c
+    sidebar-grey: #6f7e95
 */
 
 body {
@@ -39,7 +32,6 @@ body {
     font-weight: bold;
     color: black;
 }
-
 /* ==========================================================================
                             Font Styles
 ========================================================================== */
@@ -159,10 +151,10 @@ button:focus {
 
 .btn-primary:hover {
     background-color: #84807c;
-} 
-    
+}
+
 .text-primary {
-    color: #373e50 !important;
+    color: #6d6b69 !important;
 }
 
 .bg-faded {
@@ -195,8 +187,6 @@ button:focus {
         width: 100% !important;
     }
 }
-
-
 /* ==========================================================================
                             Table Styles
 ========================================================================== */
@@ -268,6 +258,13 @@ td a:hover {
     }
 }
 
+@media screen and (min-width: 390px) {
+    .pagination {
+        float: right;
+    }
+}
+
+
 .pagination a {
     color: #6f7e95;
 }
@@ -277,8 +274,13 @@ td a:hover {
 }
 
 .pageinfo-display {
-    margin: 40px 0;
-    padding-top: 0.25rem;
+    margin: 0;
+}
+
+@media screen and (min-width: 390px) {
+    .pageinfo-display {
+        margin: 40px 0;
+    }
 }
 
 .pageinfo-display > label,
@@ -455,12 +457,11 @@ td a:hover {
         border-left: 1px solid rgba(255, 255, 255, 0.5);
     }
 }
-
 /* ==========================================================================
                         Sidebar Styles
 ========================================================================== */
 .nav-pills > li {
-    border-bottom: 1px solid #edf2f6;
+    border-bottom: 1px solid #afe7f1;
 }
 
 .sidebar-dropdown-button {
@@ -711,7 +712,6 @@ button.note-btn.btn.btn-default.btn-sm {
         border-radius: 0 5px 5px 0;
         border: none;
     }
-
 }
 
 .float-create {
@@ -819,7 +819,6 @@ h5.col-12 {
     .nav-tabs > li {
         float: none;
         flex-grow: 1;
-        /*border: 1px solid #dddddd;*/
     }
 
     .nav-tabs > li.active > a {
@@ -843,9 +842,6 @@ h5.col-12 {
         text-align: center;
     }
 }
-
-
-
 /* ==========================================================================
                         Page Styles: Dashboard
 ========================================================================== */
@@ -864,7 +860,6 @@ h5.col-12 {
         padding: 0.5em 0 0;
     }
 }
-
 
 .card-header {
     background-color: #36c2dd;
@@ -993,30 +988,34 @@ small.float-right {
     width: 30%;
     margin: 20px 10%;
     color: white;
-    padding: 40px;
+    padding: 40px 40px 20px;
     border-radius: 10px;
     background-color: #36c2dd;
     text-align: center;
     float: left;
-    font-size: 4em;
 }
 
+.manage-btn i {
+    font-size: 4em;
+}
+    
 .manage-btn:hover {
     color: #ededed;
 }
 
-
+.manage-btn p {
+    height: 44px;
+}
+    
 @media (max-width: 768px) {
-
     .manage-btn {
-        width: 80%;
+    width: 80%;
     }
 }
 
 /* ==========================================================================
                         Form Seperator
 ========================================================================== */
-
 .form-seperator {
     margin-top: 2px;
     margin-bottom: 20px;

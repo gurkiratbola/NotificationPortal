@@ -44,6 +44,11 @@
             <p class="alert alert-success">@TempData["SuccessMsg"]</p>
         }
 
+        if (TempData["ErrorMsg"] != null)
+        {
+            <p class="alert alert-danger">@TempData["ErrorMsg"]</p>
+        }
+
         <table class="table table-bordered" style="position:relative;">
             @{
                 var filterByRoleNameAsce = "";

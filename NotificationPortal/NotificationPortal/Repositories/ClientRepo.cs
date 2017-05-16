@@ -14,6 +14,7 @@ namespace NotificationPortal.Repositories
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
+        // sort function for client: only name and status are sortable at this time
         public IEnumerable<ClientVM> Sort(IEnumerable<ClientVM> list, string sortOrder, string searchString = null) {
 
             if (!String.IsNullOrEmpty(searchString))
@@ -24,6 +25,10 @@ namespace NotificationPortal.Repositories
             {
                 case ConstantsRepo.SORT_CLIENT_BY_NAME_DESC:
                     list = list.OrderByDescending(c => c.ClientName);
+                    break;
+
+                case ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE:
+                    list = list.OrderBy(c => c.ClientName);
                     break;
 
                 case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
@@ -61,6 +66,7 @@ namespace NotificationPortal.Repositories
                 searchString = searchString ?? currentFilter;
                 int pageNumber = (page ?? 1);
                 int defaultPageSize = ConstantsRepo.PAGE_SIZE;
+                sortOrder = sortOrder == null ? ConstantsRepo.SORT_STATUS_BY_NAME_DESC : sortOrder;
                 ClientIndexVM model = new ClientIndexVM
                 {
                     Clients = Sort(clientList, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
@@ -79,7 +85,7 @@ namespace NotificationPortal.Repositories
                 return null;
             }
         }
-
+        // get all applications associtated with the client
         public IEnumerable<ClientApplicationVM> GetClientApplications(int clientID)
         {
 
@@ -94,9 +100,10 @@ namespace NotificationPortal.Repositories
                                                            }).ToList();
             return applications;
         }
-
+        // add a client
         public bool AddClient(ClientCreateVM client, out string msg)
         {
+            // check if a client with same name exists
             Client c = _context.Client.Where(a => a.ClientName == client.ClientName)
                             .FirstOrDefault();
             if (c != null) {
@@ -122,7 +129,7 @@ namespace NotificationPortal.Repositories
                 return false;
             }
         }
-
+        // get client detail by querying with referenceID
         public ClientVM GetClient(string referenceID) {
             try {
                 ClientVM client = _context.Client
@@ -145,7 +152,7 @@ namespace NotificationPortal.Repositories
                 return null;
             }
         }
-
+        // update client information
         public bool EditClient(ClientVM client, out string msg)
         {
             Client c = _context.Client.Where(a => a.ClientName == client.ClientName).FirstOrDefault();
@@ -159,6 +166,7 @@ namespace NotificationPortal.Repositories
 
             Client original = _context.Client.Where(a => a.ReferenceID == client.ReferenceID).FirstOrDefault();
             bool changed = original.ClientName != client.ClientName || original.StatusID != client.StatusID;
+            // check if any client info changed
             if (changed)
             {
                 try

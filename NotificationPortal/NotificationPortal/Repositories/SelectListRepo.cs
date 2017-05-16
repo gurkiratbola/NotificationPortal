@@ -1,4 +1,5 @@
-﻿using NotificationPortal.Models;
+﻿using Microsoft.AspNet.Identity;
+using NotificationPortal.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,9 +40,25 @@ namespace NotificationPortal.Repositories
             return new SelectList(rolesList, "Value", "Text");
         }
 
+        // Used in Application, Client Controllers
         public SelectList GetClientList()
         {
             List<SelectListItem> clientList = _context.Client.Select(app => new SelectListItem
+            {
+                Value = app.ReferenceID.ToString(),
+                Text = app.ClientName
+            }).ToList();
+
+            //clientList.Add(new SelectListItem { Value = "-1", Text = "" });
+            //clientList.OrderBy(x => x.Text);
+
+            return new SelectList(clientList, "Value", "Text");
+        }
+
+        // Used in User Controller and User Repository
+        public SelectList GetUserClientList()
+        {
+            IEnumerable<SelectListItem> clientList = _context.Client.Select(app => new SelectListItem
                                               {
                                                   Value = app.ReferenceID.ToString(),
                                                   Text = app.ClientName
@@ -49,6 +66,15 @@ namespace NotificationPortal.Repositories
 
             //clientList.Add(new SelectListItem { Value = "-1", Text = "" });
             //clientList.OrderBy(x => x.Text);
+
+            var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+
+            var getClientName = _context.UserDetail.Where(u => u.UserID == currentUserId).Select(c => c.Client.ClientName).FirstOrDefault();
+
+            if(HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
+            {
+                clientList = clientList.Where(c => c.Text == getClientName);
+            }           
 
             return new SelectList(clientList, "Value", "Text");
         }

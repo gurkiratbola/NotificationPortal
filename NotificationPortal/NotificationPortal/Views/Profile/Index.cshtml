@@ -13,6 +13,7 @@
     <div class="form-horizontal">
         @Html.HiddenFor(model => model.ReferenceID)
 
+        <!--alert message block-->
         <div class="form-group">
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
@@ -29,7 +30,7 @@
                 }
             </div>
         </div>
-
+        <!--first name input field-->
         <div class="form-group">
             @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
@@ -37,7 +38,7 @@
                 @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger float-right" })
             </div>
         </div>
-
+        <!--last name input field-->
         <div class="form-group">
             @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
@@ -45,7 +46,7 @@
                 @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger float-right" })
             </div>
         </div>
-
+        <!--email input field-->
         <div class="form-group"> 
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label offset-md-3 col-md-6 required profile-email" })
             <div class="offset-md-3 col-md-6 offset-md-3">
@@ -53,9 +54,7 @@
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger float-right" })
             </div>
         </div>
-
-@{if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
-                    HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF)) {
+        <!--send method dropdown list-->
         <div class="form-group">
             @Html.LabelFor(model => model.SendMethodList, htmlAttributes: new { @class = "control-label offset-md-3 col-md-9 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
@@ -63,10 +62,7 @@
                 @Html.ValidationMessageFor(model => model.SendMethodID, "", new { @class = "text-danger float-right" })
             </div>
         </div>
-    }
-}
-
-
+        <!--business title input field-->
         <div class="form-group">
             @Html.LabelFor(model => model.BusinessTitle, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
             <div class="offset-md-3 col-md-6 offset-md-3">
@@ -74,7 +70,7 @@
                 @Html.ValidationMessageFor(model => model.BusinessTitle, "", new { @class = "text-danger float-right" })
             </div>
         </div>
-
+        <!--business phone input field-->
         <div class="form-group">
             @Html.LabelFor(model => model.BusinessPhone, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
@@ -82,7 +78,7 @@
                 @Html.ValidationMessageFor(model => model.BusinessPhone, "", new { @class = "text-danger float-right" })
             </div>
         </div>
-
+        <!--mobile phone input field-->
         <div class="form-group">
             @Html.LabelFor(model => model.MobilePhone, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
@@ -90,7 +86,7 @@
                 @Html.ValidationMessageFor(model => model.MobilePhone, "", new { @class = "text-danger float-right" })
             </div>
         </div>
-
+        <!--home phone input field-->
         <div class="form-group">
             @Html.LabelFor(model => model.HomePhone, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
             <div class="offset-md-3 col-md-6 offset-md-3">

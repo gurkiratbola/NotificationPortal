@@ -4,7 +4,7 @@ if (window.location.origin.indexOf('localhost') == -1) {
 } else {
     subdir = '/';
 }
-// used for clickable row and ajax scripts
+// used for clickable row and ajax scripts (for right-click on all tables)
 var domain = window.location.origin + subdir;
 
 var clickableRow = function () {
@@ -15,9 +15,7 @@ var clickableRow = function () {
         var x = $(this).data("href");
         window.location =  domain + $(this).data("href");
     });
-    //$(".clickable-row-dashboard").click(function () {
-    //    window.location = window.location.origin + subdir + $(this).data("href");
-    //});
+
     $('*').click(function (e) {
         if (e.target.className !== 'clickable-row') {
             $(".hidden-menu").hide();
@@ -38,11 +36,8 @@ var clickableRow = function () {
     });
 }
 
-$(document).ready(function ($) {
-    // for clickable table rows
-    clickableRow();
-
-    // for sidebar dropdown
+// localstorage for sidebar dropdown
+var sidebarDropdown = function () {
     if (localStorage.getItem("isDropdownVisible") === null) {
         localStorage.setItem("isDropdownVisible", false);
         //$(".sidebar-dropdown").hide();
@@ -53,9 +48,9 @@ $(document).ready(function ($) {
             $(".sidebar-dropdown").show();
         }
     }
-    
-    $(".sidebar-dropdown-button").click(function() {
-        if ($(".sidebar-dropdown").is(":hidden")){
+
+    $(".sidebar-dropdown-button").click(function () {
+        if ($(".sidebar-dropdown").is(":hidden")) {
             localStorage.setItem("isDropdownVisible", true);
             $(".sidebar-dropdown-button .fa-caret-down").addClass("arrow-rotate");
             $(".sidebar-dropdown").slideDown();
@@ -65,8 +60,10 @@ $(document).ready(function ($) {
             localStorage.removeItem("isDropdownVisible");
         }
     })
+}
 
-    //sidebar state detection
+// state detection for dropdown on sidebar
+var sidebarStateDetection = function () {
     var url = window.location.href;
     var activePage = url;
     $('.sidebar-dropdown a').each(function () {
@@ -76,14 +73,13 @@ $(document).ready(function ($) {
             $(this).closest("li").addClass("active");
         }
     });
+}
 
-    // for profile email small print
-    $(".profile-email").append("<small class='float-right'>Updating email will log user out instantly</small>")
-
-    // hiding alert boxes after 3.5s
+// hide alert messages after 2s
+var hideAlert = function () {
     var alertSuccess = $(".alert-success");
     var alertDanger = $(".alert-danger");
-    if (alertSuccess.css('display') !== 'none' || alertDanger.css('display') !== 'none'){
+    if (alertSuccess.css('display') !== 'none' || alertDanger.css('display') !== 'none') {
         setTimeout(function () {
             alertSuccess.parent('.form-group > div').slideUp();
             alertDanger.parent('.form-group > div').slideUp();
@@ -91,5 +87,16 @@ $(document).ready(function ($) {
             alertDanger.slideUp();
         }, 2000);
     }
+}
+
+$(document).ready(function ($) {
+    
+    clickableRow();// for clickable table rows
+    sidebarDropdown();// for sidebar dropdown
+    sidebarStateDetection();//sidebar state detection
+    hideAlert();// hiding alert boxes after 2s
+
+    // insert profile email small print warning
+    $(".profile-email").append("<small class='float-right'>Updating email will log user out instantly</small>")
 
 });

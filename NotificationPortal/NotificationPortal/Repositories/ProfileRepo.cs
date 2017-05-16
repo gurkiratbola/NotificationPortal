@@ -13,6 +13,7 @@ namespace NotificationPortal.Repositories
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
         public const string USERNAME_UPDATED = "Username changed";
 
+        // get user profile detail to display for "GET" method
         public ProfileVM GetUserDetail(IPrincipal User)
         {
             if (User != null)
@@ -41,7 +42,7 @@ namespace NotificationPortal.Repositories
                 return null;
             }
         }
-
+        // save user profile changes to display for "POST" method
         public bool EditProfile(ProfileVM model, out string msg)
         {
             UserDetail original = _context.UserDetail.Where(a => a.ReferenceID == model.ReferenceID).FirstOrDefault();
@@ -82,14 +83,14 @@ namespace NotificationPortal.Repositories
                         userUpdated.SendMethodID = model.SendMethodID;
 
                         _context.SaveChanges();
+                        
                         if (email != model.Email)
                         {
+                            // if the username/email has been updated successfully
                             msg = USERNAME_UPDATED;
-                        }
-                        else {
+                        }else {
                             msg = "User profile updated.";
                         }
-                        
                         return true;
                     }
                     catch

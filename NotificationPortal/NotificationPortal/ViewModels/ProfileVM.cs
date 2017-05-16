@@ -25,6 +25,7 @@ namespace NotificationPortal.ViewModels
 
         [Required]
         [Phone]
+        // phone number needs to follow 000-000-000 format
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         [Display(Name = "Business Phone")]
         public string BusinessPhone { get; set; }
@@ -37,6 +38,7 @@ namespace NotificationPortal.ViewModels
 
         [Required]
         [Phone]
+        // phone number needs to follow 000-000-000 format
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         [Display(Name = "Mobile Phone")]
         public string MobilePhone { get; set; }
@@ -49,6 +51,7 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name = "Home Phone")]
         [Phone]
+        // phone number needs to follow 000-000-000 format
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         public string HomePhone { get; set; }
     }

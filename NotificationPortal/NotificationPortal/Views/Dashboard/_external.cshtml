@@ -5,38 +5,42 @@
 {
     if (Model.Count() > 0)
     {
+        <!-- loop to see all the notifications associated with this external user-->
         foreach (var item in Model)
         {
-            //var statusClass = item.Status == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INCOMPLETE ? "text-muted" : "text-muted";
-            var impactClass = item.LevelOfImpact == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING ? "badge badge-success" : "badge badge-danger";
+        var impactClass = item.LevelOfImpact == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING ? "badge badge-success" : "badge badge-danger";
         <div class="card-deck pb-3">
             <div class="card">
                 <div class="card-header card-inverse card-deck">
-                        <div class="col-sm-10">
-                                <h5>
-                                    <a href="@Url.Action("DetailsThread", "Notification", new { id = item.ThreadID })">
-                                        @Html.DisplayFor(modelItem => item.ThreadHeading)
-                                    </a>
-                                </h5>
-                        </div>
-                        <div class="col-sm-2">
-                            <span class="float-right external-status @impactClass">
-                                    @Html.DisplayFor(modelItem => item.LevelOfImpact)
-                            </span>
-                        </div>
+                    <!-- notification heading -->
+                    <div class="col-sm-10">
+                            <h5>
+                                <a href="@Url.Action("DetailsThread", "Notification", new { id = item.ThreadID })">
+                                    @Html.DisplayFor(modelItem => item.ThreadHeading)
+                                </a>
+                            </h5>
+                    </div>
+                    <!-- notification level of impact -->
+                    <div class="col-sm-2">
+                        <span class="float-right external-status @impactClass">
+                                @Html.DisplayFor(modelItem => item.LevelOfImpact)
+                        </span>
+                    </div>
                 </div>
                 <div class="card-block clickable-row-dashboard" data-href="/Notification/DetailsThread/@item.ThreadID">
                     <div class="col-md-12">
-                            <div class="row">
-                                <h3 class="heading-padding text-coral">
-                                    Application: @Html.DisplayFor(modelItem => item.AppName)
-                                </h3>
-                            </div>
-
+                        <!-- application name -->
+                        <div class="row">
+                            <h3 class="heading-padding text-coral">
+                                Application: @Html.DisplayFor(modelItem => item.AppName)
+                            </h3>
+                        </div>
+                        <!-- notification thread details -->
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
                                     <ul>
+                                        <!-- loop for all the notifictions belonging to this thread -->
                                         @{
                                             var listItemNum = 0;
                                             foreach (var detail in item.ThreadDetail)
@@ -46,9 +50,11 @@
                                                 <li class="notification-list">
                                                     <p class="text-muted">
                                                         <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+                                                        <!-- notification description -->
                                                         <span class="text-indent truncate">
                                                             @Html.DisplayFor(modelItem => detail.NotificationDetail)
                                                         </span>
+                                                        <!-- notification issue time -->
                                                         <span class="float-right">
                                                             @Html.DisplayFor(modelItem => detail.SentDateTime)
                                                         </span>
