@@ -179,7 +179,7 @@ namespace NotificationPortal.Repositories
                 details.RoleName = roleManager.FindById(details.RoleName).Name.ToString();
 
                 details.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
-                details.ClientList = _selectRepo.GetClientList();
+                details.ClientList = _selectRepo.GetUserClientList();
                 details.RoleList = _selectRepo.GetRolesList();
                 details.ApplicationList = GetApplicationList();
 

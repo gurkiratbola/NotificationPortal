@@ -46,7 +46,7 @@ namespace NotificationPortal.Controllers
             var model = new AddUserVM()
             {
                 StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER),
-                ClientList = _selectRepo.GetClientList(),
+                ClientList = _selectRepo.GetUserClientList(),
                 RolesList = _selectRepo.GetRolesList(),
                 ApplicationList = _userRepo.GetApplicationList()
             };
@@ -84,7 +84,7 @@ namespace NotificationPortal.Controllers
             }
 
             model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
-            model.ClientList = _selectRepo.GetClientList();
+            model.ClientList = _selectRepo.GetUserClientList();
             model.RolesList = _selectRepo.GetRolesList();
             model.ApplicationList = _userRepo.GetApplicationList();
 
@@ -173,7 +173,7 @@ namespace NotificationPortal.Controllers
             }
 
             model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
-            model.ClientList = _selectRepo.GetClientList();
+            model.ClientList = _selectRepo.GetUserClientList();
             model.RoleList = _selectRepo.GetRolesList();
             model.ApplicationList = _userRepo.GetApplicationList();
 
