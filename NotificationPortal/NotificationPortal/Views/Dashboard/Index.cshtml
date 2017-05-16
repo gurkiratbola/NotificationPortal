@@ -212,7 +212,6 @@ else
                 data: JSON.stringify(newData),
                 contentType: 'application/json',
                 success: function (data) {
-                    console.log(data);
                     refillTHead(data);
                     refillTBody(data.Threads);
                     refillPagination(data);
