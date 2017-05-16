@@ -13,16 +13,21 @@ namespace NotificationPortal.Repositories
 {
     public class UserRepo
     {
+        // Get the database reference
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
+        // Get the selectlistrepo reference
         private readonly SelectListRepo _selectRepo = new SelectListRepo();
 
+        // Sort the User Index page with table columns
         public IEnumerable<UserVM> Sort(IEnumerable<UserVM> list, string sortOrder, string searchString = null)
         {
+            // Check if search is not null then search the database for query
             if (!String.IsNullOrEmpty(searchString))
             {
                 list = list.Where(c => c.FirstName.ToUpper().Contains(searchString.ToUpper()) || c.RoleName.ToUpper().Contains(searchString.ToUpper()) || c.StatusName.ToUpper().Contains(searchString.ToUpper()) || c.LastName.ToUpper().Contains(searchString.ToUpper()) || c.Email.ToUpper().Contains(searchString.ToUpper()));
             }
 
+            // Sort the different table columns on whichever one was selected
             switch (sortOrder)
             {
                 case ConstantsRepo.SORT_ROLE_NAME_BY_DESC:

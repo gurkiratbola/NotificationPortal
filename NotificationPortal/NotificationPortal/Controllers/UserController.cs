@@ -63,10 +63,7 @@ namespace NotificationPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                string msg = "";
-                string userId = "";
-
-                if (_userRepo.AddUser(model, out msg, out userId))
+                if (_userRepo.AddUser(model, out string msg, out string userId))
                 {
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(userId);
                     var callbackUrl = Url.Action("ConfirmEmail", "User", new { userId = userId, code = code }, protocol: Request.Url.Scheme);
@@ -76,7 +73,6 @@ namespace NotificationPortal.Controllers
                     await UserManager.SendEmailAsync(userId, "Confirm your account", TemplateService.AccountEmail(callbackUrl, body, "Confirm Email"));
 
                     TempData["SuccessMsg"] = msg;
-                  
                     return RedirectToAction("Index");
                 }
 
@@ -97,7 +93,8 @@ namespace NotificationPortal.Controllers
         {
             if (userId == null || code == null)
             {
-                return View("Error");
+                TempData["ErrorMsg"] = "Something went wrong, please contact an admin.";
+                return RedirectToAction("Login", "Account");
             }            
 
             var result = await UserManager.ConfirmEmailAsync(userId, code);
@@ -105,7 +102,6 @@ namespace NotificationPortal.Controllers
             if (!result.Succeeded)
             {
                 TempData["ErrorMsg"] = "Something went wrong, please contact an admin.";
-
                 return RedirectToAction("Login", "Account");
             }
 
@@ -124,6 +120,7 @@ namespace NotificationPortal.Controllers
 
                 if(user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
+                    TempData["ErrorMsg"] = "Something went wrong, please contact an admin";
                     return RedirectToAction("ForgotPassword", "Account");
                 }
 
@@ -131,12 +128,12 @@ namespace NotificationPortal.Controllers
 
                 if(result.Succeeded)
                 {
-                    TempData["SuccessMsg"] = "Password set successfully, you may login!";
+                    TempData["SuccessMsg"] = "Password set successfully, you may login";
 
                     return RedirectToAction("Login", "Account");
                 }
 
-                TempData["ErrorMsg"] = "Something went wrong, please contact an admin.";
+                TempData["ErrorMsg"] = "Something went wrong, please contact an admin";
             }
 
             return View(model);
@@ -147,7 +144,15 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Edit(string id)
         {
-            return View(_userRepo.GetUserDetails(id));
+            var user = _userRepo.GetUserDetails(id);
+
+            if(user == null)
+            {
+                TempData["ErrorMsg"] = "Cannot edit this user at this time";
+                return RedirectToAction("Index");
+            }
+
+            return View(user);
         }
 
         // POST: UserDetails/Edit
@@ -158,9 +163,7 @@ namespace NotificationPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                string msg = "";
-
-                if (_userRepo.EditUser(model, out msg))
+                if (_userRepo.EditUser(model, out string msg))
                 {
                     TempData["SuccessMsg"] = msg;
 
@@ -185,7 +188,15 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Details(string id)
         {
-            return View(_userRepo.GetUserDetails(id));
+            var user = _userRepo.GetUserDetails(id);
+
+            if(user == null)
+            {
+                TempData["ErrorMsg"] = "Cannot edit this user at this time";
+                return RedirectToAction("Index");
+            }
+
+            return View(user);
         }
 
         // GET: UserDetails/Delete
@@ -193,7 +204,15 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Delete(string id)
         {
-            return View(_userRepo.GetDeleteUser(id));
+            var user = _userRepo.GetDeleteUser(id);
+
+            if(user == null)
+            {
+                TempData["ErrorMsg"] = "Cannot edit this user at this time";
+                return RedirectToAction("Index");
+            }
+
+            return View(user);
         }
 
         // POST: UserDetails/Delete
@@ -204,8 +223,7 @@ namespace NotificationPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var msg = "";
-                if (_userRepo.DeleteUser(model.ReferenceID, model.ClientReferenceID, out msg))
+                if (_userRepo.DeleteUser(model.ReferenceID, model.ClientReferenceID, out string msg))
                 {
                     TempData["SuccessMsg"] = msg;
 
@@ -214,8 +232,6 @@ namespace NotificationPortal.Controllers
 
                 TempData["ErrorMsg"] = msg;
             }
-
-            //TempData["ErrorMsg"] = "User cannot be deleted at this time.";
 
             return View(_userRepo.GetDeleteUser(model.ReferenceID));
         }
