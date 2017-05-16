@@ -4,7 +4,7 @@
     ViewBag.Title = "Delete Client";
 }
 
-<h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
+<h1 class="text-center display-4 pb-3">@ViewBag.Title - @Html.DisplayFor(model => model.ClientName)</h1>
 
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
@@ -12,7 +12,7 @@
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.ClientName)</li>
 </ol>
 
-<h3 class="text-danger pb-2">Are you sure you want to delete this client?</h3>
+<h4 class="text-danger pb-2">Are you sure you want to delete this client?</h4>
 
 @if (TempData["ErrorMsg"] != null)
 {

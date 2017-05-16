@@ -41,7 +41,7 @@
 
     @foreach (var item in Model)
     {
-        <tr class="text-center clickable-row" id="@item.LocationID" data-href="DataCenter/Details/@item.LocationID">
+        <tr class="clickable-row" id="@item.LocationID" data-href="DataCenter/Details/@item.LocationID">
             <td>
                 @Html.DisplayFor(modelItem => item.Location)
             </td>

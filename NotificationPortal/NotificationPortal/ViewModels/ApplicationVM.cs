@@ -17,7 +17,7 @@ namespace NotificationPortal.ViewModels
         public string ReferenceID { get; set; }
 
         [Required]
-        [DisplayName("Application")]
+        [DisplayName("Application Name")]
         public string ApplicationName { get; set; }
 
         [Required]
@@ -58,7 +58,7 @@ namespace NotificationPortal.ViewModels
         public string ReferenceID { get; set; }
 
         [Required]
-        [DisplayName("Application Name")]
+        [DisplayName("Application")]
         public string ApplicationName { get; set; }
 
         [Required]

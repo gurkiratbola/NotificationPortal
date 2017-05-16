@@ -1020,4 +1020,5 @@ small.float-right {
 .form-seperator {
     margin-top: 2px;
     margin-bottom: 20px;
+    border: 1px dashed #e3e3e3;
 }
