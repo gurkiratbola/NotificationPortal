@@ -18,7 +18,12 @@
         @Html.Raw(TempData["SuccessMsg"])
     </p>
 }
-
+@if (TempData["ErrorMsg"] != null)
+{
+    <p>
+        @Html.Raw(TempData["ErrorMsg"])
+    </p>
+}
     <div class="row filter-row">
         <!--notification type-->
         <div>

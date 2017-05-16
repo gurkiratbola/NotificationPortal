@@ -21,34 +21,36 @@ namespace NotificationPortal.Repositories
         ApplicationDbContext _context = new ApplicationDbContext();
         SelectListRepo _slRepo = new SelectListRepo();
 
-        public NotificationIndexVM CreateIndexModel(string sortOrder, string currentFilter, string searchString, int? page, NotificationIndexVM model = null)
+        public NotificationIndexVM CreateIndexModel()
         {
-            IEnumerable<NotificationThreadVM> allThreads = model == null ? GetAllNotifications() : GetFilteredNotifications(model);
-
-            // build the index model based on sort/filter/page information
-            page = searchString == null ? page : 1;
-            searchString = searchString ?? currentFilter;
-            int pageNumber = (page ?? 1);
-
-            model = new NotificationIndexVM
+            try
             {
-                //Threads = Sort(allThreads, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
-                CurrentFilter = searchString,
-                CurrentSort = sortOrder,
-                IncidentNumberSort = sortOrder == ConstantsRepo.SORT_INCIDENT_NUMBER_ASCE ? ConstantsRepo.SORT_INCIDENT_NUMBER_DESC : ConstantsRepo.SORT_INCIDENT_NUMBER_ASCE,
-                LevelOfImpactSort = sortOrder == ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC ? ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE : ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
-                NotificationHeadingSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE ? ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC : ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE,
-                NotificationTypeSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE ? ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC : ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE,
-                PrioritySort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC,
-                StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
-                SearchString = "",
-                Page = pageNumber
-            };
-            model.NotificationTypeList = _slRepo.GetTypeList();
-            model.LevelOfImpactList = _slRepo.GetImpactLevelList();
-            model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
-            model.PriorityList = _slRepo.GetPriorityList();
-            return model;
+                IEnumerable<NotificationThreadVM> allThreads = GetAllNotifications();
+
+                NotificationIndexVM model = new NotificationIndexVM
+                {
+                    CurrentFilter = "",
+                    CurrentSort = ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
+                    IncidentNumberSort = ConstantsRepo.SORT_INCIDENT_NUMBER_ASCE,
+                    LevelOfImpactSort = ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC,
+                    NotificationHeadingSort = ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE,
+                    NotificationTypeSort = ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE,
+                    PrioritySort = ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC,
+                    StatusSort = ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
+                    SearchString = "",
+                    Page = 1
+                };
+                model.NotificationTypeList = _slRepo.GetTypeList();
+                model.LevelOfImpactList = _slRepo.GetImpactLevelList();
+                model.StatusList = _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION);
+                model.PriorityList = _slRepo.GetPriorityList();
+                return model;
+            }
+            catch (Exception)
+            {
+                // something went while quering the database
+                return null;
+            }
         }
 
         public NotificationCreateVM CreateAddModel(NotificationCreateVM model = null)
@@ -72,108 +74,115 @@ namespace NotificationPortal.Repositories
 
         public ThreadDetailVM CreateDetailModel(string incidentNumber)
         {
-            IEnumerable<Notification> notifications =
-                _context.Notification.Where(n => n.IncidentNumber == incidentNumber)
-                .OrderBy(n => n.SentDateTime).ToList();
-
-            IEnumerable<NotificationDetailVM> thread =
-                notifications.Select(
-                    n => new NotificationDetailVM
-                    {
-                        ReferenceID = n.ReferenceID,
-                        NotificationHeading = n.NotificationHeading,
-                        NotificationDescription = n.NotificationDescription,
-                        SentDateTime = n.SentDateTime,
-                        Status = n.Status.StatusName
-                    });
-
-            Notification lastestNotification = notifications.LastOrDefault();
-
-            // TODO: filter servers ??
-            IEnumerable<NotificationServerVM> servers =
-                lastestNotification.Servers.Select(
-                    s => new NotificationServerVM
-                    {
-                        ServerName = s.ServerName,
-                        ServerType = s.ServerType.ServerTypeName,
-                        ServerStatus = s.Status.StatusName,
-                        ReferenceID = s.ReferenceID
-                    });
-
-            // Get Applications that are associated to this notification
-            IEnumerable<Application> associatedNotificationApplications;
-            if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
+            try
             {
-                string userId = HttpContext.Current.User.Identity.GetUserId();
-                var userApps = _context.UserDetail
-                    .Where(u => u.UserID == userId)
-                    .FirstOrDefault().Applications;
+                IEnumerable<Notification> notifications =
+                    _context.Notification.Where(n => n.IncidentNumber == incidentNumber)
+                    .OrderBy(n => n.SentDateTime).ToList();
 
-                associatedNotificationApplications = lastestNotification.Applications
-                    .Where(a => userApps.Contains(a));
+                IEnumerable<NotificationDetailVM> thread =
+                    notifications.Select(
+                        n => new NotificationDetailVM
+                        {
+                            ReferenceID = n.ReferenceID,
+                            NotificationHeading = n.NotificationHeading,
+                            NotificationDescription = n.NotificationDescription,
+                            SentDateTime = n.SentDateTime,
+                            Status = n.Status.StatusName
+                        });
+
+                Notification lastestNotification = notifications.LastOrDefault();
+
+                // TODO: filter servers ??
+                IEnumerable<NotificationServerVM> servers =
+                    lastestNotification.Servers.Select(
+                        s => new NotificationServerVM
+                        {
+                            ServerName = s.ServerName,
+                            ServerType = s.ServerType.ServerTypeName,
+                            ServerStatus = s.Status.StatusName,
+                            ReferenceID = s.ReferenceID
+                        });
+
+                // Get Applications that are associated to this notification
+                IEnumerable<Application> associatedNotificationApplications;
+                if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
+                {
+                    string userId = HttpContext.Current.User.Identity.GetUserId();
+                    var userApps = _context.UserDetail
+                        .Where(u => u.UserID == userId)
+                        .FirstOrDefault().Applications;
+
+                    associatedNotificationApplications = lastestNotification.Applications
+                        .Where(a => userApps.Contains(a));
+                }
+                else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
+                {
+                    string userId = HttpContext.Current.User.Identity.GetUserId();
+                    var userApps = _context.UserDetail
+                        .Where(u => u.UserID == userId)
+                        .FirstOrDefault().Client.Applications;
+                    associatedNotificationApplications = lastestNotification.Applications
+                        .Where(a => userApps.Contains(a));
+                }
+                else
+                {
+                    associatedNotificationApplications = lastestNotification.Applications;
+                }
+
+                IEnumerable<NotificationApplicationVM> apps =
+                    associatedNotificationApplications.Select(
+                        a => new NotificationApplicationVM
+                        {
+                            ApplicationName = a.ApplicationName,
+                            ApplicationURL = a.URL,
+                            ApplicationStatus = a.Status.StatusName,
+                            ReferenceID = a.ReferenceID
+                        }).OrderByDescending(a => a.ApplicationName);
+
+                // If there are no applications associated to this notification
+                // get all application associated with server(s)
+                // only for admin and staff
+                if (apps.Count() == 0
+                    && HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN)
+                    && HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
+                {
+                    apps =
+                    lastestNotification.Servers.SelectMany(s => s.Applications.Select(
+                        a => new NotificationApplicationVM
+                        {
+                            ApplicationName = a.ApplicationName,
+                            ApplicationURL = a.URL,
+                            ApplicationStatus = a.Status.StatusName,
+                            ReferenceID = a.ReferenceID
+                        })).GroupBy(a => a.ReferenceID)
+                        .Select(
+                            a => a.FirstOrDefault()
+                    ).OrderByDescending(a => a.ApplicationName);
+                }
+
+                ThreadDetailVM model = new ThreadDetailVM()
+                {
+                    IncidentNumber = incidentNumber,
+                    // TODO
+                    // ApplicationServerName = lastestNotification.Servers.Count == 0 ? lastestNotification.Application.ApplicationName : lastestNotification.Server.ServerName,
+                    NotificationType = lastestNotification.NotificationType.NotificationTypeName,
+                    LevelOfImpact = lastestNotification.LevelOfImpact.LevelName,
+                    Status = lastestNotification.Status.StatusName,
+                    StartDateTime = lastestNotification.StartDateTime,
+                    EndDateTime = lastestNotification.EndDateTime,
+                    Thread = thread,
+                    Servers = servers,
+                    Applications = apps,
+                    Subject = notifications.FirstOrDefault().NotificationHeading,
+                    SenderName = notifications.FirstOrDefault().UserDetail.FirstName + " " + notifications.FirstOrDefault().UserDetail.LastName
+                };
+                return model;
             }
-            else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
+            catch (Exception)
             {
-                string userId = HttpContext.Current.User.Identity.GetUserId();
-                var userApps = _context.UserDetail
-                    .Where(u => u.UserID == userId)
-                    .FirstOrDefault().Client.Applications;
-                associatedNotificationApplications = lastestNotification.Applications
-                    .Where(a => userApps.Contains(a));
+                return null;
             }
-            else
-            {
-                associatedNotificationApplications = lastestNotification.Applications;
-            }
-
-            IEnumerable<NotificationApplicationVM> apps =
-                associatedNotificationApplications.Select(
-                    a => new NotificationApplicationVM
-                    {
-                        ApplicationName = a.ApplicationName,
-                        ApplicationURL = a.URL,
-                        ApplicationStatus = a.Status.StatusName,
-                        ReferenceID = a.ReferenceID
-                    }).OrderByDescending(a => a.ApplicationName);
-
-            // If there are no applications associated to this notification
-            // get all application associated with server(s)
-            // only for admin and staff
-            if (apps.Count() == 0
-                && HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN)
-                && HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
-            {
-                apps =
-                lastestNotification.Servers.SelectMany(s => s.Applications.Select(
-                    a => new NotificationApplicationVM
-                    {
-                        ApplicationName = a.ApplicationName,
-                        ApplicationURL = a.URL,
-                        ApplicationStatus = a.Status.StatusName,
-                        ReferenceID = a.ReferenceID
-                    })).GroupBy(a => a.ReferenceID)
-                    .Select(
-                        a => a.FirstOrDefault()
-                ).OrderByDescending(a => a.ApplicationName);
-            }
-
-            ThreadDetailVM model = new ThreadDetailVM()
-            {
-                IncidentNumber = incidentNumber,
-                // TODO
-                // ApplicationServerName = lastestNotification.Servers.Count == 0 ? lastestNotification.Application.ApplicationName : lastestNotification.Server.ServerName,
-                NotificationType = lastestNotification.NotificationType.NotificationTypeName,
-                LevelOfImpact = lastestNotification.LevelOfImpact.LevelName,
-                Status = lastestNotification.Status.StatusName,
-                StartDateTime = lastestNotification.StartDateTime,
-                EndDateTime = lastestNotification.EndDateTime,
-                Thread = thread,
-                Servers = servers,
-                Applications = apps,
-                Subject = notifications.FirstOrDefault().NotificationHeading,
-                SenderName = notifications.FirstOrDefault().UserDetail.FirstName + " " + notifications.FirstOrDefault().UserDetail.LastName
-            };
-            return model;
         }
 
         public NotificationCreateVM CreateUpdateModel(string incidentNumber, NotificationCreateVM model = null)
@@ -304,73 +313,6 @@ namespace NotificationPortal.Repositories
                             Priority = t.LastOrDefault().Priority.PriorityName,
                             PriorityValue = t.LastOrDefault().Priority.PriorityValue,
                             Status = t.LastOrDefault().Status.StatusName
-                        })
-                    .GroupBy(n => n.IncidentNumber)
-                    .Select(t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault());
-                return allThreads;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        public IEnumerable<NotificationThreadVM> GetFilteredNotifications(NotificationIndexVM model)
-        {
-            try
-            {
-                model.NotificationTypeIDs = model.NotificationTypeIDs ?? _slRepo.GetTypeList().Select(o => int.Parse(o.Value)).ToArray();
-                model.LevelOfImpactIDs = model.LevelOfImpactIDs ?? _slRepo.GetImpactLevelList().Select(o => int.Parse(o.Value)).ToArray();
-                model.PriorityIDs = model.PriorityIDs ?? _slRepo.GetPriorityList().Select(o => int.Parse(o.Value)).ToArray();
-                model.StatusIDs = model.StatusIDs ?? _slRepo.GetStatusList(Key.STATUS_TYPE_NOTIFICATION).Select(o => int.Parse(o.Value)).ToArray();
-                IEnumerable<Notification> allNotifications = _context.Notification;
-
-                if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
-                {
-                    string userId = HttpContext.Current.User.Identity.GetUserId();
-                    var userApps = _context.UserDetail
-                        .Where(u => u.UserID == userId)
-                        .FirstOrDefault().Applications;
-                    allNotifications = userApps
-                    .Select(x => new { Application = x, x.Servers })
-                    .SelectMany(x => x.Servers
-                    .SelectMany(n => n.Notifications
-                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
-                }
-                else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
-                {
-                    string userId = HttpContext.Current.User.Identity.GetUserId();
-                    var userApps = _context.UserDetail
-                        .Where(u => u.UserID == userId)
-                        .FirstOrDefault().Client.Applications;
-                    allNotifications = userApps
-                    .Select(x => new { Application = x, x.Servers })
-                    .SelectMany(x => x.Servers
-                    .SelectMany(n => n.Notifications
-                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
-                }
-
-                IEnumerable<NotificationThreadVM> allThreads = allNotifications
-                    .GroupBy(n => n.IncidentNumber)
-                    .Select(t => t.OrderBy(i => i.SentDateTime))
-                    .Select(n => new { First = n.FirstOrDefault(), Last = n.LastOrDefault() })
-                    .Where(t => model.NotificationTypeIDs.Contains(t.Last.NotificationTypeID)
-                    && model.LevelOfImpactIDs.Contains(t.Last.LevelOfImpactID)
-                    && model.StatusIDs.Contains(t.Last.StatusID)
-                    && model.PriorityIDs.Contains(t.Last.PriorityID))
-                    .Select(
-                        t => new NotificationThreadVM()
-                        {
-                            ReferenceID = t.First.ReferenceID,
-                            IncidentNumber = t.First.IncidentNumber,
-                            NotificationHeading = t.First.NotificationHeading,
-                            SentDateTime = t.First.SentDateTime,
-                            NotificationType = t.Last.NotificationType.NotificationTypeName,
-                            LevelOfImpact = t.Last.LevelOfImpact.LevelName,
-                            LevelOfImpactValue = t.Last.LevelOfImpact.LevelValue,
-                            Priority = t.Last.Priority.PriorityName,
-                            PriorityValue = t.Last.Priority.PriorityValue,
-                            Status = t.Last.Status.StatusName
                         })
                     .GroupBy(n => n.IncidentNumber)
                     .Select(t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault());
@@ -520,6 +462,7 @@ namespace NotificationPortal.Repositories
 
         }
 
+        // delete all notifcations associated to a specific thread
         public bool DeleteThread(string incidentNumber, out string msg)
         {
             try
@@ -538,6 +481,7 @@ namespace NotificationPortal.Repositories
 
         }
 
+        // delete a single notifcation
         public bool DeleteNotification(string notificationReferenceID, out string msg)
         {
             try
