@@ -94,7 +94,7 @@
         @foreach (var item in Model.Servers)
         {
             //var statusClass = item.StatusName.ToUpper() == NotificationPortal.Models.Key.STATUS_CLIENT_ENABLED.ToUpper() ? "<i class='fa fa-check text-success' aria-hidden='true'></i>" : "<i class='fa fa-times text-danger' aria-hidden='true'></i>";
-            <tr class="text-center clickable-row" id="@item.ReferenceID" data-href="Server/Details/@item.ReferenceID">
+            <tr class="clickable-row" id="@item.ReferenceID" data-href="Server/Details/@item.ReferenceID">
                 <td>
                     @Html.DisplayFor(modelItem => item.ServerName)
                 </td>
