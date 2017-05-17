@@ -4,7 +4,7 @@
         includeSelectAllOption: true,
         maxHeight: 200,
         buttonText: function (options, select) {
-            return 'Server (' + options.length + ')';
+            return 'Client (' + options.length + ')';
         }
     });
     $('#ServerReferenceIDs').multiselect({

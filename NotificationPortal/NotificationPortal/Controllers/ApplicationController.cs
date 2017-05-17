@@ -36,7 +36,7 @@ namespace NotificationPortal.Controllers
                 StatusList = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION),
                 //StatusList = _aRepo.GetStatusList(),
                 ClientList = _sRepo.GetClientList(),
-                ServerList = _aRepo.GetServerList(),
+                ServerList = _sRepo.GetServerList(),
             };
             return View(model);
         }
@@ -65,7 +65,7 @@ namespace NotificationPortal.Controllers
                 TempData["ErrorMsg"] = "Application cannot be added at this time.";
             }
             model.StatusList = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
-            model.ServerList = _aRepo.GetServerList();
+            model.ServerList = _sRepo.GetServerList();
             model.ClientList = _sRepo.GetClientList();
             return View(model);
         }
@@ -77,7 +77,7 @@ namespace NotificationPortal.Controllers
             ApplicationVM application = _aRepo.GetApplication(id);
             // To be modified: global method for status in development
             application.StatusList = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
-            application.ServerList = _aRepo.GetServerList();
+            application.ServerList = _sRepo.GetServerList();
             application.ClientList = _sRepo.GetClientList();
             return View(application);
         }
@@ -103,7 +103,7 @@ namespace NotificationPortal.Controllers
             ApplicationVM application = _aRepo.GetApplication(model.ReferenceID);
             application.StatusList = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
             application.ClientList = _sRepo.GetClientList();
-            application.ServerList = _aRepo.GetServerList();
+            application.ServerList = _sRepo.GetServerList();
             return View(application);
         }
 

@@ -92,10 +92,8 @@ namespace NotificationPortal.ViewModels
 
         [Display(Name = "Servers")]
         public string[] ServerReferenceIDs { get; set; }
-
-        [Display(Name = "Applications")]
-        public IEnumerable<ApplicationServerVM> ServerList { get; set; }
-
+        
+        public SelectList ServerList { get; set; }
         public SelectList StatusList { get; set; }
         public SelectList ClientList { get; set; }
     }
