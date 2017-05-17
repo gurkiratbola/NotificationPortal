@@ -196,13 +196,14 @@ button:focus {
 @media (min-width: 576px) {
     .container {
         width: 100% !important;
-        margin-left: -36px;
     }
 }
 
-@media (min-width: 576px) {
+@media (min-width: 992px) {
     .container {
         width: 100% !important;
+        margin-left: -36px;
+
     }
 }
 
