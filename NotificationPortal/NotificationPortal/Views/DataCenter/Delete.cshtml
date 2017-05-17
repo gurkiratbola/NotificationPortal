@@ -13,13 +13,13 @@
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.Location)</li>
 </ol>
 <!-- ========================= delete detail ========================= -->
-<h3 class="text-danger pb-2">Are you sure you want to delete this Data Center?</h3>
 @if (TempData["ErrorMsg"] != null)
 {
     <p class="alert alert-danger">
         @Html.Raw(TempData["ErrorMsg"])
     </p>
 }
+<h3 class="text-danger pb-2">Are you sure you want to delete this Data Center?</h3>
 <div>
     <dl class="row">
         <dt class="col-sm-2">

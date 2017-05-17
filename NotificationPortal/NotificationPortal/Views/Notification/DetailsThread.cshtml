@@ -92,14 +92,28 @@
     <div class="row">
         @foreach (var item in Model.Thread)
         {
-            var statusClass = item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED.ToUpper() ? "badge badge-success" : "badge badge-danger";
+            var statusClass = "";
+            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED.ToUpper()) {
+                statusClass = "badge badge-closed";
+            }
+            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN.ToUpper())
+            {
+                statusClass = "badge badge-open";
+            }
+            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING.ToUpper())
+            {
+                statusClass = "badge badge-invest";
+            }
+            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED.ToUpper())
+            {
+                statusClass = "badge badge-resolved";
+            }
             <div class="col-sm-12 single-thread">
-                <span class="float-left">
-                    @Html.Raw(item.NotificationDescription)
-                </span>
-                <span class="float-right">
+                <span class="thread-status-bar">
+                    @Html.Raw(item.SentDateTime)
+                    <span class="@statusClass">@Html.Raw(item.Status)</span>
                     @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
-                         User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+                     User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
                     {
                         <a class="" href="@Url.Action("Edit", "Notification", new { id = @item.ReferenceID })">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -111,8 +125,10 @@
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </a>
                     }
-                    @Html.Raw(item.SentDateTime)
-                    <span class="@statusClass">@Html.Raw(item.Status)</span>
+                </span>
+
+                <span class="thread-description">
+                    @Html.Raw(item.NotificationDescription)
                 </span>
             </div>
         }
