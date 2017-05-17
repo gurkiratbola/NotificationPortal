@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Data.SqlClient;
+using PagedList;
 
 namespace NotificationPortal.Repositories
 {
@@ -16,38 +17,76 @@ namespace NotificationPortal.Repositories
         const string APP_STATUS_TYPE_NAME = "Status";
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
-        public IEnumerable<ApplicationListVM> Sort(IEnumerable<ApplicationListVM> list, string sortOrder, string searchString = null)
+        public IEnumerable<StatusVM> Sort(IEnumerable<StatusVM> list, string sortOrder, string searchString = null)
         {
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                list = list.Where(c => c.ApplicationName.ToUpper().Contains(searchString.ToUpper()));
+                list = list.Where(c => c.StatusTypeName.ToUpper().Contains(searchString.ToUpper()) ||
+                                       c.StatusName.ToUpper().Contains(searchString.ToUpper())
+                                    );
             }
             switch (sortOrder)
             {
-             
                 case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
                     list = list.OrderBy(c => c.StatusName);
                     break;
 
+                case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
+                    list = list.OrderByDescending(c => c.StatusName);
+                    break;
+
+                case ConstantsRepo.SORT_STATUS_BY_TYPE_ASCE:
+                    list = list.OrderBy(c => c.StatusTypeName);
+                    break;
+
+                case ConstantsRepo.SORT_STATUS_BY_TYPE_DESC:
+                    list = list.OrderByDescending(c => c.StatusTypeName);
+                    break;
+
                 default:
-                    list = list.OrderBy(c => c.StatusName);
+                    list = list.OrderBy(c => c.StatusTypeName);
                     break;
             }
             return list;
         }
 
-        public IEnumerable<StatusVM> GetStatusList()
+        public StatusIndexVM GetStatusList(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            IEnumerable<StatusVM> statusList = _context.Status
-                                                .Select(c => new StatusVM
-                                                {
-                                                    StatusName = c.StatusName,
-                                                    StatusTypeID = c.StatusTypeID,
-                                                    StatusID = c.StatusID,
-                                                    StatusTypeName = c.StatusType.StatusTypeName
-                                                });
-            return statusList;
+            try
+            {
+                IEnumerable<StatusVM> statusList = _context.Status
+                                                    .Select(c => new StatusVM
+                                                    {
+                                                        StatusName = c.StatusName,
+                                                        StatusTypeID = c.StatusTypeID,
+                                                        StatusID = c.StatusID,
+                                                        StatusTypeName = c.StatusType.StatusTypeName
+                                                    });
+                int totalNumOfStatuses = statusList.Count();
+                page = searchString == null ? page : 1;
+                int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+                searchString = searchString ?? currentFilter;
+                int pageNumber = (page ?? 1);
+                int defaultPageSize = ConstantsRepo.PAGE_SIZE;
+                sortOrder = sortOrder == null ? ConstantsRepo.SORT_STATUS_BY_TYPE_DESC : sortOrder;
+                StatusIndexVM model = new StatusIndexVM
+                {
+                    Statuses = Sort(statusList, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
+                    CurrentFilter = searchString,
+                    CurrentSort = sortOrder,
+                    TotalItemCount = totalNumOfStatuses,
+                    ItemStart = currentPageIndex * defaultPageSize + 1,
+                    ItemEnd = totalNumOfStatuses - (defaultPageSize * currentPageIndex) >= defaultPageSize ? defaultPageSize * (currentPageIndex + 1) : totalNumOfStatuses,
+                    StatusTypeSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_TYPE_DESC ? ConstantsRepo.SORT_STATUS_BY_TYPE_ASCE : ConstantsRepo.SORT_STATUS_BY_TYPE_DESC,
+                    StatusNameSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
+                };
+                return model;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
 
@@ -93,16 +132,20 @@ namespace NotificationPortal.Repositories
             return status;
         }
 
-
         public bool EditStatus(StatusVM status, out string msg)
         {
-            Status s = _context.Status.Where(b => b.StatusName == status.StatusName).FirstOrDefault();
-           
-            //if (a != null)
-            //{
-            //    msg = "Application name already exist.";
-            //    return false;
-            //}
+            Status s = _context.Status
+                        .Where(a => a.StatusTypeID == status.StatusTypeID && a.StatusName == status.StatusName)
+                        .FirstOrDefault();
+
+            if (s != null)
+            {
+                if (s.StatusID != status.StatusID)
+                {
+                    msg = "Status already exist for this status type.";
+                    return false;
+                }
+            }
             try
             {
                 Status statusUpdated = _context.Status
@@ -124,15 +167,10 @@ namespace NotificationPortal.Repositories
 
         public bool DeleteStatus(int statusID, out string msg)
         {
-            // check if applications exists
             Status statusToBeDeleted = _context.Status
                                     .Where(a => a.StatusID == statusID)
                                     .FirstOrDefault();
-            // check applications associated with Server
-     
-            //var statusStatusTypes = _context.StatusType
-            //                         .Where(a => a.StatusTypeID == Status,)
-            //                         .FirstOrDefault();
+
             if (statusToBeDeleted == null)
             {
                 msg = "Status could not be deleted.";
@@ -151,9 +189,6 @@ namespace NotificationPortal.Repositories
                 msg = "Failed to update status.";
                 return false;
             }
-
         }
     }
 }
-
-

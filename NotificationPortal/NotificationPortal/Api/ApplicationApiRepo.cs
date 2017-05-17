@@ -19,14 +19,15 @@ namespace NotificationPortal.Api
             // get the referenceIds and url of the apps
             var apps = _context.Application
                 .Where(a => referenceIDs.Contains(a.ReferenceID))
-                .Select(a => new { ReferenceID=a.ReferenceID, URL=a.URL }).ToList();
+                .Select(a => new { ReferenceID = a.ReferenceID, URL = a.URL }).ToList();
 
             // loop through all apps and check the status
             List<ApplicationStatus> listOfAppStatuses = new List<ApplicationStatus>();
             foreach (var app in apps)
             {
                 listOfAppStatuses.Add(
-                    new ApplicationStatus() {
+                    new ApplicationStatus()
+                    {
                         ReferenceID = app.ReferenceID,
                         Status = CheckStatus(app.URL) ? Key.STATUS_APPLICATION_ONLINE : Key.STATUS_APPLICATION_OFFLINE
                     });
@@ -93,6 +94,18 @@ namespace NotificationPortal.Api
                 // TODO: decide how to handle exception when there is no connection
             }
             return false;
+        }
+
+        // get all apps associated with input server reference ids
+        public List<Application> GetApplications(string[] serverReferenceIDs)
+        {
+            List<Application> apps = _context.Application
+                .Where(a => a.Servers.Where(s => serverReferenceIDs.Contains(s.ReferenceID)).Count() > 0)
+                .Select(a=> new Application() {
+                    ApplicationName = a.ApplicationName,
+                    ReferenceID = a.ReferenceID
+                }).ToList();
+            return apps;
         }
     }
 }

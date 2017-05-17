@@ -14,6 +14,7 @@ namespace NotificationPortal.Api
         public int PageNumber { get; set; }
         public int TotalItemsCount { get; set; }
     }
+
     public class IndexBody
     {
         public string CurrentFilter { get; set; }
@@ -27,6 +28,12 @@ namespace NotificationPortal.Api
     {
         public string ReferenceID { get; set; }
         public string Status { get; set; }
+    }
+
+    public class Application
+    {
+        public string ReferenceID { get; set; }
+        public string ApplicationName { get; set; }
     }
 
     public class DashboardVM
@@ -59,7 +66,7 @@ namespace NotificationPortal.Api
         public string PrioritySort { get; set; }
         public string StatusSort { get; set; }
     }
-    public class NotificationIndexBody: IndexBody
+    public class NotificationIndexBody : IndexBody
     {
         public int[] NotificationTypeIDs { get; set; }
         public int[] LevelOfImpactIDs { get; set; }

@@ -37,6 +37,9 @@ namespace NotificationPortal.Repositories
         public const string SORT_STATUS_BY_NAME_ASCE = "status_name_asce";
         public const string SORT_STATUS_BY_NAME_DESC = "status_name_desc";
 
+        public const string SORT_STATUS_BY_TYPE_ASCE = "status_type_asce";
+        public const string SORT_STATUS_BY_TYPE_DESC = "status_type_desc";
+
         public const string SORT_APP_BY_NAME_ASCE = "application_name_asce";
         public const string SORT_APP_BY_NAME_DESC = "application_name_desc";
 
