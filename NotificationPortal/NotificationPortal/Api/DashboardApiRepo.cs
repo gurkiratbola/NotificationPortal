@@ -46,6 +46,7 @@ namespace NotificationPortal.Api
                     {
                         IncidentNumber = s.IncidentNumber,
                         LevelOfImpact = s.LevelOfImpact.LevelName,
+                        ImpactValue = s.LevelOfImpact.LevelValue,
                         ThreadHeading = s.NotificationHeading,
                         SentDateTime = s.SentDateTime,
                         Status = s.Status.StatusName,
@@ -64,6 +65,7 @@ namespace NotificationPortal.Api
                     {
                         IncidentNumber = s.IncidentNumber,
                         LevelOfImpact = s.LevelOfImpact.LevelName,
+                        ImpactValue = s.LevelOfImpact.LevelValue,
                         ThreadHeading = s.NotificationHeading,
                         SentDateTime = s.SentDateTime,
                         Status = s.Status.StatusName,
@@ -86,13 +88,11 @@ namespace NotificationPortal.Api
             switch (sortOrder)
             {
                 case ConstantsRepo.SORT_LEVEL_OF_IMPACT_DESC:
-                    // TODO: sort by severity value instead of name
-                    list = list.OrderByDescending(c => c.LevelOfImpact);
+                    list = list.OrderByDescending(c => c.ImpactValue);
                     break;
 
                 case ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE:
-                    // TODO: sort by severity value instead of name
-                    list = list.OrderBy(c => c.LevelOfImpact);
+                    list = list.OrderBy(c => c.ImpactValue);
                     break;
 
                 case ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE:
@@ -128,8 +128,7 @@ namespace NotificationPortal.Api
                     break;
 
                 default:
-                    // TODO: sort by severity value instead of name
-                    list = list.OrderByDescending(c => c.LevelOfImpact);
+                    list = list.OrderByDescending(c => c.ImpactValue);
                     break;
             }
             return list;
