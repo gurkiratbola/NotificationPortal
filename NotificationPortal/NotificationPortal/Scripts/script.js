@@ -1,5 +1,5 @@
 ﻿var subdir = '/';
-if (window.location.origin.indexOf('localhost') == -1) {
+if (window.location.origin.indexOf('localhost') === -1) {
     subdir = '/notificationportal/'
 } else {
     subdir = '/';
@@ -91,14 +91,26 @@ var hideAlert = function () {
 }
 
 var truncate = function () {
-    const CHAR_LIMIT = 28;
     var e = $("h5");
-    console.log(e.prop('scrollWidth'))
-    console.log(e.width())
+    //console.log(e.prop('scrollWidth'))
+    //console.log(e.width())
 
-    if (e.prop('scrollWidth') > e.width()) {
-        //alert("Overflow");
-    }
+    //$('h5').each(function (index, obj) {
+    //    while ($(this).prop('scrollWidth') > $(this).width()) {
+    //        //alert("Overflow");
+    //        //drop last word
+    //        var str = e.children("a").html().trim();
+    //        console.log(str);
+    //        $(this).children("a").text(str.substring(0, str.lastIndexOf(" ")));
+    //    }
+    //});
+
+    // if "... exist", hide word bn space and "..." 
+    $('h5').each(function (index, obj) {
+        if (e.children("a").html().trim().indexOf("…") > 0) {
+            console.log("exists");
+        }
+    });
 }
 
 $(document).ready(function ($) {
@@ -107,5 +119,9 @@ $(document).ready(function ($) {
     sidebarDropdown();// for sidebar dropdown
     sidebarStateDetection();//sidebar state detection
     hideAlert();// hiding alert boxes after 2s
-    //truncate();
+    truncate();
+    $(window).on('resize', function () {
+        //var win = $(this); //this = window
+        truncate();
+    });
 });

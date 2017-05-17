@@ -27,10 +27,6 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            //var model = new DataCenterVM
-            //{
-            //    Servers = _lRepo.GetServerList()
-            //};
             return View();
         }
 
@@ -56,7 +52,6 @@ namespace NotificationPortal.Controllers
             {
                 TempData["ErrorMsg"] = "Data Center Location cannot be added at this time.";
             }
-            //model.Servers = _lRepo.GetServerList();
             return View(model);
         }
 
@@ -66,7 +61,7 @@ namespace NotificationPortal.Controllers
             DataCenterVM dataCenter = _dRepo.GetDataCenter(id);
             if (dataCenter == null)
             {
-                // if data center is null, redirect to a page
+                // if data center is null, redirect to index
                 TempData["ErrorMsg"] = "Cannot edit this data center at the moment";
                 return RedirectToAction("Index");
             }

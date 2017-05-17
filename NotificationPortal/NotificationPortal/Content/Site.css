@@ -498,7 +498,7 @@ td a:hover {
                         Sidebar Styles
 ========================================================================== */
 .nav-pills > li {
-    border-bottom: 1px solid #afe7f1;
+    border-bottom: 1px solid #ededed;
 }
 
 .sidebar-dropdown-button {

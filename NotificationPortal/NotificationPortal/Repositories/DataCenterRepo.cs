@@ -39,7 +39,7 @@ namespace NotificationPortal.Repositories
             }
             return list;
         }
-
+        // get all data centers
         public DataCenterIndexVM GetDataCenterList(string sortOrder, string currentFilter, string searchString, int? page)
         {
             try
@@ -75,7 +75,7 @@ namespace NotificationPortal.Repositories
                 return null;
             }
         }
-
+        // create data center
         public bool AddDataCenter(DataCenterVM dataCenter, out string msg)
         {
             DataCenterLocation d = _context.DataCenterLocation.Where(a => a.Location == dataCenter.Location)
@@ -100,7 +100,7 @@ namespace NotificationPortal.Repositories
                 return false;
             }
         }
-
+        // get data center by id
         public DataCenterVM GetDataCenter(int referenceID)
         {
             try
@@ -120,7 +120,7 @@ namespace NotificationPortal.Repositories
             }
         }
 
-
+        // update data center
         public bool EditDataCenter(DataCenterVM dataCenter, out string msg)
         {
             DataCenterLocation d = _context.DataCenterLocation.Where(a => a.Location == dataCenter.Location).FirstOrDefault();
@@ -162,7 +162,7 @@ namespace NotificationPortal.Repositories
             }
 
         }
-
+        // delete data center
         public bool DeleteDataCenter(int referenceID, out string msg)
         {
             DataCenterLocation dataCenterToBeDeleted = _context.DataCenterLocation
