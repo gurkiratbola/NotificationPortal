@@ -19,7 +19,6 @@ namespace NotificationPortal.Repositories
         // sort function for status
         public IEnumerable<StatusVM> Sort(IEnumerable<StatusVM> list, string sortOrder, string searchString = null)
         {
-
             if (!String.IsNullOrEmpty(searchString))
             {
                 list = list.Where(c => c.StatusTypeName.ToUpper().Contains(searchString.ToUpper()) ||
@@ -63,16 +62,17 @@ namespace NotificationPortal.Repositories
                                                         StatusID = c.StatusID,
                                                         StatusTypeName = c.StatusType.StatusTypeName
                                                     });
-                int totalNumOfStatuses = statusList.Count();
+                int pageNumber = (page ?? 1);
+                int defaultPageSize = ConstantsRepo.PAGE_SIZE;
                 page = searchString == null ? page : 1;
                 int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
                 searchString = searchString ?? currentFilter;
-                int pageNumber = (page ?? 1);
-                int defaultPageSize = ConstantsRepo.PAGE_SIZE;
+                var sorted = Sort(statusList, sortOrder, searchString);
+                int totalNumOfStatuses = sorted.Count();
                 sortOrder = sortOrder == null ? ConstantsRepo.SORT_STATUS_BY_TYPE_ASCE : sortOrder;
                 StatusIndexVM model = new StatusIndexVM
                 {
-                    Statuses = Sort(statusList, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
+                    Statuses = sorted.ToPagedList(pageNumber, defaultPageSize),
                     CurrentFilter = searchString,
                     CurrentSort = sortOrder,
                     TotalItemCount = totalNumOfStatuses,

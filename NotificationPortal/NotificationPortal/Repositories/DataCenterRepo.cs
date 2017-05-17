@@ -18,7 +18,6 @@ namespace NotificationPortal.Repositories
         // sort function for data center
         public IEnumerable<DataCenterVM> Sort(IEnumerable<DataCenterVM> list, string sortOrder, string searchString = null)
         {
-
             if (!String.IsNullOrEmpty(searchString))
             {
                 list = list.Where(c => c.Location.ToUpper().Contains(searchString.ToUpper()));
@@ -51,16 +50,19 @@ namespace NotificationPortal.Repositories
                                                                 LocationID = c.LocationID,
 
                                                             });
-                int totalNumOfCenters = dataCenterList.Count();
+                
                 page = searchString == null ? page : 1;
                 int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
                 searchString = searchString ?? currentFilter;
                 int pageNumber = (page ?? 1);
                 int defaultPageSize = ConstantsRepo.PAGE_SIZE;
+                var sorted = Sort(dataCenterList, sortOrder, searchString);
+                int totalNumOfCenters = sorted.Count();
                 sortOrder = sortOrder == null ? ConstantsRepo.SORT_DATACENTER_BY_NAME_ASCE : sortOrder;
+
                 DataCenterIndexVM model = new DataCenterIndexVM
                 {
-                    DataCenters = Sort(dataCenterList, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
+                    DataCenters = sorted.ToPagedList(pageNumber, defaultPageSize),
                     LocationSort = sortOrder == ConstantsRepo.SORT_DATACENTER_BY_NAME_DESC ? ConstantsRepo.SORT_DATACENTER_BY_NAME_ASCE : ConstantsRepo.SORT_DATACENTER_BY_NAME_DESC,
                     CurrentFilter = searchString,
                     CurrentSort = sortOrder,
