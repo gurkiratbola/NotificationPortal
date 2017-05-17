@@ -37,7 +37,6 @@ namespace NotificationPortal.Repositories
             return list;
         }
 
-
         public IEnumerable<StatusVM> GetStatusList()
         {
             IEnumerable<StatusVM> statusList = _context.Status
@@ -47,12 +46,9 @@ namespace NotificationPortal.Repositories
                                                     StatusTypeID = c.StatusTypeID,
                                                     StatusID = c.StatusID,
                                                     StatusTypeName = c.StatusType.StatusTypeName
-                                                    //ClientRefID = c.Client.ReferenceID,
                                                 });
             return statusList;
         }
-
-
 
 
         public bool AddStatus(StatusVM status, out string msg)
@@ -62,7 +58,7 @@ namespace NotificationPortal.Repositories
         
             if (s != null)
             {
-                msg = "Application name already exist.";
+                msg = "Status name already exist.";
                 return false;
             }
             try
@@ -73,12 +69,12 @@ namespace NotificationPortal.Repositories
    
                 _context.Status.Add(newStatus);
                 _context.SaveChanges();
-                msg = "Application successfully added";
+                msg = "Status successfully created";
                 return true;
             }
             catch (SqlException)
             {
-                msg = "Failed to add application.";
+                msg = "Failed to add status.";
                 return false;
             }
         }
@@ -116,12 +112,12 @@ namespace NotificationPortal.Repositories
                 statusUpdated.StatusTypeID = status.StatusTypeID;
                 
                 _context.SaveChanges();
-                msg = "Application information succesfully updated.";
+                msg = "Status succesfully updated.";
                 return true;
             }
             catch
             {
-                msg = "Failed to update application.";
+                msg = "Failed to update status.";
                 return false;
             }
         }
@@ -139,7 +135,7 @@ namespace NotificationPortal.Repositories
             //                         .FirstOrDefault();
             if (statusToBeDeleted == null)
             {
-                msg = "application could not be deleted.";
+                msg = "Status could not be deleted.";
                 return false;
             }
           
@@ -147,12 +143,12 @@ namespace NotificationPortal.Repositories
             {
                 _context.Status.Remove(statusToBeDeleted);
                 _context.SaveChanges();
-                msg = "Application Successfully Deleted";
+                msg = "Status Successfully Deleted";
                 return true;
             }
             catch
             {
-                msg = "Failed to update application.";
+                msg = "Failed to update status.";
                 return false;
             }
 

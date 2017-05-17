@@ -5,13 +5,12 @@
 }
 
 <h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
-
-
+<!-- ========================= breadcrumb ========================= -->
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
-
+<!-- ========================= search & create ========================= -->
 <div class="row">
     <div class="col-md-6">
         <form action="#" class="form-inline pb-3" method="get">
@@ -29,6 +28,21 @@
 }
 </div>
 
+@if (TempData["SuccessMsg"] != null)
+{
+    <!-- alert message box -->
+    <p class="alert alert-success">
+        @Html.Raw(TempData["SuccessMsg"])
+    </p>
+}
+
+@if (TempData["ErrorMsg"] != null)
+{
+    <p class="alert alert-danger">
+        @Html.Raw(TempData["ErrorMsg"])
+    </p>
+}
+<!-- ========================= status table ========================= -->
 <table class="table table-bordered">
     <tr class="bg-inverse text-white">
         <th>
@@ -41,25 +55,17 @@
 
     @foreach (var item in Model)
     {
-        //var statusClass = item.StatusName.ToUpper() == NotificationPortal.Models.Key.STATUS_CLIENT_ENABLED.ToUpper() ? "<i class='fa fa-check text-success' aria-hidden='true'></i>" : "<i class='fa fa-times text-danger' aria-hidden='true'></i>";
         <tr class="clickable-row" id="@item.StatusID" data-href="Status/Details/@item.StatusID">
             <td>
                 @Html.DisplayFor(modelItem => item.StatusTypeName)
             </td>
-            @*@{
-                var className = item.StatusName == "Disabled" ? "badge badge-danger" : "badge badge-success";
-            }*@
             <td>
-                @*<span>@Html.Raw(statusClass)</span>*@
-                @*<span class="@className">*@
-                    @Html.DisplayFor(modelItem => item.StatusName)
-                @*</span>*@
+                @Html.DisplayFor(modelItem => item.StatusName)
             </td>
-          
         </tr>
     }
 </table>
-
+<!-- ========================= hidden menu ========================= -->
 <div class="hidden-menu">
     <ul>
         <li><a href="Status/Edit/" class="btn btn-sm">Edit</a></li>

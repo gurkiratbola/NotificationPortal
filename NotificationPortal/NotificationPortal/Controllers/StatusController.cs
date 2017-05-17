@@ -56,7 +56,7 @@ namespace NotificationPortal.Controllers
             }
             else
             {
-                TempData["ErrorMsg"] = "Client cannot be added at this time.";
+                TempData["ErrorMsg"] = "Status cannot be added at this time.";
             }
             model.StatusTypeList = _lRepo.GetStatusTypeList();
             return View(model);
@@ -126,7 +126,7 @@ namespace NotificationPortal.Controllers
             }
             else
             {
-                TempData["ErrorMsg"] = "Client cannot be deleted at this time.";
+                TempData["ErrorMsg"] = "Status cannot be deleted at this time.";
             }
 
             return View(status);
