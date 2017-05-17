@@ -314,6 +314,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\application-multiselect.js" />
     <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\refresh-index-helper.js" />
     <Content Include="Scripts\refresh-application-dropdown.js" />
