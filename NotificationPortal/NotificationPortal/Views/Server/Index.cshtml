@@ -1,13 +1,11 @@
-﻿
-@model NotificationPortal.ViewModels.ServerIndexVM
+﻿@model NotificationPortal.ViewModels.ServerIndexVM
 @using PagedList.Mvc;
+
 @{
     ViewBag.Title = "Servers";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
-
 
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
@@ -15,129 +13,173 @@
 </ol>
 
 <div class="row">
-    <div class="col-md-6">
-        @using (Html.BeginForm("Index", "Server", FormMethod.Get, new { @class = "form-inline pb-3" }))
+    <div class="form-inline col-sm-8 col-xs-12 pb-3">
+        @using (Html.BeginForm("Index", "Server", FormMethod.Get, new { @class = "form-inline search pb-3" }))
         {
             @Html.TextBox("SearchString", Model.CurrentFilter, new { @class = "form-control mr-sm-2" })
-            <input class="btn btn-secondary" type="submit" value="Search" />
+
+            <span class="hidden-xs-down">
+                <input class="btn btn-secondary" type="submit" value="Search" />
+            </span>
+
+            <span class="hidden-sm-up">
+                <button id="hidden-search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+            </span>
         }
     </div>
-@if (Request.IsAuthenticated && User.IsInRole("Admin") || (Request.IsAuthenticated && User.IsInRole("Staff")))
-{
-    <div class="offset-md-4 col-md-2">
+
+    <div class="offset-sm-2 col-sm-2 col-xs-12">
         <div class="float-create">
             @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-mint text-white" })
         </div>
     </div>
-}
 </div>
 
 @if (Model.Servers.Count() > 0)
 {
     if (TempData["SuccessMsg"] != null)
     {
-        <p class="alert alert-success">
-            @Html.Raw(TempData["SuccessMsg"])
-        </p>
+        <p class="alert alert-success">@Html.Raw(TempData["SuccessMsg"])</p>
     }
 
-    <table class="table table-bordered" style="position:relative;">
-        <tr class="bg-inverse text-white">
-            <th>
-                <a href="@Url.Action("Index", "Server", new { sortOrder = Model.ServerSort, currentFilter = Model.CurrentFilter })">
-                    Server
-                    <span class="filter-arrows">
-                        <i class="fa fa-caret-up" aria-hidden="true"></i>
-                        <i class="fa fa-caret-down" aria-hidden="true"></i>
-                    </span>
-                </a>
-            </th>
-            <th>
-                <a href="@Url.Action("Index", "Server", new { sortOrder = Model.DescriptionSort, currentFilter = Model.CurrentFilter })">
-                    Description
-                    <span class="filter-arrows">
-                        <i class="fa fa-caret-up" aria-hidden="true"></i>
-                        <i class="fa fa-caret-down" aria-hidden="true"></i>
-                    </span>
-                </a>
-            </th>
-            <th>
-                <a href="@Url.Action("Index", "Server", new { sortOrder = Model.LocationSort, currentFilter = Model.CurrentFilter })">
-                    Location
-                    <span class="filter-arrows">
-                        <i class="fa fa-caret-up" aria-hidden="true"></i>
-                        <i class="fa fa-caret-down" aria-hidden="true"></i>
-                    </span>
-                </a>
-            </th>
-            <th>
-                <a href="@Url.Action("Index", "Server", new { sortOrder = Model.StatusSort, currentFilter = Model.CurrentFilter })">
-                    Status
-                    <span class="filter-arrows">
-                        <i class="fa fa-caret-up" aria-hidden="true"></i>
-                        <i class="fa fa-caret-down" aria-hidden="true"></i>
-                    </span>
-                </a>
-            </th>
+    if (TempData["ErrorMsg"] != null)
+    {
+        <p class="alert alert-danger">@Html.Raw(TempData["ErrorMsg"])</p>
+    }
 
-            <th>
-                <a href="@Url.Action("Index", "Server", new { sortOrder = Model.ServerTypeSort, currentFilter = Model.CurrentFilter })">
-                    Server Type
-                    <span class="filter-arrows">
-                        <i class="fa fa-caret-up" aria-hidden="true"></i>
-                        <i class="fa fa-caret-down" aria-hidden="true"></i>
-                    </span>
-                </a>
-            </th>
-        </tr>
+    <table class="table table-bordered" style="position: relative;">
+        @{
+            var filterByServerNameAsce = "";
+            var filterByServerNameDesc = "";
+            var filterByDescriptionAsce = "";
+            var filterByDescriptionDesc = "";
+            var filterByLocationAsce = "";
+            var filterByLocationDesc = "";
+            var filterByServerTypeAsce = "";
+            var filterByServerTypeDesc = "";
+            var filterByStatusAsce = "";
+            var filterByStatusDesc = "";
 
-        @foreach (var item in Model.Servers)
-        {
-            //var statusClass = item.StatusName.ToUpper() == NotificationPortal.Models.Key.STATUS_CLIENT_ENABLED.ToUpper() ? "<i class='fa fa-check text-success' aria-hidden='true'></i>" : "<i class='fa fa-times text-danger' aria-hidden='true'></i>";
-            <tr class="clickable-row" id="@item.ReferenceID" data-href="Server/Details/@item.ReferenceID">
-                <td>
-                    @Html.DisplayFor(modelItem => item.ServerName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LocationName)
-                </td>
-                @{
-                    var className = item.StatusName == "Offline" ? "badge badge-danger" : "badge badge-success";
-                }
-                <td>
-                    @*<span>@Html.Raw(statusClass)</span>*@
-                    <span class="@className">@Html.DisplayFor(modelItem => item.StatusName)</span>
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.ServerTypeName)
-                </td>
-            </tr>
+            if (Model.CurrentSort != null)
+            {
+                filterByServerNameAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_SERVER_BY_NAME_ASCE) ? "active-arrow" : "disabled-arrow";
+                filterByServerNameDesc = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_SERVER_BY_NAME_DESC) ? "active-arrow" : "disabled-arrow";
+                filterByDescriptionAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_SERVER_BY_DESCRIPTION_ASCE) ? "active-arrow" : "disabled-arrow";
+                filterByDescriptionDesc = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_SERVER_BY_DESCRIPTION_DESC) ? "active-arrow" : "disabled-arrow";
+                filterByLocationAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_SERVER_BY_LOCATION_NAME_ASCE) ? "active-arrow" : "disabled-arrow";
+                filterByLocationDesc = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_SERVER_BY_LOCATION_NAME_DESC) ? "active-arrow" : "disabled-arrow";
+                filterByServerTypeAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_SERVERTYPE_BY_NAME_ASCE) ? "active-arrow" : "disabled-arrow";
+                filterByServerTypeDesc = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_SERVERTYPE_BY_NAME_DESC) ? "active-arrow" : "disabled-arrow";
+                filterByStatusAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_STATUS_BY_NAME_ASCE) ? "active-arrow" : "disabled-arrow";
+                filterByStatusDesc = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_STATUS_BY_NAME_DESC) ? "active-arrow" : "disabled-arrow";
+            }
         }
+
+        <thead>
+            <tr class="bg-inverse text-white">
+                <th>
+                    <a href="@Url.Action("Index", "Server", new { sortOrder = Model.ServerNameSort, currentFilter = Model.CurrentFilter })">
+                        Server
+                        <span class="filter-arrows">
+                            <i class="fa fa-caret-up @filterByServerNameAsce" aria-hidden="true"></i>
+                            <i class="fa fa-caret-down @filterByServerNameDesc" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </th>
+                <th>
+                    <a href="@Url.Action("Index", "Server", new { sortOrder = Model.ServerTypeSort, currentFilter = Model.CurrentFilter })">
+                        Server Type
+                        <span class="filter-arrows">
+                            <i class="fa fa-caret-up @filterByServerTypeAsce" aria-hidden="true"></i>
+                            <i class="fa fa-caret-down @filterByServerTypeDesc" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </th>
+                <th>
+                    <a href="@Url.Action("Index", "Server", new { sortOrder = Model.DescriptionSort, currentFilter = Model.CurrentFilter })">
+                        Description
+                        <span class="filter-arrows">
+                            <i class="fa fa-caret-up @filterByDescriptionAsce" aria-hidden="true"></i>
+                            <i class="fa fa-caret-down @filterByDescriptionDesc" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </th>
+                <th>
+                    <a href="@Url.Action("Index", "Server", new { sortOrder = Model.LocationSort, currentFilter = Model.CurrentFilter })">
+                        Location
+                        <span class="filter-arrows">
+                            <i class="fa fa-caret-up @filterByLocationAsce" aria-hidden="true"></i>
+                            <i class="fa fa-caret-down @filterByLocationDesc" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </th>
+                <th>
+                    <a href="@Url.Action("Index", "Server", new { sortOrder = Model.StatusSort, currentFilter = Model.CurrentFilter })">
+                        Status
+                        <span class="filter-arrows">
+                            <i class="fa fa-caret-up @filterByStatusAsce" aria-hidden="true"></i>
+                            <i class="fa fa-caret-down @filterByStatusDesc" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model.Servers)
+            {
+                var statusClass = item.StatusName.ToUpper() == NotificationPortal.Models.Key.STATUS_SERVER_OFFLINE.ToUpper() ? "badge badge-danger" : "badge badge-success";
+
+                <tr class="clickable-row" id="@item.ReferenceID" data-href="Server/Details/@item.ReferenceID">
+                    <td data-title="Server" class="first-row">
+                        @Html.DisplayFor(modelItem => item.ServerName)
+                    </td>
+                    <td data-title="Server" Type>
+                        @Html.DisplayFor(modelItem => item.ServerTypeName)
+                    </td>
+                    <td data-title="Description">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td data-title="Location">
+                        @Html.DisplayFor(modelItem => item.LocationName)
+                    </td>
+                    <td data-title="Status">
+                        <span class="@statusClass">
+                            @Html.DisplayFor(modelItem => item.StatusName)
+                        </span>
+                    </td>
+                </tr>
+          }
+        </tbody>       
     </table>
 
-    @Html.PagedListPager(Model.Servers, page => Url.Action("Index",
-        new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
+   if (Model.TotalItemCount > NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)
+   {
+        @Html.PagedListPager(Model.Servers, page => Url.Action("Index", new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
+
+        <div class="pageinfo-display">
+            <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
+        </div>
+   }
 }
 else
 {
     if (Model == null)
     {
-        <p> Something went wrong, server database not available.</p>
+        <p> Something went wrong, cannot retrieve information.</p>
     }
     else
     {
-        <p> There are no such servers in the database at the moment.</p>
+        <p>There are no such servers in the database at the moment.</p>
     }
 
 }
 
-    <div class="hidden-menu">
-        <ul>
-            <li><a href="Server/Edit/" class="btn btn-sm">Edit</a></li>
-            <li><a href="Server/Delete/" class="btn btn-sm">Delete</a></li>
-        </ul>
-    </div>
+<div class="hidden-menu">
+    <ul>
+        <li><a href="Server/Edit/" class="btn btn-sm">Edit</a></li>
+        <li><a href="Server/Delete/" class="btn btn-sm">Delete</a></li>
+    </ul>
+</div>

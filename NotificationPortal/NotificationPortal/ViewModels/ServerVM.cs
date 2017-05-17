@@ -15,7 +15,6 @@ namespace NotificationPortal.ViewModels
     {
         public string ReferenceID { get; set; }
 
-
         [DisplayName("Application")]
         public string ApplicationName { get; set; }
 
@@ -30,7 +29,6 @@ namespace NotificationPortal.ViewModels
 
         [DisplayName("Client")]
         public string ClientID { get; set; }
-
     }
 
 
@@ -40,19 +38,21 @@ namespace NotificationPortal.ViewModels
 
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
-        public string ClientSort { get; set; }
+        public int TotalItemCount { get; set; }
+        public int ItemStart { get; set; }
+        public int ItemEnd { get; set; }
+
         public string StatusSort { get; set; }
         public string LocationSort { get; set; }
-        public string ApplicationSort { get; set; }
         public string DescriptionSort { get; set; }
         public string ServerTypeSort { get; set; }
-        public string ServerSort { get; set; }
+        public string ServerNameSort { get; set; }
     }
 
     public class ServerVM
     {
-        [Key]
         public string ReferenceID { get; set; }
+
         [Required]
         [DisplayName("Server Name")]
         public string ServerName { get; set; }
@@ -86,10 +86,8 @@ namespace NotificationPortal.ViewModels
 
     public class ServerDetailVM
     {
-        [Key]
         public string ReferenceID { get; set; }
 
-        
         [DisplayName("Server")]
         public string ServerName { get; set; }
 
@@ -130,14 +128,11 @@ namespace NotificationPortal.ViewModels
         public string ThreadStatus { get; set; }
 
         public DateTime SentDateTime { get; set; }
-        
     }
 
     public class ServerDeleteVM
     {
-        [Key]
         public string ReferenceID { get; set; }
-
 
         [Required]
         [DisplayName("Server Name")]
@@ -157,15 +152,11 @@ namespace NotificationPortal.ViewModels
         [Required]
         [DisplayName("Status")]
         public string StatusName { get; set; }
-
-
     }
 
     public class ServerListVM
     {
-        [Key]
         public string ReferenceID { get; set; }
-
 
         [Required]
         [DisplayName("Server Name")]
@@ -185,9 +176,5 @@ namespace NotificationPortal.ViewModels
         [Required]
         [DisplayName("Status")]
         public string StatusName { get; set; }
-
-      
-
-
     }
 }

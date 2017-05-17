@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using NotificationPortal.ViewModels;
 using PagedList;
+using System.Data.SqlClient;
 
 namespace NotificationPortal.Repositories
 {
@@ -59,85 +60,61 @@ namespace NotificationPortal.Repositories
                                                     Description = c.Description
                                                 });
 
+                int totalNumOfServers = serverList.Count();
                 page = searchString == null ? page : 1;
+                int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
                 searchString = searchString ?? currentFilter;
                 int pageNumber = (page ?? 1);
+
+                int defaultPageSize = ConstantsRepo.PAGE_SIZE;
+
+                // sort by status name default
+                sortOrder = sortOrder == null ? ConstantsRepo.SORT_SERVER_BY_STATUS_NAME_DESC : sortOrder;
+
                 ServerIndexVM model = new ServerIndexVM
                 {
-                    Servers = Sort(serverList, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
+                    Servers = Sort(serverList, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
                     CurrentFilter = searchString,
                     CurrentSort = sortOrder,
-                    ClientSort = sortOrder == ConstantsRepo.SORT_CLIENT_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_CLIENT_BY_NAME_DESC,
-                    StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
-                    ApplicationSort = sortOrder == ConstantsRepo.SORT_APP_BY_NAME_DESC ? ConstantsRepo.SORT_APP_BY_NAME_ASCE : ConstantsRepo.SORT_APP_BY_NAME_DESC,
-                    ServerTypeSort = sortOrder == ConstantsRepo.SORT_SERVERTYPE_BY_NAME_DESC ? ConstantsRepo.SORT_SERVERTYPE_BY_NAME_ASCE : ConstantsRepo.SORT_APP_BY_NAME_DESC,
-                    ServerSort = sortOrder == ConstantsRepo.SORT_SERVER_BY_NAME_DESC ? ConstantsRepo.SORT_SERVER_BY_NAME_ASCE : ConstantsRepo.SORT_SERVER_BY_NAME_DESC,
+                    TotalItemCount = totalNumOfServers,
+                    ItemStart = currentPageIndex * 10 + 1,
+                    ItemEnd = totalNumOfServers - (10 * currentPageIndex) >= 10 ? 10 * (currentPageIndex + 1) : totalNumOfServers,
+
+                    DescriptionSort = sortOrder == ConstantsRepo.SORT_SERVER_BY_DESCRIPTION_DESC ? ConstantsRepo.SORT_SERVER_BY_DESCRIPTION_ASCE : ConstantsRepo.SORT_SERVER_BY_DESCRIPTION_DESC,
+                    StatusSort = sortOrder == ConstantsRepo.SORT_SERVER_BY_STATUS_NAME_DESC ? ConstantsRepo.SORT_SERVER_BY_STATUS_NAME_ASCE : ConstantsRepo.SORT_SERVER_BY_STATUS_NAME_DESC,
+                    LocationSort = sortOrder == ConstantsRepo.SORT_SERVER_BY_LOCATION_NAME_DESC ? ConstantsRepo.SORT_SERVER_BY_LOCATION_NAME_ASCE : ConstantsRepo.SORT_SERVER_BY_LOCATION_NAME_DESC,
+                    ServerTypeSort = sortOrder == ConstantsRepo.SORT_SERVERTYPE_BY_NAME_DESC ? ConstantsRepo.SORT_SERVERTYPE_BY_NAME_ASCE : ConstantsRepo.SORT_SERVERTYPE_BY_NAME_DESC,
+                    ServerNameSort = sortOrder == ConstantsRepo.SORT_SERVER_BY_NAME_DESC ? ConstantsRepo.SORT_SERVER_BY_NAME_ASCE : ConstantsRepo.SORT_SERVER_BY_NAME_DESC,
                 };
 
                 return model;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                if(e is SqlException)
+                { }
+
                 return null;
-            }
-        }
-
-        public bool AddServer(ServerVM server, out string msg)
-        {
-            Server s = _context.Server.Where(a => a.ServerName == server.ServerName).FirstOrDefault();
-
-            if (s != null)
-            {
-                msg = "Server name already exist.";
-                return false;
-            }
-            try
-            {
-
-                Server newServer = new Server();
-                newServer.ServerName = server.ServerName;
-                newServer.StatusID = server.StatusID;
-                newServer.LocationID = server.LocationID;
-                newServer.Description = server.Description;
-                newServer.ServerTypeID = server.ServerTypeID;
-                newServer.ReferenceID = Guid.NewGuid().ToString();
-
-                if (server.ApplicationsReferenceIDs == null)
-                {
-                    server.ApplicationsReferenceIDs = new string[0];
-                }
-
-                var applications = _context.Application.Where(b => server.ApplicationsReferenceIDs.Contains(b.ReferenceID));
-                newServer.Applications = applications.ToList();
-                _context.Server.Add(newServer);
-                _context.SaveChanges();
-                msg = "Server successfully added";
-                return true;
-            }
-            catch
-            {
-                msg = "Failed to add server.";
-                return false;
             }
         }
 
         public ServerVM GetServer(string referenceID)
         {
             ServerVM server = _context.Server.Where(a => a.ReferenceID == referenceID)
-                              .Select(b => new ServerVM
-                              {
-                                  ServerName = b.ServerName,
-                                  ReferenceID = b.ReferenceID,
-                                  Description = b.Description,
-                                  StatusID = b.StatusID,
-                                  LocationID = b.LocationID,
-                                  ServerTypeID = b.ServerTypeID,
-                              }).FirstOrDefault();
+            .Select(b => new ServerVM
+            {
+                ServerName = b.ServerName,
+                ReferenceID = b.ReferenceID,
+                Description = b.Description,
+                StatusID = b.StatusID,
+                LocationID = b.LocationID,
+                ServerTypeID = b.ServerTypeID,
+            }).FirstOrDefault();
 
             return server;
         }
 
-        public ServerDetailVM GetDetailServer(string referenceID)
+        public ServerDetailVM GetServerDetails(string referenceID)
         {
             Server server = _context.Server.Where(a => a.ReferenceID == referenceID).FirstOrDefault();
 
@@ -180,6 +157,45 @@ namespace NotificationPortal.Repositories
             };
 
             return model;
+        }
+
+        public bool AddServer(ServerVM server, out string msg)
+        {
+            Server s = _context.Server.Where(a => a.ServerName == server.ServerName).FirstOrDefault();
+
+            if (s != null)
+            {
+                msg = "Server name already exist.";
+                return false;
+            }
+            try
+            {
+
+                Server newServer = new Server();
+                newServer.ServerName = server.ServerName;
+                newServer.StatusID = server.StatusID;
+                newServer.LocationID = server.LocationID;
+                newServer.Description = server.Description;
+                newServer.ServerTypeID = server.ServerTypeID;
+                newServer.ReferenceID = Guid.NewGuid().ToString();
+
+                if (server.ApplicationsReferenceIDs == null)
+                {
+                    server.ApplicationsReferenceIDs = new string[0];
+                }
+
+                var applications = _context.Application.Where(b => server.ApplicationsReferenceIDs.Contains(b.ReferenceID));
+                newServer.Applications = applications.ToList();
+                _context.Server.Add(newServer);
+                _context.SaveChanges();
+                msg = "Server successfully added";
+                return true;
+            }
+            catch
+            {
+                msg = "Failed to add server.";
+                return false;
+            }
         }
 
         public ServerDeleteVM GetDeleteServer(string referenceID)

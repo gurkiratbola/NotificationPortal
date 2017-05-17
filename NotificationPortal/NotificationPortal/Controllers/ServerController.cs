@@ -9,14 +9,13 @@ namespace NotificationPortal.Controllers
     [Authorize(Roles = Key.ROLE_ADMIN + "," + Key.ROLE_STAFF)]
     public class ServerController : AppBaseController
     {
-        private readonly ServerRepo _sRepo = new ServerRepo();
-        private readonly SelectListRepo _lRepo = new SelectListRepo();
-
+        private readonly ServerRepo _serverRepo = new ServerRepo();
+        private readonly SelectListRepo _selectRepo = new SelectListRepo();
 
         [HttpGet]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            ServerIndexVM model = _sRepo.GetServerList(sortOrder, currentFilter, searchString, page);
+            ServerIndexVM model = _serverRepo.GetServerList(sortOrder, currentFilter, searchString, page);
             return View(model);
         }
 
@@ -26,10 +25,10 @@ namespace NotificationPortal.Controllers
             // To be modified: global method for status in development
             var model = new ServerVM
             {
-                StatusList = _sRepo.GetStatusList(),
-                LocationList = _sRepo.GetLocationList(),
-                ServerTypeList = _lRepo.GetTypeList(),
-                ApplicationList = _sRepo.GetApplicationList()
+                StatusList = _serverRepo.GetStatusList(),
+                LocationList = _serverRepo.GetLocationList(),
+                ServerTypeList = _selectRepo.GetTypeList(),
+                ApplicationList = _serverRepo.GetApplicationList()
             };
 
             return View(model);
@@ -41,7 +40,7 @@ namespace NotificationPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_sRepo.AddServer(model, out string msg))
+                if (_serverRepo.AddServer(model, out string msg))
                 {
                     TempData["SuccessMsg"] = msg;
                     return RedirectToAction("index");
@@ -50,10 +49,10 @@ namespace NotificationPortal.Controllers
                 TempData["ErrorMsg"] = msg;
             }
 
-            model.StatusList = _sRepo.GetStatusList();
-            model.LocationList = _sRepo.GetLocationList();
-            model.ServerTypeList = _sRepo.GetServerTypeList();
-            model.ApplicationList = _sRepo.GetApplicationList();
+            model.StatusList = _serverRepo.GetStatusList();
+            model.LocationList = _serverRepo.GetLocationList();
+            model.ServerTypeList = _serverRepo.GetServerTypeList();
+            model.ApplicationList = _serverRepo.GetApplicationList();
 
             return View(model);
         }
@@ -61,13 +60,13 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Edit(string id)
         {
-            ServerVM server = _sRepo.GetServer(id);
+            ServerVM server = _serverRepo.GetServer(id);
 
             // To be modified: global method for status in development
-            server.StatusList = _sRepo.GetStatusList();
-            server.ServerTypeList = _sRepo.GetServerTypeList();
-            server.LocationList = _sRepo.GetLocationList();
-            server.ApplicationList = _sRepo.GetApplicationList();
+            server.StatusList = _serverRepo.GetStatusList();
+            server.ServerTypeList = _serverRepo.GetServerTypeList();
+            server.LocationList = _serverRepo.GetLocationList();
+            server.ApplicationList = _serverRepo.GetApplicationList();
 
             return View(server);
         }
@@ -77,7 +76,7 @@ namespace NotificationPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_sRepo.EditServer(model, out string msg))
+                if (_serverRepo.EditServer(model, out string msg))
                 {
                     TempData["SuccessMsg"] = msg;
                     return RedirectToAction("Details", new { id = model.ReferenceID });
@@ -86,10 +85,10 @@ namespace NotificationPortal.Controllers
                 TempData["ErrorMsg"] = msg;
             }
 
-            ServerVM server = _sRepo.GetServer(model.ReferenceID);
-            server.StatusList = _sRepo.GetStatusList();
-            server.LocationList = _sRepo.GetLocationList();
-            server.ServerTypeList = _sRepo.GetServerTypeList();
+            ServerVM server = _serverRepo.GetServer(model.ReferenceID);
+            server.StatusList = _serverRepo.GetStatusList();
+            server.LocationList = _serverRepo.GetLocationList();
+            server.ServerTypeList = _serverRepo.GetServerTypeList();
 
             return View(server);
         }
@@ -97,13 +96,13 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Details(string id)
         {
-            return View(_sRepo.GetDetailServer(id));
+            return View(_serverRepo.GetServerDetails(id));
         }
 
         [HttpGet]
         public ActionResult Delete(string id)
         {
-            return View(_sRepo.GetDeleteServer(id));
+            return View(_serverRepo.GetDeleteServer(id));
         }
 
         [HttpPost]
@@ -111,7 +110,7 @@ namespace NotificationPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_sRepo.DeleteServer(server.ReferenceID, out string msg))
+                if (_serverRepo.DeleteServer(server.ReferenceID, out string msg))
                 {
                     TempData["SuccessMsg"] = msg;
                     return RedirectToAction("index");
