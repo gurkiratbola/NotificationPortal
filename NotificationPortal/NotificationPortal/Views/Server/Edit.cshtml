@@ -18,7 +18,16 @@
 
     <div class="form-horizontal">
 
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="offset-md-3 col-md-6 offset-md-3">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @{  if (TempData["ErrorMsg"] != null)
+                {
+                    <p class="alert alert-danger">@TempData["ErrorMsg"]</p>
+                }
+            }
+        </div>
+
         @Html.HiddenFor(model => model.ReferenceID)
 
         <div class="form-group">
@@ -79,7 +88,7 @@
             </div>
         </div>
     </div>
-}
+                }
 
 <script>
     $('#ApplicationReferenceIDs').multiselect({

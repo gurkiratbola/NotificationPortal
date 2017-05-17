@@ -99,6 +99,7 @@ namespace NotificationPortal.Repositories
             }
         }
 
+        // Not used anymore
         public ServerVM GetServer(string referenceID)
         {
             ServerVM server = _context.Server.Where(a => a.ReferenceID == referenceID)
@@ -180,15 +181,16 @@ namespace NotificationPortal.Repositories
 
         public bool AddServer(ServerVM model, out string msg)
         {
-            Server s = _context.Server.Where(a => a.ServerName == model.ServerName).FirstOrDefault();
-
-            if (s != null)
-            {
-                msg = "Server name already exist.";
-                return false;
-            }
             try
             {
+                Server s = _context.Server.Where(a => a.ServerName == model.ServerName).FirstOrDefault();
+
+                if (s != null)
+                {
+                    msg = "Server name already exist.";
+                    return false;
+                }
+
                 Server newServer = new Server();
                 newServer.ServerName = model.ServerName;
                 newServer.StatusID = model.StatusID;
@@ -212,8 +214,11 @@ namespace NotificationPortal.Repositories
                 msg = "Server successfully added";
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                if(e is SqlException)
+                { }
+
                 msg = "Failed to add server.";
                 return false;
             }
@@ -224,6 +229,12 @@ namespace NotificationPortal.Repositories
             try
             {
                 Server s = _context.Server.Where(a => a.ServerName == model.ServerName).FirstOrDefault();
+
+                if (s != null)
+                {
+                    msg = "Server name already exist.";
+                    return false;
+                }
 
                 Server serverUpdated = _context.Server.Where(a => a.ReferenceID == model.ReferenceID).FirstOrDefault();
 
