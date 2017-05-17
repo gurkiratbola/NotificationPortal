@@ -1,7 +1,8 @@
-﻿// used for CreateThread,Create,Edit notification views
+﻿// used for CreateThread,Create,Edit for Notification views
 
 // global variable to check if the page is initialized
 var initializeNotificationCreateView = false;
+
 // get all app based on selected servers
 var getAppsBasedOnServer = function () {
     var serverReferenceIDs = $('#ServerList').val();
