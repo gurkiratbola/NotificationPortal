@@ -364,6 +364,14 @@ td a:hover {
     padding-left: 0.5rem;
 }
 
+.dropdown-menu > li {
+    padding-top: 7px;
+}
+
+.multiselect-search {
+    padding-left: 8px;
+}
+
 .show > .dropdown-menu {
     padding: 0.5rem !important;
 }
@@ -490,7 +498,7 @@ td a:hover {
                         Sidebar Styles
 ========================================================================== */
 .nav-pills > li {
-    border-bottom: 1px solid #afe7f1;
+    border-bottom: 1px solid #ededed;
 }
 
 .sidebar-dropdown-button {
@@ -514,7 +522,6 @@ td a:hover {
     border-bottom: 1px solid #6d6b69;
     font-size: 0.9em;
     color: lightgrey;
-    padding-left: 25px;
 }
 
 .sidebar-dropdown li:last-child .nav-link {
