@@ -27,8 +27,8 @@ namespace NotificationPortal.Controllers
             {
                 StatusList = _serverRepo.GetStatusList(),
                 LocationList = _serverRepo.GetLocationList(),
-                ServerTypeList = _selectRepo.GetTypeList(),
-                ApplicationList = _serverRepo.GetApplicationList()
+                ServerTypeList = _serverRepo.GetServerTypeList(),
+                ApplicationList = _selectRepo.GetApplicationList()
             };
 
             return View(model);
@@ -52,7 +52,7 @@ namespace NotificationPortal.Controllers
             model.StatusList = _serverRepo.GetStatusList();
             model.LocationList = _serverRepo.GetLocationList();
             model.ServerTypeList = _serverRepo.GetServerTypeList();
-            model.ApplicationList = _serverRepo.GetApplicationList();
+            model.ApplicationList = _selectRepo.GetApplicationList();
 
             return View(model);
         }

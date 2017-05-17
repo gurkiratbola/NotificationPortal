@@ -22,10 +22,45 @@
         @Html.HiddenFor(model => model.ReferenceID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ServerName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
+            @Html.LabelFor(model => model.ServerName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.ServerName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ServerName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
+                <i id="preloader" class="fa fa-spinner fa-spin" style="display: none;"></i>
+                <div id="ApplicationList">
+                    @Html.ListBoxFor(m => m.ApplicationReferenceIDs, Model.ApplicationList as SelectList, htmlAttributes: new { style = "display: none;" })
+                    @Html.ValidationMessageFor(model => model.ApplicationReferenceIDs, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
+                @Html.DropDownListFor(m => m.LocationID, Model.LocationList as SelectList, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StatusID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
+                @Html.DropDownListFor(m => m.StatusID, Model.StatusList as SelectList, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.StatusID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ServerTypeID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
+                @Html.DropDownListFor(m => m.ServerTypeID, Model.ServerTypeList as SelectList, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ServerTypeID, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -38,42 +73,6 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.DropDownListFor(m => m.LocationID, Model.LocationList as SelectList, htmlAttributes: new { @class = "form-control" })
-
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.StatusID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.DropDownListFor(m => m.StatusID, Model.StatusList as SelectList, htmlAttributes: new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ServerTypeID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.DropDownListFor(m => m.ServerTypeID, Model.ServerTypeList as SelectList, htmlAttributes: new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ApplicationsReferenceIDs, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                <select class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false">
-                    @foreach (var item in Model.ApplicationList)
-                    {
-                        <option value="@Html.DisplayFor(modelItem => item.ReferenceID)" class="ApplicationListItem @Html.DisplayFor(modelItem => item.ReferenceID)">@Html.DisplayFor(modelItem => item.ApplicationName)</option>
-
-                    }
-                </select>
-                @Html.ValidationMessageFor(model => model.ApplicationsReferenceIDs, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
             <div class="offset-md-3 col-md-6">
                 <input type="submit" value="Save" class="btn btn-success" />
                 @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
@@ -81,6 +80,18 @@
         </div>
     </div>
 }
+
+<script>
+    $('#ApplicationReferenceIDs').multiselect({
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        disableIfEmpty: true,
+        maxHeight: 200,
+        buttonText: function (options, select) {
+            return 'Application (' + options.length + ')';
+        }
+    });
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

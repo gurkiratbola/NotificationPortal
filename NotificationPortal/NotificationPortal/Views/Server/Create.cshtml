@@ -7,7 +7,7 @@
 
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
-    <li class="breadcrumb-item"><a href="~/Server/Index">Servers</a></li>
+    <li class="breadcrumb-item"><a href="~/Server/Index"  class="link-color">Servers</a></li>
     <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
 
@@ -26,12 +26,16 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
+            @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
             <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                <i id="preloader" class="fa fa-spinner fa-spin" style="display: none;"></i>
+                <div id="ApplicationList">
+                    @Html.ListBoxFor(m => m.ApplicationReferenceIDs, Model.ApplicationList as SelectList, htmlAttributes: new { style = "display: none;" })
+                    @Html.ValidationMessageFor(model => model.ApplicationReferenceIDs, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
             <div class="offset-md-3 col-md-6 offset-md-3">
@@ -53,19 +57,12 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ApplicationsReferenceIDs, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
-                <select class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false">
-                    @foreach (var item in Model.ApplicationList)
-                    {
-                        <option value="@Html.DisplayFor(modelItem => item.ReferenceID)" class="ApplicationListItem @Html.DisplayFor(modelItem => item.ReferenceID)">@Html.DisplayFor(modelItem => item.ApplicationName)</option>
-
-                    }
-                </select>
-                @Html.ValidationMessageFor(model => model.ApplicationsReferenceIDs, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
-
 
         <div class="form-group">
             <div class="offset-md-3 col-md-6">
@@ -75,6 +72,18 @@
         </div>
     </div>
 }
+
+<script>
+    $('#ApplicationReferenceIDs').multiselect({
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        disableIfEmpty: true,
+        maxHeight: 200,
+        buttonText: function (options, select) {
+            return 'Application (' + options.length + ')';
+        }
+    });
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

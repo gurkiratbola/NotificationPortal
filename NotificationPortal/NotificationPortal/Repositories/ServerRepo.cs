@@ -12,6 +12,7 @@ namespace NotificationPortal.Repositories
     public class ServerRepo
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
+        private readonly SelectListRepo _selectRepo = new SelectListRepo();
 
         public IEnumerable<ServerListVM> Sort(IEnumerable<ServerListVM> list, string sortOrder, string searchString = null)
         {
@@ -146,6 +147,8 @@ namespace NotificationPortal.Repositories
                     URL = t.URL
                 });
 
+                var getServerApplications = server.Applications.Select(app => app.ReferenceID).ToArray();
+
                 ServerDetailVM model = new ServerDetailVM
                 {
                     ServerName = server.ServerName,
@@ -155,13 +158,14 @@ namespace NotificationPortal.Repositories
                     Location = server.DataCenterLocation.Location,
                     ServerType = server.ServerType.ServerTypeName,
                     Threads = serverThreads,
-                    Applications = serverApplication
+                    Applications = serverApplication,
+                    ApplicationReferenceIDs = getServerApplications
                 };
 
                 model.StatusList = GetStatusList();
                 model.ServerTypeList = GetServerTypeList();
                 model.LocationList = GetLocationList();
-                model.ApplicationList = GetApplicationList();
+                model.ApplicationList = _selectRepo.GetApplicationList();
 
                 return model;
             }
@@ -193,12 +197,13 @@ namespace NotificationPortal.Repositories
                 newServer.ServerTypeID = model.ServerTypeID;
                 newServer.ReferenceID = Guid.NewGuid().ToString();
 
-                if (model.ApplicationsReferenceIDs == null)
+                if (model.ApplicationReferenceIDs == null)
                 {
-                    model.ApplicationsReferenceIDs = new string[0];
+                    model.ApplicationReferenceIDs = new string[0];
                 }
 
-                var applications = _context.Application.Where(b => model.ApplicationsReferenceIDs.Contains(b.ReferenceID));
+                var applications = _context.Application.Where(b => model.ApplicationReferenceIDs.Contains(b.ReferenceID));
+
                 newServer.Applications = applications.ToList();
                 _context.Server.Add(newServer);
 
@@ -229,12 +234,12 @@ namespace NotificationPortal.Repositories
                 serverUpdated.ReferenceID = model.ReferenceID;
                 serverUpdated.ServerTypeID = model.ServerTypeID;
 
-                if (model.ApplicationsReferenceIDs == null)
+                if (model.ApplicationReferenceIDs == null)
                 {
-                    model.ApplicationsReferenceIDs = new string[0];
+                    model.ApplicationReferenceIDs = new string[0];
                 }
 
-                var apps = _context.Application.Where(a => model.ApplicationsReferenceIDs.Contains(a.ReferenceID));
+                var apps = _context.Application.Where(a => model.ApplicationReferenceIDs.Contains(a.ReferenceID));
 
                 serverUpdated.Applications.Clear();
 
