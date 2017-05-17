@@ -43,6 +43,7 @@
 
 <!-- Tab panes -->
 <div class="tab-content">
+    <!-- Notifications Tab pane -->
     <div class="tab-pane active" id="Notifications" role="tabpanel">
         <dl class="row">
             <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NotificationType)</dt>
@@ -118,6 +119,7 @@
             </table>
         </div>
     </div>
+    <!-- Servers Tab pane -->
     <div class="tab-pane" id="Servers" role="tabpanel">
         <table class="table table-bordered">
             @{ var serverModel = Model.Servers.FirstOrDefault();}
@@ -153,6 +155,7 @@
             </tbody>
         </table>
     </div>
+    <!-- Applications Tab pane -->
     <div class="tab-pane" id="Applications" role="tabpanel">
         @if (Model.Applications.Count() == 0)
         {

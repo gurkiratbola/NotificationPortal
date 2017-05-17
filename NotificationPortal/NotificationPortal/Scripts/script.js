@@ -77,6 +77,7 @@ var sidebarStateDetection = function () {
 
 // hide alert messages after 2s
 var hideAlert = function () {
+    const DELAY = 2000;
     var alertSuccess = $(".alert-success");
     var alertDanger = $(".alert-danger");
     if (alertSuccess.css('display') !== 'none' || alertDanger.css('display') !== 'none') {
@@ -85,7 +86,18 @@ var hideAlert = function () {
             alertDanger.parent('.form-group > div').slideUp();
             alertSuccess.slideUp();
             alertDanger.slideUp();
-        }, 2000);
+        }, DELAY);
+    }
+}
+
+var truncate = function () {
+    const CHAR_LIMIT = 28;
+    var e = $("h5");
+    console.log(e.prop('scrollWidth'))
+    console.log(e.width())
+
+    if (e.prop('scrollWidth') > e.width()) {
+        //alert("Overflow");
     }
 }
 
@@ -95,5 +107,5 @@ $(document).ready(function ($) {
     sidebarDropdown();// for sidebar dropdown
     sidebarStateDetection();//sidebar state detection
     hideAlert();// hiding alert boxes after 2s
-
+    //truncate();
 });

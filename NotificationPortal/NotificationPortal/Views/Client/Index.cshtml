@@ -46,6 +46,13 @@
             @Html.Raw(TempData["SuccessMsg"])
         </p>
     }
+
+    if (TempData["ErrorMsg"] != null)
+    {
+        <p class="alert alert-danger">
+            @Html.Raw(TempData["ErrorMsg"])
+        </p>
+    }
     <!-- table for clients -->
     <table class="table table-bordered" style="position:relative;">
         @{
@@ -53,9 +60,9 @@
             var filterByStatusDesc = "";
             var filterByClientAsce = "";
             var filterByClientDesc = "";
-            <!-- class for the arrows:active or disabled -->
             if (Model.CurrentSort != null)
             {
+                <!-- class for the arrows:active or disabled -->
                 filterByStatusAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_STATUS_BY_NAME_ASCE) ? "active-arrow" : "disabled-arrow";
                 filterByStatusDesc = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_STATUS_BY_NAME_DESC) ? "active-arrow" : "disabled-arrow";
                 filterByClientAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE) ? "active-arrow" : "disabled-arrow";
@@ -86,9 +93,9 @@
             </tr>
         </thead>
         <tbody>
-            <!-- loop for all clients -->
             @foreach (var item in Model.Clients)
             {
+                <!-- loop for all clients -->
                 var statusClass = item.StatusName.ToUpper() == NotificationPortal.Models.Key.STATUS_CLIENT_DISABLED.ToUpper() ? "badge badge-danger" : "badge badge-success";
                 var statusIcon = item.StatusName.ToUpper() == NotificationPortal.Models.Key.STATUS_CLIENT_ENABLED.ToUpper() ? "<i class='fa fa-check text-success' aria-hidden='true'></i>" : "<i class='fa fa-times text-danger' aria-hidden='true'></i>";
                 <tr class="clickable-row" id="@item.ReferenceID" data-href="Client/Details/@item.ReferenceID">
@@ -112,16 +119,15 @@
         </tbody>
     </table>
     <!-- ========================= pagination ========================= -->
-    <!-- hide pagination if only 1 page -->
     if (Model.TotalItemCount > NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)
     {
+        <!-- hide pagination if only 1 page -->
         @Html.PagedListPager(Model.Clients, page => Url.Action("Index",
         new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
         <div class="pageinfo-display">
             <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
         </div>
     }
-
 }
 else
 {

@@ -42,6 +42,7 @@
 
 <!-- Tab panes -->
 <div class="tab-content">
+    <!-- Notifications Tab pane -->
     <div class="tab-pane active" id="Notifications" role="tabpanel">
     <h4>@Html.DisplayFor(model => model.Subject)</h4>
     <dl class="row">
@@ -117,6 +118,7 @@
         }
      </div>
         </div>
+    <!-- Servers Tab pane -->
     <div class="tab-pane" id="Servers" role="tabpanel">
         <table class="table table-bordered">
             @{ var serverModel = Model.Servers.FirstOrDefault();}
@@ -151,6 +153,7 @@
             </tbody>
         </table>
     </div>
+    <!-- Applications Tab pane -->
     <div class="tab-pane" id="Applications" role="tabpanel">
         @if (Model.Applications.Count() == 0)
         {
@@ -198,10 +201,12 @@
     @if(User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN)||
         User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
     {
+        <!-- Create is only for internal users -->
         @Html.ActionLink("Update Thread", "Create", new { id = Model.IncidentNumber }, new { @class = "btn btn-mint text-white" })
     }
     @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN))
     {
+        <!-- Only admin can delete threads -->
         @Html.ActionLink("Delete Thread", "DeleteThread", new { id = Model.IncidentNumber }, new { @class = "btn btn-danger" })
     }
 </div>
