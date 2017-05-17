@@ -16,7 +16,7 @@ namespace NotificationPortal.Repositories
     {
         const string APP_STATUS_TYPE_NAME = "Status";
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
-
+        // sort function for status
         public IEnumerable<StatusVM> Sort(IEnumerable<StatusVM> list, string sortOrder, string searchString = null)
         {
 
@@ -50,7 +50,7 @@ namespace NotificationPortal.Repositories
             }
             return list;
         }
-
+        // get all statues
         public StatusIndexVM GetStatusList(string sortOrder, string currentFilter, string searchString, int? page)
         {
             try
@@ -89,7 +89,7 @@ namespace NotificationPortal.Repositories
             }
         }
 
-
+        // create new status
         public bool AddStatus(StatusVM status, out string msg)
         {
             Status s = _context.Status.Where(e => e.StatusName == status.StatusName)
@@ -117,7 +117,7 @@ namespace NotificationPortal.Repositories
                 return false;
             }
         }
-
+        // get status by id
         public StatusVM GetStatus(int statusID)
         {
             StatusVM status = _context.Status
@@ -131,7 +131,7 @@ namespace NotificationPortal.Repositories
                             }).FirstOrDefault();
             return status;
         }
-
+        // update status
         public bool EditStatus(StatusVM status, out string msg)
         {
             Status s = _context.Status
@@ -164,7 +164,7 @@ namespace NotificationPortal.Repositories
                 return false;
             }
         }
-
+        // delete status
         public bool DeleteStatus(int statusID, out string msg)
         {
             Status statusToBeDeleted = _context.Status

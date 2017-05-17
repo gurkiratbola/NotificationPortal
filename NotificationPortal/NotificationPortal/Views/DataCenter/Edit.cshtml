@@ -5,14 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h1 class="text-center display-4 pb-3">@Model.Location</h1>
-
+<!-- ========================= breadcrumb ========================= -->
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="~/DataCenter/Index" class="link-color">Servers</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.Location)</li>
 </ol>
-
-
+<!-- ========================= edit form ========================= -->
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -42,8 +41,6 @@
         </div>
     </div>
 }
-
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

@@ -43,7 +43,7 @@ namespace NotificationPortal.Controllers
                 if (_serverRepo.AddServer(model, out string msg))
                 {
                     TempData["SuccessMsg"] = msg;
-                    return RedirectToAction("index");
+                    return RedirectToAction("Index");
                 }
 
                 TempData["ErrorMsg"] = msg;
@@ -60,26 +60,27 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Edit(string id)
         {
-            ServerVM server = _serverRepo.GetServer(id);
+            var server = _serverRepo.GetServerDetails(id);
 
             // To be modified: global method for status in development
-            server.StatusList = _serverRepo.GetStatusList();
-            server.ServerTypeList = _serverRepo.GetServerTypeList();
-            server.LocationList = _serverRepo.GetLocationList();
-            server.ApplicationList = _serverRepo.GetApplicationList();
+            if (server == null)
+            {
+                TempData["ErrorMsg"] = "Cannot edit this server at this time";
+                return RedirectToAction("Index");
+            }
 
             return View(server);
         }
 
         [HttpPost]
-        public ActionResult Edit(ServerVM model)
+        public ActionResult Edit(ServerDetailVM model)
         {
             if (ModelState.IsValid)
             {
                 if (_serverRepo.EditServer(model, out string msg))
                 {
                     TempData["SuccessMsg"] = msg;
-                    return RedirectToAction("Details", new { id = model.ReferenceID });
+                    return RedirectToAction("Index");
                 }
 
                 TempData["ErrorMsg"] = msg;
@@ -113,7 +114,7 @@ namespace NotificationPortal.Controllers
                 if (_serverRepo.DeleteServer(server.ReferenceID, out string msg))
                 {
                     TempData["SuccessMsg"] = msg;
-                    return RedirectToAction("index");
+                    return RedirectToAction("Index");
                 }
 
                 TempData["ErrorMsg"] = msg;

@@ -6,13 +6,13 @@
 }
 
 <h1 class="text-center display-4 pb-3">@Model.Location</h1>
-
+<!-- ========================= breadcrumb ========================= -->
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
     <li class="breadcrumb-item"><a href="~/DataCenter/Index">Data Centers</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.Location)</li>
 </ol>
-
+<!-- ========================= delete detail ========================= -->
 <h3 class="text-danger pb-2">Are you sure you want to delete this Data Center?</h3>
 @if (TempData["ErrorMsg"] != null)
 {

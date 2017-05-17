@@ -93,12 +93,11 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "End Date")]
         public DateTime? EndDateTime { get; set; }
 
-        // TODO: modify after implementing ajax
+        // ids and select list for dropdown options
         [Display(Name = "Applications")]
         public string[] ApplicationReferenceIDs { get; set; }
-        public IEnumerable<ApplicationServerOptionVM> ApplicationList { get; set; }
+        public SelectList ApplicationList { get; set; }
 
-        // ids and select list for dropdown options
         [Display(Name = "Select Server")]
         public string[] ServerReferenceIDs { get; set; }
         public SelectList ServerList { get; set; }
@@ -196,13 +195,5 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Status")]
         public string ApplicationStatus { get; set; }
         public string ReferenceID { get; set; }
-    }
-
-    /// TODO: remove after ajx
-    public class ApplicationServerOptionVM
-    {
-        public string ReferenceID { get; set; }
-        public string ApplicationName { get; set; }
-        public string ServerReferenceIDs { get; set; }
     }
 }

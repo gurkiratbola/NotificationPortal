@@ -116,52 +116,67 @@ namespace NotificationPortal.Repositories
 
         public ServerDetailVM GetServerDetails(string referenceID)
         {
-            Server server = _context.Server.Where(a => a.ReferenceID == referenceID).FirstOrDefault();
-
-            IEnumerable<Notification> allServerNotifications = server.Notifications;
-
-            IEnumerable<ServerThreadVM> serverThreads = allServerNotifications.Select(t => new ServerThreadVM()
+            try
             {
-                ReferenceID = t.ReferenceID,
-                ThreadID = t.IncidentNumber,
-                ThreadHeading = t.NotificationHeading,
-                SentDateTime = t.SentDateTime,
-                ThreadType = t.NotificationType.NotificationTypeName,
-                LevelOfImpact = t.LevelOfImpact.LevelName,
-                ThreadStatus = t.Status.StatusName
-            });
+                Server server = _context.Server.Where(a => a.ReferenceID == referenceID).FirstOrDefault();
 
-            IEnumerable<Application> allServerApplications = server.Applications;
+                IEnumerable<Notification> allServerNotifications = server.Notifications;
 
-            //.GroupBy(n => n.ClientID)
-            //.Select(t => t.OrderBy(i => i.FirstName))
-            IEnumerable<ServerApplicationVM> serverApplication = allServerApplications.Select(t => new ServerApplicationVM()
+                IEnumerable<ServerThreadVM> serverThreads = allServerNotifications.Select(thread => new ServerThreadVM()
+                {
+                    ReferenceID = thread.ReferenceID,
+                    ThreadID = thread.IncidentNumber,
+                    ThreadHeading = thread.NotificationHeading,
+                    SentDateTime = thread.SentDateTime,
+                    ThreadType = thread.NotificationType.NotificationTypeName,
+                    LevelOfImpact = thread.LevelOfImpact.LevelName,
+                    ThreadStatus = thread.Status.StatusName
+                });
+
+                IEnumerable<Application> allServerApplications = server.Applications;
+
+                //.GroupBy(n => n.ClientID)
+                //.Select(t => t.OrderBy(i => i.FirstName))
+                IEnumerable<ServerApplicationVM> serverApplication = allServerApplications.Select(t => new ServerApplicationVM()
+                {
+                    ApplicationName = t.ApplicationName,
+                    Status = t.Status.StatusName,
+                    ClientID = t.Client.ClientName,
+                    Description = t.Description,
+                    URL = t.URL
+                });
+
+                ServerDetailVM model = new ServerDetailVM
+                {
+                    ServerName = server.ServerName,
+                    ReferenceID = server.ReferenceID,
+                    Description = server.Description,
+                    Status = server.Status.StatusName,
+                    Location = server.DataCenterLocation.Location,
+                    ServerType = server.ServerType.ServerTypeName,
+                    Threads = serverThreads,
+                    Applications = serverApplication
+                };
+
+                model.StatusList = GetStatusList();
+                model.ServerTypeList = GetServerTypeList();
+                model.LocationList = GetLocationList();
+                model.ApplicationList = GetApplicationList();
+
+                return model;
+            }
+            catch (Exception e)
             {
-                ApplicationName = t.ApplicationName,
-                Status = t.Status.StatusName,
-                ClientID = t.Client.ClientName,
-                Description = t.Description,
-                URL = t.URL
-            });
+                if(e is SqlException)
+                { }
 
-            ServerDetailVM model = new ServerDetailVM
-            {
-                ServerName = server.ServerName,
-                ReferenceID = server.ReferenceID,
-                Description = server.Description,
-                Status = server.Status.StatusName,
-                Location = server.DataCenterLocation.Location,
-                ServerType = server.ServerType.ServerTypeName,
-                Threads = serverThreads,
-                Applications = serverApplication
-            };
-
-            return model;
+                return null;
+            }
         }
 
-        public bool AddServer(ServerVM server, out string msg)
+        public bool AddServer(ServerVM model, out string msg)
         {
-            Server s = _context.Server.Where(a => a.ServerName == server.ServerName).FirstOrDefault();
+            Server s = _context.Server.Where(a => a.ServerName == model.ServerName).FirstOrDefault();
 
             if (s != null)
             {
@@ -170,30 +185,68 @@ namespace NotificationPortal.Repositories
             }
             try
             {
-
                 Server newServer = new Server();
-                newServer.ServerName = server.ServerName;
-                newServer.StatusID = server.StatusID;
-                newServer.LocationID = server.LocationID;
-                newServer.Description = server.Description;
-                newServer.ServerTypeID = server.ServerTypeID;
+                newServer.ServerName = model.ServerName;
+                newServer.StatusID = model.StatusID;
+                newServer.LocationID = model.LocationID;
+                newServer.Description = model.Description;
+                newServer.ServerTypeID = model.ServerTypeID;
                 newServer.ReferenceID = Guid.NewGuid().ToString();
 
-                if (server.ApplicationsReferenceIDs == null)
+                if (model.ApplicationsReferenceIDs == null)
                 {
-                    server.ApplicationsReferenceIDs = new string[0];
+                    model.ApplicationsReferenceIDs = new string[0];
                 }
 
-                var applications = _context.Application.Where(b => server.ApplicationsReferenceIDs.Contains(b.ReferenceID));
+                var applications = _context.Application.Where(b => model.ApplicationsReferenceIDs.Contains(b.ReferenceID));
                 newServer.Applications = applications.ToList();
                 _context.Server.Add(newServer);
+
                 _context.SaveChanges();
+
                 msg = "Server successfully added";
                 return true;
             }
             catch
             {
                 msg = "Failed to add server.";
+                return false;
+            }
+        }
+
+        public bool EditServer(ServerDetailVM model, out string msg)
+        {
+            try
+            {
+                Server s = _context.Server.Where(a => a.ServerName == model.ServerName).FirstOrDefault();
+
+                Server serverUpdated = _context.Server.Where(a => a.ReferenceID == model.ReferenceID).FirstOrDefault();
+
+                serverUpdated.ServerName = model.ServerName;
+                serverUpdated.StatusID = model.StatusID;
+                serverUpdated.LocationID = model.LocationID;
+                serverUpdated.Description = model.Description;
+                serverUpdated.ReferenceID = model.ReferenceID;
+                serverUpdated.ServerTypeID = model.ServerTypeID;
+
+                if (model.ApplicationsReferenceIDs == null)
+                {
+                    model.ApplicationsReferenceIDs = new string[0];
+                }
+
+                var apps = _context.Application.Where(a => model.ApplicationsReferenceIDs.Contains(a.ReferenceID));
+
+                serverUpdated.Applications.Clear();
+
+                serverUpdated.Applications = apps.ToList();
+                _context.SaveChanges();
+
+                msg = "Server information succesfully updated.";
+                return true;
+            }
+            catch
+            {
+                msg = "Failed to update server.";
                 return false;
             }
         }
@@ -213,49 +266,6 @@ namespace NotificationPortal.Repositories
                                     }).FirstOrDefault();
 
             return server;
-        }
-
-        public bool EditServer(ServerVM server, out string msg)
-        {
-            Server s = _context.Server.Where(a => a.ServerName == server.ServerName).FirstOrDefault();
-
-            //if (s != null)
-            //{
-            //    msg = "Server name already exist.";
-            //    return false;
-            //}
-
-            try
-            {
-                Server serverUpdated = _context.Server.Where(a => a.ReferenceID == server.ReferenceID).FirstOrDefault();
-
-                serverUpdated.ServerName = server.ServerName;
-                serverUpdated.StatusID = server.StatusID;
-                serverUpdated.LocationID = server.LocationID;
-                serverUpdated.Description = server.Description;
-                serverUpdated.ReferenceID = server.ReferenceID;
-                serverUpdated.ServerTypeID = server.ServerTypeID;
-
-                if (server.ApplicationsReferenceIDs == null)
-                {
-                    server.ApplicationsReferenceIDs = new string[0];
-                }
-
-                var applications = _context.Application.Where(b => server.ApplicationsReferenceIDs.Contains(b.ReferenceID));
-
-                serverUpdated.Applications.Clear();
-
-                serverUpdated.Applications = applications.ToList();
-                _context.SaveChanges();
-
-                msg = "Server information succesfully updated.";
-                return true;
-            }
-            catch
-            {
-                msg = "Failed to update server.";
-                return false;
-            }
         }
 
         public bool DeleteServer(string referenceID, out string msg)
@@ -328,7 +338,6 @@ namespace NotificationPortal.Repositories
             return new SelectList(statusList, "Value", "Text");
         }
 
-
         public SelectList GetLocationList()
         {
 
@@ -352,7 +361,6 @@ namespace NotificationPortal.Repositories
 
             return new SelectList(serverTypeList, "Value", "Text");
         }
-
 
         public IEnumerable<ServerApplicationVM> GetApplicationList()
         {
