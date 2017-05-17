@@ -269,7 +269,7 @@ td a:hover {
     }
 }
 /* ==========================================================================
-                            Pagination/Filter/Sort Styles
+                            Pagination/Filter/Sort/Search Styles
 ========================================================================== */
 @media screen and (max-width: 992px) {
     .form-inline.search {
@@ -284,7 +284,16 @@ td a:hover {
     }
 }
 
+#preloader {
+    margin-left: 10px;
+}
 
+@media screen and (max-width: 580px) {
+    #preloader {
+        margin: 20px auto 0;
+    }
+}
+ 
 .pagination a {
     color: #6f7e95;
 }
