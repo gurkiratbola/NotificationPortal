@@ -269,7 +269,7 @@ td a:hover {
     }
 }
 /* ==========================================================================
-                            Pagination/Filter/Sort Styles
+                            Pagination/Filter/Sort/Search Styles
 ========================================================================== */
 @media screen and (max-width: 992px) {
     .form-inline.search {
@@ -284,7 +284,16 @@ td a:hover {
     }
 }
 
+#preloader {
+    margin-left: 10px;
+}
 
+@media screen and (max-width: 580px) {
+    #preloader {
+        margin: 20px auto 0;
+    }
+}
+ 
 .pagination a {
     color: #6f7e95;
 }
@@ -508,9 +517,13 @@ td a:hover {
     padding-left: 25px;
 }
 
-    .sidebar-dropdown .nav-link:hover {
-        color: #e0e77a;
-    }
+.sidebar-dropdown li:last-child .nav-link {
+    border-bottom: none;
+} 
+    
+.sidebar-dropdown .nav-link:hover {
+    color: #e0e77a;
+}
 
 .sidebar-dropdown .active {
     background-color: #ededed;
@@ -541,13 +554,13 @@ td a:hover {
         text-align: center;
     }
 
-        .sidebar-icon .fa {
-            font-size: 2em;
-        }
+    .sidebar-icon .fa {
+        font-size: 2em;
+    }
 
-        .sidebar-icon > small {
-            font-size: 0.5em;
-        }
+    .sidebar-icon > small {
+        font-size: 0.5em;
+    }
 
     .sidebar-dropdown .nav-link {
         padding-left: 0;
@@ -590,7 +603,7 @@ td a:hover {
     }
 
     .navbar-inverse .navbar-nav .nav-link:visited,
-    .navbar-inverse .navbar-nav .nav-link:focus, {
+    .navbar-inverse .navbar-nav .nav-link:focus {
         color: white;
     }
 }
@@ -617,6 +630,12 @@ td a:hover {
 .navbar-nav li i {
     width: 30px;
 }
+
+.hidden-lg-down > i,
+.hidden-lg-down a > i  {
+    width: 18px !important;
+}
+
 /* ==========================================================================
                         Footer Styles
 ========================================================================== */
@@ -1043,13 +1062,4 @@ small.float-right {
     .manage-btn {
     width: 80%;
     }
-}
-
-/* ==========================================================================
-                        Form Seperator
-========================================================================== */
-.form-seperator {
-    margin-top: 2px;
-    margin-bottom: 20px;
-    border: 1px dashed #e3e3e3;
 }

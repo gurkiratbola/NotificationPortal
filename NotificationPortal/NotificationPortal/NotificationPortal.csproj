@@ -315,8 +315,8 @@
     </None>
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-multiselect.js" />
-    <Content Include="Scripts\ajax-helper.js" />
-    <Content Include="Scripts\notification-helper.js" />
+    <Content Include="Scripts\refresh-index-helper.js" />
+    <Content Include="Scripts\refresh-application-dropdown.js" />
     <Content Include="Scripts\refresh-application-status.js" />
     <Content Include="Scripts\script.js" />
     <Content Include="Scripts\timezone.js" />

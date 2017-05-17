@@ -4,33 +4,38 @@
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@{
 
-    var className = Model.StatusName == "Offline" ? "badge badge-danger" : "badge badge-success";
-}
-<h1 class="text-center display-4 pb-3">@Model.StatusName <span class="@className">@Html.DisplayFor(modelItem => Model.StatusName)</span></h1>
-
+<h1 class="text-center display-4 pb-3">@Model.StatusName</h1>
+<!-- ========================= breadcrumb ========================= -->
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="~/Status/Index" class="link-color">Status</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.StatusName)</li>
 </ol>
+
+<!-- alert messages -->
+@if (TempData["SuccessMsg"] != null)
+{
+    <p class="alert alert-success">
+        @Html.Raw(TempData["SuccessMsg"])
+    </p>
+}
+<!-- ========================= status detail ========================= -->
 <div>
-   
-    <dl class="dl-horizontal">
-        <dt>
+    <dl class="row">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StatusName)
         </dt>
 
-        <dd>
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StatusName)
         </dd>
 
-        <dt>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StatusTypeName)
         </dt>
 
-        <dd>
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StatusTypeName)
         </dd>
 

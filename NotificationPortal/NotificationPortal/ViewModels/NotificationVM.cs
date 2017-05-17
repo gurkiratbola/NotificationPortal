@@ -12,6 +12,7 @@ namespace NotificationPortal.ViewModels
 
     public class NotificationIndexVM
     {
+        // for table head
         [Display(Name = "Incident #")]
         public string IncidentNumber { get; set; }
         [Display(Name = "Type")]
@@ -24,7 +25,8 @@ namespace NotificationPortal.ViewModels
         public string Status { get; set; }
         [Display(Name = "Priority")]
         public string Priority { get; set; }
-        
+
+        // for filter
         public int[] NotificationTypeIDs { get; set; }
         public int[] LevelOfImpactIDs { get; set; }
         public int[] StatusIDs { get; set; }
@@ -42,6 +44,7 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Priority")]
         public SelectList PriorityList { get; set; }
 
+        // pagination, filter, sort
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public string SearchString { get; set; }
@@ -90,41 +93,40 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "End Date")]
         public DateTime? EndDateTime { get; set; }
 
-        [Required]
-        public int LevelOfImpactID { get; set; }
+        // TODO: modify after implementing ajax
+        [Display(Name = "Applications")]
+        public string[] ApplicationReferenceIDs { get; set; }
+        public IEnumerable<ApplicationServerOptionVM> ApplicationList { get; set; }
+
+        // ids and select list for dropdown options
+        [Display(Name = "Select Server")]
+        public string[] ServerReferenceIDs { get; set; }
+        public SelectList ServerList { get; set; }
 
         [Required]
         public int NotificationTypeID { get; set; }
-
-        [Required]
-        public int StatusID { get; set; }
-
-        [Required]
-        public int PriorityID { get; set; }
-
-        [Display(Name = "Select Server")]
-        public string[] ServerReferenceIDs { get; set; }
-
-        [Display(Name = "Applications")]
-        public string[] ApplicationReferenceIDs { get; set; }
-
-        public IEnumerable<ApplicationServerOptionVM> ApplicationList { get; set; }
-
-        public SelectList ServerList { get; set; }
-
         [Display(Name = "Type")]
         public SelectList NotificationTypeList { get; set; }
 
+        [Required]
+        public int LevelOfImpactID { get; set; }
         [Display(Name = "Level of Impact")]
         public SelectList LevelOfImpactList { get; set; }
 
+        [Required]
+        public int StatusID { get; set; }
         [Display(Name = "Status")]
         public SelectList StatusList { get; set; }
 
+        [Required]
+        public int PriorityID { get; set; }
         [Display(Name = "Priority")]
         public SelectList PriorityList { get; set; }
     }
-    
+
+    // extends from NotificationCreateVM,
+    // but needs NotificationReferenceID to
+    // edit specific notification in thread
     public class NotificationEditVM : NotificationCreateVM
     {
         [Required]
@@ -150,11 +152,14 @@ namespace NotificationPortal.ViewModels
         public string SenderName { get; set; }
         [Display(Name = "Subject")]
         public string Subject { get; set; }
+
+        // enumerables for the tabs
         public IEnumerable<NotificationDetailVM> Thread { get; set; }
         public IEnumerable<NotificationServerVM> Servers { get; set; }
         public IEnumerable<NotificationApplicationVM> Applications { get; set; }
     }
 
+    // for notification tab on notification detail view
     public class NotificationDetailVM
     {
         public string ReferenceID { get; set; }
@@ -169,6 +174,7 @@ namespace NotificationPortal.ViewModels
         public string IncidentNumber { get; set; }
     }
 
+    // for Server tab on notification detail view
     public class NotificationServerVM
     {
         [Display(Name ="Server")]
@@ -180,6 +186,7 @@ namespace NotificationPortal.ViewModels
         public string ReferenceID { get; set; }
     }
 
+    // for Application tab on notification detail view
     public class NotificationApplicationVM
     {
         [Display(Name = "Application")]
@@ -191,6 +198,7 @@ namespace NotificationPortal.ViewModels
         public string ReferenceID { get; set; }
     }
 
+    /// TODO: remove after ajx
     public class ApplicationServerOptionVM
     {
         public string ReferenceID { get; set; }

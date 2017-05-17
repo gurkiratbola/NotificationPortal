@@ -101,7 +101,7 @@ namespace NotificationPortal.Api
         {
             int value = model.NotificationTypeIDs.Length + model.LevelOfImpactIDs.Length + model.StatusIDs.Length + model.PriorityIDs.Length;
             IEnumerable<NotificationThreadVM> allThreads = value == 0 ? _nRepo.GetAllNotifications() : GetFilteredNotifications(model);
-            IPagedList<NotificationThreadVM> threads = _nRepo.Sort(allThreads, model.CurrentSort, model.SearchString).ToPagedList(model.Page, model.ItemsPerPage ?? ConstantsRepo.PAGE_SIZE);
+            IPagedList<NotificationThreadVM> threads = Sort(allThreads, model.CurrentSort, model.SearchString).ToPagedList(model.Page, model.ItemsPerPage ?? ConstantsRepo.PAGE_SIZE);
             NotificationIndexFiltered result = new NotificationIndexFiltered()
             {
                 ItemStart = (threads.PageNumber - 1) * threads.PageSize + 1,
@@ -118,6 +118,67 @@ namespace NotificationPortal.Api
                 StatusSort = model.CurrentSort == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC
             };
             return result;
+        }
+
+        public IEnumerable<NotificationThreadVM> Sort(IEnumerable<NotificationThreadVM> list, string sortOrder, string searchString)
+        {
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(
+                    n => n.IncidentNumber.ToUpper().Contains(searchString.ToUpper())
+                    || n.NotificationHeading.ToUpper().Contains(searchString.ToUpper()));
+            }
+            switch (sortOrder)
+            {
+                case ConstantsRepo.SORT_INCIDENT_NUMBER_ASCE:
+                    list = list.OrderBy(n => n.IncidentNumber);
+                    break;
+
+                case ConstantsRepo.SORT_INCIDENT_NUMBER_DESC:
+                    list = list.OrderByDescending(n => n.IncidentNumber);
+                    break;
+
+                case ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE:
+                    list = list.OrderBy(n => n.LevelOfImpactValue);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE:
+                    list = list.OrderBy(n => n.NotificationHeading);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC:
+                    list = list.OrderByDescending(n => n.NotificationHeading);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE:
+                    list = list.OrderBy(n => n.NotificationType);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC:
+                    list = list.OrderByDescending(n => n.NotificationType);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_ASCE:
+                    list = list.OrderBy(n => n.PriorityValue);
+                    break;
+
+                case ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC:
+                    list = list.OrderByDescending(n => n.PriorityValue);
+                    break;
+
+                case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
+                    list = list.OrderBy(n => n.Status);
+                    break;
+
+                case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
+                    list = list.OrderByDescending(n => n.Status);
+                    break;
+
+                default:
+                    list = list.OrderByDescending(n => n.LevelOfImpactValue);
+                    break;
+            }
+            return list;
         }
     }
 }

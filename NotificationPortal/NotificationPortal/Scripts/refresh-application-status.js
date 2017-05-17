@@ -13,7 +13,7 @@ var sendRequest = function (refIds) {
     if (!waiting) {
         showPreloader(refIds);
         $.ajax({
-            type: "POST",
+            type: "PUT",
             dataType: "json",
             url: domain + "api/Application",
             data: JSON.stringify(refIds),
