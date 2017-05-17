@@ -13,13 +13,13 @@ namespace NotificationPortal.Models
         public const string GROUP_INTERNAL = "Internal";
         public const string GROUP_EXTERNAL = "External";
 
-        public const string LEVEL_OF_IMPACT_IMPACTING = "Impacting";
         public const string LEVEL_OF_IMPACT_OUTAGE = "Full service outage";
+        public const string LEVEL_OF_IMPACT_IMPACTING = "Impacting";
         public const string LEVEL_OF_IMPACT_REDUNDANCY = "Loss of redundancy";
         public const string LEVEL_OF_IMPACT_NON_IMPACTING = "Non-Impacting";
 
-        public const int LEVEL_OF_IMPACT_IMPACTING_VALUE = 4;
-        public const int LEVEL_OF_IMPACT_OUTAGE_VALUE = 3;
+        public const int LEVEL_OF_IMPACT_OUTAGE_VALUE = 4;
+        public const int LEVEL_OF_IMPACT_IMPACTING_VALUE = 3;
         public const int LEVEL_OF_IMPACT_REDUNDANCY_VALUE = 2;
         public const int LEVEL_OF_IMPACT_NON_IMPACTING_VALUE = 1;
 
