@@ -6,49 +6,48 @@
 }
 
 <h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
-
+<!-- ========================= breadcrumb ========================= -->
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="~/Status/Index" class="link-color">Status</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.StatusName)</li>
 </ol>
-
+<!-- ========================= edit form ========================= -->
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-
+    <div class="form-horizontal offset-md-3 col-md-6 offset-md-3">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <!-- alert message box -->
+        @if (TempData["ErrorMsg"] != null)
+        {
+            <p class="alert alert-danger">
+                @Html.Raw(TempData["ErrorMsg"])
+            </p>
+        }
+        @Html.HiddenFor(model => model.StatusTypeID)
         @Html.HiddenFor(model => model.StatusID)
-
+        <!-- status input field -->
         <div class="form-group">
-            @Html.LabelFor(model => model.StatusName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.StatusName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StatusName, "", new { @class = "text-danger float-right" })
-            </div>
+            @Html.LabelFor(model => model.StatusTypeName, htmlAttributes: new { @class = "" })
+            <p class="font-weight-bold">
+                @Html.Raw(Model.StatusTypeName)
+            </p>
+            @Html.ValidationMessageFor(model => model.StatusTypeID, "", new { @class = "text-danger float-right" })
         </div>
-
+        <!-- category input field -->
         <div class="form-group">
-            @Html.LabelFor(model => model.StatusTypeID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.DropDownListFor(m => m.StatusTypeID, ViewBag.StatusTypeList as SelectList, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.StatusTypeID, "", new { @class = "text-danger float-right" })
-
-            </div>
+            @Html.LabelFor(model => model.StatusName, htmlAttributes: new { @class = "required" })
+            @Html.EditorFor(model => model.StatusName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.StatusName, "", new { @class = "text-danger float-right" })
         </div>
-
-
+        <!-- submit button -->
         <div class="form-group">
-            <div class="offset-md-3 col-md-6">
-                <input type="submit" value="Save" class="btn btn-success" />
-                @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
-            </div>
+            <input type="submit" value="Save" class="btn btn-success" />
+            @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
         </div>
     </div>
 }
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

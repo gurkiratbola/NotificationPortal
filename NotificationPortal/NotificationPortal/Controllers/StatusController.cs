@@ -19,18 +19,16 @@ namespace NotificationPortal.Controllers
         private readonly SelectListRepo _lRepo = new SelectListRepo();
         // GET: Status
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            IEnumerable<StatusVM> statusList = _sRepo.GetStatusList();
+            StatusIndexVM statusList = _sRepo.GetStatusList(sortOrder, currentFilter, searchString, page);
             return View(statusList);
         }
         [HttpGet]
         public ActionResult Create()
         {
-            // To be modified: global method for status in development
             var model = new StatusVM
             {
-
                 StatusTypeList = _lRepo.GetStatusTypeList()
             };
             return View(model);
@@ -66,9 +64,6 @@ namespace NotificationPortal.Controllers
         public ActionResult Edit(int id)
         {
             StatusVM status = _sRepo.GetStatus(id);
-            // To be modified: global method for status in development
-            ViewBag.StatusTypeList = _lRepo.GetStatusTypeList();
-          
             return View(status);
         }
 
@@ -90,8 +85,6 @@ namespace NotificationPortal.Controllers
                 }
             }
             StatusVM status = _sRepo.GetStatus(model.StatusID);
-            ViewBag.StatusTypeList = _lRepo.GetTypeList();
-
             return View(status);
         }
 
@@ -128,7 +121,7 @@ namespace NotificationPortal.Controllers
             {
                 TempData["ErrorMsg"] = "Status cannot be deleted at this time.";
             }
-
+            status = _sRepo.GetStatus(status.StatusID);
             return View(status);
         }
     }

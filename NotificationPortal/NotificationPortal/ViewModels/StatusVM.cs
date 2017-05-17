@@ -29,7 +29,7 @@ namespace NotificationPortal.ViewModels
         public int StatusID { get; set; }
 
         [Required]
-        [DisplayName("Category Name")]
+        [DisplayName("Status")]
         public string StatusName { get; set; }
 
         [Required]
