@@ -267,6 +267,7 @@ namespace NotificationPortal.Repositories
             return model;
         }
 
+        // get all notifications based on roles of current user
         public IEnumerable<NotificationThreadVM> GetAllNotifications()
         {
             try
@@ -324,6 +325,7 @@ namespace NotificationPortal.Repositories
             }
         }
 
+        // TODO: implement new API of this method as it is not good with multiselect plugin
         public IEnumerable<ApplicationServerOptionVM> GetApplicationList()
         {
             var apps = _context.Application.Select(a => new { Application = a, Servers = a.Servers });
@@ -346,6 +348,7 @@ namespace NotificationPortal.Repositories
             return appList;
         }
 
+        // create new notification. this is also used for updating a thread with new notification
         public bool CreateNotification(NotificationCreateVM notification, out string msg)
         {
 
@@ -404,6 +407,7 @@ namespace NotificationPortal.Repositories
 
         }
 
+        // edit a created notification
         public bool EditNotification(NotificationEditVM notification, out string msg)
         {
             try
@@ -499,68 +503,8 @@ namespace NotificationPortal.Repositories
             }
 
         }
-
-        public IEnumerable<NotificationThreadVM> Sort(IEnumerable<NotificationThreadVM> list, string sortOrder, string searchString)
-        {
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                list = list.Where(
-                    n => n.IncidentNumber.ToUpper().Contains(searchString.ToUpper())
-                    || n.NotificationHeading.ToUpper().Contains(searchString.ToUpper()));
-            }
-            switch (sortOrder)
-            {
-                case ConstantsRepo.SORT_INCIDENT_NUMBER_ASCE:
-                    list = list.OrderBy(n => n.IncidentNumber);
-                    break;
-
-                case ConstantsRepo.SORT_INCIDENT_NUMBER_DESC:
-                    list = list.OrderByDescending(n => n.IncidentNumber);
-                    break;
-
-                case ConstantsRepo.SORT_LEVEL_OF_IMPACT_ASCE:
-                    list = list.OrderBy(n => n.LevelOfImpactValue);
-                    break;
-
-                case ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_ASCE:
-                    list = list.OrderBy(n => n.NotificationHeading);
-                    break;
-
-                case ConstantsRepo.SORT_NOTIFICATION_BY_HEADING_DESC:
-                    list = list.OrderByDescending(n => n.NotificationHeading);
-                    break;
-
-                case ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_ASCE:
-                    list = list.OrderBy(n => n.NotificationType);
-                    break;
-
-                case ConstantsRepo.SORT_NOTIFICATION_BY_TYPE_DESC:
-                    list = list.OrderByDescending(n => n.NotificationType);
-                    break;
-
-                case ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_ASCE:
-                    list = list.OrderBy(n => n.PriorityValue);
-                    break;
-
-                case ConstantsRepo.SORT_NOTIFICATION_BY_PRIORITY_DESC:
-                    list = list.OrderByDescending(n => n.PriorityValue);
-                    break;
-
-                case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
-                    list = list.OrderBy(n => n.Status);
-                    break;
-
-                case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
-                    list = list.OrderByDescending(n => n.Status);
-                    break;
-
-                default:
-                    list = list.OrderByDescending(n => n.LevelOfImpactValue);
-                    break;
-            }
-            return list;
-        }
-
+        
+        // create mails using a template body for users with email as preference recieve method
         public List<MailMessage> CreateMails(NotificationCreateVM notification)
         {
             try
@@ -643,6 +587,7 @@ namespace NotificationPortal.Repositories
             }
         }
 
+        // get the phone numbers of the users with sms as preference recieve method
         public List<PhoneNumber> GetPhoneNumbers(NotificationCreateVM notification)
         {
             var servers = _context.Server.Where(s => notification.ServerReferenceIDs.Contains(s.ReferenceID));
@@ -681,6 +626,7 @@ namespace NotificationPortal.Repositories
             return phoneNumbers;
         }
 
+        // get unique incident # based on notification type
         public string NewIncidentNumber(int notificationTypeID)
         {
             string notificationType = _slRepo.GetTypeList().Where(i => i.Value == notificationTypeID.ToString()).Select(i => i.Text).FirstOrDefault();
@@ -725,8 +671,3 @@ namespace NotificationPortal.Repositories
         }
     }
 }
-
-//parse timezone
-
-//int offsetNum = 0;
-//int.TryParse(timeOffsetString, out offsetNum);
