@@ -37,8 +37,11 @@
         <!--notification application reference ID-->
         <div class="form-group">
             @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label" })
-            <i id="preloader" class="fa fa-spinner fa-spin"></i>
-            <div id="ApplicationList"></div>
+            <i id="preloader" class="fa fa-spinner fa-spin" style="display: none;"></i>
+            <div id="ApplicationList">
+                @Html.ListBoxFor(m => m.ApplicationReferenceIDs, Model.ApplicationList, htmlAttributes: new { style = "display: none;" })
+                @Html.ValidationMessageFor(model => model.ApplicationReferenceIDs, "", new { @class = "text-danger" })
+            </div>
         </div>
 
         <div class="row">

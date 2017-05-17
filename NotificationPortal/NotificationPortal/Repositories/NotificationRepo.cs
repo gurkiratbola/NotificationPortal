@@ -63,7 +63,7 @@ namespace NotificationPortal.Repositories
                     StartDateTime = DateTime.Now
                 };
             }
-            model.ApplicationList = GetApplicationList();
+            model.ApplicationList = _slRepo.GetApplicationListByServer(model.ServerReferenceIDs);
             model.ServerList = _slRepo.GetServerList();
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
@@ -241,7 +241,7 @@ namespace NotificationPortal.Repositories
                 model.ServerReferenceIDs = editingNotification.Servers.Select(s => s.ReferenceID).ToArray();
                 model.ApplicationReferenceIDs = editingNotification.Applications.Select(a => a.ReferenceID).ToArray();
             }
-            model.ApplicationList = GetApplicationList();
+            model.ApplicationList = _slRepo.GetApplicationListByServer(model.ServerReferenceIDs);
             model.ServerList = _slRepo.GetServerList();
             model.NotificationTypeList = _slRepo.GetTypeList();
             model.LevelOfImpactList = _slRepo.GetImpactLevelList();
@@ -323,29 +323,6 @@ namespace NotificationPortal.Repositories
             {
                 return null;
             }
-        }
-
-        // TODO: implement new API of this method as it is not good with multiselect plugin
-        public IEnumerable<ApplicationServerOptionVM> GetApplicationList()
-        {
-            var apps = _context.Application.Select(a => new { Application = a, Servers = a.Servers });
-            var appList = new List<ApplicationServerOptionVM>() { };
-            foreach (var app in apps)
-            {
-                var appServers = app.Servers;
-                string serverRefIDs = "";
-                if (appServers.Count() > 0)
-                {
-                    serverRefIDs = string.Join(" ", appServers.Select(i => i.ReferenceID).ToArray());
-                }
-                appList.Add(new ApplicationServerOptionVM
-                {
-                    ApplicationName = app.Application.ApplicationName,
-                    ReferenceID = app.Application.ReferenceID,
-                    ServerReferenceIDs = serverRefIDs
-                });
-            }
-            return appList;
         }
 
         // create new notification. this is also used for updating a thread with new notification
@@ -503,7 +480,7 @@ namespace NotificationPortal.Repositories
             }
 
         }
-        
+
         // create mails using a template body for users with email as preference recieve method
         public List<MailMessage> CreateMails(NotificationCreateVM notification)
         {

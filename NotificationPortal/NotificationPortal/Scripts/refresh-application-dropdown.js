@@ -1,8 +1,5 @@
 ﻿// used for CreateThread,Create,Edit for Notification views
 
-// global variable to check if the page is initialized
-var initializeNotificationCreateView = false;
-
 // get all app based on selected servers
 var getAppsBasedOnServer = function () {
     var serverReferenceIDs = $('#ServerList').val();
@@ -15,14 +12,9 @@ var getAppsBasedOnServer = function () {
         data: JSON.stringify(serverReferenceIDs),
         contentType: 'application/json',
         success: function (data) {
-            if (initializeNotificationCreateView) {
-                refreshApplicationSelectOption(data);
-            } else {
-                loadApplicationSelectOption(data);
-            }
+            refreshApplicationSelectOption(data);
             setupApplicationFilterDropDown()
             hidePreloader();
-            initializeNotificationCreateView = true;
         },
         error: function (error) {
             jsonValue = jQuery.parseJSON(error.responseText);
@@ -69,25 +61,17 @@ var setupApplicationFilterDropDown = function () {
     $('#ApplicationReferenceIDs').multiselect({
         enableCaseInsensitiveFiltering: true,
         includeSelectAllOption: true,
+        disableIfEmpty: true,
         buttonText: function (options, select) {
             return 'Application (' + options.length + ')';
         }
     });
+
     $('#ServerList option').each(function () {
         var input = $('input[value="' + $(this).val() + '"]');
         input.prop('disabled', false);
         input.parent('li').addClass('disabled');
     });
-}
-
-var loadApplicationSelectOption = function (data) {
-    $('#ApplicationList').replaceWith(`<div id="ApplicationList">
-                <select style="display: none;" class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false"></select>
-                <span class="field-validation-valid text-danger" data-valmsg-for="ApplicationReferenceIDs" data-valmsg-replace="true"></span>
-            </div>`);
-    $.each(data, function (index, app) {
-        $('<option selected value="' + app.ReferenceID + '" class="ApplicationListItem">' + app.ApplicationName + '</option>').appendTo($('#ApplicationReferenceIDs'))
-    })
 }
 
 // hide preloader
@@ -97,5 +81,5 @@ var hidePreloader = function () {
 
 $(document).ready(function () {
     setupServerFilterDropDown();
-    getAppsBasedOnServer();
+    setupApplicationFilterDropDown();
 });
