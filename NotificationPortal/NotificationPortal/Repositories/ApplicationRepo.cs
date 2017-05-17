@@ -42,12 +42,12 @@ namespace NotificationPortal.Repositories
                     break;
 
 
-                case ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE:
+                case ConstantsRepo.SORT_APP_BY_CLIENT_ASCE:
                     list = list.OrderBy(c => c.ClientName);
                     break;
 
-                case ConstantsRepo.SORT_CLIENT_BY_NAME_DESC:
-                    list = list.OrderBy(c => c.ClientName);
+                case ConstantsRepo.SORT_APP_BY_CLIENT_DESC:
+                    list = list.OrderByDescending(c => c.ClientName);
                     break;
 
 
@@ -136,7 +136,7 @@ namespace NotificationPortal.Repositories
                 {
                     Applications = Sort(applicationList, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
                     CurrentFilter = searchString,
-                    CurrentSort = sortOrder,
+                    CurrentSort = sortOrder ?? ConstantsRepo.SORT_APP_BY_NAME_DESC,
                     ApplicationSort = sortOrder == ConstantsRepo.SORT_APP_BY_NAME_DESC ? ConstantsRepo.SORT_APP_BY_NAME_ASCE : ConstantsRepo.SORT_APP_BY_NAME_DESC,
                     StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
                     ClientSort = sortOrder == ConstantsRepo.SORT_APP_BY_CLIENT_DESC ? ConstantsRepo.SORT_APP_BY_CLIENT_ASCE : ConstantsRepo.SORT_APP_BY_CLIENT_DESC,

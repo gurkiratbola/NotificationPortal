@@ -6,13 +6,12 @@
 }
 
 <h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
-
+<!-- ========================= breadcrumb ========================= -->
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
-
-
+<!-- ========================= search & create ========================= -->
 <div class="row">
     <div class="form-inline col-sm-8 col-xs-12 pb-3">
         @using (Html.BeginForm("Index", "Application", FormMethod.Get, new { @class = "form-inline search pb-3" }))
@@ -52,8 +51,7 @@
         </p>
     }
 
-    <table class="table table-bordered" 
-    position: relative;">
+    <table class="table table-bordered">
         @{
             var filterAppByNameAsce = "";
             var filterAppByNameDesc = "";
