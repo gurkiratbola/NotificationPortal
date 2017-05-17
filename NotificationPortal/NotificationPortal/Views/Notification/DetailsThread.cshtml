@@ -92,14 +92,28 @@
     <div class="row">
         @foreach (var item in Model.Thread)
         {
-            var statusClass = item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED.ToUpper() ? "badge badge-success" : "badge badge-danger";
+            var statusClass = "";
+            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED.ToUpper()) {
+                statusClass = "badge badge-closed";
+            }
+            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN.ToUpper())
+            {
+                statusClass = "badge badge-open";
+            }
+            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING.ToUpper())
+            {
+                statusClass = "badge badge-invest";
+            }
+            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED.ToUpper())
+            {
+                statusClass = "badge badge-resolved";
+            }
             <div class="col-sm-12 single-thread">
-                <span class="float-left">
-                    @Html.Raw(item.NotificationDescription)
-                </span>
-                <span class="float-right">
+                <span class="thread-status-bar">
+                    @Html.Raw(item.SentDateTime)
+                    <span class="@statusClass">@Html.Raw(item.Status)</span>
                     @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
-                         User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+                     User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
                     {
                         <a class="" href="@Url.Action("Edit", "Notification", new { id = @item.ReferenceID })">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -111,8 +125,10 @@
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </a>
                     }
-                    @Html.Raw(item.SentDateTime)
-                    <span class="@statusClass">@Html.Raw(item.Status)</span>
+                </span>
+
+                <span class="thread-description">
+                    @Html.Raw(item.NotificationDescription)
                 </span>
             </div>
         }
@@ -123,7 +139,7 @@
         <table class="table table-bordered">
             @{ var serverModel = Model.Servers.FirstOrDefault();}
             <thead>
-            <tr class="bg-inverse text-white text-center">
+            <tr class="bg-inverse text-white">
                 <th class="text-center">
                     @Html.DisplayNameFor(model => serverModel.ServerName)
                 </th>
@@ -138,14 +154,15 @@
             <tbody>
             @foreach (var item in Model.Servers)
             {
-                <tr class="text-center clickable-row" id="@item.ReferenceID" data-href="Server/Details/@item.ReferenceID">
+                var serverStatusClass = item.ServerStatus.ToUpper() == NotificationPortal.Models.Key.STATUS_SERVER_OFFLINE.ToUpper()?"badge badge-danger": "badge badge-success";
+                <tr class="clickable-row" id="@item.ReferenceID" data-href="Server/Details/@item.ReferenceID">
                     <td data-title="@Html.DisplayNameFor(model => serverModel.ServerName)" class="first-row">
                         @Html.DisplayFor(modelItem => item.ServerName)
                     </td>
                     <td data-title="@Html.DisplayNameFor(model => serverModel.ServerType)">
                         @Html.DisplayFor(modelItem => item.ServerType)
                     </td>
-                    <td data-title="@Html.DisplayNameFor(model => serverModel.ServerStatus)">
+                    <td data-title="@Html.DisplayNameFor(model => serverModel.ServerStatus)" class="@serverStatusClass ml-1">
                         @Html.DisplayFor(modelItem => item.ServerStatus)
                     </td>
                 </tr>
@@ -164,14 +181,14 @@
             var applicationModel = Model.Applications.FirstOrDefault();
             <table class="table table-bordered">
                 <thead>
-                <tr class="bg-inverse text-white text-center">
-                    <th class="text-center">
+                <tr class="bg-inverse text-white">
+                    <th>
                         @Html.DisplayNameFor(model => applicationModel.ApplicationName)
                     </th>
-                    <th class="text-center">
+                    <th>
                         @Html.DisplayNameFor(model => applicationModel.ApplicationURL)
                     </th>
-                    <th class="text-center">
+                    <th>
                         @Html.DisplayNameFor(model => applicationModel.ApplicationStatus)
                     </th>
                 </tr>
@@ -179,14 +196,15 @@
                 <tbody>
                 @foreach (var item in Model.Applications)
                 {
-                    <tr class="text-center clickable-row" id="@item.ReferenceID" data-href="Application/Details/@item.ReferenceID">
+                    var appStatusClass = item.ApplicationStatus.ToUpper() == NotificationPortal.Models.Key.STATUS_APPLICATION_OFFLINE.ToUpper() ? "badge badge-danger" : "badge badge-success";
+                    <tr class="clickable-row" id="@item.ReferenceID" data-href="Application/Details/@item.ReferenceID">
                         <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationName)" class="first-row">
                             @Html.DisplayFor(modelItem => item.ApplicationName)
                         </td>
                         <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationURL)">
                             @Html.DisplayFor(modelItem => item.ApplicationURL)
                         </td>
-                        <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationStatus)">
+                        <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationStatus)" class="@appStatusClass">
                             @Html.DisplayFor(modelItem => item.ApplicationStatus)
                         </td>
                     </tr>

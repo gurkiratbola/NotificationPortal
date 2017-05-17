@@ -52,10 +52,9 @@ namespace NotificationPortal.ViewModels
         public int StatusID { get; set; }
 
         [Display(Name = "Applications")]
-        public string[] ApplicationsReferenceIDs { get; set; }
+        public string[] ApplicationReferenceIDs { get; set; }
+        public SelectList ApplicationList { get; set; }
 
-        [Display(Name = "Applications")]
-        public IEnumerable<ServerApplicationVM> ApplicationList { get; set; }
         public SelectList ServerTypeList { get; set; }
         public SelectList StatusList { get; set; }
         public SelectList LocationList { get; set; }
@@ -65,6 +64,7 @@ namespace NotificationPortal.ViewModels
     {
         public string ReferenceID { get; set; }
 
+        [Required]
         [DisplayName("Server")]
         public string ServerName { get; set; }
 
@@ -92,14 +92,14 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Status")]
         public int StatusID { get; set; }
 
+        [Required]
         [Display(Name = "Applications")]
-        public string[] ApplicationsReferenceIDs { get; set; }
+        public string[] ApplicationReferenceIDs { get; set; }
+        public SelectList ApplicationList { get; set; }
 
         public IEnumerable<ServerThreadVM> Threads { get; set; }
         public IEnumerable<ServerApplicationVM> Applications { get; set; }
 
-        [Display(Name = "Applications")]
-        public IEnumerable<ServerApplicationVM> ApplicationList { get; set; }
         public SelectList ServerTypeList { get; set; }
         public SelectList StatusList { get; set; }
         public SelectList LocationList { get; set; }

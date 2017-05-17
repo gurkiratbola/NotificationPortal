@@ -8,8 +8,8 @@ if (window.location.origin.indexOf('localhost') === -1) {
 var domain = window.location.origin + subdir;
 
 var clickableRow = function () {
-    const HIDDEN_MENU_WIDTH_OFFSET = 130;
-    const HIDDEN_MENU_HEIGHT_OFFSET = 80;
+    const HIDDEN_MENU_WIDTH_OFFSET = 170;
+    const HIDDEN_MENU_HEIGHT_OFFSET = 50;
     $(".hidden-menu").hide();
     $(".clickable-row").click(function () {
         var x = $(this).data("href");

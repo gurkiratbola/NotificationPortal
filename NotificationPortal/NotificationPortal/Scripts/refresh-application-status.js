@@ -4,7 +4,6 @@ var getAppReferenceIDs = function () {
     $.each($('.clickable-row'), function (index, row) {
         referenceIDs.push($(row).attr('id'));
     });
-    console.log(referenceIDs);
     return referenceIDs;
 }
 

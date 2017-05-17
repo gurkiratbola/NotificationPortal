@@ -30,6 +30,7 @@ var setupServerFilterDropDown = function () {
     $('#ServerList').multiselect({
         enableCaseInsensitiveFiltering: true,
         includeSelectAllOption: true,
+        maxHeight: 200,
         buttonText: function (options, select) {
             return 'Server (' + options.length + ')';
         }
@@ -62,6 +63,7 @@ var setupApplicationFilterDropDown = function () {
         enableCaseInsensitiveFiltering: true,
         includeSelectAllOption: true,
         disableIfEmpty: true,
+        maxHeight: 200,
         buttonText: function (options, select) {
             return 'Application (' + options.length + ')';
         }

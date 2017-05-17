@@ -69,7 +69,7 @@ namespace NotificationPortal.Repositories
                 searchString = searchString ?? currentFilter;
                 int pageNumber = (page ?? 1);
                 int defaultPageSize = ConstantsRepo.PAGE_SIZE;
-                sortOrder = sortOrder == null ? ConstantsRepo.SORT_STATUS_BY_TYPE_DESC : sortOrder;
+                sortOrder = sortOrder == null ? ConstantsRepo.SORT_STATUS_BY_TYPE_ASCE : sortOrder;
                 StatusIndexVM model = new StatusIndexVM
                 {
                     Statuses = Sort(statusList, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),

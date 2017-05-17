@@ -77,11 +77,10 @@ namespace NotificationPortal.Api
         // check if application is online
         public bool CheckStatus(string url)
         {
-            WebRequest request = WebRequest.Create(url);
-
             // request for a response to a url and check to recieve an OK status
             try
             {
+                WebRequest request = WebRequest.Create(url);
                 var x = request.GetResponse();
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)

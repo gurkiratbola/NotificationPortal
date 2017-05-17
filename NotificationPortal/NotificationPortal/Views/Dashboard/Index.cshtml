@@ -176,10 +176,10 @@ else
         $('<td/>', { text: model.SenderName }).attr('data-title', '@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().SenderName)').appendTo($('#' + model.IncidentNumber));
         switch (model.LevelOfImpact) {
             case '@NotificationPortal.Models.Key.LEVEL_OF_IMPACT_IMPACTING':
-                $('<td/>', { text: model.LevelOfImpact }).appendTo($('#' + model.IncidentNumber)).addClass('bg-danger td-status text-white').attr('data-title','@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().LevelOfImpact)').appendTo($('#' + model.IncidentNumber));
+                $('<td/>', { text: model.LevelOfImpact }).appendTo($('#' + model.IncidentNumber)).addClass('bg-impact td-status text-white').attr('data-title','@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().LevelOfImpact)').appendTo($('#' + model.IncidentNumber));
                 break;
             case '@NotificationPortal.Models.Key.LEVEL_OF_IMPACT_OUTAGE':
-                $('<td/>', { text: model.LevelOfImpact }).appendTo($('#' + model.IncidentNumber)).addClass('bg-closed td-status text-white').attr('data-title','@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().LevelOfImpact)').appendTo($('#' + model.IncidentNumber));
+                $('<td/>', { text: model.LevelOfImpact }).appendTo($('#' + model.IncidentNumber)).addClass('bg-danger td-status text-white').attr('data-title','@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().LevelOfImpact)').appendTo($('#' + model.IncidentNumber));
                 break;
             case '@NotificationPortal.Models.Key.LEVEL_OF_IMPACT_REDUNDANCY':
                 $('<td/>', { text: model.LevelOfImpact }).appendTo($('#' + model.IncidentNumber)).addClass('bg-invest td-status text-white').attr('data-title','@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().LevelOfImpact)').appendTo($('#' + model.IncidentNumber));

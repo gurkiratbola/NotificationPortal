@@ -43,6 +43,7 @@ namespace NotificationPortal.Api
         public DateTime SentDateTime { get; set; }
         public string SenderName { get; set; }
         public string LevelOfImpact { get; set; }
+        public int ImpactValue { get; set; }
         public string Status { get; set; }
     }
 

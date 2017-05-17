@@ -1,9 +1,5 @@
 ﻿/* ==========================================================================
-                            Preloader
-========================================================================== */
-
-/* ==========================================================================
-                            Colors used for the project
+                            General styles for the project
 ========================================================================== */
 /*
     brand-color: #36c2dd
@@ -78,6 +74,10 @@ h4 {
     background-color: #36c2dd;
 }
 
+.bg-impact {
+    background-color: #f47a42;
+}
+
 .bg-closed {
     background-color: #adadad;
 }
@@ -85,6 +85,23 @@ h4 {
 .bg-invest {
     background-color: #e8a529;
 }
+
+.badge-open {
+    background-color: #d9534f;
+}
+
+.badge-invest {
+    background-color: #e8a529;
+}
+
+.badge-closed {
+    background-color: #adadad;
+}
+
+.badge-resolved {
+    background-color: #5cb85c;
+}
+
 
 .text-coral {
     color: lightcoral;
@@ -293,7 +310,11 @@ td a:hover {
         margin: 20px auto 0;
     }
 }
- 
+
+.pagination li:hover {
+    cursor: pointer;
+}
+
 .pagination a {
     color: #6f7e95;
 }
@@ -709,7 +730,7 @@ footer a:hover {
 .hidden-menu {
     display: none;
     width: 80px;
-    height: 60px;
+    height: 56px;
     background-color: #ededed;
     border: 1px solid grey;
 }
@@ -722,6 +743,16 @@ footer a:hover {
     text-align: center;
 }
 
+.hidden-menu li a {
+    color:  #6d6b69;
+}
+
+.hidden-menu li a:hover {
+    color: #e0e77a;
+    background-color: #6d6b69;
+    border-radius: 0;
+}
+    
 .hidden-menu li:first-child {
     outline: 1px solid grey;
 }
@@ -829,27 +860,69 @@ h5.col-12 {
 
 .single-thread {
     margin-bottom: 10px;
+    white-space: normal;
 }
 
 .single-thread:first-child {
     margin-bottom: 20px;
 }
 
-.single-thread .float-right a {
-    color: #3EA2C3;
-    font-size: 1.1em;
+.single-thread .thread-status-bar {
+    width: 100%;
+    display: block;
+    margin-bottom: 8px;
+    color: #adadad;
+    font-weight: 700;
 }
 
-.single-thread .float-right a:hover {
+.single-thread .badge-danger {
+    transform: translateY(-1px);
+}
+
+.single-thread .thread-status-bar a {
+    color: #36c2dd;
+    font-size: 1.2em;
+}
+
+i.fa.fa-pencil-square-o {
+    font-size: 1.1em;
+    transform: translateY(2px);
+}
+
+i.fa.fa-trash {
+    font-size: 1em;
+}
+
+.single-thread:first-child {
+    padding-bottom: 15px;
+} 
+
+.single-thread .thread-status-bar a:hover {
     color: #afe7f1;
     text-decoration: none;
 }
 
-.single-thread:not(:first-child) .float-left {
-    padding-left: 30px;
+.single-thread:not(:first-child):before{
+    content: "";
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    left: 20px;
+    height: 100%;
+    border-left: 1px solid #adadad;
 }
 
-.single-thread:not(:first-child) .float-left:before {
+.single-thread:last-child:before {
+    border-left: none;
+}
+
+.single-thread:not(:first-child) .thread-description {
+    padding-left: 30px;
+    max-width: 100%;
+    display: block;
+}
+
+.single-thread:not(:first-child) .thread-description:before {
     content: "";
     position: absolute;
     display: inline-block;
@@ -857,12 +930,15 @@ h5.col-12 {
     left: 20px;
     width: 1em;
     height: 2em;
-    border-left: 1px dotted #6f7e95;
-    border-bottom: 1px dotted #6f7e95;
+    border-left: 1px solid #adadad;
+    border-bottom: 1px solid #adadad;
 }
 
+.single-thread:not(:first-child) .thread-status-bar {
+    padding-left:2em;
+}
 @media (max-width: 767px) {
-    .nav-tabs > li {
+        .nav-tabs > li {
         float: none;
         flex-grow: 1;
     }

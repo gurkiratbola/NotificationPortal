@@ -57,7 +57,7 @@ namespace NotificationPortal.Repositories
                 searchString = searchString ?? currentFilter;
                 int pageNumber = (page ?? 1);
                 int defaultPageSize = ConstantsRepo.PAGE_SIZE;
-                sortOrder = sortOrder == null ? ConstantsRepo.SORT_DATACENTER_BY_NAME_DESC : sortOrder;
+                sortOrder = sortOrder == null ? ConstantsRepo.SORT_DATACENTER_BY_NAME_ASCE : sortOrder;
                 DataCenterIndexVM model = new DataCenterIndexVM
                 {
                     DataCenters = Sort(dataCenterList, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
