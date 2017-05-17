@@ -10,28 +10,6 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.ViewModels
 {
-
-    public class ServerApplicationVM
-    {
-        public string ReferenceID { get; set; }
-
-        [DisplayName("Application")]
-        public string ApplicationName { get; set; }
-
-        [DisplayName("Description")]
-        public string Description { get; set; }
-
-        [DisplayName("Status")]
-        public string Status { get; set; }
-
-        [DisplayName("URL")]
-        public string URL { get; set; }
-
-        [DisplayName("Client")]
-        public string ClientID { get; set; }
-    }
-
-
     public class ServerIndexVM
     {
         public IPagedList<ServerListVM> Servers { get; set; }
@@ -62,7 +40,7 @@ namespace NotificationPortal.ViewModels
         public string Description { get; set; }
 
         [Required]
-        [DisplayName("Location*")]
+        [DisplayName("Location")]
         public int LocationID { get; set; }
 
         [Required]
@@ -73,8 +51,7 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Status")]
         public int StatusID { get; set; }
 
-
-        [Display(Name = "Applications Reference")]
+        [Display(Name = "Applications")]
         public string[] ApplicationsReferenceIDs { get; set; }
 
         [Display(Name = "Applications")]
@@ -103,11 +80,29 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Status")]
         public string Status { get; set; }
 
-        [Display(Name = "Applications Reference")]
+        [Required]
+        [DisplayName("Location")]
+        public int LocationID { get; set; }
+
+        [Required]
+        [DisplayName("Server Type")]
+        public int ServerTypeID { get; set; }
+
+        [Required]
+        [DisplayName("Status")]
+        public int StatusID { get; set; }
+
+        [Display(Name = "Applications")]
         public string[] ApplicationsReferenceIDs { get; set; }
 
         public IEnumerable<ServerThreadVM> Threads { get; set; }
         public IEnumerable<ServerApplicationVM> Applications { get; set; }
+
+        [Display(Name = "Applications")]
+        public IEnumerable<ServerApplicationVM> ApplicationList { get; set; }
+        public SelectList ServerTypeList { get; set; }
+        public SelectList StatusList { get; set; }
+        public SelectList LocationList { get; set; }
     }
 
     public class ServerThreadVM
@@ -176,5 +171,25 @@ namespace NotificationPortal.ViewModels
         [Required]
         [DisplayName("Status")]
         public string StatusName { get; set; }
+    }
+
+    public class ServerApplicationVM
+    {
+        public string ReferenceID { get; set; }
+
+        [DisplayName("Application")]
+        public string ApplicationName { get; set; }
+
+        [DisplayName("Description")]
+        public string Description { get; set; }
+
+        [DisplayName("Status")]
+        public string Status { get; set; }
+
+        [DisplayName("URL")]
+        public string URL { get; set; }
+
+        [DisplayName("Client")]
+        public string ClientID { get; set; }
     }
 }
