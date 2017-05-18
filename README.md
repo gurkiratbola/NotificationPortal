@@ -4,13 +4,13 @@ Table of Contents
 -----------------
 * [Introduction](#introduction)
 * [Features](#features)
-* [Project Structure](#project structure)
+* [Project Structure](#project)
     * [Constants](#constants)
     * [API](#api)
-    * [Reference Id](#reference Id)
-    * [Centralized Status Control](#centralized status control)
-    * [Custom Javascript Files](#custom javascript files)
-    * [Static File Locations](#static file locations)
+    * [Reference Id](#reference)
+    * [Centralized Status Control](#centralized)
+    * [Custom Javascript Files](#custom)
+    * [Static File Locations](#static)
     * [Service](#service)
 
 Introduction
