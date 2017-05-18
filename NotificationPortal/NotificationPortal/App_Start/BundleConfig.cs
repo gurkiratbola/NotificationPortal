@@ -33,8 +33,7 @@ namespace NotificationPortal
             // For the rtf editor/multi-select/timezone plugin
             bundles.Add(new ScriptBundle("~/bundles/plugins").Include(
                       "~/Scripts/summernote.js",
-                      "~/Scripts/bootstrap-multiselect.js",
-                      "~/Scripts/timezone.js"
+                      "~/Scripts/bootstrap-multiselect.js"
                       ));
 
         }

@@ -86,19 +86,23 @@ h4 {
     background-color: #e8a529;
 }
 
-.badge-open {
+.badge-red {
     background-color: #d9534f;
 }
 
-.badge-invest {
+.badge-orange {
+    background-color: #f47a42;
+}
+
+.badge-yellow {
     background-color: #e8a529;
 }
     
-.badge-closed {
+.badge-grey {
     background-color: #adadad;
 }
 
-.badge-resolved {
+.badge-green {
     background-color: #5cb85c;
 }
 
@@ -986,6 +990,11 @@ i.fa.fa-trash {
 /* ==========================================================================
                         Page Styles: Dashboard
 ========================================================================== */
+.card {
+    max-width: 100%;
+    display: block;
+}
+
 .card-deck .card {
     border: 2px solid #36c2dd;
     border-radius: 5px;
@@ -1033,10 +1042,10 @@ i.fa.fa-trash {
     font-size: 1em;
 }
 
-@media (max-width: 610px) {
+@media (max-width: 576px) {
     .external-status {
-        float: left !important;
-        margin-bottom: 10px;
+        margin-top: 10px;
+        font-size: 0.85em;
     }
 
     .text-muted .float-right {
