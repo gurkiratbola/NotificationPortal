@@ -63,13 +63,6 @@
 
 @if (Model.Applications.Count() > 0)
 {
-    if (TempData["SuccessMsg"] != null)
-    {
-        <p class="alert alert-success">
-            @Html.Raw(TempData["SuccessMsg"])
-        </p>
-    }
-
     <table class="table table-bordered">
         @{
             var filterAppByNameAsce = "";

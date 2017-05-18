@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.ViewModels
 {
+    // VM for index page only
     public class DashboardIndexVM
     {
         public IPagedList<DashboardVM> Notifications { get; set; }

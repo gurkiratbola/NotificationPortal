@@ -33,7 +33,7 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Client Name")]
         public string ClientName { get; set; }
     }
-
+    // view model for index page only
     public class ApplicationIndexVM
     {
         public IPagedList<ApplicationListVM> Applications { get; set; }
@@ -88,6 +88,7 @@ namespace NotificationPortal.ViewModels
         public SelectList StatusList { get; set; }
         public SelectList ClientList { get; set; }
     }
+    // view model for delete page only
     public class ApplicationDeleteVM
     {
         public string ReferenceID { get; set; }
@@ -114,7 +115,7 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int ClientID { get; set; }
     }
-
+    // view model for detail page only
     public class ApplicationDetailVM
     {
         public string ReferenceID { get; set; }

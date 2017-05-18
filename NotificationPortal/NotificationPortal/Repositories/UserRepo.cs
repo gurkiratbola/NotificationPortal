@@ -34,6 +34,7 @@ namespace NotificationPortal.Repositories
             {
                 string userID = HttpContext.Current.User.Identity.GetUserId();
                 string clientReferenceID = _context.UserDetail.Where(u => u.UserID == userID).SingleOrDefault().Client.ReferenceID;
+                model.ClientReferenceID = clientReferenceID;
                 model.ApplicationList = _selectRepo.GetApplicationListByClient(clientReferenceID);
             }
             model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
@@ -274,7 +275,7 @@ namespace NotificationPortal.Repositories
                     };
 
                     // find the client id with the reference id passed with the viewmodel and add the new client to that
-                    var clientId = _context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
+                    int? clientId = model.ClientReferenceID ==null? null:(int?)_context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
                                    .Select(client => client.ClientID).FirstOrDefault();
 
                     // get default send method (Email)

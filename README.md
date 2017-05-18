@@ -1,4 +1,4 @@
-# Bayleaf - BCIT Industry Project 2017 
+# BCIT Industry Project 2017 
 
 Table of Contents
 -----------------
@@ -6,6 +6,8 @@ Table of Contents
 * [Functional Requirements](#functional-requirements)
     * [Overview](#overview)
     * [Specifications](#specifications)
+    * [Program Features](#program-features)
+    * [Tasks By Roles](#tasks-by-roles)
 * [Features](#features)
 * [Project Structure](#project-structure)
     * [Constants](#constants)
@@ -19,9 +21,9 @@ Table of Contents
 
 Introduction
 ============
-This project is for *Bayleaf*, one of our clients in the *Industry Project* for **BCIT's Software Systems Developer** program. Bayleaf is a technology consulting company that specializes in the development and integration of custom software solutions for web, mobile and desktop. In addition to that, they provide managed hosting services to many of their clients. Based on the size, complexity of their hosting environment, coupled with the number of applications being hosted in this enviornment it was becoming increasingly difficult to manage notifications to their clients when there was a maintenance or a problem. 
+This project is for one of our **clients** in the *Industry Project* for **BCIT's Software Systems Developer** program. The Client is a technology consulting company that specializes in the development and integration of custom software solutions for web, mobile and desktop. In addition to that, they provide managed hosting services to many of their clients. Based on the size, complexity of their hosting environment, coupled with the number of applications being hosted in this enviornment it was becoming increasingly difficult to manage notifications to their clients when there was a maintenance or a problem. 
 
-We were asked to develop a platform which allows Bayleaf the management and issuing of the notification which will be implemented within their current system. 
+We were asked to develop a platform which allows client the management and issuing of the notification which will be implemented within their current system. 
 
 Functional Requirements
 ============
@@ -47,6 +49,36 @@ Internal roles will manage all clients, apps, users, servers, and notification d
 * Notifications are sent in the form of emails only
 * Notification is generated either by application or by server
 * Server status is manually tracked and updated by the internal users 
+
+### Program Features
+Task | Essential | Nice To Have
+------------ | ------------- | -------------
+Internal Send/Manage Notifications (Incidents and Maintenance) | ✓ | 
+External Manage Notifications | ✓ | 
+Notifications are threaded | ✓ |
+Manage Internal / External Users (CRUD) | ✓ |
+Manage External Admin (CRUD) | ✓ |
+Manage Clients, Applications and Servers | ✓ | 
+Internal Manage Groups and Roles (RU) | ✓ |
+Internal View Server Dependencies | ✓ |
+External Registration | | ✓
+Two way communicate through notification | | ✓
+Search on Client, Applicatipn | ✓ |
+Text Messaging | | ✓
+Dashboard (Internal Admin) shows application availability throughout month | | ✓
+Advance Search | | ✓
+
+### Tasks By Roles
+Task | Internal Admin | Internal User | External Admin | External User
+------------ | ------------- | ------------- | ------------- | -------------
+Manage Internal Users (CRUD) | ✓ | | 
+Manage External Users (CRUD) | ✓ | ✓ | ✓ 
+Manage External Admin (CRUD) | ✓ |
+Manage Clients (CRUD) | ✓ | ✓
+Manage Applications (CRUD) | ✓ | ✓
+Manage Notifications | ✓ | ✓
+Read Notifications (CUD) | ✓ | ✓ | ✓ | ✓
+Read Server Status | ✓ | ✓ | ✓ | ✓
 
 Features
 ============
@@ -96,14 +128,14 @@ Total of six Javascript files are created to support the functionality mentioned
 Locations for static files:
 * All CSS files are stored in Content
 * Custom CSS files: sidebar.css and Site.css
-* All images are stored in Content->images. 
+* All images are stored in Content -> images. 
 * Favicon is stored outside of the folder structure
-* Email Templates are stored in Service->templates
-* Scripts->Custom folder for all custom .js files
-* Scripts->Plugin folder for all plugin .js files
+* Email Templates are stored in Service -> templates
+* Scripts -> Custom folder for all custom .js files
+* Scripts -> Plugin folder for all plugin .js files
 
 ### Service
-1. **EncryptionHelper.cs**: Customizing rich text editor plugin
-2. **NotificationService.cs**: For sending Email and SMS by creating/updating notification
-3. **StringHelper.cs**: For stripping tags created by rich text editor
-4. **TemplateService.cs**: For Email and SMS templates used
+* **EncryptionHelper.cs**: Customizing rich text editor plugin
+* **NotificationService.cs**: For sending Email and SMS by creating/updating notification
+* **StringHelper.cs**: For stripping tags created by rich text editor
+* **TemplateService.cs**: For Email and SMS templates used
