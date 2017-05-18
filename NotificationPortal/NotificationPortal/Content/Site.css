@@ -581,6 +581,12 @@ button.multiselect.dropdown-toggle.btn.btn-default {
 /* ==========================================================================
                         Sidebar Styles
 ========================================================================== */
+
+i.fa.fa-cog {
+    display: inline-block;
+    transform: translateX(-4px);
+}
+
 .nav-pills > li {
     border-bottom: 1px solid #ededed;
 }
