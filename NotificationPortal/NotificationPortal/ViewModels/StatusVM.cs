@@ -33,6 +33,7 @@ namespace NotificationPortal.ViewModels
         public string StatusName { get; set; }
 
         [Required]
+        [DisplayName("Status Type")]
         public int StatusTypeID { get; set; }
 
         [DisplayName("Status Type")]

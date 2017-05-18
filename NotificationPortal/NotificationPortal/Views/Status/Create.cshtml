@@ -40,13 +40,13 @@
             </p>
         }
         <div class="form-group">
+            @Html.LabelFor(model => model.StatusTypeID, htmlAttributes: new { @class = "" })
+            @Html.DropDownListFor(m => m.StatusTypeID, Model.StatusTypeList, htmlAttributes: new { @class = "form-control" })
+        </div>
+        <div class="form-group">
             @Html.LabelFor(model => model.StatusName, htmlAttributes: new { @class = "required" })
             @Html.EditorFor(model => model.StatusName, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.StatusName, "", new { @class = "text-danger" })
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.StatusTypeID, htmlAttributes: new { @class = "" })
-            @Html.DropDownListFor(m => m.StatusTypeID, Model.StatusTypeList, htmlAttributes: new { @class = "form-control" })
         </div>
         <div class="form-group">
             <input type="submit" value="Add" class="btn btn-success" />
