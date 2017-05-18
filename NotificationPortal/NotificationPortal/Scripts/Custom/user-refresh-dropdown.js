@@ -35,7 +35,7 @@ var setupClientFilterDropDown = function () {
         includeSelectAllOption: true,
         maxHeight: 200
     });
-    $('#ClientReferenceID').change(function (option, checked, select) {
+    $('#ClientReferenceID').change(function () {
         $('#ClientReferenceID option').each(function () {
             var input = $('input[value="' + $(this).val() + '"]');
             input.prop('disabled', true);
@@ -87,6 +87,20 @@ var enableClientDropDown = function () {
 var hidePreloader = function () {
     $('#preloader').hide();
 }
+var showHideExternalInfo = function () {
+    var roleName = $('#RoleName').val();
+    if (roleName === "Admin" || roleName === "Staff") {
+        $('.external-info').hide();
+    } else {
+        $('.external-info').show();
+    }
+}
+var setupRoleDropDown = function () {
+    $('#RoleName').change(function () {
+        showHideExternalInfo();
+    })
+}
+
 
 $(document).ready(function () {
     setupClientFilterDropDown();
@@ -94,4 +108,6 @@ $(document).ready(function () {
     if (clientReferenceID !== null && clientReferenceID !== "" && typeof (clientReferenceID)!=="undefined") {
         getAppsBasedOnClient();
     }
+    setupRoleDropDown();
+    showHideExternalInfo();
 });
