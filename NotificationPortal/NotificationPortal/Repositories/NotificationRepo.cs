@@ -421,6 +421,12 @@ namespace NotificationPortal.Repositories
 
         }
 
+        // check if thread is empty by incident number
+        public bool CheckEmptyThread(string incidentNumber)
+        {
+            bool result = !_context.Notification.Where(n => n.IncidentNumber == incidentNumber).Any();
+            return result;
+        }
         // create mails using a template body for users with email as preference recieve method
         public List<MailMessage> CreateMails(NotificationCreateVM notification)
         {
