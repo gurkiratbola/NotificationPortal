@@ -175,7 +175,7 @@ namespace NotificationPortal.ViewModels
 
     public class ServerApplicationVM
     {
-        public string ReferenceID { get; set; }
+        public string ApplicationReferenceID { get; set; }
 
         [DisplayName("Application")]
         public string ApplicationName { get; set; }
