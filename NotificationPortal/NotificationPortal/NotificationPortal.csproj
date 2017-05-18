@@ -385,7 +385,6 @@
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Home\Documentation.cshtml" />
     <Content Include="Views\Notification\Delete.cshtml" />
-    <Content Include="Views\Notification\Details.cshtml" />
     <Content Include="Views\Notification\CreateThread.cshtml" />
     <Content Include="Views\Server\Details.cshtml" />
     <Content Include="Views\Server\Create.cshtml" />

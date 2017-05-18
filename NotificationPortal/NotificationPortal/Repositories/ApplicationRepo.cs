@@ -19,7 +19,7 @@ namespace NotificationPortal.Repositories
     {
         const string APP_STATUS_TYPE_NAME = "Application";
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
-
+        // sort function for the index page
         public IEnumerable<ApplicationListVM> Sort(IEnumerable<ApplicationListVM> list, string sortOrder, string searchString = null)
         {
 
@@ -72,7 +72,7 @@ namespace NotificationPortal.Repositories
             }
             return list;
         }
-
+        // get application list for the index page
         public ApplicationIndexVM GetApplicationList(string sortOrder, string currentFilter, string searchString, int? page)
         {
             try
@@ -84,6 +84,7 @@ namespace NotificationPortal.Repositories
 
                 if (HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN) || HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
                 {
+                    // if user is internal
                     applicationList = _context.Application
                     .Select(c => new ApplicationListVM
                     {
@@ -97,6 +98,7 @@ namespace NotificationPortal.Repositories
                 }
                 else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
                 {
+                    // if user is external admin
                     var getClientId = _context.UserDetail.Where(u => u.UserID == currentUserId).Select(c => c.Client.ClientName).FirstOrDefault();
 
                     applicationList = _context.Application
@@ -113,6 +115,7 @@ namespace NotificationPortal.Repositories
                 }
                 else
                 {
+                    // if user is external user
                     applicationList = _context.UserDetail
                        .Where(c => c.UserID == currentUserId).FirstOrDefault().Applications
                        .Select(c => new ApplicationListVM
@@ -154,7 +157,7 @@ namespace NotificationPortal.Repositories
                 return null;
             }
         }
-
+        // get servers associated with this app
         public IEnumerable<ApplicationServerVM> GetServerList()
         {
             var apps = _context.Server.Select(a => new ApplicationServerVM
@@ -168,7 +171,7 @@ namespace NotificationPortal.Repositories
             });
             return apps;
         }
-
+        // get application detail for details page
         public ApplicationDetailVM GetDetailApplication(string referenceID)
         {
             Application application = _context.Application
@@ -176,8 +179,6 @@ namespace NotificationPortal.Repositories
 
             IEnumerable<Server> allApplicationServers = application.Servers;
             IEnumerable<ApplicationServerVM> applicationServer = allApplicationServers
-                //.GroupBy(n => n.ServerName)
-                //.Select(t => t.OrderBy(i => i.ServerName))
                 .Select(
                     t => new ApplicationServerVM()
                     {
@@ -187,13 +188,9 @@ namespace NotificationPortal.Repositories
                         ServerType = t.ServerType.ServerTypeName,
                         Status = t.Status.StatusName,
                     });
-            //.GroupBy(n => n.ServerName)
-            //.Select(t => t.OrderByDescending(i => i.ServerName).FirstOrDefault());
 
             IEnumerable<UserDetail> allApplicationUsers = application.UserDetails;
             IEnumerable<ApplicationUsersVM> applicationUser = allApplicationUsers
-                //.GroupBy(n => n.ClientID)
-                //.Select(t => t.OrderBy(i => i.FirstName))
                 .Select(
                     t => new ApplicationUsersVM()
                     {
@@ -210,8 +207,6 @@ namespace NotificationPortal.Repositories
                         BusinessTitle = t.BusinessTitle
 
                     });
-            //.GroupBy(n => n.RoleName)
-            //.Select(t => t.OrderByDescending(i => i.ClientReferenceID).FirstOrDefault());
 
             IEnumerable<Notification> allApplicationNotifications = application.Notifications;
             IEnumerable<ApplicationNotificationsVM> applicationNotifications = allApplicationNotifications
@@ -241,48 +236,7 @@ namespace NotificationPortal.Repositories
             };
             return model;
         }
-
-        public IEnumerable<ApplicationListVM> GetApplicationList()
-        {
-            IEnumerable<ApplicationListVM> applicationList = _context.Application
-                                                .Select(c => new ApplicationListVM
-                                                {
-                                                    ApplicationName = c.ApplicationName,
-                                                    ReferenceID = c.ReferenceID,
-                                                    Description = c.Description,
-                                                    URL = c.URL,
-                                                    StatusName = c.Status.StatusName,
-                                                    ClientName = c.Client.ClientName,
-                                                });
-            return applicationList;
-        }
-
-        public SelectList GetStatusList()
-        {
-            IEnumerable<SelectListItem> statusList = _context.Status
-                                    .Where(a => a.StatusType.StatusTypeName == APP_STATUS_TYPE_NAME)
-                                    .Select(sv => new SelectListItem()
-                                    {
-                                        Value = sv.StatusID.ToString(),
-                                        Text = sv.StatusName
-                                    });
-
-            return new SelectList(statusList, "Value", "Text");
-        }
-
-        public SelectList GetClientList()
-        {
-            ApplicationDbContext db = new ApplicationDbContext();
-            IEnumerable<SelectListItem> clientList = _context.Client
-                    .Select(app =>
-                                new SelectListItem
-                                {
-                                    Value = app.ClientID.ToString(),
-                                    Text = app.ClientName
-                                });
-            return new SelectList(clientList, "Value", "Text");
-        }
-
+        // create new application
         public bool AddApplication(ApplicationVM application, out string msg)
         {
             Application a = _context.Application.Where(e => e.ApplicationName == application.ApplicationName)
@@ -326,7 +280,7 @@ namespace NotificationPortal.Repositories
                 return false;
             }
         }
-
+        // get application by id
         public ApplicationVM GetApplication(string referenceID)
         {
             string[] serverRefIDs = _context.Application
@@ -351,36 +305,12 @@ namespace NotificationPortal.Repositories
             application.ServerReferenceIDs = serverRefIDs;
             return application;
         }
-
-        public ApplicationVM GetDeleteApplication(string referenceID)
-        {
-            ApplicationVM application = _context.Application
-                            .Where(a => a.ReferenceID == referenceID)
-                            .Select(b => new ApplicationVM
-                            {
-                                ApplicationName = b.ApplicationName,
-                                ReferenceID = b.ReferenceID,
-                                Description = b.Description,
-                                URL = b.URL,
-                                StatusName = b.Status.StatusName,
-                                ClientName = b.Client.ClientName,
-                                StatusID = b.StatusID,
-                                ClientRefID = b.Client.ReferenceID,
-
-                            }).FirstOrDefault();
-            return application;
-        }
-
+        // edit application
         public bool EditApplication(ApplicationVM application, out string msg)
         {
             Application a = _context.Application.Where(b => b.ApplicationName == application.ApplicationName).FirstOrDefault();
             var clientID = _context.Client.Where(c => c.ReferenceID == application.ClientRefID)
                                .Select(client => client.ClientID).FirstOrDefault();
-            //if (a != null)
-            //{
-            //    msg = "Application name already exist.";
-            //    return false;
-            //}
             try
             {
                 Application applicationUpdated = _context.Application
@@ -413,7 +343,7 @@ namespace NotificationPortal.Repositories
                 return false;
             }
         }
-
+        // delete application
         public bool DeleteApplication(string referenceID, out string msg)
         {
             // check if applications exists

@@ -145,11 +145,11 @@
                 }
                     </tbody>
                 </table>
-                        }
-                        else
-                        {
+            }
+            else
+            {
                 <p>This server is not associated with any applications.</p>
-                        }
+            }
     }
     </div>
     <div class="tab-pane" id="Notifications" role="tabpanel">
@@ -177,6 +177,25 @@
                     <tbody>
                 @foreach (var item in Model.Threads)
                 {
+                    var notificationStatus = "";
+                    switch (item.ThreadStatus)
+                    {
+                        case NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED:
+                            notificationStatus = "bg-closed";
+                            break;
+                        case NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN:
+                            notificationStatus = "bg-danger";
+                            break;
+                        case NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING:
+                            notificationStatus = "bg-invest";
+                            break;
+                        case NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED:
+                            notificationStatus = "bg-success";
+                            break;
+                        default:
+                            notificationStatus = "badge badge-grey";
+                            break;
+                    }
                     <tr class="clickable-row" id="@item.ThreadID" data-href="Notification/DetailsThread/@item.ThreadID">
                         <td data-title="@Html.DisplayNameFor(model => item.ThreadType)" class="first-row">
                             @Html.DisplayFor(modelItem => item.ThreadType)
@@ -187,7 +206,7 @@
                         <td data-title="@Html.DisplayNameFor(model => item.ThreadHeading)">
                             @Html.DisplayFor(modelItem => item.ThreadHeading)
                         </td>
-                        <td data-title="@Html.DisplayNameFor(model => item.ThreadStatus)">
+                        <td data-title="@Html.DisplayNameFor(model => item.ThreadStatus)" class="@notificationStatus">
                             @Html.DisplayFor(modelItem => item.ThreadStatus)
                         </td>
                     </tr>

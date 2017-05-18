@@ -67,6 +67,13 @@ h4 {
     font-weight: 700;
 }
 
+dd.col-sm-10 {
+    height: 1.2em;
+}
+
+.fa-spinner {
+    font-size: 24px;
+}
 /* ==========================================================================
                             Color Styles
 ========================================================================== */
@@ -578,6 +585,12 @@ button.multiselect.dropdown-toggle.btn.btn-default {
     border-bottom: 1px solid #ededed;
 }
 
+.sidebar-arrow > i {
+    display: inline-block;
+    transition: 0.2s;
+    text-align: center;
+}
+
 .sidebar-dropdown-button {
     color: white;
     width: 100%;
@@ -833,6 +846,14 @@ footer a:hover {
 
 button.note-btn.btn.btn-default.btn-sm {
     background-color: transparent;
+}
+
+.note-btn-group.btn-group {
+    width: auto !important;
+}
+
+.note-btn.btn-sm {
+    width: auto !important;
 }
 
 @media (max-width: 576px) {

@@ -63,13 +63,6 @@
 
 @if (Model.Applications.Count() > 0)
 {
-    if (TempData["SuccessMsg"] != null)
-    {
-        <p class="alert alert-success">
-            @Html.Raw(TempData["SuccessMsg"])
-        </p>
-    }
-
     <table class="table table-bordered">
         @{
             var filterAppByNameAsce = "";
@@ -167,7 +160,7 @@
                         @Html.DisplayFor(modelItem => item.ClientName)
                     </td>
                     <td data-title="Status">
-                        <i class="preloader fa fa-spinner fa-spin" style="font-size:18px; display:none"></i>
+                        <i class="preloader fa fa-spinner fa-spin" style="display:none"></i>
                         <span class="failed-status badge badge-danger" style="display:none">
                             Failed Refresh
                         </span>

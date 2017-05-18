@@ -21,10 +21,9 @@ namespace NotificationPortal.Repositories
             IEnumerable<DashboardVM> dashboard = null;
             if (User != null)
             {
-
-                // if user is internal
                 if (HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN) || HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
                 {
+                    // if user is internal
                     try
                     {
                         IEnumerable<DashboardVM> notifications = _context.Notification
@@ -48,9 +47,6 @@ namespace NotificationPortal.Repositories
                         );
 
                         dashboard = from n in dashboard where n.Status == Key.STATUS_NOTIFICATION_OPEN select n;
-                        //to do
-                        //tabs that separate incident from maintainance 
-                        //heading should show the first not last (from dakota)
                      
                         int totalNumOfNotifications = dashboard.Count();
                         page = searchString == null ? page : 1;
@@ -74,6 +70,7 @@ namespace NotificationPortal.Repositories
                         };
                     }
                     catch {
+                        // something wrong with db, catch it by returning null
                         model = null;
                     }
                 }
@@ -99,6 +96,7 @@ namespace NotificationPortal.Repositories
                         };
                     }
                     catch {
+                        // something wrong with db, catch it by returning null
                         model = null;
                     }
                 }
@@ -118,6 +116,7 @@ namespace NotificationPortal.Repositories
                         };
                     }
                     catch {
+                        // something wrong with db, catch it by returning null
                         model = null;
                     }
                 }

@@ -15,7 +15,7 @@
                 toolbar: [
                     //buttons showing on the toolbar for rich text editor
                     ['style', ['bold', 'italic', 'underline']],
-                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['para', ['ul', 'ol']],
                     ['link', ['linkDialogShow', 'unlink']]
                 ]
             });

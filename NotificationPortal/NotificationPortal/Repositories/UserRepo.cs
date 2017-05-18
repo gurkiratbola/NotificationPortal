@@ -34,6 +34,7 @@ namespace NotificationPortal.Repositories
             {
                 string userID = HttpContext.Current.User.Identity.GetUserId();
                 string clientReferenceID = _context.UserDetail.Where(u => u.UserID == userID).SingleOrDefault().Client.ReferenceID;
+                model.ClientReferenceID = clientReferenceID;
                 model.ApplicationList = _selectRepo.GetApplicationListByClient(clientReferenceID);
             }
             model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
@@ -274,7 +275,7 @@ namespace NotificationPortal.Repositories
                     };
 
                     // find the client id with the reference id passed with the viewmodel and add the new client to that
-                    var clientId = _context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
+                    int? clientId = model.ClientReferenceID ==null? null:(int?)_context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
                                    .Select(client => client.ClientID).FirstOrDefault();
 
                     // get default send method (Email)
@@ -290,7 +291,6 @@ namespace NotificationPortal.Repositories
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         StatusID = model.StatusID,
-                        ClientID = clientId,
                         SendMethodID = defaultSendMethodID
                     };
 
@@ -328,7 +328,11 @@ namespace NotificationPortal.Repositories
                     // add the applications selected to user details application table
                     var apps = _context.Application.Where(a => model.ApplicationReferenceIDs.Contains(a.ReferenceID));
 
-                    details.Applications = apps.ToList();
+                    if (model.RoleName == Key.ROLE_CLIENT || model.RoleName == Key.ROLE_USER)
+                    {
+                        details.ClientID = clientId;
+                        details.Applications = apps.ToList();
+                    }
 
                     // make the user at this point
                     userManager.Create(user);
@@ -387,7 +391,6 @@ namespace NotificationPortal.Repositories
                     user.BusinessPhone = model.BusinessPhone;
                     user.MobilePhone = model.MobilePhone;
                     user.HomePhone = model.HomePhone;
-                    user.ClientID = clientId;
                     user.StatusID = model.StatusID;
 
                     // Get the user manager 
@@ -460,8 +463,17 @@ namespace NotificationPortal.Repositories
 
                     // clear all the applications associated with the user 
                     user.Applications.Clear();
-                    // add new applications to the user
-                    user.Applications = apps.ToList();
+
+                    if (model.RoleName == Key.ROLE_CLIENT || model.RoleName == Key.ROLE_USER)
+                    {
+                        user.ClientID = clientId;
+                        user.Applications = apps.ToList();
+                    }
+                    else
+                    {
+                        user.ClientID = null;
+                        user.Applications = apps.Where(u => false).ToList();
+                    }
 
                     // _context.Entry(model).State = EntityState.Modified;
                     _context.SaveChanges();
