@@ -28,15 +28,14 @@
         @{
             if (Request.IsAuthenticated)
             {
+                <!-- replace the img tag below with your logo-->
                 <a href="@Url.Action("Index", "Dashboard")" class="nav-brand">
-                    <!-- replace the img tag below with your logo-->
                     <img src="~/Content/images/logo.png" alt="logo for notification portal" />
                 </a>
             }
             else
             {
                 <a href="@Url.Action("Login", "Account")" class="nav-brand">
-                    <!-- replace the img tag below with your logo-->
                     <img src="~/Content/images/logo.png" alt="logo for notification portal" />
                 </a>
             }
@@ -48,13 +47,13 @@
     </div>
     <!-- ========================= content  ========================= -->
     @{
-        string offset = Request.IsAuthenticated ? "col-lg-10 offset-lg-2" : "";
+        string offset = Request.IsAuthenticated ? "col-md-11 offset-md-1" : "";
         if (Request.IsAuthenticated)
         {
             @Html.Partial("~/Views/Shared/_Sidebar.cshtml")
         }
     }
-    <div class="container-fluid col-md-12 @offset">
+    <div class="container-fluid col-sm-12 @offset">
         <div class="container">
             @RenderBody()
         </div>

@@ -5,7 +5,7 @@
 }
 
 @{
-    var className = Model.Status == "Offline" ? "badge badge-danger" : "badge badge-success";
+    var className = Model.Status == NotificationPortal.Models.Key.STATUS_SERVER_OFFLINE ? "badge badge-danger" : "badge badge-success";
 }
 
 <h1 class="text-center display-4 pb-3">@Model.ServerName <span class="@className">@Html.DisplayFor(modelItem => Model.Status)</span></h1>
@@ -112,6 +112,8 @@
 
                 @foreach (var item in Model.Applications)
                 {
+                    var statusClass = item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_APPLICATION_OFFLINE.ToUpper() ? "badge badge-danger" : "badge badge-success";
+
                     <tr class="clickable-row" id="@item.ApplicationReferenceID" data-href="Application/Details/@item.ApplicationReferenceID">
                         <td data-title="@Html.DisplayNameFor(model => item.ApplicationName)" class="first-row">
                             @Html.DisplayFor(modelItem => item.ApplicationName)
@@ -123,7 +125,7 @@
                             @Html.DisplayFor(modelItem => item.URL)
                         </td>
                         <td data-title="@Html.DisplayNameFor(model => item.Status)">
-                            @Html.DisplayFor(modelItem => item.Status)
+                            <span class="@statusClass">@Html.DisplayFor(modelItem => item.Status)</span>
                         </td>
                     </tr>
                 }

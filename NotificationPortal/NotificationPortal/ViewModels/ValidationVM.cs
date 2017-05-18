@@ -144,7 +144,8 @@ namespace NotificationPortal.ViewModels
             [Required]
             public string Type { get; set; }
         }
-        public class StatusVM {
+        public class StatusVM
+        {
             [Required]
             public int StatusID { get; set; }
             [Required]

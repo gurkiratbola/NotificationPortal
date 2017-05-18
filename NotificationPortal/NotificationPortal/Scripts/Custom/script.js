@@ -6,10 +6,7 @@ if (window.location.origin.indexOf('localhost') === -1) {
 }
 // used for clickable row and ajax scripts (for right-click on all tables)
 var domain = window.location.origin + subdir;
-
 var clickableRow = function () {
-    const HIDDEN_MENU_WIDTH_OFFSET = 170;
-    const HIDDEN_MENU_HEIGHT_OFFSET = 50;
     $(".hidden-menu").hide();
     $(".clickable-row").click(function () {
         var x = $(this).data("href");
@@ -22,20 +19,25 @@ var clickableRow = function () {
         }
     });
     $(".clickable-row").contextmenu(function (e) {
-        var rowId = $(this).attr("id");
-        $('.hidden-menu li a').attr('href', function (i, str) {
-            if (str.indexOf(rowId) >= 0) {
-                return str;
-            } else {
-                return window.location.origin + subdir + str + rowId;
-            }
-        });
-        $(".hidden-menu").css({ position: "absolute", top: e.pageY - HIDDEN_MENU_HEIGHT_OFFSET, left: e.pageX - HIDDEN_MENU_WIDTH_OFFSET });
-        $(".hidden-menu").toggle();
+        displayHiddenMenu(e);
         return false;
     });
 }
-
+var displayHiddenMenu = function (e) {
+    var hidden_menu_width_offset = $('table').offset().left - 15; //absolute position of table + ???
+    var hidden_menu_height_offset = 54 - 3; // height of navbar + ???
+    var rowId = $(this).attr("id");
+    $('.hidden-menu li a').attr('href', function (i, str) {
+        if (str.indexOf(rowId) >= 0) {
+            return str;
+        } else {
+            return window.location.origin + subdir + str + rowId;
+        }
+    });
+    $(".hidden-menu").css({ position: "absolute", top: e.pageY - hidden_menu_height_offset, left: e.pageX - hidden_menu_width_offset });
+    $(".hidden-menu").toggle();
+    console.log($('table'))
+}
 // localstorage for sidebar dropdown
 var sidebarDropdown = function () {
     if (localStorage.getItem("isDropdownVisible") === null) {
