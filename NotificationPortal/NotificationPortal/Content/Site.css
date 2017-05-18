@@ -401,31 +401,6 @@ td a:hover {
     margin: 20px 2px;
 }
 
-.filter-row button.multiselect.dropdown-toggle.btn.btn-default {
-    background: none !important;
-    border: none !important;
-    border-radius: 0 !important;
-    padding-left: 0.5rem;
-}
-
-.dropdown-menu > li {
-    padding-top: 7px;
-}
-
-.multiselect-search {
-    padding-left: 8px;
-}
-
-.show > .dropdown-menu {
-    padding: 0.5rem !important;
-}
-
-.show > .dropdown-menu > li a,
-.show > .dropdown-menu > li a:hover {
-    color: black;
-}
-
-
 .filter-arrows {
     float: right;
     font-size: 1.6em;
@@ -448,6 +423,58 @@ td a:hover {
 .active-arrow {
     color: #fff !important;
 }
+/* ==========================================================================
+                        Multi-select Styles
+========================================================================== */
+.btn-group,
+ul.multiselect-container.dropdown-menu {
+    width: 100%;
+}
+
+button.multiselect.dropdown-toggle.btn.btn-default {
+    background-color: #fff;
+    border: 1px solid #adadad;
+    width: 100%;
+    text-align: left;
+}
+
+ul.multiselect-container.dropdown-menu {
+}
+
+.caret-container {
+    float: left;
+}
+
+.filter-row button.multiselect.dropdown-toggle.btn.btn-default {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding-left: 0.5rem;
+}
+
+.dropdown-menu > li {
+    padding-top: 7px;
+}
+
+.multiselect-search {
+    padding-left: 8px;
+    width: 100%;
+}
+.show > .dropdown-menu {
+    padding: 0.5rem !important;
+}
+
+.show > .dropdown-menu > li a,
+.show > .dropdown-menu > li a:hover {
+    color: black;
+}
+
+.dropdown-toggle::after {
+    right: 15px;
+    top: 16px;
+    position: absolute;
+}
+
 
 /* ==========================================================================
                         Header Styles
