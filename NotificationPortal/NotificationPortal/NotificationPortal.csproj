@@ -316,14 +316,14 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
-    <Content Include="Scripts\application-multiselect.js" />
-    <Content Include="Scripts\bootstrap-multiselect.js" />
-    <Content Include="Scripts\refresh-index-helper.js" />
-    <Content Include="Scripts\refresh-application-dropdown.js" />
-    <Content Include="Scripts\refresh-application-status.js" />
-    <Content Include="Scripts\script.js" />
-    <Content Include="Scripts\timezone.js" />
-    <Content Include="Scripts\add-notification.js" />
+    <Content Include="Scripts\Custom\application-multiselect.js" />
+    <Content Include="Scripts\Custom\user-refresh-dropdown.js" />
+    <Content Include="Scripts\Plugins\bootstrap-multiselect.js" />
+    <Content Include="Scripts\Custom\refresh-index-helper.js" />
+    <Content Include="Scripts\Custom\notification-refresh-dropdown.js" />
+    <Content Include="Scripts\Custom\refresh-application-status.js" />
+    <Content Include="Scripts\Custom\script.js" />
+    <Content Include="Scripts\Custom\add-notification.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -340,8 +340,8 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\summernote.js" />
-    <Content Include="Scripts\user-multiselect.js" />
+    <Content Include="Scripts\Plugins\summernote.js" />
+    <Content Include="Scripts\Custom\user-multiselect.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Service\templates\AccountEmailTemplate.html" />
     <Content Include="Service\templates\NotificationEmailTemplate.html" />
@@ -407,7 +407,6 @@
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />
     <Content Include="Views\Notification\Create.cshtml" />
-    <Content Include="Views\Dashboard\OldIndex.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Notification\Edit.cshtml" />
     <Content Include="Views\Notification\DeleteThread.cshtml" />

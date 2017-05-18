@@ -14,6 +14,7 @@ namespace NotificationPortal.ApiControllers
     {
         ApplicationApiRepo _aApiRepo = new ApplicationApiRepo();
 
+        // POST: api/Application
         public List<ApplicationListItem> POST(string[] serverReferenceIDs)
         {
             List<ApplicationListItem> apps=new List<ApplicationListItem>();
@@ -24,6 +25,7 @@ namespace NotificationPortal.ApiControllers
             return apps;
         }
 
+        // PUT: api/Application
         public List<ApplicationStatus> PUT(string[] applicationReferenceIDs)
         {
             List<ApplicationStatus> appStatuses = _aApiRepo.RefreshApplicationStatuses(applicationReferenceIDs);
