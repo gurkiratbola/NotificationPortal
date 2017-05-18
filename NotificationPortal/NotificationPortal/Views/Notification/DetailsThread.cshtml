@@ -32,9 +32,13 @@
     <li class="nav-item">
         <a class="nav-link flex-xs-fill text-sm-center active" data-toggle="tab" href="#Notifications" role="tab">Notifications</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link flex-xs-fill text-sm-center" data-toggle="tab" href="#Servers" role="tab">Servers</a>
-    </li>
+    @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN)
+    || User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+    {
+        <li class="nav-item">
+            <a class="nav-link flex-xs-fill text-sm-center" data-toggle="tab" href="#Servers" role="tab">Servers</a>
+        </li>
+    }
     <li class="nav-item">
         <a class="nav-link flex-xs-fill text-sm-center" data-toggle="tab" href="#Applications" role="tab">Applications</a>
     </li>
@@ -93,37 +97,34 @@
         @foreach (var item in Model.Thread)
         {
             var statusClass = "";
-            switch (item.Status) {
-                case NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED:
-                    statusClass = "badge badge-grey";
-                    break;
-                case NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN:
-                    statusClass = "badge badge-red";
-                    break;
-                case NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING:
-                    statusClass = "badge badge-orange";
-                    break;
-                case NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED:
-                    statusClass = "badge badge-green";
-                    break;
-                default:
-                    statusClass = "badge badge-grey";
-                    break;
+            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED.ToUpper()) {
+                statusClass = "badge badge-closed";
             }
-
+            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN.ToUpper())
+            {
+                statusClass = "badge badge-open";
+            }
+            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING.ToUpper())
+            {
+                statusClass = "badge badge-invest";
+            }
+            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED.ToUpper())
+            {
+                statusClass = "badge badge-resolved";
+            }
             <div class="col-sm-12 single-thread">
                 <span class="thread-status-bar">
                     @Html.Raw(item.SentDateTime)
                     <span class="@statusClass">@Html.Raw(item.Status)</span>
                     @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
                      User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
-                {
+                    {
                         <a class="" href="@Url.Action("Edit", "Notification", new { id = @item.ReferenceID })">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </a>
                     }
                     @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN))
-            {
+                    {
                         <a class="" href="@Url.Action("Delete", "Notification", new { id = @item.ReferenceID })">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </a>
@@ -137,44 +138,49 @@
         }
      </div>
         </div>
-    <!-- Servers Tab pane -->
-    <div class="tab-pane" id="Servers" role="tabpanel">
-        <table class="table table-bordered">
-            @{ var serverModel = Model.Servers.FirstOrDefault();}
-            <thead>
-            <tr class="bg-inverse text-white">
-                <th class="text-center">
-                    @Html.DisplayNameFor(model => serverModel.ServerName)
-                </th>
-                <th class="text-center">
-                    @Html.DisplayNameFor(model => serverModel.ServerType)
-                </th>
-                <th class="text-center">
-                    @Html.DisplayNameFor(model => serverModel.ServerStatus)
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model.Servers)
-        {
-            var serverStatusClass = item.ServerStatus.ToUpper() == NotificationPortal.Models.Key.STATUS_SERVER_OFFLINE.ToUpper()?"badge badge-danger": "badge badge-success";
-                <tr class="clickable-row" id="@item.ReferenceID" data-href="Server/Details/@item.ReferenceID">
-                    <td data-title="@Html.DisplayNameFor(model => serverModel.ServerName)" class="first-row">
-                        @Html.DisplayFor(modelItem => item.ServerName)
-                    </td>
-                    <td data-title="@Html.DisplayNameFor(model => serverModel.ServerType)">
-                        @Html.DisplayFor(modelItem => item.ServerType)
-                    </td>
-                    <td data-title="@Html.DisplayNameFor(model => serverModel.ServerStatus)">
-                        <span class="@serverStatusClass ml-1">
-                            @Html.DisplayFor(modelItem => item.ServerStatus)
-                        </span>
-                    </td>
+    
+    @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN)
+    || User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+    {
+        <!-- Servers Tab pane -->
+        <div class="tab-pane" id="Servers" role="tabpanel">
+            <table class="table table-bordered">
+                @{ var serverModel = Model.Servers.FirstOrDefault();}
+                <thead>
+                <tr class="bg-inverse text-white">
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.ServerName)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.ServerType)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => serverModel.ServerStatus)
+                    </th>
                 </tr>
-            }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Servers)
+                {
+                    var serverStatusClass = item.ServerStatus.ToUpper() == NotificationPortal.Models.Key.STATUS_SERVER_OFFLINE.ToUpper()?"badge badge-danger": "badge badge-success";
+                    <tr class="clickable-row" id="@item.ReferenceID" data-href="Server/Details/@item.ReferenceID">
+                        <td data-title="@Html.DisplayNameFor(model => serverModel.ServerName)" class="first-row">
+                            @Html.DisplayFor(modelItem => item.ServerName)
+                        </td>
+                        <td data-title="@Html.DisplayNameFor(model => serverModel.ServerType)">
+                            @Html.DisplayFor(modelItem => item.ServerType)
+                        </td>
+                        <td data-title="@Html.DisplayNameFor(model => serverModel.ServerStatus)">
+                            <span class="@serverStatusClass ml-1">
+                                @Html.DisplayFor(modelItem => item.ServerStatus)
+                            </span>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
     <!-- Applications Tab pane -->
     <div class="tab-pane" id="Applications" role="tabpanel">
         @if (Model.Applications.Count() == 0)

@@ -272,11 +272,9 @@
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="ViewModels\NotificationVM.cs" />
     <Compile Include="ViewModels\ProfileVM.cs" />
-    <Compile Include="ViewModels\ServerAppViewModels.cs" />
     <Compile Include="ViewModels\ServerVM.cs" />
     <Compile Include="ViewModels\StatusVM.cs" />
     <Compile Include="ViewModels\UserVM.cs" />
-    <Compile Include="ViewModels\ValidationVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -317,6 +315,7 @@
     </None>
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\Custom\application-multiselect.js" />
+    <Content Include="Scripts\Custom\server-multiselect.js" />
     <Content Include="Scripts\Custom\user-refresh-dropdown.js" />
     <Content Include="Scripts\Plugins\bootstrap-multiselect.js" />
     <Content Include="Scripts\Custom\refresh-index-helper.js" />
