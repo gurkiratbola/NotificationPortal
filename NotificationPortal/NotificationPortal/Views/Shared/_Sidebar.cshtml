@@ -33,154 +33,168 @@
                     </a>
                 </span>
             </li>
-            <!-- show/hide based on roles -->
-            @{if (!HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_USER))
-                {
-                    <!-- setting -->
-                    <li class="nav-item hidden-md-down">
-                        <button class="sidebar-dropdown-button bg-inverse">
-                            <span class="hidden-xl-up sidebar-icon">
-                                <i class="fa fa-cog" aria-hidden="true"></i>
-                                <small>Settings&nbsp;</small>
-                            </span>
-                            <span class="hidden-lg-down sidebar-arrow">
-                                <i class="fa fa-cog" aria-hidden="true"></i>
-                                Settings
-                                <i class="fa fa-caret-down" aria-hidden="true"></i>
-                            </span>
-                        </button>
-                        <!-- dropdown for setting -->
-                        <ul class="sidebar-dropdown">
-                            <!-- show/hide based on roles -->
-                            @if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_CLIENT))
-                            {
-                                <!-- dashboard -->
-                                <li>
-                                    <span class="hidden-xl-up">
-                                        <a href="@Url.Action("Index", "User")" class="nav-link sidebar-icon">
-                                            <i class="fa fa-users" aria-hidden="true"></i>
-                                            <small>Users</small>
-                                        </a>
-                                    </span>
-                                    <span class="hidden-lg-down">
-                                        <a href="@Url.Action("Index", "User")" class="nav-link">
-                                            <i class="fa fa-users" aria-hidden="true"></i>
-                                            User Control
-                                        </a>
-                                    </span>
-                                </li>
-                                <!-- application -->
-                                <li>
-                                    <span class="hidden-xl-up">
-                                        <a href="@Url.Action("Index", "Application")" class="nav-link sidebar-icon">
-                                            <i class="fa fa-rocket" aria-hidden="true"></i>
-                                            <small>Apps</small>
-                                        </a>
-                                    </span>
-                                    <span class="hidden-lg-down">
-                                        <a href="@Url.Action("Index", "Application")" class="nav-link">
-                                            <i class="fa fa-rocket" aria-hidden="true"></i>
-                                            Applications
-                                        </a>
-                                    </span>
-                                </li>
-                            }
-                            else
-                            {
-                                <!-- user -->
-                                <li>
-                                    <span class="hidden-xl-up">
-                                        <a href="@Url.Action("Index", "User")" class="nav-link sidebar-icon">
-                                            <i class="fa fa-users" aria-hidden="true"></i>
-                                            <small>Users</small>
-                                        </a>
-                                    </span>
-                                    <span class="hidden-lg-down">
-                                        <a href="@Url.Action("Index", "User")" class="nav-link">
-                                            <i class="fa fa-users" aria-hidden="true"></i>
-                                            User Control
-                                        </a>
-                                    </span>
-                                </li>
-                                <!-- application -->
-                                <li>
-                                    <span class="hidden-xl-up">
-                                        <a href="@Url.Action("Index", "Application")" class="nav-link sidebar-icon">
-                                            <i class="fa fa-rocket" aria-hidden="true"></i>
-                                            <small>Apps</small>
-                                        </a>
-                                    </span>
-                                    <span class="hidden-lg-down">
-                                        <a href="@Url.Action("Index", "Application")" class="nav-link">
-                                            <i class="fa fa-rocket" aria-hidden="true"></i>
-                                            Applications
-                                        </a>
-                                    </span>
-                                </li>
-                                <!-- client -->
-                                <li>
-                                    <span class="hidden-xl-up">
-                                        <a href="@Url.Action("Index", "Client")" class="nav-link sidebar-icon">
-                                            <i class="fa fa-briefcase" aria-hidden="true"></i>
-                                            <small>Clients</small>
-                                        </a>
-                                    </span>
-                                    <span class="hidden-lg-down">
-                                        <a href="@Url.Action("Index", "Client")" class="nav-link">
-                                            <i class="fa fa-briefcase" aria-hidden="true"></i>
-                                            Clients
-                                        </a>
-                                    </span>
-                                </li>
-                                <!-- data center-->
-                                <li>
-                                    <span class="hidden-xl-up">
-                                        <a href="@Url.Action("Index", "DataCenter")" class="nav-link sidebar-icon">
-                                            <i class="fa fa-globe" aria-hidden="true"></i>
-                                            <small>Data Centers</small>
-                                        </a>
-                                    </span>
-                                    <span class="hidden-lg-down">
-                                        <a href="@Url.Action("Index", "DataCenter")" class="nav-link">
-                                            <i class="fa fa-globe" aria-hidden="true"></i>
-                                            Data Centers
-                                        </a>
-                                    </span>
-                                </li>
-                                <!-- server -->
-                                <li>
-                                    <span class="hidden-xl-up">
-                                        <a href="@Url.Action("Index", "Server")" class="nav-link sidebar-icon">
-                                            <i class="fa fa-server" aria-hidden="true"></i>
-                                            <small>Servers</small>
-                                        </a>
-                                    </span>
-                                    <span class="hidden-lg-down">
-                                        <a href="@Url.Action("Index", "Server")" class="nav-link">
-                                            <i class="fa fa-server" aria-hidden="true"></i>
-                                            Servers
-                                        </a>
-                                    </span>
-                                </li>
-                                <!-- status -->
-                                <li>
-                                    <span class="hidden-xl-up">
-                                        <a href="@Url.Action("Index", "Status")" class="nav-link sidebar-icon">
-                                            <i class="fa fa-signal" aria-hidden="true"></i>
-                                            <small>Statuses</small>
-                                        </a>
-                                    </span>
-                                    <span class="hidden-lg-down">
-                                        <a href="@Url.Action("Index", "Status")" class="nav-link">
-                                            <i class="fa fa-signal" aria-hidden="true"></i>
-                                            Statuses
-                                        </a>
-                                    </span>
-                                </li>
-                            }
-                        </ul>
-                    </li>
-                }
+                <!-- setting -->
+                <li class="nav-item hidden-md-down">
+                    <button class="sidebar-dropdown-button bg-inverse">
+                        <span class="hidden-xl-up sidebar-icon">
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                            <small>Settings&nbsp;</small>
+                        </span>
+                        <span class="hidden-lg-down sidebar-arrow">
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                            Settings
+                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <!-- dropdown for setting -->
+                    <ul class="sidebar-dropdown">
+                        <!-- show/hide based on roles -->
+                        @if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_CLIENT))
+                        {
+                            <!-- user -->
+                            <li>
+                                <span class="hidden-xl-up">
+                                    <a href="@Url.Action("Index", "User")" class="nav-link sidebar-icon">
+                                        <i class="fa fa-users" aria-hidden="true"></i>
+                                        <small>Users</small>
+                                    </a>
+                                </span>
+                                <span class="hidden-lg-down">
+                                    <a href="@Url.Action("Index", "User")" class="nav-link">
+                                        <i class="fa fa-users" aria-hidden="true"></i>
+                                        User Control
+                                    </a>
+                                </span>
+                            </li>
+                            <!-- application -->
+                            <li>
+                                <span class="hidden-xl-up">
+                                    <a href="@Url.Action("Index", "Application")" class="nav-link sidebar-icon">
+                                        <i class="fa fa-rocket" aria-hidden="true"></i>
+                                        <small>Apps</small>
+                                    </a>
+                                </span>
+                                <span class="hidden-lg-down">
+                                    <a href="@Url.Action("Index", "Application")" class="nav-link">
+                                        <i class="fa fa-rocket" aria-hidden="true"></i>
+                                        Applications
+                                    </a>
+                                </span>
+                            </li>
+                        }
+                        else if (HttpContext.Current.User.IsInRole(NotificationPortal.Models.Key.ROLE_USER))
+                        {
+                            <!-- application -->
+                            <li>
+                                <span class="hidden-xl-up">
+                                    <a href="@Url.Action("Index", "Application")" class="nav-link sidebar-icon">
+                                        <i class="fa fa-rocket" aria-hidden="true"></i>
+                                        <small>Apps</small>
+                                    </a>
+                                </span>
+                                <span class="hidden-lg-down">
+                                    <a href="@Url.Action("Index", "Application")" class="nav-link">
+                                        <i class="fa fa-rocket" aria-hidden="true"></i>
+                                        Applications
+                                    </a>
+                                </span>
+                            </li>
+                        }
+                        else
+                        {
+                            <!-- user -->
+                            <li>
+                                <span class="hidden-xl-up">
+                                    <a href="@Url.Action("Index", "User")" class="nav-link sidebar-icon">
+                                        <i class="fa fa-users" aria-hidden="true"></i>
+                                        <small>Users</small>
+                                    </a>
+                                </span>
+                                <span class="hidden-lg-down">
+                                    <a href="@Url.Action("Index", "User")" class="nav-link">
+                                        <i class="fa fa-users" aria-hidden="true"></i>
+                                        User Control
+                                    </a>
+                                </span>
+                            </li>
+                            <!-- application -->
+                            <li>
+                                <span class="hidden-xl-up">
+                                    <a href="@Url.Action("Index", "Application")" class="nav-link sidebar-icon">
+                                        <i class="fa fa-rocket" aria-hidden="true"></i>
+                                        <small>Apps</small>
+                                    </a>
+                                </span>
+                                <span class="hidden-lg-down">
+                                    <a href="@Url.Action("Index", "Application")" class="nav-link">
+                                        <i class="fa fa-rocket" aria-hidden="true"></i>
+                                        Applications
+                                    </a>
+                                </span>
+                            </li>
+                            <!-- client -->
+                            <li>
+                                <span class="hidden-xl-up">
+                                    <a href="@Url.Action("Index", "Client")" class="nav-link sidebar-icon">
+                                        <i class="fa fa-briefcase" aria-hidden="true"></i>
+                                        <small>Clients</small>
+                                    </a>
+                                </span>
+                                <span class="hidden-lg-down">
+                                    <a href="@Url.Action("Index", "Client")" class="nav-link">
+                                        <i class="fa fa-briefcase" aria-hidden="true"></i>
+                                        Clients
+                                    </a>
+                                </span>
+                            </li>
+                            <!-- data center-->
+                            <li>
+                                <span class="hidden-xl-up">
+                                    <a href="@Url.Action("Index", "DataCenter")" class="nav-link sidebar-icon">
+                                        <i class="fa fa-globe" aria-hidden="true"></i>
+                                        <small>Data Centers</small>
+                                    </a>
+                                </span>
+                                <span class="hidden-lg-down">
+                                    <a href="@Url.Action("Index", "DataCenter")" class="nav-link">
+                                        <i class="fa fa-globe" aria-hidden="true"></i>
+                                        Data Centers
+                                    </a>
+                                </span>
+                            </li>
+                            <!-- server -->
+                            <li>
+                                <span class="hidden-xl-up">
+                                    <a href="@Url.Action("Index", "Server")" class="nav-link sidebar-icon">
+                                        <i class="fa fa-server" aria-hidden="true"></i>
+                                        <small>Servers</small>
+                                    </a>
+                                </span>
+                                <span class="hidden-lg-down">
+                                    <a href="@Url.Action("Index", "Server")" class="nav-link">
+                                        <i class="fa fa-server" aria-hidden="true"></i>
+                                        Servers
+                                    </a>
+                                </span>
+                            </li>
+                            <!-- status -->
+                            <li>
+                                <span class="hidden-xl-up">
+                                    <a href="@Url.Action("Index", "Status")" class="nav-link sidebar-icon">
+                                        <i class="fa fa-signal" aria-hidden="true"></i>
+                                        <small>Statuses</small>
+                                    </a>
+                                </span>
+                                <span class="hidden-lg-down">
+                                    <a href="@Url.Action("Index", "Status")" class="nav-link">
+                                        <i class="fa fa-signal" aria-hidden="true"></i>
+                                        Statuses
+                                    </a>
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                </li>
             }
         </ul>
     </nav>
