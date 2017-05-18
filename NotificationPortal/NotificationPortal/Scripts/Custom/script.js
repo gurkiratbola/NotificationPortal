@@ -77,21 +77,6 @@ var sidebarStateDetection = function () {
     });
 }
 
-// hide alert messages after 2s
-var hideAlert = function () {
-    const DELAY = 2000;
-    var alertSuccess = $(".alert-success");
-    var alertDanger = $(".alert-danger");
-    if (alertSuccess.css('display') !== 'none' || alertDanger.css('display') !== 'none') {
-        setTimeout(function () {
-            alertSuccess.parent('.form-group > div').slideUp();
-            alertDanger.parent('.form-group > div').slideUp();
-            alertSuccess.slideUp();
-            alertDanger.slideUp();
-        }, DELAY);
-    }
-}
-
 var truncate = function () {
     var e = $("h5");
     //console.log(e.prop('scrollWidth'))
