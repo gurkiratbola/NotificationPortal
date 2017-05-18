@@ -119,6 +119,7 @@ h4 {
 
 @media (max-width: 805px) {
     .bg-closed.td-status,
+    .bg-impact.td-status,
     .bg-invest.td-status,
     .bg-success.td-status,
     .bg-danger.td-status {
@@ -137,6 +138,9 @@ h4 {
     .bg-danger.td-status {
         color: #d9534f !important;
     }
+    .bg-impact.td-status {
+        color: #f47a42 !important;
+    }
 }
 /* ==========================================================================
                             Others
@@ -152,6 +156,13 @@ h4 {
     color: #6d6b69 !important;
 }
 
+a[href^="mailto:"] {
+    display: inline-block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 /* ==========================================================================
                             Overriding default class styles
@@ -349,9 +360,7 @@ td a:hover {
 }
 
 @media screen and (max-width: 576px) {
-    .pageinfo-display > label {
-        display: none;
-    }
+
     #pageinfo-display {
         text-align: center;
         width: 100%;

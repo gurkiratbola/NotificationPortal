@@ -66,8 +66,6 @@ namespace NotificationPortal.Repositories
                     list = list.OrderByDescending(c => c.URL);
                     break;
 
-
-
                 default:
                     list = list.OrderBy(c => c.ApplicationName);
                     break;
@@ -157,7 +155,6 @@ namespace NotificationPortal.Repositories
             }
         }
 
-
         public IEnumerable<ApplicationServerVM> GetServerList()
         {
             var apps = _context.Server.Select(a => new ApplicationServerVM
@@ -167,18 +164,15 @@ namespace NotificationPortal.Repositories
                 Location = a.DataCenterLocation.Location,
                 Description = a.Description,
                 Status = a.Status.StatusName,
-
+                ServerType = a.ServerType.ServerTypeName
             });
-
             return apps;
         }
-
 
         public ApplicationDetailVM GetDetailApplication(string referenceID)
         {
             Application application = _context.Application
                             .Where(a => a.ReferenceID == referenceID).FirstOrDefault();
-
 
             IEnumerable<Server> allApplicationServers = application.Servers;
             IEnumerable<ApplicationServerVM> applicationServer = allApplicationServers
@@ -190,9 +184,8 @@ namespace NotificationPortal.Repositories
                         ReferenceID = t.ReferenceID,
                         ServerName = t.ServerName,
                         Location = t.DataCenterLocation.Location,
-                        ServerType = t.ServerName,
+                        ServerType = t.ServerType.ServerTypeName,
                         Status = t.Status.StatusName,
-
                     });
             //.GroupBy(n => n.ServerName)
             //.Select(t => t.OrderByDescending(i => i.ServerName).FirstOrDefault());
@@ -230,12 +223,7 @@ namespace NotificationPortal.Repositories
                         Description = t.NotificationDescription,
                         Status = t.Status.StatusName,
                         IncidentNumber = t.IncidentNumber,
-
-
-
-
                     });
-
 
             ApplicationDetailVM model = new ApplicationDetailVM
             {
@@ -254,7 +242,6 @@ namespace NotificationPortal.Repositories
             return model;
         }
 
-
         public IEnumerable<ApplicationListVM> GetApplicationList()
         {
             IEnumerable<ApplicationListVM> applicationList = _context.Application
@@ -266,7 +253,6 @@ namespace NotificationPortal.Repositories
                                                     URL = c.URL,
                                                     StatusName = c.Status.StatusName,
                                                     ClientName = c.Client.ClientName,
-
                                                 });
             return applicationList;
         }
@@ -294,10 +280,8 @@ namespace NotificationPortal.Repositories
                                     Value = app.ClientID.ToString(),
                                     Text = app.ClientName
                                 });
-
             return new SelectList(clientList, "Value", "Text");
         }
-
 
         public bool AddApplication(ApplicationVM application, out string msg)
         {
@@ -310,8 +294,6 @@ namespace NotificationPortal.Repositories
                 msg = "Application name already exist.";
                 return false;
             }
-
-
 
             try
             {
@@ -486,9 +468,6 @@ namespace NotificationPortal.Repositories
                 msg = "Failed to update application.";
                 return false;
             }
-
         }
     }
 }
-
-

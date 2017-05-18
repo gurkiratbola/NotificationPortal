@@ -115,11 +115,11 @@
             {
                 var statusClass = item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_SERVER_OFFLINE.ToUpper() ? "badge badge-danger" : "badge badge-success";
                 <tr class="clickable-row" id="@item.ReferenceID" data-href="/Server/Details/@item.ReferenceID">
-                    <td data-title="@Html.DisplayNameFor(model => item.ServerType)" class="first-row">
-                        @Html.DisplayFor(modelItem => item.ServerType)
-                    </td>
-                    <td data-title="@Html.DisplayNameFor(model => item.ServerName)">
+                    <td data-title="@Html.DisplayNameFor(model => item.ServerName)" class="first-row">
                         @Html.DisplayFor(modelItem => item.ServerName)
+                    </td>
+                    <td data-title="@Html.DisplayNameFor(model => item.ServerType)">
+                        @Html.DisplayFor(modelItem => item.ServerType)
                     </td>
                     <td data-title="@Html.DisplayNameFor(model => item.Status)" >
                         <span class="@statusClass ml-1">
