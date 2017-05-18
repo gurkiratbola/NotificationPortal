@@ -133,6 +133,10 @@
                     @Html.ValidationMessageFor(model => model.ClientReferenceID, "", new { @class = "text-danger float-right" })
                 </div>
             }
+            else
+            {
+                @Html.HiddenFor(m => m.ClientReferenceID)
+            }
 
             <div class="form-group">
                 @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label" })
