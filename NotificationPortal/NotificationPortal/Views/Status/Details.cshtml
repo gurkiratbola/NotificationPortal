@@ -12,12 +12,24 @@
     <li class="breadcrumb-item"><a href="~/Status/Index" class="link-color">Status</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.StatusName)</li>
 </ol>
-
-<!-- alert messages -->
 @if (TempData["SuccessMsg"] != null)
 {
-    <p class="alert alert-success">
+            <!-- display success message -->
+    <p class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
         @Html.Raw(TempData["SuccessMsg"])
+    </p>
+}
+@if (TempData["ErrorMsg"] != null)
+{
+            <!-- display error message -->
+    <p class="alert alert-danger alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @Html.Raw(TempData["ErrorMsg"])
     </p>
 }
 <!-- ========================= status detail ========================= -->
