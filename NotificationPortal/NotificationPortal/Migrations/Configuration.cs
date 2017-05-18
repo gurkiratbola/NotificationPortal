@@ -742,6 +742,7 @@ namespace NotificationPortal.Migrations
             context.Database.ExecuteSqlCommand("DELETE FROM DataCenterLocations");
             context.Database.ExecuteSqlCommand("DELETE FROM StatusTypes");
             context.Database.ExecuteSqlCommand("DELETE FROM Priorities");
+            context.Database.ExecuteSqlCommand("DELETE FROM ServerTypes");
         }
     }
 }

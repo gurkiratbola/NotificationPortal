@@ -3,6 +3,9 @@
 Table of Contents
 -----------------
 * [Introduction](#introduction)
+* [Functional Requirements](#functional-requirements)
+    * [Overview](#overview)
+    * [Specifications](#specifications)
 * [Features](#features)
 * [Project Structure](#project-structure)
     * [Constants](#constants)
@@ -12,12 +15,38 @@ Table of Contents
     * [Custom Javascript Files](#custom-javascript-files)
     * [Static File Locations](#static-file-locations)
     * [Service](#service)
+* [Installation](#installation)
 
 Introduction
 ============
 This project is for *Bayleaf*, one of our clients in the *Industry Project* for **BCIT's Software Systems Developer** program. Bayleaf is a technology consulting company that specializes in the development and integration of custom software solutions for web, mobile and desktop. In addition to that, they provide managed hosting services to many of their clients. Based on the size, complexity of their hosting environment, coupled with the number of applications being hosted in this enviornment it was becoming increasingly difficult to manage notifications to their clients when there was a maintenance or a problem. 
 
 We were asked to develop a platform which allows Bayleaf the management and issuing of the notification which will be implemented within their current system. 
+
+Functional Requirements
+============
+
+### Overview
+Notification Portal is a notification system that allows organizations to communicate with clients regarding application/server updates. For example, contacting client regarding hosting services when issues arise suddenly or when maintenance is scheduled to be performed in the near future. 
+
+This system is independent from any external database. Notifications are manually managed by internal employees and are only viewable to client users. Four type of users are required:
+
+* Internal Admin (Internal)
+* Internal User (Internal)
+* External Admin (Client)
+* External User (Client)
+
+Internal roles will manage all clients, apps, users, servers, and notification delivery while external roles will manage users associated with their company. 
+
+### Specifications
+* Notification Portal is a stand-alone system which has it’s own database
+* User roles are limited to the four roles listed above
+* Role management is not required (without ability to edit/delete user roles)
+* All notifications are sent out immediately after creation 
+* Notifications are not saved as drafts and are not auto scheduled
+* Notifications are sent in the form of emails only
+* Notification is generated either by application or by server
+* Server status is manually tracked and updated by the internal users 
 
 Features
 ============

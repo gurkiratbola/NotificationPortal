@@ -13,7 +13,12 @@
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
-
+@if (Model == null)
+{
+    <p> Something went wrong, user database not available.</p>
+}
+else
+{
 <!-- ========================= search & create ========================= -->
 <div class="row">
     <!-- Search input and button -->
@@ -41,7 +46,7 @@
         </div>
     </div>
 </div>
-@if (TempData["SuccessMsg"] != null)
+if (TempData["SuccessMsg"] != null)
 {
             <!-- display success message -->
     <p class="alert alert-success alert-dismissible fade show" role="alert">
@@ -51,7 +56,7 @@
         @Html.Raw(TempData["SuccessMsg"])
     </p>
 }
-@if (TempData["ErrorMsg"] != null)
+if (TempData["ErrorMsg"] != null)
 {
             <!-- display error message -->
     <p class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -61,8 +66,8 @@
         @Html.Raw(TempData["ErrorMsg"])
     </p>
 }
-@{  if (Model.Users.Count() > 0)
-    {
+if (Model.Users.Count() > 0)
+{
 
         <!-- table for users -->
         <table class="table table-bordered">
@@ -203,17 +208,9 @@
         }
         else
         {
-            if (Model == null)
-            {
-                <p> Something went wrong, user database not available.</p>
-            }
-            else
-            {
                 <p> There are no such users in the database at the moment.</p>
-            }
         }
 }
-
 
 <div class="hidden-menu">
     <ul>
