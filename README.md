@@ -1,8 +1,9 @@
-# BCIT Industry Project 2017 
+# Notification Portal - BCIT Industry Project 2017 
 
 Table of Contents
 -----------------
 * [Introduction](#introduction)
+* [Installation](#installation)
 * [Functional Requirements](#functional-requirements)
     * [Overview](#overview)
     * [Specifications](#specifications)
@@ -17,13 +18,16 @@ Table of Contents
     * [Custom Javascript Files](#custom-javascript-files)
     * [Static File Locations](#static-file-locations)
     * [Service](#service)
-* [Installation](#installation)
 
 Introduction
 ============
-This project is for one of our **clients** in the *Industry Project* for **BCIT's Software Systems Developer** program. The Client is a technology consulting company that specializes in the development and integration of custom software solutions for web, mobile and desktop. In addition to that, they provide managed hosting services to many of their clients. Based on the size, complexity of their hosting environment, coupled with the number of applications being hosted in this enviornment it was becoming increasingly difficult to manage notifications to their clients when there was a maintenance or a problem. 
+This project is for one of our **clients** in the *Industry Project* for **BCIT's Software Systems Developer** program. The Client is a technology consulting company that specializes in the development and integration of custom software solutions for web, mobile and desktop. In addition to that, they provide managed hosting services to many of their clients. Based on the size, complexity of their hosting environment, coupled with the number of applications being hosted in this environment it was becoming increasingly difficult to manage notifications to their clients when there was a maintenance or a problem. 
 
-We were asked to develop a platform which allows client the management and issuing of the notification which will be implemented within their current system. 
+We were asked to develop a platform which allows our client to manage and issue notifications by Email or SMS. This platform also allows their clients to find out the current status of their applications. 
+
+Installation
+============
+dfdsfsd
 
 Functional Requirements
 ============
@@ -63,7 +67,7 @@ Internal Manage Groups and Roles (RU) | ✓ |
 Internal View Server Dependencies | ✓ |
 External Registration | | ✓
 Two way communicate through notification | | ✓
-Search on Client, Applicatipn | ✓ |
+Search on Client, Application | ✓ |
 Text Messaging | | ✓
 Dashboard (Internal Admin) shows application availability throughout month | | ✓
 Advance Search | | ✓
@@ -78,7 +82,7 @@ Manage Clients (CRUD) | ✓ | ✓
 Manage Applications (CRUD) | ✓ | ✓
 Manage Notifications | ✓ | ✓
 Read Notifications (CUD) | ✓ | ✓ | ✓ | ✓
-Read Server Status | ✓ | ✓ | ✓ | ✓
+Read Server Status | ✓ | ✓ | ✓ | 
 
 Features
 ============
@@ -107,7 +111,7 @@ There are three types of shared constants:
 ### API
 AJAX is used for loading Notification Index, Application Index and Dashboard. All related logic is hosted in API folder. For the application page, AJAX is used to check all app status on load. 
 
-Note*: Notification Index and Dashboard Index has inline script tags for handling the AJAX calls using constants defined in ConstantsRepo.cs and Key.cs
+**Note**: Notification Index and Dashboard Index has inline script tags for handling the AJAX calls using constants defined in ConstantsRepo.cs and Key.cs
 
 ### Reference Id
 Reference IDs are used in forms and models to be passed back and forth instead of using primary keys. In this case, GUIDs are used.
