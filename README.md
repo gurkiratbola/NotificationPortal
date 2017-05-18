@@ -4,6 +4,7 @@ Table of Contents
 -----------------
 * [Introduction](#introduction)
 * [Installation](#installation)
+    * [Requirements](#requirements)
 * [Functional Requirements](#functional-requirements)
     * [Overview](#overview)
     * [Specifications](#specifications)
@@ -27,7 +28,70 @@ We were asked to develop a platform which allows our client to manage and issue 
 
 Installation
 ============
-dfdsfsd
+
+### Requirements
+* MS SQL Server
+* SMTP Account
+* Twilio Account SID and Phone Number
+
+All of these will be configured in **Web.Config** of the project.
+
+### Configuring SMTP Account
+Open the project solution in Visual Studio and navigate to **Web.Config** file. In the appSettings, do the following:
+
+```
+    <add key="SmtpHost" value="SmtpHost Goes Here" />
+    <add key="SmtpEmail" value="Smtp Email Goes Here" />
+    <add key="SmtpPassword" value="Smtp Password Goes Here" />
+    <add key="SmtpNoReplyEmail" value="no-reply@notification-portal.com" />
+```
+1. Change the **SmtpHost Goes Here** value to your SmtpHost
+1. Change the **SmtpEmail Goes Here** value to your SmtpEmail
+1. Change the **SmtpPassword Goes Here** value to your SmtpPassword
+1. SmtpNoRepyEmail does not need to be changed unless you want to
+
+### Configuring Twilio Account
+Open the project solution in Visual Studio and navigate to **Web.Config** file. In the appSettings, do the following:
+
+```
+    <add key="TwilioAccountSID" value="Twilio SID Goes Here" />
+    <add key="TwilioAuthToken" value="Twilio Auth Token Here" />
+    <add key="TwilioFromNumber" value="Twilio Number Here" />
+```
+1. Go to `https://www.twilio.com/` and register for an account
+2. During registration do the following settings:
+
+![alt text](https://github.com/gurkiratbola/NotificationPortal/blob/master/docs/step1.png "Step 1 Twilio")
+
+3. After signing up, you can retrieve your SID and Auth Token from Twilio's Console Dashboard
+
+![alt text](https://github.com/gurkiratbola/NotificationPortal/blob/master/docs/step2.png "Step 2 Twilio")
+
+4. Change the **Twilio SID Goes Here** value to your Twilio SID
+5. Change the **Twilio Auth Token Here** value to your Twilio Auth Token 
+
+6. Then, go to `https://www.twilio.com/console/phone-numbers/incoming` or following the image below
+
+![alt text](https://github.com/gurkiratbola/NotificationPortal/blob/master/docs/step3.png "Step 3 Twilio")
+![alt text](https://github.com/gurkiratbola/NotificationPortal/blob/master/docs/step4.png "Step 4 Twilio")
+
+7. Generate a phone number
+8. Change the **Twilio Number Here** value to your Twilio Number
+9. Now, Twilio is configured
+
+### Configuring SQL Server
+1. Set up a SQL Server Database. Make sure it's empty and full privileges are granted for it.
+1. Clone the repository `git clone https://github.com/gurkiratbola/NotificationPortal`
+1. Open the solution file in Visual Studio
+1. Build the solution. This will download any required libraries which is required later on.
+1. In the Solution Explorer, Go to Properties > Settings. Add a connection to the database by changing the connection string to the database you created in **Step 1**.
+1. In the Web.config file, find connectionStrings and add name to **DefaultConnection** or the other steps will fail.
+1. After adding the connection string, build the solution.
+1. To populate the database with seed data, go to the /Migrations folder and delete all the files except **Configuration.cs**. Don't worry if the file does not exist.
+1. Open the NuGet Package Manager Console and type `Update-Database -TargetMigration:0 -Force`
+1. Then type `Add-Migration Initial`
+1. Lastly, type `Update-Database`
+1. And that will seed the database and you're good to go!
 
 Functional Requirements
 ============
@@ -83,6 +147,7 @@ Manage Applications (CRUD) | ✓ | ✓
 Manage Notifications | ✓ | ✓
 Read Notifications (CUD) | ✓ | ✓ | ✓ | ✓
 Read Server Status | ✓ | ✓ |  | 
+
 
 ![alt text](https://github.com/gurkiratbola/NotificationPortal/blob/master/docs/entity_relationship_diagram.png "Entity Relationship Diagram")
 
