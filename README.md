@@ -5,6 +5,9 @@ Table of Contents
 * [Introduction](#introduction)
 * [Installation](#installation)
     * [Requirements](#requirements)
+    * [Configuring SMTP Account](#configuring-smtp-account)    
+    * [Configuring Twilio Account](#configuring-twilio-account)   
+    * [Configuring SQL Server](#configuring-sql-server)             
 * [Functional Requirements](#functional-requirements)
     * [Overview](#overview)
     * [Specifications](#specifications)
@@ -70,7 +73,7 @@ Open the project solution in Visual Studio and navigate to **Web.Config** file. 
 4. Change the **Twilio SID Goes Here** value to your Twilio SID
 5. Change the **Twilio Auth Token Here** value to your Twilio Auth Token 
 
-6. Then, go to `https://www.twilio.com/console/phone-numbers/incoming` or following the image below
+6. Then, go to `https://www.twilio.com/console/phone-numbers/incoming` or follow the image below
 
 ![alt text](https://github.com/gurkiratbola/NotificationPortal/blob/master/docs/step3.png "Step 3 Twilio")
 ![alt text](https://github.com/gurkiratbola/NotificationPortal/blob/master/docs/step4.png "Step 4 Twilio")
