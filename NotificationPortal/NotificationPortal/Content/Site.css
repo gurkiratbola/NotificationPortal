@@ -585,6 +585,12 @@ button.multiselect.dropdown-toggle.btn.btn-default {
     border-bottom: 1px solid #ededed;
 }
 
+.sidebar-arrow > i {
+    display: inline-block;
+    transition: 0.2s;
+    text-align: center;
+}
+
 .sidebar-dropdown-button {
     color: white;
     width: 100%;
