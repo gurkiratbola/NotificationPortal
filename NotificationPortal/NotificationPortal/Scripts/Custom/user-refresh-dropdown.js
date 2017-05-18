@@ -78,7 +78,7 @@ var hidePreloader = function () {
 $(document).ready(function () {
     setupClientFilterDropDown();
     var clientReferenceID = $('#ClientReferenceID').val();
-    if (clientReferenceID != null && clientReferenceID != "" && typeof (clientReferenceID)!="undefined") {
+    if (clientReferenceID !== null && clientReferenceID !== "" && typeof (clientReferenceID)!=="undefined") {
         getAppsBasedOnClient();
     }
 });

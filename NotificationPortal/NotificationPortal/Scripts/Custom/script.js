@@ -23,10 +23,10 @@ var clickableRow = function () {
         var hidden_menu_height_offset = 54 - 3; // height of navbar + ???
         var rowId = $(this).attr("id");
         $('.hidden-menu li a').attr('href', function (i, str) {
-            if (str.indexOf(rowId) >= 0) {
+            if (str.indexOf(domain) >= 0) {
                 return str;
             } else {
-                return window.location.origin + subdir + str + rowId;
+                return domain + str + rowId;
             }
         });
         $(".hidden-menu").css({ position: "absolute", top: e.pageY - hidden_menu_height_offset, left: e.pageX - hidden_menu_width_offset });
