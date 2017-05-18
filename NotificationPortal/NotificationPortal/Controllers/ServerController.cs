@@ -86,24 +86,40 @@ namespace NotificationPortal.Controllers
                 TempData["ErrorMsg"] = msg;
             }
 
-            ServerVM server = _serverRepo.GetServer(model.ReferenceID);
-            server.StatusList = _serverRepo.GetStatusList();
-            server.LocationList = _serverRepo.GetLocationList();
-            server.ServerTypeList = _serverRepo.GetServerTypeList();
+            model.StatusList = _serverRepo.GetStatusList();
+            model.LocationList = _serverRepo.GetLocationList();
+            model.ServerTypeList = _serverRepo.GetServerTypeList();
+            model.ApplicationList = _selectRepo.GetApplicationList();
 
-            return View(server);
+            return View(model);
         }
 
         [HttpGet]
         public ActionResult Details(string id)
         {
-            return View(_serverRepo.GetServerDetails(id));
+            var server = _serverRepo.GetServerDetails(id);
+
+            if(server == null)
+            {
+                TempData["ErrorMsg"] = "Cannot get this server at this time";
+                return RedirectToAction("Index");
+            }
+
+            return View(server);
         }
 
         [HttpGet]
         public ActionResult Delete(string id)
         {
-            return View(_serverRepo.GetDeleteServer(id));
+            var server = _serverRepo.GetDeleteServer(id);
+
+            if (server == null)
+            {
+                TempData["ErrorMsg"] = "Cannot delete this server at this time";
+                return RedirectToAction("Index");
+            }
+
+            return View(server);
         }
 
         [HttpPost]

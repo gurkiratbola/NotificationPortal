@@ -74,19 +74,19 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Location")]
         public string Location { get; set; }
 
-        [DisplayName("Server Type")]
-        public string ServerType { get; set; }
-
-        [DisplayName("Status")]
-        public string Status { get; set; }
-
         [Required]
         [DisplayName("Location")]
         public int LocationID { get; set; }
 
+        [DisplayName("Server Type")]
+        public string ServerType { get; set; }
+
         [Required]
         [DisplayName("Server Type")]
         public int ServerTypeID { get; set; }
+
+        [DisplayName("Status")]
+        public string Status { get; set; }
 
         [Required]
         [DisplayName("Status")]
@@ -175,7 +175,7 @@ namespace NotificationPortal.ViewModels
 
     public class ServerApplicationVM
     {
-        public string ReferenceID { get; set; }
+        public string ApplicationReferenceID { get; set; }
 
         [DisplayName("Application")]
         public string ApplicationName { get; set; }

@@ -70,7 +70,7 @@ namespace NotificationPortal.Repositories
                 int defaultPageSize = ConstantsRepo.PAGE_SIZE;
 
                 // sort by status name default
-                sortOrder = sortOrder == null ? ConstantsRepo.SORT_SERVER_BY_STATUS_NAME_DESC : sortOrder;
+                sortOrder = sortOrder ?? ConstantsRepo.SORT_SERVER_BY_STATUS_NAME_DESC;
 
                 ServerIndexVM model = new ServerIndexVM
                 {
@@ -99,6 +99,7 @@ namespace NotificationPortal.Repositories
             }
         }
 
+        // Delete later
         public ServerVM GetServer(string referenceID)
         {
             ServerVM server = _context.Server.Where(a => a.ReferenceID == referenceID)
@@ -138,13 +139,14 @@ namespace NotificationPortal.Repositories
 
                 //.GroupBy(n => n.ClientID)
                 //.Select(t => t.OrderBy(i => i.FirstName))
-                IEnumerable<ServerApplicationVM> serverApplication = allServerApplications.Select(t => new ServerApplicationVM()
+                IEnumerable<ServerApplicationVM> serverApplication = allServerApplications.Select(app => new ServerApplicationVM()
                 {
-                    ApplicationName = t.ApplicationName,
-                    Status = t.Status.StatusName,
-                    ClientID = t.Client.ClientName,
-                    Description = t.Description,
-                    URL = t.URL
+                    ApplicationReferenceID = app.ReferenceID,
+                    ApplicationName = app.ApplicationName,
+                    Status = app.Status.StatusName,
+                    ClientID = app.Client.ClientName,
+                    Description = app.Description,
+                    URL = app.URL
                 });
 
                 var getServerApplications = server.Applications.Select(app => app.ReferenceID).ToArray();
@@ -154,8 +156,11 @@ namespace NotificationPortal.Repositories
                     ServerName = server.ServerName,
                     ReferenceID = server.ReferenceID,
                     Description = server.Description,
+                    StatusID = server.Status.StatusID,
                     Status = server.Status.StatusName,
+                    LocationID = server.DataCenterLocation.LocationID,
                     Location = server.DataCenterLocation.Location,
+                    ServerTypeID = server.ServerType.ServerTypeID,
                     ServerType = server.ServerType.ServerTypeName,
                     Threads = serverThreads,
                     Applications = serverApplication,
@@ -180,15 +185,16 @@ namespace NotificationPortal.Repositories
 
         public bool AddServer(ServerVM model, out string msg)
         {
-            Server s = _context.Server.Where(a => a.ServerName == model.ServerName).FirstOrDefault();
-
-            if (s != null)
-            {
-                msg = "Server name already exist.";
-                return false;
-            }
             try
             {
+                Server s = _context.Server.Where(a => a.ServerName == model.ServerName).FirstOrDefault();
+
+                if (s != null)
+                {
+                    msg = "Server name already exist.";
+                    return false;
+                }
+
                 Server newServer = new Server();
                 newServer.ServerName = model.ServerName;
                 newServer.StatusID = model.StatusID;
@@ -212,8 +218,11 @@ namespace NotificationPortal.Repositories
                 msg = "Server successfully added";
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                if(e is SqlException)
+                { }
+
                 msg = "Failed to add server.";
                 return false;
             }
@@ -224,6 +233,15 @@ namespace NotificationPortal.Repositories
             try
             {
                 Server s = _context.Server.Where(a => a.ServerName == model.ServerName).FirstOrDefault();
+
+                if (s != null)
+                {
+                    if(s.ReferenceID != s.ReferenceID)
+                    {
+                        msg = "Server name already exist.";
+                        return false;
+                    }
+                }
 
                 Server serverUpdated = _context.Server.Where(a => a.ReferenceID == model.ReferenceID).FirstOrDefault();
 
@@ -258,7 +276,9 @@ namespace NotificationPortal.Repositories
 
         public ServerDeleteVM GetDeleteServer(string referenceID)
         {
-            ServerDeleteVM server = _context.Server.Where(a => a.ReferenceID == referenceID)
+            try
+            {
+                ServerDeleteVM server = _context.Server.Where(a => a.ReferenceID == referenceID)
                                     .Select(b => new ServerDeleteVM
                                     {
 
@@ -270,7 +290,15 @@ namespace NotificationPortal.Repositories
                                         ServerTypeName = b.ServerType.ServerTypeName
                                     }).FirstOrDefault();
 
-            return server;
+                return server;
+            }
+            catch (Exception e)
+            {
+                if(e is SqlException)
+                { }
+
+                return null;
+            }
         }
 
         public bool DeleteServer(string referenceID, out string msg)
@@ -297,7 +325,7 @@ namespace NotificationPortal.Repositories
 
             if (serverNotifications != null)
             {
-                msg = "Server has application(s) associated, cannot be deleted";
+                msg = "Server has notifications(s) associated, cannot be deleted";
                 return false;
             }
 
@@ -309,8 +337,11 @@ namespace NotificationPortal.Repositories
                 msg = "Server Successfully Deleted";
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                if(e is SqlException)
+                { }
+
                 msg = "Failed to update server.";
                 return false;
             }
@@ -338,7 +369,7 @@ namespace NotificationPortal.Repositories
             {
                 Value = sv.StatusID.ToString(),
                 Text = sv.StatusName
-            });
+            }).OrderByDescending(s => s.Value);
 
             return new SelectList(statusList, "Value", "Text");
         }
@@ -367,12 +398,13 @@ namespace NotificationPortal.Repositories
             return new SelectList(serverTypeList, "Value", "Text");
         }
 
+        // Delete later
         public IEnumerable<ServerApplicationVM> GetApplicationList()
         {
             var apps = _context.Application.Select(a => new ServerApplicationVM
             {
                 ApplicationName = a.ApplicationName,
-                ReferenceID = a.ReferenceID,
+                ApplicationReferenceID = a.ReferenceID,
                 ClientID = a.Client.ClientName,
                 Description = a.Description,
                 Status = a.Status.StatusName,

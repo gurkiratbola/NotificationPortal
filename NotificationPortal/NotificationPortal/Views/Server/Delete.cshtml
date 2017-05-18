@@ -2,10 +2,13 @@
 
 @{
     ViewBag.Title = "Delete";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center display-4 pb-3">@ViewBag.Title</h1>
+@{
+    var className = Model.StatusName == "Offline" ? "badge badge-danger" : "badge badge-success";
+}
+
+<h1 class="text-center display-4 pb-3">@ViewBag.Title - @Model.ServerName <span class="@className">@Html.DisplayFor(modelItem => Model.StatusName)</span></h1>
 
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
@@ -13,7 +16,7 @@
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.ServerName)</li>
 </ol>
 
-<h3 class="text-danger pb-2">Are you sure you want to delete this server?</h3>
+<h4 class="text-danger pb-2">Are you sure you want to delete this server?</h4>
 
 @if (TempData["ErrorMsg"] != null)
 {
@@ -21,6 +24,7 @@
         @Html.Raw(TempData["ErrorMsg"])
     </p>
 }
+
 <div>
     <dl class="row">
         <dt class="col-sm-2">

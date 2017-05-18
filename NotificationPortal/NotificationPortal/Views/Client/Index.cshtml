@@ -124,10 +124,11 @@
         <!-- hide pagination if only 1 page -->
         @Html.PagedListPager(Model.Clients, page => Url.Action("Index",
         new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
-        <div class="pageinfo-display">
-            <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
-        </div>
+
     }
+    <div class="pageinfo-display">
+        <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
+    </div>
 }
 else
 {
@@ -137,7 +138,7 @@ else
     }
     else
     {
-        <p>There are no such clients in the database at the moment.</p>
+        <p>There are no result matching search in the database at the moment.</p>
     }
 }
 <!-- ========================= hidden buttons for right click ========================= -->

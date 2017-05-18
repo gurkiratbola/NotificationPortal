@@ -1,4 +1,5 @@
 ﻿@model NotificationPortal.ViewModels.ServerVM
+
 @{
     ViewBag.Title = "Add Server";
 }
@@ -7,7 +8,7 @@
 
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Home</a></li>
-    <li class="breadcrumb-item"><a href="~/Server/Index"  class="link-color">Servers</a></li>
+    <li class="breadcrumb-item"><a href="~/Server/Index" class="link-color">Servers</a></li>
     <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
 
@@ -16,7 +17,16 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="offset-md-3 col-md-6 offset-md-3">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @{  if (TempData["ErrorMsg"] != null)
+                {
+                    <p class="alert alert-danger">@TempData["ErrorMsg"]</p>
+                }
+            }
+        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.ServerName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
@@ -26,7 +36,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
                 <i id="preloader" class="fa fa-spinner fa-spin" style="display: none;"></i>
                 <div id="ApplicationList">
@@ -37,27 +47,27 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.DropDownListFor(m => m.LocationID, Model.LocationList, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.StatusID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            @Html.LabelFor(model => model.StatusID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.DropDownListFor(m => m.StatusID, Model.StatusList, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ServerTypeID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
+            @Html.LabelFor(model => model.ServerTypeID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.DropDownListFor(m => m.ServerTypeID, Model.ServerTypeList, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required required" })
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
@@ -71,7 +81,7 @@
             </div>
         </div>
     </div>
-}
+                }
 
 <script>
     $('#ApplicationReferenceIDs').multiselect({

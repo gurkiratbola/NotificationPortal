@@ -49,6 +49,8 @@
         @Html.Raw(TempData["ErrorMsg"])
     </p>
 }
+@if (Model.DataCenters.Count() > 0)
+{
 <!-- ========================= table ========================= -->
 <table class="table table-bordered">
     @{
@@ -85,14 +87,28 @@
     }
 </table>
 <!-- ========================= pagination ========================= -->
-@if (Model.TotalItemCount > NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)
+if (Model.TotalItemCount > NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)
 {
     <!-- hide pagination if only 1 page -->
     @Html.PagedListPager(Model.DataCenters, page => Url.Action("Index",
             new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
-    <div class="pageinfo-display">
-        <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
-    </div>
+}
+
+<div class="pageinfo-display">
+    <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
+</div>
+
+}
+else
+{
+    if (Model == null)
+    {
+        <p>Something went wrong, data center database not available.</p>
+    }
+    else
+    {
+        <p>There are no result matching search in the database at the moment.</p>
+    }
 }
 <!-- ========================= hidden-menu ========================= -->
 <div class="hidden-menu">

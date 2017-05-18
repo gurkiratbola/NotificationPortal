@@ -101,10 +101,10 @@ namespace NotificationPortal.Api
         {
             int value = model.NotificationTypeIDs.Length + model.LevelOfImpactIDs.Length + model.StatusIDs.Length + model.PriorityIDs.Length;
             IEnumerable<NotificationThreadVM> allThreads = value == 0 ? _nRepo.GetAllNotifications() : GetFilteredNotifications(model);
-            IPagedList<NotificationThreadVM> threads = Sort(allThreads, model.CurrentSort, model.SearchString).ToPagedList(model.Page, model.ItemsPerPage ?? ConstantsRepo.PAGE_SIZE);
+            IPagedList<NotificationThreadVM> threads = allThreads!=null ? Sort(allThreads, model.CurrentSort, model.SearchString).ToPagedList(model.Page, model.ItemsPerPage ?? ConstantsRepo.PAGE_SIZE): new List<NotificationThreadVM>().ToPagedList(1, 1);
             NotificationIndexFiltered result = new NotificationIndexFiltered()
             {
-                ItemStart = (threads.PageNumber - 1) * threads.PageSize + 1,
+                ItemStart = threads.TotalItemCount>0 ? (threads.PageNumber - 1) * threads.PageSize + 1 : 0,
                 ItemEnd = threads.PageNumber * threads.PageSize < threads.TotalItemCount ? threads.PageNumber * threads.PageSize : threads.TotalItemCount,
                 PageCount = threads.PageCount,
                 PageNumber = threads.PageNumber,

@@ -4,7 +4,12 @@
     ViewBag.Title = "Edit Server";
 }
 
-<h1 class="text-center display-4 pb-3">@Model.ServerName </h1>
+@{
+    var className = Model.Status == "Offline" ? "badge badge-danger" : "badge badge-success";
+}
+
+<h1 class="text-center display-4 pb-3">@ViewBag.Title - @Model.ServerName <span class="@className">@Html.DisplayFor(modelItem => Model.Status)</span></h1>
+
 
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
@@ -18,7 +23,16 @@
 
     <div class="form-horizontal">
 
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="offset-md-3 col-md-6 offset-md-3">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @{  if (TempData["ErrorMsg"] != null)
+                {
+                    <p class="alert alert-danger">@TempData["ErrorMsg"]</p>
+                }
+            }
+        </div>
+
         @Html.HiddenFor(model => model.ReferenceID)
 
         <div class="form-group">
@@ -79,7 +93,7 @@
             </div>
         </div>
     </div>
-}
+                }
 
 <script>
     $('#ApplicationReferenceIDs').multiselect({

@@ -16,7 +16,6 @@ namespace NotificationPortal.Repositories
 
         // sort function for client: only name and status are sortable at this time
         public IEnumerable<ClientVM> Sort(IEnumerable<ClientVM> list, string sortOrder, string searchString = null) {
-
             if (!String.IsNullOrEmpty(searchString))
             {
                 list = list.Where(c => c.ClientName.ToUpper().Contains(searchString.ToUpper()));
@@ -60,16 +59,20 @@ namespace NotificationPortal.Repositories
                                                     ReferenceID = c.ReferenceID,
                                                     NumOfApps = c.Applications.Count()
                                                 });
-                int totalNumOfClients = clientList.Count();
+
+                
                 page = searchString == null ? page : 1;
-                int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
                 searchString = searchString ?? currentFilter;
+                int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
                 int pageNumber = (page ?? 1);
                 int defaultPageSize = ConstantsRepo.PAGE_SIZE;
-                sortOrder = sortOrder == null ? ConstantsRepo.SORT_STATUS_BY_NAME_DESC : sortOrder;
+                var sorted = Sort(clientList, sortOrder, searchString);
+                int totalNumOfClients = sorted.Count();
+                sortOrder = sortOrder ?? ConstantsRepo.SORT_STATUS_BY_NAME_DESC;
+
                 ClientIndexVM model = new ClientIndexVM
                 {
-                    Clients = Sort(clientList, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
+                    Clients = sorted.ToPagedList(pageNumber, defaultPageSize),
                     CurrentFilter = searchString,
                     CurrentSort = sortOrder,
                     TotalItemCount = totalNumOfClients,

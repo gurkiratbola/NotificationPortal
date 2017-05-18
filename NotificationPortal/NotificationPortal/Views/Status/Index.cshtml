@@ -49,6 +49,8 @@
     </p>
 }
 <!-- ========================= status table ========================= -->
+@if (Model.Statuses.Count() > 0)
+{
 <table class="table table-bordered">
     @{
         var filterByStatusNameAsce = "";
@@ -100,15 +102,27 @@
     }
 </table>
 
-<!-- ========================= pagination ========================= -->
-@if (Model.TotalItemCount > NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)
-{
-    <!-- hide pagination if only 1 page -->
-    @Html.PagedListPager(Model.Statuses, page => Url.Action("Index",
-            new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
-    <div class="pageinfo-display">
-        <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
-    </div>
+    if (Model.TotalItemCount > NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)
+    {
+        <!-- ========================= pagination ========================= -->
+        <!-- hide pagination if only 1 page -->
+        @Html.PagedListPager(Model.Statuses, page => Url.Action("Index",
+                new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
+        }
+        <div class="pageinfo-display">
+            <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
+        </div>
+    }
+    else
+    {
+        if (Model == null)
+        {
+        <p>Something went wrong, status database not available.</p>
+    }
+    else
+    {
+        <p>There are no result matching search in the database at the moment.</p>
+    }
 }
 <!-- ========================= hidden menu ========================= -->
 <div class="hidden-menu">
