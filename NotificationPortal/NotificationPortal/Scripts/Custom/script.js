@@ -6,10 +6,10 @@ if (window.location.origin.indexOf('localhost') === -1) {
 }
 // used for clickable row and ajax scripts (for right-click on all tables)
 var domain = window.location.origin + subdir;
-
+var pressTimer;
+const PRESSED = true;
+const RIGHT_CLICK = false;
 var clickableRow = function () {
-    const HIDDEN_MENU_WIDTH_OFFSET = 170;
-    const HIDDEN_MENU_HEIGHT_OFFSET = 50;
     $(".hidden-menu").hide();
     $(".clickable-row").click(function () {
         var x = $(this).data("href");
@@ -22,20 +22,36 @@ var clickableRow = function () {
         }
     });
     $(".clickable-row").contextmenu(function (e) {
-        var rowId = $(this).attr("id");
-        $('.hidden-menu li a').attr('href', function (i, str) {
-            if (str.indexOf(rowId) >= 0) {
-                return str;
-            } else {
-                return window.location.origin + subdir + str + rowId;
-            }
-        });
-        $(".hidden-menu").css({ position: "absolute", top: e.pageY - HIDDEN_MENU_HEIGHT_OFFSET, left: e.pageX - HIDDEN_MENU_WIDTH_OFFSET });
-        $(".hidden-menu").toggle();
+        displayHiddenMenu(e, RIGHT_CLICK);
+        return false;
+    });
+    $(".clickable-row").mouseup(function () {
+        clearTimeout(pressTimer);
+        // Clear timeout
+        return false;
+    })
+    $(".clickable-row").mousedown(function (e) {
+        // Set timeout
+        pressTimer = window.setTimeout(function () { displayHiddenMenu(e, PRESSED) }, 1000);
         return false;
     });
 }
-
+var displayHiddenMenu = function (e, isPress) {
+    var extraOffset = isPress ? { x: $('.hidden-menu').first().width() / 2, y: $('.hidden-menu').first().height() / 2 } : { x: 0, y: 0 };
+    var hidden_menu_width_offset = $('table').offset().left - 15 + extraOffset.x; //absolute position of table + ???
+    var hidden_menu_height_offset = 54 - 3 + extraOffset.y; // height of navbar + ???
+    var rowId = $(this).attr("id");
+    $('.hidden-menu li a').attr('href', function (i, str) {
+        if (str.indexOf(rowId) >= 0) {
+            return str;
+        } else {
+            return window.location.origin + subdir + str + rowId;
+        }
+    });
+    $(".hidden-menu").css({ position: "absolute", top: e.pageY - hidden_menu_height_offset, left: e.pageX - hidden_menu_width_offset });
+    $(".hidden-menu").toggle();
+    console.log($('table'))
+}
 // localstorage for sidebar dropdown
 var sidebarDropdown = function () {
     if (localStorage.getItem("isDropdownVisible") === null) {
