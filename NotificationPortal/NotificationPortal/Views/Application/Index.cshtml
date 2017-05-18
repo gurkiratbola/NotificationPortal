@@ -11,6 +11,26 @@
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
+@if (TempData["SuccessMsg"] != null)
+{
+            <!-- display success message -->
+    <p class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @Html.Raw(TempData["SuccessMsg"])
+    </p>
+}
+@if (TempData["ErrorMsg"] != null)
+{
+            <!-- display error message -->
+    <p class="alert alert-danger alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @Html.Raw(TempData["ErrorMsg"])
+    </p>
+}
 <!-- ========================= search & create ========================= -->
 <div class="row">
     <div class="form-inline col-sm-8 col-xs-12 pb-3">

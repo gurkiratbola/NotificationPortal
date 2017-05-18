@@ -1043,6 +1043,10 @@ i.fa.fa-trash {
     display: block;
 }
 
+.card a:hover {
+    text-decoration: none;
+}
+
 .card-deck .card {
     border: 2px solid #36c2dd;
     border-radius: 5px;
@@ -1069,6 +1073,7 @@ i.fa.fa-trash {
 
 .card-header h5 {
     display: inline-block;
+    color: white;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;

@@ -12,10 +12,25 @@
     <li class="breadcrumb-item"><a href="~/DataCenter/Index">Data Centers</a></li>
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.Location)</li>
 </ol>
+
 <!-- ========================= delete detail ========================= -->
+@if (TempData["SuccessMsg"] != null)
+{
+            <!-- display success message -->
+    <p class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @Html.Raw(TempData["SuccessMsg"])
+    </p>
+}
 @if (TempData["ErrorMsg"] != null)
 {
-    <p class="alert alert-danger">
+            <!-- display error message -->
+    <p class="alert alert-danger alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
         @Html.Raw(TempData["ErrorMsg"])
     </p>
 }

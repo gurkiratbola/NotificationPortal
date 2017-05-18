@@ -44,13 +44,7 @@ namespace NotificationPortal.Controllers
         public ActionResult Create()
         {
             // Load the dropdown / select list from the selectlistrepo to populate the fields
-            var model = new AddUserVM()
-            {
-                StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER),
-                ClientList = _selectRepo.GetUserClientList(),
-                RolesList = _selectRepo.GetRolesList(),
-                ApplicationList = _selectRepo.GetApplicationListByClient(null)
-            };
+            var model = _userRepo.CreateAddUserVM();
 
             return View(model);
         }
@@ -83,15 +77,17 @@ namespace NotificationPortal.Controllers
                     TempData["SuccessMsg"] = msg;
                     return RedirectToAction("Index");
                 }
-
                 TempData["ErrorMsg"] = msg;
             }
 
             // Load the dropdown / selectlistrepo values if adding the user fails
-            model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
-            model.ClientList = _selectRepo.GetUserClientList();
-            model.RolesList = _selectRepo.GetRolesList();
-            model.ApplicationList = _selectRepo.GetApplicationListByClient(null);
+            model = _userRepo.CreateAddUserVM(model);
+            // if model returns null, redirect to index
+            if (model == null)
+            {
+                TempData["ErrorMsg"] = "Cannot create new user at the moment";
+                return RedirectToAction("Index");
+            }
 
             return View(model);
         }

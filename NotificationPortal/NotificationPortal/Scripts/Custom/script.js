@@ -19,24 +19,20 @@ var clickableRow = function () {
         }
     });
     $(".clickable-row").contextmenu(function (e) {
-        displayHiddenMenu(e);
+        var hidden_menu_width_offset = $('table').offset().left - 15; //absolute position of table + ???
+        var hidden_menu_height_offset = 54 - 3; // height of navbar + ???
+        var rowId = $(this).attr("id");
+        $('.hidden-menu li a').attr('href', function (i, str) {
+            if (str.indexOf(rowId) >= 0) {
+                return str;
+            } else {
+                return window.location.origin + subdir + str + rowId;
+            }
+        });
+        $(".hidden-menu").css({ position: "absolute", top: e.pageY - hidden_menu_height_offset, left: e.pageX - hidden_menu_width_offset });
+        $(".hidden-menu").toggle();
         return false;
     });
-}
-var displayHiddenMenu = function (e) {
-    var hidden_menu_width_offset = $('table').offset().left - 15; //absolute position of table + ???
-    var hidden_menu_height_offset = 54 - 3; // height of navbar + ???
-    var rowId = $(this).attr("id");
-    $('.hidden-menu li a').attr('href', function (i, str) {
-        if (str.indexOf(rowId) >= 0) {
-            return str;
-        } else {
-            return window.location.origin + subdir + str + rowId;
-        }
-    });
-    $(".hidden-menu").css({ position: "absolute", top: e.pageY - hidden_menu_height_offset, left: e.pageX - hidden_menu_width_offset });
-    $(".hidden-menu").toggle();
-    console.log($('table'))
 }
 // localstorage for sidebar dropdown
 var sidebarDropdown = function () {
@@ -77,21 +73,6 @@ var sidebarStateDetection = function () {
     });
 }
 
-// hide alert messages after 2s
-var hideAlert = function () {
-    const DELAY = 2000;
-    var alertSuccess = $(".alert-success");
-    var alertDanger = $(".alert-danger");
-    if (alertSuccess.css('display') !== 'none' || alertDanger.css('display') !== 'none') {
-        setTimeout(function () {
-            alertSuccess.parent('.form-group > div').slideUp();
-            alertDanger.parent('.form-group > div').slideUp();
-            alertSuccess.slideUp();
-            alertDanger.slideUp();
-        }, DELAY);
-    }
-}
-
 var truncate = function () {
     var e = $("h5");
     //console.log(e.prop('scrollWidth'))
@@ -120,7 +101,6 @@ $(document).ready(function ($) {
     clickableRow();// for clickable table rows
     sidebarDropdown();// for sidebar dropdown
     sidebarStateDetection();//sidebar state detection
-    hideAlert();// hiding alert boxes after 2s
     truncate();
     $(window).on('resize', function () {
         //var win = $(this); //this = window
