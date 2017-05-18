@@ -102,9 +102,13 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ClientList, htmlAttributes: new { @class = "control-label" })
 
-                    @Html.DropDownListFor(m => m.ClientReferenceID, Model.ClientList, htmlAttributes: new { @class = "form-control", style = "display:none" })
+                    @Html.DropDownListFor(m => m.ClientReferenceID, Model.ClientList,"No client selected", htmlAttributes: new { @class = "form-control", style = "display:none" })
                     @Html.ValidationMessageFor(model => model.ClientReferenceID, "", new { @class = "text-danger float-right" })
                 </div>
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.ClientReferenceID)
             }
 
             <!-- Application Input Field -->
