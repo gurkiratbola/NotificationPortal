@@ -44,7 +44,6 @@ namespace NotificationPortal.ViewModels
         [Required]
         public string ReferenceID { get; set; }
 
-        [Required]
         [Display(Name = "Client")]
         public string ClientReferenceID { get; set; }
 
@@ -123,7 +122,6 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Status")]
         public int StatusID { get; set; }
 
-        [Required]
         [Display(Name = "Client")]
         public string ClientReferenceID { get; set; }
 
@@ -131,7 +129,6 @@ namespace NotificationPortal.ViewModels
         [Display(Name = "Role")]
         public string RoleName { get; set; }
 
-        [Required]
         [Display(Name = "Applications")]
         public string[] ApplicationReferenceIDs { get; set; }
 
