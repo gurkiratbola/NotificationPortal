@@ -1,5 +1,4 @@
-﻿using NotificationPortal.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -59,7 +58,7 @@ namespace NotificationPortal.Api
 
     public class NotificationIndexFiltered : IndexFiltered
     {
-        public List<NotificationThreadVM> Threads { get; set; }
+        public List<Thread> Threads { get; set; }
         public string IncidentNumberSort { get; set; }
         public string LevelOfImpactSort { get; set; }
         public string NotificationHeadingSort { get; set; }
@@ -73,5 +72,20 @@ namespace NotificationPortal.Api
         public int[] LevelOfImpactIDs { get; set; }
         public int[] StatusIDs { get; set; }
         public int[] PriorityIDs { get; set; }
+    }
+
+    public class Thread
+    {
+        public string IncidentNumber { get; set; }
+
+        public string ReferenceID { get; set; }
+        public string NotificationType { get; set; }
+        public string LevelOfImpact { get; set; }
+        public int LevelOfImpactValue { get; set; }
+        public string NotificationHeading { get; set; }
+        public string Status { get; set; }
+        public string Priority { get; set; }
+        public int PriorityValue { get; set; }
+        public DateTime SentDateTime { get; set; }
     }
 }

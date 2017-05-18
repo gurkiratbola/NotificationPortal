@@ -14,9 +14,10 @@ namespace NotificationPortal.Api
     {
         private readonly NotificationRepo _nRepo = new NotificationRepo();
         private readonly SelectListRepo _slRepo = new SelectListRepo();
-        public IEnumerable<NotificationThreadVM> GetFilteredNotifications(NotificationIndexBody model)
+        ApplicationDbContext _context = new ApplicationDbContext();
+
+        public IEnumerable<Thread> GetFilteredNotifications(NotificationIndexBody model)
         {
-            ApplicationDbContext _context = new ApplicationDbContext();
             try
             {
                 model.NotificationTypeIDs = model.NotificationTypeIDs.Length == 0 ? _slRepo.GetTypeList().Select(o => int.Parse(o.Value)).ToArray() : model.NotificationTypeIDs;
@@ -65,7 +66,7 @@ namespace NotificationPortal.Api
                     .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
                 }
 
-                IEnumerable<NotificationThreadVM> allThreads = allNotifications
+                IEnumerable<Thread> allThreads = allNotifications
                     .GroupBy(n => n.IncidentNumber)
                     .Select(t => t.OrderBy(i => i.SentDateTime))
                     .Select(n => new { First = n.FirstOrDefault(), Last = n.LastOrDefault() })
@@ -74,7 +75,7 @@ namespace NotificationPortal.Api
                     && model.StatusIDs.Contains(t.Last.StatusID)
                     && model.PriorityIDs.Contains(t.Last.PriorityID))
                     .Select(
-                        t => new NotificationThreadVM()
+                        t => new Thread()
                         {
                             ReferenceID = t.First.ReferenceID,
                             IncidentNumber = t.First.IncidentNumber,
@@ -100,8 +101,8 @@ namespace NotificationPortal.Api
         public NotificationIndexFiltered GetFilteredAndSortedNotifications(NotificationIndexBody model)
         {
             int value = model.NotificationTypeIDs.Length + model.LevelOfImpactIDs.Length + model.StatusIDs.Length + model.PriorityIDs.Length;
-            IEnumerable<NotificationThreadVM> allThreads = value == 0 ? _nRepo.GetAllNotifications() : GetFilteredNotifications(model);
-            IPagedList<NotificationThreadVM> threads = allThreads!=null ? Sort(allThreads, model.CurrentSort, model.SearchString).ToPagedList(model.Page, model.ItemsPerPage ?? ConstantsRepo.PAGE_SIZE): new List<NotificationThreadVM>().ToPagedList(1, 1);
+            IEnumerable<Thread> allThreads = value == 0 ? GetAllNotifications() : GetFilteredNotifications(model);
+            IPagedList<Thread> threads = allThreads!=null ? Sort(allThreads, model.CurrentSort, model.SearchString).ToPagedList(model.Page, model.ItemsPerPage ?? ConstantsRepo.PAGE_SIZE): new List<Thread>().ToPagedList(1, 1);
             NotificationIndexFiltered result = new NotificationIndexFiltered()
             {
                 ItemStart = threads.TotalItemCount>0 ? (threads.PageNumber - 1) * threads.PageSize + 1 : 0,
@@ -120,7 +121,64 @@ namespace NotificationPortal.Api
             return result;
         }
 
-        public IEnumerable<NotificationThreadVM> Sort(IEnumerable<NotificationThreadVM> list, string sortOrder, string searchString)
+        // get all notifications based on roles of current user
+        public IEnumerable<Thread> GetAllNotifications()
+        {
+            try
+            {
+                IEnumerable<Notification> allNotifications = _context.Notification;
+                if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
+                {
+                    string userId = HttpContext.Current.User.Identity.GetUserId();
+                    var userApps = _context.UserDetail
+                        .Where(u => u.UserID == userId)
+                        .FirstOrDefault().Applications;
+                    allNotifications = userApps
+                    .Select(x => new { Application = x, x.Servers })
+                    .SelectMany(x => x.Servers
+                    .SelectMany(n => n.Notifications
+                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
+                }
+                else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
+                {
+                    string userId = HttpContext.Current.User.Identity.GetUserId();
+                    var userApps = _context.UserDetail
+                        .Where(u => u.UserID == userId)
+                        .FirstOrDefault().Client.Applications;
+                    allNotifications = userApps
+                    .Select(x => new { Application = x, x.Servers })
+                    .SelectMany(x => x.Servers
+                    .SelectMany(n => n.Notifications
+                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
+                }
+
+                IEnumerable<Thread> allThreads = allNotifications
+                    .GroupBy(n => n.IncidentNumber)
+                    .Select(t => t.OrderBy(i => i.SentDateTime))
+                    .Select(
+                        t => new Thread()
+                        {
+                            ReferenceID = t.FirstOrDefault().ReferenceID,
+                            IncidentNumber = t.FirstOrDefault().IncidentNumber,
+                            NotificationHeading = t.FirstOrDefault().NotificationHeading,
+                            SentDateTime = t.FirstOrDefault().SentDateTime,
+                            NotificationType = t.LastOrDefault().NotificationType.NotificationTypeName,
+                            LevelOfImpact = t.LastOrDefault().LevelOfImpact.LevelName,
+                            LevelOfImpactValue = t.LastOrDefault().LevelOfImpact.LevelValue,
+                            Priority = t.LastOrDefault().Priority.PriorityName,
+                            PriorityValue = t.LastOrDefault().Priority.PriorityValue,
+                            Status = t.LastOrDefault().Status.StatusName
+                        })
+                    .GroupBy(n => n.IncidentNumber)
+                    .Select(t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault());
+                return allThreads;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public IEnumerable<Thread> Sort(IEnumerable<Thread> list, string sortOrder, string searchString)
         {
             if (!String.IsNullOrEmpty(searchString))
             {

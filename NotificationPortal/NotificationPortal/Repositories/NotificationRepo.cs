@@ -25,8 +25,6 @@ namespace NotificationPortal.Repositories
         {
             try
             {
-                IEnumerable<NotificationThreadVM> allThreads = GetAllNotifications();
-
                 NotificationIndexVM model = new NotificationIndexVM
                 {
                     CurrentFilter = "",
@@ -265,64 +263,6 @@ namespace NotificationPortal.Repositories
                 Status = deletingNotification.Status.StatusName
             };
             return model;
-        }
-
-        // get all notifications based on roles of current user
-        public IEnumerable<NotificationThreadVM> GetAllNotifications()
-        {
-            try
-            {
-                IEnumerable<Notification> allNotifications = _context.Notification;
-                if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
-                {
-                    string userId = HttpContext.Current.User.Identity.GetUserId();
-                    var userApps = _context.UserDetail
-                        .Where(u => u.UserID == userId)
-                        .FirstOrDefault().Applications;
-                    allNotifications = userApps
-                    .Select(x => new { Application = x, x.Servers })
-                    .SelectMany(x => x.Servers
-                    .SelectMany(n => n.Notifications
-                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
-                }
-                else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
-                {
-                    string userId = HttpContext.Current.User.Identity.GetUserId();
-                    var userApps = _context.UserDetail
-                        .Where(u => u.UserID == userId)
-                        .FirstOrDefault().Client.Applications;
-                    allNotifications = userApps
-                    .Select(x => new { Application = x, x.Servers })
-                    .SelectMany(x => x.Servers
-                    .SelectMany(n => n.Notifications
-                    .Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0)));
-                }
-
-                IEnumerable<NotificationThreadVM> allThreads = allNotifications
-                    .GroupBy(n => n.IncidentNumber)
-                    .Select(t => t.OrderBy(i => i.SentDateTime))
-                    .Select(
-                        t => new NotificationThreadVM()
-                        {
-                            ReferenceID = t.FirstOrDefault().ReferenceID,
-                            IncidentNumber = t.FirstOrDefault().IncidentNumber,
-                            NotificationHeading = t.FirstOrDefault().NotificationHeading,
-                            SentDateTime = t.FirstOrDefault().SentDateTime,
-                            NotificationType = t.LastOrDefault().NotificationType.NotificationTypeName,
-                            LevelOfImpact = t.LastOrDefault().LevelOfImpact.LevelName,
-                            LevelOfImpactValue = t.LastOrDefault().LevelOfImpact.LevelValue,
-                            Priority = t.LastOrDefault().Priority.PriorityName,
-                            PriorityValue = t.LastOrDefault().Priority.PriorityValue,
-                            Status = t.LastOrDefault().Status.StatusName
-                        })
-                    .GroupBy(n => n.IncidentNumber)
-                    .Select(t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault());
-                return allThreads;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
         }
 
         // create new notification. this is also used for updating a thread with new notification
