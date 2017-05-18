@@ -84,6 +84,8 @@ Manage Notifications | ✓ | ✓
 Read Notifications (CUD) | ✓ | ✓ | ✓ | ✓
 Read Server Status | ✓ | ✓ |  | 
 
+![alt text](https://github.com/gurkiratbola/NotificationPortal/blob/master/docs/entity_relationship_diagram.png "Entity Relationship Diagram")
+
 Features
 ============
 The platform was built using **ASP.NET MVC 4.6.2, Bootstrap 4, jQuery 3.1.1, Font Awesome, Summernote.js,** and **Twilio**.
