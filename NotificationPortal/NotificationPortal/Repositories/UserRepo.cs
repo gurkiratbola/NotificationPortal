@@ -18,6 +18,30 @@ namespace NotificationPortal.Repositories
         // Get the selectlistrepo reference
         private readonly SelectListRepo _selectRepo = new SelectListRepo();
 
+        //Create add user view model
+        public AddUserVM CreateAddUserVM(AddUserVM model=null)
+        {
+            if (model==null)
+            {
+                model = new AddUserVM();
+            }
+            if (HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN)
+                || HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
+            {
+                model.ApplicationList = _selectRepo.GetApplicationListByClient(null);
+            }
+            else
+            {
+                string userID = HttpContext.Current.User.Identity.GetUserId();
+                string clientReferenceID = _context.UserDetail.Where(u => u.UserID == userID).SingleOrDefault().Client.ReferenceID;
+                model.ApplicationList = _selectRepo.GetApplicationListByClient(clientReferenceID);
+            }
+            model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
+            model.ClientList = _selectRepo.GetUserClientList();
+            model.RolesList = _selectRepo.GetRolesList();
+            return model;
+        }
+
         // Sort the User Index page with table columns
         public IEnumerable<UserVM> Sort(IEnumerable<UserVM> list, string sortOrder, string searchString = null)
         {

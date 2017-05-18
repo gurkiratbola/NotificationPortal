@@ -27,10 +27,7 @@ var setupClientFilterDropDown = function () {
     $('#ClientReferenceID').multiselect({
         enableCaseInsensitiveFiltering: true,
         includeSelectAllOption: true,
-        maxHeight: 200,
-        buttonText: function (options, select) {
-            return 'Client (' + options.length + ')';
-        }
+        maxHeight: 200
     });
     $('#ClientReferenceID').change(function (option, checked, select) {
         $('#ClientReferenceID option').each(function () {
@@ -80,5 +77,8 @@ var hidePreloader = function () {
 
 $(document).ready(function () {
     setupClientFilterDropDown();
-    setupApplicationFilterDropDown();
+    var clientReferenceID = $('#ClientReferenceID').val();
+    if (clientReferenceID != null && clientReferenceID != "" && typeof (clientReferenceID)!="undefined") {
+        getAppsBasedOnClient();
+    }
 });
