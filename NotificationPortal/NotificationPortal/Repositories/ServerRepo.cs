@@ -13,7 +13,7 @@ namespace NotificationPortal.Repositories
     {
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
         private readonly SelectListRepo _selectRepo = new SelectListRepo();
-
+        //Sort function for index of Servers
         public IEnumerable<ServerListVM> Sort(IEnumerable<ServerListVM> list, string sortOrder, string searchString = null)
         {
             if (!String.IsNullOrEmpty(searchString))
@@ -57,7 +57,7 @@ namespace NotificationPortal.Repositories
 
             return list;
         }
-
+        //Create a List for index of servers
         public ServerIndexVM GetServerList(string sortOrder, string currentFilter, string searchString, int? page)
         {
             try
@@ -111,7 +111,7 @@ namespace NotificationPortal.Repositories
                 return null;
             }
         }
-
+        //Gets all the detials involved with the server takes referenceID
         public ServerDetailVM GetServerDetails(string referenceID)
         {
             try
@@ -178,7 +178,7 @@ namespace NotificationPortal.Repositories
                 return null;
             }
         }
-
+        ///Creates a new server from ServerVM
         public bool AddServer(ServerVM model, out string msg)
         {
             try
@@ -223,7 +223,7 @@ namespace NotificationPortal.Repositories
                 return false;
             }
         }
-
+        //Edit Server
         public bool EditServer(ServerDetailVM model, out string msg)
         {
             try
@@ -269,7 +269,7 @@ namespace NotificationPortal.Repositories
                 return false;
             }
         }
-
+        //Get the Server to Delete 
         public ServerDeleteVM GetDeleteServer(string referenceID)
         {
             try
@@ -296,16 +296,23 @@ namespace NotificationPortal.Repositories
                 return null;
             }
         }
-
+        //Delete the server
         public bool DeleteServer(string referenceID, out string msg)
         {
             // check if server exists
             Server serverToBeDeleted = _context.Server.Where(a => a.ReferenceID == referenceID).FirstOrDefault();
 
-            // check applications associated with client
-            var serverApplications = _context.Application.Where(a => a.ReferenceID == referenceID).FirstOrDefault();
+            // check applications associated with server
+       
+            IEnumerable<Application> allServerApplications = serverToBeDeleted.Applications;
 
-            var serverNotifications = _context.Notification.Where(a => a.ReferenceID == referenceID).FirstOrDefault();
+            // check notifications associated with server
+            IEnumerable<Notification> allServerNotifications = serverToBeDeleted.Notifications;
+            //var serverApplications = _context.Application.Where(s => serverToBeDeleted.ReferenceID.Contains(s.ReferenceID));
+
+
+
+
 
             if (serverToBeDeleted == null)
             {
@@ -313,13 +320,13 @@ namespace NotificationPortal.Repositories
                 return false;
             }
 
-            if (serverApplications != null)
+            if (allServerApplications.Count() > 0)
             {
                 msg = "Server has application(s) associated, cannot be deleted";
                 return false;
             }
 
-            if (serverNotifications != null)
+            if (allServerNotifications.Count() > 0)
             {
                 msg = "Server has notifications(s) associated, cannot be deleted";
                 return false;
@@ -342,7 +349,7 @@ namespace NotificationPortal.Repositories
                 return false;
             }
         }
-
+        //Creates a list of all the server objects
         public IEnumerable<ServerListVM> GetServerList()
         {
             IEnumerable<ServerListVM> serverList = _context.Server.Select(c => new ServerListVM
@@ -357,7 +364,7 @@ namespace NotificationPortal.Repositories
 
             return serverList;
         }
-
+        //Creates a list of all the status objects associated with server
         public SelectList GetStatusList()
         {
             IEnumerable<SelectListItem> statusList = _context.Status.Where(a => a.StatusType.StatusTypeName == Key.STATUS_TYPE_SERVER)
@@ -369,7 +376,7 @@ namespace NotificationPortal.Repositories
 
             return new SelectList(statusList, "Value", "Text");
         }
-
+        //Creates a list of all the location objects associated with server
         public SelectList GetLocationList()
         {
 
@@ -381,7 +388,7 @@ namespace NotificationPortal.Repositories
 
             return new SelectList(locationList, "Value", "Text");
         }
-
+        //Creates a list of all the status objects associated with server
         public SelectList GetServerTypeList()
         {
 

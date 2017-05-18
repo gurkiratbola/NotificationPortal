@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace NotificationPortal.ViewModels
 {
+    //view model for server index list
     public class ServerIndexVM
     {
         public IPagedList<ServerListVM> Servers { get; set; }
@@ -26,7 +27,7 @@ namespace NotificationPortal.ViewModels
         public string ServerTypeSort { get; set; }
         public string ServerNameSort { get; set; }
     }
-
+    //Server view model for Create Server
     public class ServerVM
     {
         public string ReferenceID { get; set; }
@@ -51,7 +52,7 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Status")]
         public int StatusID { get; set; }
 
-        [Required]
+        
         [Display(Name = "Applications")]
         public string[] ApplicationReferenceIDs { get; set; }
         public SelectList ApplicationList { get; set; }
@@ -60,9 +61,10 @@ namespace NotificationPortal.ViewModels
         public SelectList StatusList { get; set; }
         public SelectList LocationList { get; set; }
     }
-
+    //server view model for delete server
     public class ServerDetailVM
-    {
+    { 
+        
         public string ReferenceID { get; set; }
 
         [Required]
@@ -93,7 +95,7 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Status")]
         public int StatusID { get; set; }
 
-        [Required]
+    
         [Display(Name = "Applications")]
         public string[] ApplicationReferenceIDs { get; set; }
         public SelectList ApplicationList { get; set; }
@@ -106,6 +108,7 @@ namespace NotificationPortal.ViewModels
         public SelectList LocationList { get; set; }
     }
 
+    //server thread for the notification thread
     public class ServerThreadVM
     {
         public string ReferenceID { get; set; }
@@ -125,7 +128,7 @@ namespace NotificationPortal.ViewModels
 
         public DateTime SentDateTime { get; set; }
     }
-
+    //server view model for delete server
     public class ServerDeleteVM
     {
         public string ReferenceID { get; set; }
@@ -149,7 +152,7 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Status")]
         public string StatusName { get; set; }
     }
-
+    //server viewmodel for the ServerList
     public class ServerListVM
     {
         public string ReferenceID { get; set; }
@@ -173,7 +176,7 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Status")]
         public string StatusName { get; set; }
     }
-
+    //server viewmodel for the application List
     public class ServerApplicationVM
     {
         public string ApplicationReferenceID { get; set; }

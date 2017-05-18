@@ -581,8 +581,20 @@ button.multiselect.dropdown-toggle.btn.btn-default {
 /* ==========================================================================
                         Sidebar Styles
 ========================================================================== */
+
+i.fa.fa-cog {
+    display: inline-block;
+    transform: translateX(-4px);
+}
+
 .nav-pills > li {
     border-bottom: 1px solid #ededed;
+}
+
+.sidebar-arrow > i {
+    display: inline-block;
+    transition: 0.2s;
+    text-align: center;
 }
 
 .sidebar-dropdown-button {
@@ -840,6 +852,14 @@ footer a:hover {
 
 button.note-btn.btn.btn-default.btn-sm {
     background-color: transparent;
+}
+
+.note-btn-group.btn-group {
+    width: auto !important;
+}
+
+.note-btn.btn-sm {
+    width: auto !important;
 }
 
 @media (max-width: 576px) {

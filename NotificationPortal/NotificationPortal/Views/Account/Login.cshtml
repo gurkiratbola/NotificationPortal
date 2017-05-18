@@ -42,16 +42,25 @@
         <div >
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            @{  if (TempData["SuccessMsg"] != null)
+            @if (TempData["SuccessMsg"] != null)
                 {
-                    <p class="alert alert-success">@TempData["SuccessMsg"]</p>
-                }
+            <!-- display success message -->
+                <p class="alert alert-success alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    @Html.Raw(TempData["SuccessMsg"])
+                </p>
             }
-
-            @{  if (TempData["ErrorMsg"] != null)
+            @if (TempData["ErrorMsg"] != null)
                 {
-                    <p class="alert alert-danger">@TempData["ErrorMsg"]</p>
-                }
+            <!-- display error message -->
+                <p class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    @Html.Raw(TempData["ErrorMsg"])
+                </p>
             }
         </div>
 

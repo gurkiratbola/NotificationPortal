@@ -91,7 +91,6 @@ namespace NotificationPortal.Repositories
 
                 Notification lastestNotification = notifications.LastOrDefault();
 
-                // TODO: filter servers ??
                 IEnumerable<NotificationServerVM> servers =
                     lastestNotification.Servers.Select(
                         s => new NotificationServerVM
@@ -162,8 +161,6 @@ namespace NotificationPortal.Repositories
                 ThreadDetailVM model = new ThreadDetailVM()
                 {
                     IncidentNumber = incidentNumber,
-                    // TODO
-                    // ApplicationServerName = lastestNotification.Servers.Count == 0 ? lastestNotification.Application.ApplicationName : lastestNotification.Server.ServerName,
                     NotificationType = lastestNotification.NotificationType.NotificationTypeName,
                     LevelOfImpact = lastestNotification.LevelOfImpact.LevelName,
                     Status = lastestNotification.Status.StatusName,
@@ -280,6 +277,15 @@ namespace NotificationPortal.Repositories
                 {
                     msg = "Must choose a Server";
                     return false;
+                }
+                if (notification.EndDateTime != null)
+                {
+                    var invalidEndTime = DateTime.Compare((DateTime)notification.StartDateTime, (DateTime)notification.EndDateTime) >= 0;
+                    if (invalidEndTime)
+                    {
+                        msg = "End time cannot be ealier than start time.";
+                        return false;
+                    }
                 }
                 if (notification.ApplicationReferenceIDs == null)
                 {
@@ -421,6 +427,12 @@ namespace NotificationPortal.Repositories
 
         }
 
+        // check if thread is empty by incident number
+        public bool CheckEmptyThread(string incidentNumber)
+        {
+            bool result = !_context.Notification.Where(n => n.IncidentNumber == incidentNumber).Any();
+            return result;
+        }
         // create mails using a template body for users with email as preference recieve method
         public List<MailMessage> CreateMails(NotificationCreateVM notification)
         {
@@ -472,7 +484,6 @@ namespace NotificationPortal.Repositories
 
                             //set the content 
                             mail.Subject = notification.NotificationHeading;
-                            //TODO body needs to be improved
                             mail.Body = TemplateService.NotificationEmail(notification);
                             mail.IsBodyHtml = true;
 
@@ -558,7 +569,7 @@ namespace NotificationPortal.Repositories
             }
             else
             {
-                // TODO 
+                // TODO: handle undefined type
                 newIncidentNumber = "UND-";
             }
 

@@ -204,7 +204,12 @@ namespace NotificationPortal.Controllers
                 if (success)
                 {
                     TempData["SuccessMsg"] = result;
-                    // TODO handle when thread no longer exists
+                    // handle when thread no longer exists
+                    bool emptyThread = _nRepo.CheckEmptyThread(model.IncidentNumber);
+                    if (emptyThread)
+                    {
+                        return RedirectToAction("Index");
+                    }
                     return RedirectToAction("DetailsThread", new { id = model.IncidentNumber });
                 }
             }

@@ -18,7 +18,7 @@ namespace NotificationPortal.Controllers
             ServerIndexVM model = _serverRepo.GetServerList(sortOrder, currentFilter, searchString, page);
             return View(model);
         }
-
+        //Get Create new Server
         [HttpGet]
         public ActionResult Create()
         {
@@ -33,7 +33,7 @@ namespace NotificationPortal.Controllers
 
             return View(model);
         }
-
+        //Post Create new server 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(ServerVM model)
@@ -56,7 +56,7 @@ namespace NotificationPortal.Controllers
 
             return View(model);
         }
-
+        //Get Edit Server
         [HttpGet]
         public ActionResult Edit(string id)
         {
@@ -71,7 +71,7 @@ namespace NotificationPortal.Controllers
 
             return View(server);
         }
-
+        //Post Edit server
         [HttpPost]
         public ActionResult Edit(ServerDetailVM model)
         {
@@ -93,7 +93,7 @@ namespace NotificationPortal.Controllers
 
             return View(model);
         }
-
+        //Get Server Detials
         [HttpGet]
         public ActionResult Details(string id)
         {
@@ -107,7 +107,7 @@ namespace NotificationPortal.Controllers
 
             return View(server);
         }
-
+        //Post Server Delete
         [HttpGet]
         public ActionResult Delete(string id)
         {
@@ -121,7 +121,7 @@ namespace NotificationPortal.Controllers
 
             return View(server);
         }
-
+        //Post Delete Server
         [HttpPost]
         public ActionResult Delete(ServerDeleteVM server)
         {

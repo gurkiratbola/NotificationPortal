@@ -36,11 +36,11 @@ var clickableRow = function () {
 }
 // localstorage for sidebar dropdown
 var sidebarDropdown = function () {
-    if (localStorage.getItem("isDropdownVisible") === null) {
+    if (localStorage.getItem("isDropdownVisible") == null) {
         localStorage.setItem("isDropdownVisible", false);
-        //$(".sidebar-dropdown").hide();
+
     } else {
-        if (localStorage.getItem("isDropdownVisible") === false) {
+        if (localStorage.getItem("isDropdownVisible") == false) {
             $(".sidebar-dropdown").hide();
         } else {
             $(".sidebar-dropdown").show();
@@ -54,7 +54,9 @@ var sidebarDropdown = function () {
             $(".sidebar-dropdown").slideDown();
         } else {
             $(".sidebar-dropdown").slideUp();
-            $(".sidebar-dropdown-button .fa-caret-down").removeClass("arrow-rotate");
+            if ($(".sidebar-dropdown-button .fa-caret-down").hasClass("arrow-rotate")) {
+                $(".sidebar-dropdown-button .fa-caret-down").removeClass("arrow-rotate");
+            }
             localStorage.removeItem("isDropdownVisible");
         }
     })
@@ -73,37 +75,8 @@ var sidebarStateDetection = function () {
     });
 }
 
-var truncate = function () {
-    var e = $("h5");
-    //console.log(e.prop('scrollWidth'))
-    //console.log(e.width())
-
-    //$('h5').each(function (index, obj) {
-    //    while ($(this).prop('scrollWidth') > $(this).width()) {
-    //        //alert("Overflow");
-    //        //drop last word
-    //        var str = e.children("a").html().trim();
-    //        console.log(str);
-    //        $(this).children("a").text(str.substring(0, str.lastIndexOf(" ")));
-    //    }
-    //});
-
-    // if "... exist", hide word bn space and "..." 
-    $('h5').each(function (index, obj) {
-        if (e.children("a").html().trim().indexOf("…") > 0) {
-            console.log("exists");
-        }
-    });
-}
-
 $(document).ready(function ($) {
-    
     clickableRow();// for clickable table rows
     sidebarDropdown();// for sidebar dropdown
     sidebarStateDetection();//sidebar state detection
-    truncate();
-    $(window).on('resize', function () {
-        //var win = $(this); //this = window
-        truncate();
-    });
 });
