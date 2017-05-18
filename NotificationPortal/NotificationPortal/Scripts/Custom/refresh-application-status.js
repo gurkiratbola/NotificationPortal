@@ -20,10 +20,8 @@ var sendRequest = function (refIds) {
             success: function (data) {
                 displayNewStatus(data);
             },
-            error: function (error) {
+            error: function (e) {
                 displayFailedStatus();
-                jsonValue = jQuery.parseJSON(error.responseText);
-                alert("error" + error.responseText);
             }
         });
     }
