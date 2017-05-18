@@ -275,7 +275,6 @@
     <Compile Include="ViewModels\ServerVM.cs" />
     <Compile Include="ViewModels\StatusVM.cs" />
     <Compile Include="ViewModels\UserVM.cs" />
-    <Compile Include="ViewModels\ValidationVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
