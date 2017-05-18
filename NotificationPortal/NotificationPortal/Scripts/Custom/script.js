@@ -53,7 +53,9 @@ var sidebarDropdown = function () {
             $(".sidebar-dropdown").slideDown();
         } else {
             $(".sidebar-dropdown").slideUp();
-            $(".sidebar-dropdown-button .fa-caret-down").removeClass("arrow-rotate");
+            if ($(".sidebar-dropdown-button .fa-caret-down").hasClass("arrow-rotate")) {
+                $(".sidebar-dropdown-button .fa-caret-down").removeClass("arrow-rotate");
+            }
             localStorage.removeItem("isDropdownVisible");
         }
     })
