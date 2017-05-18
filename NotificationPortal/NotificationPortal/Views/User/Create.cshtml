@@ -82,7 +82,7 @@
 
             <!-- Client Input Field -->
             <div class="form-group">
-                @Html.LabelFor(model => model.ClientList, htmlAttributes: new { @class = "control-label required" })
+                @Html.LabelFor(model => model.ClientList, htmlAttributes: new { @class = "control-label" })
 
                 @Html.DropDownListFor(m => m.ClientReferenceID, Model.ClientList, htmlAttributes: new { @class = "form-control", style = "display:none" })
                 @Html.ValidationMessageFor(model => model.ClientReferenceID, "", new { @class = "text-danger float-right" })
@@ -90,7 +90,7 @@
 
             <!-- Application Input Field -->
             <div class="form-group">
-                @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label required" })
+                @Html.LabelFor(model => model.ApplicationReferenceIDs, htmlAttributes: new { @class = "control-label" })
                 <i id="preloader" class="fa fa-spinner fa-spin" style="display: none;"></i>
                 <div id="ApplicationList">
                     @Html.ListBoxFor(m => m.ApplicationReferenceIDs, Model.ApplicationList, htmlAttributes: new { @class = "form-control", style = "display:none" })
