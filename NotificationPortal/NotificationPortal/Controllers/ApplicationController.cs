@@ -17,11 +17,9 @@ namespace NotificationPortal.Controllers
         private readonly ApplicationRepo _aRepo = new ApplicationRepo();
         private readonly SelectListRepo _sRepo = new SelectListRepo();
 
-
         [HttpGet]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-
             ApplicationIndexVM model = _aRepo.GetApplicationList(sortOrder, currentFilter, searchString, page);
             return View(model);
         }
@@ -30,11 +28,9 @@ namespace NotificationPortal.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            // To be modified: global method for status in development
             var model = new ApplicationVM
             {
                 StatusList = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION),
-                //StatusList = _aRepo.GetStatusList(),
                 ClientList = _sRepo.GetClientList(),
                 ServerList = _sRepo.GetServerList(),
             };
@@ -75,7 +71,6 @@ namespace NotificationPortal.Controllers
         public ActionResult Edit(string id)
         {
             ApplicationVM application = _aRepo.GetApplication(id);
-            // To be modified: global method for status in development
             application.StatusList = _sRepo.GetStatusList(Key.STATUS_TYPE_APPLICATION);
             application.ServerList = _sRepo.GetServerList();
             application.ClientList = _sRepo.GetClientList();
