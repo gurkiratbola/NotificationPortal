@@ -207,7 +207,7 @@ namespace NotificationPortal.Controllers
             model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
             model.ClientList = _selectRepo.GetUserClientList();
             model.RoleList = _selectRepo.GetRolesList();
-            model.ApplicationList = _userRepo.GetApplicationList();
+            model.ApplicationList = _selectRepo.GetApplicationList();
 
             return View(model);
         }

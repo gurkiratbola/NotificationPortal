@@ -202,6 +202,7 @@ namespace NotificationPortal.Repositories
                                       ReferenceID = a.ReferenceID
                                   })
                               }).FirstOrDefault();
+                details.ApplicationReferenceIDs = details.Applications.Select(a => a.ReferenceID).ToArray();
 
                 // get the role name from the role id and assign to RoleName property
                 details.RoleName = roleManager.FindById(details.RoleName).Name.ToString();
@@ -210,7 +211,7 @@ namespace NotificationPortal.Repositories
                 details.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
                 details.ClientList = _selectRepo.GetUserClientList();
                 details.RoleList = _selectRepo.GetRolesList();
-                details.ApplicationList = GetApplicationList();
+                details.ApplicationList = _selectRepo.GetApplicationList();
 
                 return details;
             }
