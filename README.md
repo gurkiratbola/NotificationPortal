@@ -82,7 +82,7 @@ Manage Clients (CRUD) | ✓ | ✓
 Manage Applications (CRUD) | ✓ | ✓
 Manage Notifications | ✓ | ✓
 Read Notifications (CUD) | ✓ | ✓ | ✓ | ✓
-Read Server Status | ✓ | ✓ | ✓ | 
+Read Server Status | ✓ | ✓ |  | 
 
 Features
 ============
