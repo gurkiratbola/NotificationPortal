@@ -38,6 +38,7 @@ var clickableRow = function () {
 var sidebarDropdown = function () {
     if (localStorage.getItem("isDropdownVisible") === null) {
         localStorage.setItem("isDropdownVisible", false);
+
     } else {
         if (localStorage.getItem("isDropdownVisible") === false) {
             $(".sidebar-dropdown").hide();
