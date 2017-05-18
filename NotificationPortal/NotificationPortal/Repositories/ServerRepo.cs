@@ -303,9 +303,16 @@ namespace NotificationPortal.Repositories
             Server serverToBeDeleted = _context.Server.Where(a => a.ReferenceID == referenceID).FirstOrDefault();
 
             // check applications associated with client
-            var serverApplications = _context.Application.Where(a => a.ReferenceID == referenceID).FirstOrDefault();
+            var serverApplications = _context.Application.Where(a => referenceID.Contains(a.ReferenceID));
+            //var serverApplications = _context.Application.Where(u => u.Servers == referenceID).FirstOrDefault(); 
+            var serverNotifications = _context.Notification.Where(a => referenceID.Contains(a.ReferenceID));
+            IEnumerable<Application> allServerApplications = serverToBeDeleted.Applications;
+            IEnumerable<Notification> allServerNotifications = serverToBeDeleted.Notifications;
+            //var serverApplications = _context.Application.Where(s => serverToBeDeleted.ReferenceID.Contains(s.ReferenceID));
 
-            var serverNotifications = _context.Notification.Where(a => a.ReferenceID == referenceID).FirstOrDefault();
+
+
+
 
             if (serverToBeDeleted == null)
             {
@@ -313,13 +320,13 @@ namespace NotificationPortal.Repositories
                 return false;
             }
 
-            if (serverApplications != null)
+            if (allServerApplications.Count() > 0)
             {
                 msg = "Server has application(s) associated, cannot be deleted";
                 return false;
             }
 
-            if (serverNotifications != null)
+            if (allServerNotifications.Count() > 0)
             {
                 msg = "Server has notifications(s) associated, cannot be deleted";
                 return false;
