@@ -68,7 +68,7 @@ namespace NotificationPortal.Repositories
 
                 // if SendMethod is not email then mobile phone must be defined
                 int sendMethodEmail = _context.SendMethod.Where(m => m.SendMethodName == Key.SEND_METHOD_EMAIL).FirstOrDefault().SendMethodID;
-                if (model.SendMethodID != sendMethodEmail && model.MobilePhone.Trim()!="" && model.MobilePhone!=null)
+                if (model.SendMethodID != sendMethodEmail && model.MobilePhone==null)
                 {
                     msg = "You current preference requires mobile number.";
                     return false;

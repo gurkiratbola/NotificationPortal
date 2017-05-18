@@ -36,11 +36,11 @@ var clickableRow = function () {
 }
 // localstorage for sidebar dropdown
 var sidebarDropdown = function () {
-    if (localStorage.getItem("isDropdownVisible") === null) {
+    if (localStorage.getItem("isDropdownVisible") == null) {
         localStorage.setItem("isDropdownVisible", false);
 
     } else {
-        if (localStorage.getItem("isDropdownVisible") === false) {
+        if (localStorage.getItem("isDropdownVisible") == false) {
             $(".sidebar-dropdown").hide();
         } else {
             $(".sidebar-dropdown").show();
