@@ -5,14 +5,18 @@
     ViewBag.Title = "User Control";
 }
 
+<!-- ========================= title ========================= -->
 <h1 class="display-4 text-center pb-3">@ViewBag.Title</h1>
 
+<!-- ========================= breadcrumb ========================= -->
 <ol class="breadcrumb bg-faded">
     <li class="breadcrumb-item"><a href="~/Dashboard/Index" class="link-color">Dashboard</a></li>
     <li class="breadcrumb-item active">@ViewBag.Title</li>
 </ol>
 
+<!-- ========================= search & create ========================= -->
 <div class="row">
+    <!-- Search input and button -->
     <div class="form-inline col-sm-8 col-xs-12 pb-3">
         @using (Html.BeginForm("Index", "User", FormMethod.Get, new { @class = "form-inline search pb-3" }))
         {
@@ -30,6 +34,7 @@
         }
     </div>
 
+    <!-- Create User button -->
     <div class="offset-sm-2 col-sm-2 col-xs-12">
         <div class="float-create">
             @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-mint text-white" })
@@ -39,16 +44,19 @@
 
 @{  if (Model.Users.Count() > 0)
     {
+        // Alert Success message
         if (TempData["SuccessMsg"] != null)
         {
             <p class="alert alert-success">@TempData["SuccessMsg"]</p>
         }
 
+        // Alert Error Message
         if (TempData["ErrorMsg"] != null)
         {
             <p class="alert alert-danger">@TempData["ErrorMsg"]</p>
         }
 
+        <!-- table for users -->
         <table class="table table-bordered" style="position:relative;">
             @{
                 var filterByRoleNameAsce = "";
@@ -173,14 +181,17 @@
             </tbody>
         </table>
 
-        if (Model.TotalItemCount > NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)
-        {
-            @Html.PagedListPager(Model.Users, page => Url.Action("Index", new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
+        <!-- ========================= pagination ========================= -->
+            if (Model.TotalItemCount > NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)
+            {
+                <!-- hide pagination if only 1 page -->
+                @Html.PagedListPager(Model.Users, page => Url.Action("Index",
+                new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
+            }
 
             <div class="pageinfo-display">
                 <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
             </div>
-            }
 
         }
         else
