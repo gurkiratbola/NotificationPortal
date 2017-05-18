@@ -848,6 +848,14 @@ button.note-btn.btn.btn-default.btn-sm {
     background-color: transparent;
 }
 
+.note-btn-group.btn-group {
+    width: auto !important;
+}
+
+.note-btn.btn-sm {
+    width: auto !important;
+}
+
 @media (max-width: 576px) {
     .float-create {
         width: 100%;
