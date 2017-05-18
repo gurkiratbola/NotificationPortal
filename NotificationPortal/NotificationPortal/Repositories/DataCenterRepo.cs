@@ -175,13 +175,16 @@ namespace NotificationPortal.Repositories
                                        .Where(a => a.LocationID == referenceID)
                                        .FirstOrDefault();
 
+            IEnumerable<Server> allDataCenterServer = dataCenterToBeDeleted.Servers;
+          
+
             if (dataCenterToBeDeleted == null)
             {
                 msg = "Data Center could not be deleted.";
                 return false;
             }
 
-            if (dataCenterServers != null)
+            if (allDataCenterServer.Count() > 0)
             {
                 msg = "Data Center has Server(s) associated, cannot be deleted";
                 return false;
