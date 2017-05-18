@@ -93,7 +93,7 @@ h4 {
 .badge-invest {
     background-color: #e8a529;
 }
-
+    
 .badge-closed {
     background-color: #adadad;
 }
@@ -102,6 +102,16 @@ h4 {
     background-color: #5cb85c;
 }
 
+@media (max-width: 800px) {
+    td.badge.badge-danger {
+        background-color: #fff !important;
+        color: #d9534f;
+    }
+    td.badge.badge-success {
+        background-color: #fff !important;
+        color: #5cb85c;
+    }
+}
 
 .text-coral {
     color: lightcoral;

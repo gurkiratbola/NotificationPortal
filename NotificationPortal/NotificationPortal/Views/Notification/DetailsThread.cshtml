@@ -162,8 +162,10 @@
                     <td data-title="@Html.DisplayNameFor(model => serverModel.ServerType)">
                         @Html.DisplayFor(modelItem => item.ServerType)
                     </td>
-                    <td data-title="@Html.DisplayNameFor(model => serverModel.ServerStatus)" class="@serverStatusClass ml-1">
-                        @Html.DisplayFor(modelItem => item.ServerStatus)
+                    <td data-title="@Html.DisplayNameFor(model => serverModel.ServerStatus)">
+                        <span class="@serverStatusClass ml-1">
+                            @Html.DisplayFor(modelItem => item.ServerStatus)
+                        </span>
                     </td>
                 </tr>
             }
@@ -204,8 +206,10 @@
                         <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationURL)">
                             @Html.DisplayFor(modelItem => item.ApplicationURL)
                         </td>
-                        <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationStatus)" class="@appStatusClass">
+                        <td data-title="@Html.DisplayNameFor(model => applicationModel.ApplicationStatus)">
+                            <span class="@appStatusClass">
                             @Html.DisplayFor(modelItem => item.ApplicationStatus)
+                            </span>
                         </td>
                     </tr>
                 }

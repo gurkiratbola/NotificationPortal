@@ -32,14 +32,6 @@
         @Html.HiddenFor(model => model.ReferenceID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ApplicationName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
-            <div class="offset-md-3 col-md-6 offset-md-3">
-                @Html.EditorFor(model => model.ApplicationName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ApplicationName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
             @Html.LabelFor(model => model.ClientRefID, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2" })
             <div class="offset-md-3 col-md-6 offset-md-3">
                 @Html.DropDownListFor(m => m.ClientRefID, Model.ClientList as SelectList, htmlAttributes: new { @class = "form-control", style = "display: none;" })
@@ -56,6 +48,13 @@
             </div>
         </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApplicationName, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })
+            <div class="offset-md-3 col-md-6 offset-md-3">
+                @Html.EditorFor(model => model.ApplicationName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ApplicationName, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label offset-md-3 col-md-2 required" })

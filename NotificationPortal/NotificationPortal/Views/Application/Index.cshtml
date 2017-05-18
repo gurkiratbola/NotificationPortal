@@ -30,7 +30,6 @@
         }
     </div>
 
-
     @if (Request.IsAuthenticated && User.IsInRole("Admin") || (Request.IsAuthenticated && User.IsInRole("Staff")))
     {
 
@@ -70,7 +69,7 @@
                 filterAppByNameDesc = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_APP_BY_NAME_DESC) ? "active-arrow" : "disabled-arrow";
                 filterAppByDescriptionAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_APP_BY_DESCRIPTION_ASCE) ? "active-arrow" : "disabled-arrow";
                 filterAppByDescriptionDesc = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_APP_BY_DESCRIPTION_DESC) ? "active-arrow" : "disabled-arrow";
-                filterAppByUrlAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_APP_BY_URL_DESC) ? "active-arrow" : "disabled-arrow";
+                filterAppByUrlAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_APP_BY_URL_ASCE) ? "active-arrow" : "disabled-arrow";
                 filterAppByUrlDesc = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_APP_BY_URL_DESC) ? "active-arrow" : "disabled-arrow";
                 filterByClientAsce = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_APP_BY_CLIENT_ASCE) ? "active-arrow" : "disabled-arrow";
                 filterByClientDesc = Model.CurrentSort.Contains(NotificationPortal.Repositories.ConstantsRepo.SORT_APP_BY_CLIENT_DESC) ? "active-arrow" : "disabled-arrow";
@@ -161,22 +160,29 @@
         </tbody>
 
     </table>
-
-    @Html.PagedListPager(Model.Applications, page => Url.Action("Index",
+    if (Model.TotalItemCount > NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)
+    {
+        <!-- ========================= pagination ========================= -->
+        <!-- hide pagination if only 1 page -->
+        @Html.PagedListPager(Model.Applications, page => Url.Action("Index",
         new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
-                        }
-                        else
-                        {
-                            if (Model == null)
-                            {
-                                <p> Something went wrong, application database not available.</p>
-                            }
-                            else
-                            {
-                                <p> There are no such applications in the database at the moment.</p>
-                            }
+    }
+    <div class="pageinfo-display">
+        <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
+    </div>
+}
+else
+{
+    if (Model == null)
+    {
+        <p> Something went wrong, application database not available.</p>
+    }
+    else
+    {
+        <p> There are no such applications in the database at the moment.</p>
+    }
 
-                        }
+}
 <div class="hidden-menu">
     <ul>
         <li><a href="Application/Edit/" class="btn btn-sm">Edit</a></li>

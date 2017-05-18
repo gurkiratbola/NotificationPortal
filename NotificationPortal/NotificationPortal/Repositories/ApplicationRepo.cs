@@ -41,7 +41,6 @@ namespace NotificationPortal.Repositories
                     list = list.OrderBy(c => c.StatusName);
                     break;
 
-
                 case ConstantsRepo.SORT_APP_BY_CLIENT_ASCE:
                     list = list.OrderBy(c => c.ClientName);
                     break;
@@ -129,13 +128,20 @@ namespace NotificationPortal.Repositories
                        });
                 }
 
-                page = searchString == null ? page : 1;
-                searchString = searchString ?? currentFilter;
                 int pageNumber = (page ?? 1);
+                int defaultPageSize = ConstantsRepo.PAGE_SIZE;
+                page = searchString == null ? page : 1;
+                int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+                searchString = searchString ?? currentFilter;
+                var sorted = Sort(applicationList, sortOrder, searchString);
+                int totalNumOfApps = sorted.Count();
                 ApplicationIndexVM model = new ApplicationIndexVM
                 {
-                    Applications = Sort(applicationList, sortOrder, searchString).ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
+                    Applications = sorted.ToPagedList(pageNumber, ConstantsRepo.PAGE_SIZE),
                     CurrentFilter = searchString,
+                    TotalItemCount = totalNumOfApps,
+                    ItemStart = currentPageIndex * defaultPageSize + 1,
+                    ItemEnd = totalNumOfApps - (defaultPageSize * currentPageIndex) >= defaultPageSize ? defaultPageSize * (currentPageIndex + 1) : totalNumOfApps,
                     CurrentSort = sortOrder ?? ConstantsRepo.SORT_APP_BY_NAME_DESC,
                     ApplicationSort = sortOrder == ConstantsRepo.SORT_APP_BY_NAME_DESC ? ConstantsRepo.SORT_APP_BY_NAME_ASCE : ConstantsRepo.SORT_APP_BY_NAME_DESC,
                     StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,

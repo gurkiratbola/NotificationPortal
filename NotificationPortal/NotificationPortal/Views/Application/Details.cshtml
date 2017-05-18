@@ -16,11 +16,23 @@
     <li class="breadcrumb-item active">@Html.DisplayFor(model => model.ApplicationName)</li>
 </ol>
 
-
+@if (TempData["SuccessMsg"] != null)
+{
+    <p class="alert alert-success">
+        @Html.Raw(TempData["SuccessMsg"])
+    </p>
+}
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#Applications" role="tab">Applications</a>
+        <a class="nav-link active" data-toggle="tab" href="#Applications" role="tab">
+            <span class="hidden-xs-down">
+                Applications
+            </span>
+            <span class="hidden-sm-up">
+                Apps
+            </span>
+        </a>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#Servers" role="tab">Servers</a>
@@ -32,12 +44,6 @@
         <a class="nav-link" data-toggle="tab" href="#Notifications" role="tab">Notifications</a>
     </li>
 </ul>
-@if (TempData["SuccessMsg"] != null)
-{
-    <p class="alert alert-success">
-        @Html.Raw(TempData["SuccessMsg"])
-    </p>
-}
 
 <!-- Tab panes -->
 <div class="tab-content">
@@ -105,23 +111,26 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Servers)
-                {
-                    <tr class="clickable-row" id="@item.ReferenceID" data-href="/Server/Details/@item.ReferenceID">
-                        <td data-title="@Html.DisplayNameFor(model => item.ServerType)" class="first-row">
-                            @Html.DisplayFor(modelItem => item.ServerType)
-                        </td>
-                        <td data-title="@Html.DisplayNameFor(model => item.ServerName)">
-                            @Html.DisplayFor(modelItem => item.ServerName)
-                        </td>
-                        <td data-title="@Html.DisplayNameFor(model => item.Status)">
+            @foreach (var item in Model.Servers)
+            {
+                var statusClass = item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_SERVER_OFFLINE.ToUpper() ? "badge badge-danger" : "badge badge-success";
+                <tr class="clickable-row" id="@item.ReferenceID" data-href="/Server/Details/@item.ReferenceID">
+                    <td data-title="@Html.DisplayNameFor(model => item.ServerType)" class="first-row">
+                        @Html.DisplayFor(modelItem => item.ServerType)
+                    </td>
+                    <td data-title="@Html.DisplayNameFor(model => item.ServerName)">
+                        @Html.DisplayFor(modelItem => item.ServerName)
+                    </td>
+                    <td data-title="@Html.DisplayNameFor(model => item.Status)" >
+                        <span class="@statusClass ml-1">
                             @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                        <td data-title="@Html.DisplayNameFor(model => item.Location)">
-                            @Html.DisplayFor(modelItem => item.Location)
-                        </td>
-                    </tr>
-                }
+                        </span>
+                    </td>
+                    <td data-title="@Html.DisplayNameFor(model => item.Location)">
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>
@@ -148,25 +157,25 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Users)
+            @foreach (var item in Model.Users)
             {
-                    <tr class="clickable-row" id="@item.ReferenceID" data-href="/User/Details/@item.ReferenceID">
-                        <td data-title="@Html.DisplayNameFor(model => item.FirstName)" class="first-row">
-                            @Html.DisplayFor(modelItem => item.FirstName)
-                        </td>
-                        <td data-title="@Html.DisplayNameFor(model => item.LastName)">
-                            @Html.DisplayFor(modelItem => item.LastName)
-                        </td>
-                        <td data-title="@Html.DisplayNameFor(model => item.Email)">
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td data-title="@Html.DisplayNameFor(model => item.RoleName)">
-                            @Html.DisplayFor(modelItem => item.RoleName)
-                        </td>
-                        <td data-title="@Html.DisplayNameFor(model => item.BusinessPhone)">
-                            @Html.DisplayFor(modelItem => item.BusinessPhone)
-                        </td>
-                    </tr>
+                <tr class="clickable-row" id="@item.ReferenceID" data-href="/User/Details/@item.ReferenceID">
+                    <td data-title="@Html.DisplayNameFor(model => item.FirstName)" class="first-row">
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td data-title="@Html.DisplayNameFor(model => item.LastName)">
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td data-title="@Html.DisplayNameFor(model => item.Email)">
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td data-title="@Html.DisplayNameFor(model => item.RoleName)">
+                        @Html.DisplayFor(modelItem => item.RoleName)
+                    </td>
+                    <td data-title="@Html.DisplayNameFor(model => item.BusinessPhone)">
+                        @Html.DisplayFor(modelItem => item.BusinessPhone)
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -186,32 +195,47 @@
                     <th>
                         @Html.DisplayNameFor(model => notificationModel.Description)
                     </th>
-
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Notifications)
+            @foreach (var item in Model.Notifications)
             {
-                    <tr class="clickable-row" id="@item.IncidentNumber" data-href="/Notification/DetailsThread/@item.IncidentNumber">
-                        <td data-title="@Html.DisplayNameFor(model => item.IncidentNumber)" class="first-row">
-                            @Html.DisplayFor(modelItem => item.IncidentNumber)
-                        </td>
-                        <td data-title="@Html.DisplayNameFor(model => item.Status)">
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                        <td data-title="@Html.DisplayNameFor(model => item.Description)">
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                    </tr>
+                var notificationStatus = "";
+                if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED.ToUpper()) {
+                    notificationStatus = "badge badge-closed";
                 }
+                if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN.ToUpper())
+                {
+                    notificationStatus = "badge badge-open";
+                }
+                if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING.ToUpper())
+                {
+                    notificationStatus = "badge badge-invest";
+                }
+                if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED.ToUpper())
+                {
+                    notificationStatus = "badge badge-resolved";
+                }
+                <tr class="clickable-row" id="@item.IncidentNumber" data-href="/Notification/DetailsThread/@item.IncidentNumber">
+                    <td data-title="@Html.DisplayNameFor(model => item.IncidentNumber)" class="first-row">
+                        @Html.DisplayFor(modelItem => item.IncidentNumber)
+                    </td>
+                    <td data-title="@Html.DisplayNameFor(model => item.Status)" >
+                        <span class="@notificationStatus ml-1">
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </span>
+                    </td>
+                    <td data-title="@Html.DisplayNameFor(model => item.Description)">
+                        @Html.Raw(item.Description)
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>
 </div>
 
-
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-success" })
     @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
 </p>
-
