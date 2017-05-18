@@ -57,21 +57,7 @@ namespace NotificationPortal.ViewModels
         public string StatusSort { get; set; }
     }
 
-    public class NotificationThreadVM
-    {
-        public string IncidentNumber { get; set; }
-        
-        public string ReferenceID { get; set; }
-        public string NotificationType { get; set; }
-        public string LevelOfImpact { get; set; }
-        public int LevelOfImpactValue { get; set; }
-        public string NotificationHeading { get; set; }
-        public string Status { get; set; }
-        public string Priority { get; set; }
-        public int PriorityValue { get; set; }
-        public DateTime SentDateTime { get; set; }
-    }
-
+    // for CreateThread,Create Notification views
     public class NotificationCreateVM
     {
         public string IncidentNumber { get; set; }

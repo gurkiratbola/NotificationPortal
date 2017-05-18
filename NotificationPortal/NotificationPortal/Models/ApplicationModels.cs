@@ -12,8 +12,12 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int ApplicationID { get; set; }
+        [Index("IX_ApplicationUniqueness", 1, IsUnique = true)]
+        [StringLength(100)]
         public string ApplicationName { get; set; }
         public string Description { get; set; }
+        [Index("IX_ApplicationUniqueness", 2, IsUnique = true)]
+        [StringLength(100)]
         public string URL { get; set; }
         public virtual Client Client { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
@@ -24,8 +28,8 @@ namespace NotificationPortal.Models
         public int ClientID { get; set; }
         [ForeignKey("Status")]
         public int StatusID { get; set; }
+        [Index("IX_ApplicationUniqueness", 3, IsUnique = true)]
         [StringLength(100)]
-        [Index(IsUnique = true)]
         public string ReferenceID { get; set; }
     }
 
@@ -33,14 +37,16 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int ClientID { get; set; }
+        [Index("IX_ClientUniqueness", 1, IsUnique = true)]
+        [StringLength(50)]
         public string ClientName { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
         public virtual Status Status { get; set; }
         public virtual ICollection<UserDetail> UserDetails { get; set; }
         [ForeignKey("Status")]
         public int StatusID { get; set; }
+        [Index("IX_ClientUniqueness", 2, IsUnique = true)]
         [StringLength(100)]
-        [Index(IsUnique = true)]
         public string ReferenceID { get; set; }
     }
 
@@ -48,6 +54,8 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int LocationID { get; set; }
+        [Index(IsUnique = true)]
+        [StringLength(50)]
         public string Location { get; set; }
         public virtual ICollection<Server> Servers { get; set; }
     }
@@ -56,6 +64,8 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int GroupID { get; set; }
+        [Index(IsUnique = true)]
+        [StringLength(50)]
         public string GroupName { get; set; }
         public string GroupDescription { get; set; }
         public virtual ICollection<RoleDetail> RoleDetails { get; set; }
@@ -65,8 +75,10 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int LevelOfImpactID { get; set; }
+        [Index("IX_LevelOfImpactUniqueness", 1, IsUnique = true)]
+        [StringLength(50)]
         public string LevelName { get; set; }
-        [Index(IsUnique = true)]
+        [Index("IX_LevelOfImpactUniqueness", 2, IsUnique = true)]
         public int LevelValue { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
     }
@@ -98,8 +110,8 @@ namespace NotificationPortal.Models
         public int PriorityID { get; set; }
         [ForeignKey("UserDetail")]
         public string UserID { get; set; }
-        [StringLength(100)]
         [Index(IsUnique = true)]
+        [StringLength(50)]
         public string ReferenceID { get; set; }
     }
 
@@ -107,6 +119,8 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int NotificationTypeID { get; set; }
+        [Index(IsUnique = true)]
+        [StringLength(50)]
         public string NotificationTypeName { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
     }
@@ -115,8 +129,10 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int PriorityID { get; set; }
+        [Index("IX_PriorityUniqueness", 1, IsUnique = true)]
+        [StringLength(50)]
         public string PriorityName { get; set; }
-        [Index(IsUnique = true)]
+        [Index("IX_PriorityUniqueness", 2, IsUnique = true)]
         public int PriorityValue { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
     }
@@ -136,6 +152,8 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int SendMethodID { get; set; }
+        [Index(IsUnique = true)]
+        [StringLength(50)]
         public string SendMethodName { get; set; }
         public virtual ICollection<UserDetail> UserDetails { get; set; }
     }
@@ -144,6 +162,8 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int ServerID { get; set; }
+        [Index("IX_ServerUniqueness", 1, IsUnique = true)]
+        [StringLength(100)]
         public string ServerName { get; set; }
         public string Description { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
@@ -157,8 +177,8 @@ namespace NotificationPortal.Models
         public int LocationID { get; set; }
         [ForeignKey("ServerType")]
         public int ServerTypeID { get; set; }
+        [Index("IX_ServerUniqueness", 2, IsUnique = true)]
         [StringLength(100)]
-        [Index(IsUnique = true)]
         public string ReferenceID { get; set; }
     }
 
@@ -166,6 +186,8 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int ServerTypeID { get; set; }
+        [Index(IsUnique = true)]
+        [StringLength(50)]
         public string ServerTypeName { get; set; }
         public virtual ICollection<Server> Servers { get; set; }
     }
@@ -189,6 +211,8 @@ namespace NotificationPortal.Models
     {
         [Key]
         public int StatusTypeID { get; set; }
+        [Index(IsUnique = true)]
+        [StringLength(50)]
         public string StatusTypeName { get; set; }
         public virtual ICollection<Status> Statuses { get; set; }
     }
@@ -215,8 +239,8 @@ namespace NotificationPortal.Models
         public int SendMethodID { get; set; }
         [ForeignKey("Status")]
         public int StatusID { get; set; }
-        [StringLength(100)]
         [Index(IsUnique = true)]
+        [StringLength(100)]
         public string ReferenceID { get; set; }
     }
 }

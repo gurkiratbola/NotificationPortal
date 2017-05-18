@@ -13,7 +13,6 @@ namespace NotificationPortal.ViewModels
 
     public class ApplicationListVM
     {
-        [Key]
         public string ReferenceID { get; set; }
 
         [Required]
@@ -23,10 +22,8 @@ namespace NotificationPortal.ViewModels
         [Required]
         public string Description { get; set; }
 
-
         [Required]
         public string URL { get; set; }
-
 
         [Required]
         [DisplayName("Status Name")]
@@ -35,7 +32,6 @@ namespace NotificationPortal.ViewModels
         [Required]
         [DisplayName("Client Name")]
         public string ClientName { get; set; }
-
     }
 
     public class ApplicationIndexVM
@@ -49,12 +45,14 @@ namespace NotificationPortal.ViewModels
         public string StatusSort { get; set; }
         public string DescriptionSort { get; set; }
         public string URLSort { get; set; }
+        public int TotalItemCount { get; set; }
+        public int ItemStart { get; set; }
+        public int ItemEnd { get; set; }
     }
 
 
     public class ApplicationVM
     {
-        [Key]
         public string ReferenceID { get; set; }
 
         [Required]
@@ -65,11 +63,9 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Description")]
         public string Description { get; set; }
 
-
         [Required]
         [DisplayName("URL")]
         public string URL { get; set; }
-
 
         [Required]
         [DisplayName("Client")]
@@ -79,16 +75,11 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Status")]
         public int StatusID { get; set; }
 
-
-
-        
         [DisplayName("Status")]
         public string StatusName { get; set; }
 
-        
         [DisplayName("Client")]
         public string ClientName { get; set; }
-
 
         [Display(Name = "Servers")]
         public string[] ServerReferenceIDs { get; set; }
@@ -99,7 +90,6 @@ namespace NotificationPortal.ViewModels
     }
     public class ApplicationDeleteVM
     {
-        [Key]
         public string ReferenceID { get; set; }
 
         [Required]
@@ -109,19 +99,14 @@ namespace NotificationPortal.ViewModels
         [Required]
         public string Description { get; set; }
 
-
         [Required]
         public string URL { get; set; }
-
 
         //[Required]
         //public string StatusName { get; set; }
 
-
-
         [Required]
         public int StatusID { get; set; }
-
 
         //[Required]
         //public string ClientName { get; set; }
@@ -132,7 +117,6 @@ namespace NotificationPortal.ViewModels
 
     public class ApplicationDetailVM
     {
-        [Key]
         public string ReferenceID { get; set; }
 
         [Required]
@@ -145,11 +129,9 @@ namespace NotificationPortal.ViewModels
         [Required]
         public string URL { get; set; }
 
-
         [Required]
         public int StatusID { get; set; }
 
-      
         public string Status { get; set; }
 
         public string Client { get; set; }
@@ -166,26 +148,21 @@ namespace NotificationPortal.ViewModels
     public class ApplicationNotificationsVM
     {
         public string ReferenceID { get; set; }
-
+        [DisplayName("Incident #")]
         public string IncidentNumber { get; set; }
 
         public string ThreadID { get; set; }
 
-
-
         [DisplayName("Description")]
         public string Description { get; set; }
 
-
         [DisplayName("Status")]
         public string Status { get; set; }
-
     }
 
     public class ApplicationServerVM
     {
         public string ReferenceID { get; set; }
-
 
         [DisplayName("Server")]
         public string ServerName { get; set; }
@@ -201,9 +178,7 @@ namespace NotificationPortal.ViewModels
 
         [DisplayName("Status")]
         public string Status { get; set; }
-
     }
-
 
     public class ApplicationUsersVM
     {

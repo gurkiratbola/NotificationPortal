@@ -20,84 +20,78 @@
 }
 else
 {
-    if (Model.Notifications != null)
-    {
-        if (Model.Notifications.Count() > 0)
-        {
-        <div class="row">
-            <div class="form-inline col-sm-8 col-xs-12 pb-3">
-                <input class="form-control mr-sm-2" id="SearchString" name="SearchString" onkeyup="getNewList()" placeholder="Search" type="text" value="">
-                <span class="hidden-sm-up">
-                    <button onclick="getNewList()" id="hidden-search">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>
-                </span>
-                <span class="hidden-xs-down">
-                    <input onclick="getNewList()" class="btn btn-secondary" type="submit" value="Search" />
-                </span>
-                <i id="preloader" class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-            </div>
+    <div class="row">
+        <div class="form-inline col-sm-8 col-xs-12 pb-3">
+            <input class="form-control mr-sm-2" id="SearchString" name="SearchString" onkeyup="getNewList()" placeholder="Search" type="text" value="">
+            <span class="hidden-sm-up">
+                <button onclick="getNewList()" id="hidden-search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+            </span>
+            <span class="hidden-xs-down">
+                <input onclick="getNewList()" class="btn btn-secondary" type="submit" value="Search" />
+            </span>
+            <i id="preloader" class="fa fa-spinner fa-spin" style="font-size:24px"></i>
         </div>
+    </div>
 
-        <table class="table table-bordered">
-            @{
-                var filterById = "";
-                var filterBySubject = "";
-                var filterByImpact = "";
-                var filterByDate = "";
-                var filterBySender = "";
-                const string ID_FILTER = "id";
-                const string HEADING_FILTER = "heading";
-                const string IMPACT_FILTER = "impact";
-                const string DATE_FILTER = "date";
-                const string SENDER_FILTER = "sender";
-                if (Model.CurrentSort != null)
-                {
-                    filterById = Model.CurrentSort.Contains(ID_FILTER) ? "bg-mint" : "";
-                    filterBySubject = Model.CurrentSort.Contains(HEADING_FILTER) ? "bg-mint" : "";
-                    filterByImpact = Model.CurrentSort.Contains(IMPACT_FILTER) ? "bg-mint" : "";
-                    filterByDate = Model.CurrentSort.Contains(DATE_FILTER) ? "bg-mint" : "";
-                    filterBySender = Model.CurrentSort.Contains(SENDER_FILTER) ? "bg-mint" : "";
-                }
+    <table class="table table-bordered">
+        @{
+            var filterById = "";
+            var filterBySubject = "";
+            var filterByImpact = "";
+            var filterByDate = "";
+            var filterBySender = "";
+            const string ID_FILTER = "id";
+            const string HEADING_FILTER = "heading";
+            const string IMPACT_FILTER = "impact";
+            const string DATE_FILTER = "date";
+            const string SENDER_FILTER = "sender";
+            if (Model.CurrentSort != null)
+            {
+                filterById = Model.CurrentSort.Contains(ID_FILTER) ? "bg-mint" : "";
+                filterBySubject = Model.CurrentSort.Contains(HEADING_FILTER) ? "bg-mint" : "";
+                filterByImpact = Model.CurrentSort.Contains(IMPACT_FILTER) ? "bg-mint" : "";
+                filterByDate = Model.CurrentSort.Contains(DATE_FILTER) ? "bg-mint" : "";
+                filterBySender = Model.CurrentSort.Contains(SENDER_FILTER) ? "bg-mint" : "";
             }
-            <thead id="thead">
-                <tr class="bg-inverse text-white">
-                    <th>
-                        <a href="javascript:void(0)" onclick="sort('@Model.IDSort')">@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().ThreadID)</a>
-                    </th>
-                    <th>
-                        <a href="javascript:void(0)" onclick="sort('@Model.SubjectSort')">@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().ThreadHeading)</a>
-                    </th>
-                    <th>
-                        <a href="javascript:void(0)" onclick="sort('@Model.DateSort')">@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().SentDateTime)</a>
-                    </th>
-                    <th>
-                        <a href="javascript:void(0)" onclick="sort('@Model.SenderSort')">@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().SenderName)</a>
-                    </th>
-                    <th>
-                        <a href="javascript:void(0)" onclick="sort('@Model.LevelOfImpactSort')">@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().LevelOfImpact)</a>
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-        </table>
-
-        <div class="pagination-container">
-            <ul id="pagination" class="pagination"></ul>
-        </div>
-
-        <div class="pageinfo-display">
-            <select id="ItemsPerPage" class="form-control float-left custom-select-sm mb-2 mr-sm-2 mb-sm-0">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-            <label class="float-left" for="inlineFormCustomSelect">Items per page</label>
-            <p id="pageinfo-display" class="float-left"></p>
-        </div>
         }
-    }
+        <thead id="thead">
+            <tr class="bg-inverse text-white">
+                <th>
+                    <a href="javascript:void(0)" onclick="sort('@Model.IDSort')">@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().ThreadID)</a>
+                </th>
+                <th>
+                    <a href="javascript:void(0)" onclick="sort('@Model.SubjectSort')">@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().ThreadHeading)</a>
+                </th>
+                <th>
+                    <a href="javascript:void(0)" onclick="sort('@Model.DateSort')">@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().SentDateTime)</a>
+                </th>
+                <th>
+                    <a href="javascript:void(0)" onclick="sort('@Model.SenderSort')">@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().SenderName)</a>
+                </th>
+                <th>
+                    <a href="javascript:void(0)" onclick="sort('@Model.LevelOfImpactSort')">@Html.DisplayNameFor(model => Model.Notifications.FirstOrDefault().LevelOfImpact)</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+
+    <div class="pagination-container">
+        <ul id="pagination" class="pagination"></ul>
+    </div>
+
+    <div class="pageinfo-display">
+        <select id="ItemsPerPage" class="form-control float-left custom-select-sm mb-2 mr-sm-2 mb-sm-0">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+        <label class="float-left" for="inlineFormCustomSelect">Items per page</label>
+        <p id="pageinfo-display" class="float-left"></p>
+    </div>
     <script>
     // defining page specific functions (refillTHead, addRow, getNewList, filterDropDown)
     var waiting = false;
