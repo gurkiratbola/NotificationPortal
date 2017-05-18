@@ -4,21 +4,27 @@
 var getAppsBasedOnClient = function () {
     var clientReferenceID = $('#ClientReferenceID').val();
     $('#preloader').show();
-    $.ajax({
-        type: "GET",
-        // domain is defined in ~/Scripts/Custom/script.js
-        url: domain + "api/User/" + clientReferenceID,
-        success: function (data) {
-            refreshApplicationSelectOption(data);
-            setupApplicationFilterDropDown()
-            hidePreloader();
-        },
-        error: function (error) {
-            jsonValue = jQuery.parseJSON(error.responseText);
-            alert("error" + error.responseText);
-            hidePreloader();
-        }
-    });
+    if (clientReferenceID!==""){
+        $.ajax({
+            type: "GET",
+            // domain is defined in ~/Scripts/Custom/script.js
+            url: domain + "api/User/" + clientReferenceID,
+            success: function (data) {
+                refreshApplicationSelectOption(data);
+                setupApplicationFilterDropDown();
+                enableClientDropDown();
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("error" + error.responseText);
+                enableClientDropDown();
+            }
+        });
+    } else {
+        emptyApplicationSelectOption();
+        setupApplicationFilterDropDown();
+        enableClientDropDown();
+    }
 }
 
 // setup the multi select plugin for the Client dropdown
@@ -39,12 +45,16 @@ var setupClientFilterDropDown = function () {
     });
 };
 
-// refresh the application dropdown
-var refreshApplicationSelectOption = function (data) {
+// empty the application dropdown
+var emptyApplicationSelectOption = function () {
     $('#ApplicationList').replaceWith(`<div id="ApplicationList">
                 <select style="display: none;" class="form-control valid" id="ApplicationReferenceIDs" name="ApplicationReferenceIDs" multiple="multiple" aria-invalid="false"></select>
                 <span class="field-validation-valid text-danger" data-valmsg-for="ApplicationReferenceIDs" data-valmsg-replace="true"></span>
             </div>`);
+}
+// refresh the application dropdown
+var refreshApplicationSelectOption = function (data) {
+    emptyApplicationSelectOption();
     $.each(data, function (index, app) {
         $('<option value="' + app.ReferenceID + '" class="ApplicationListItem">' + app.ApplicationName + '</option>').appendTo($('#ApplicationReferenceIDs'))
     })
@@ -62,12 +72,15 @@ var setupApplicationFilterDropDown = function () {
             return 'Application (' + options.length + ')';
         }
     });
-
+    enableClientDropDown();
+}
+var enableClientDropDown = function () {
     $('#ClientReferenceID option').each(function () {
         var input = $('input[value="' + $(this).val() + '"]');
         input.prop('disabled', false);
         input.parent('li').addClass('disabled');
     });
+    hidePreloader();
 }
 
 // hide preloader
