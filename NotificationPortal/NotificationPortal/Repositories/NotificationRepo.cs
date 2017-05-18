@@ -90,7 +90,7 @@ namespace NotificationPortal.Repositories
                         });
 
                 Notification lastestNotification = notifications.LastOrDefault();
-                
+
                 IEnumerable<NotificationServerVM> servers =
                     lastestNotification.Servers.Select(
                         s => new NotificationServerVM
@@ -277,6 +277,15 @@ namespace NotificationPortal.Repositories
                 {
                     msg = "Must choose a Server";
                     return false;
+                }
+                if (notification.EndDateTime != null)
+                {
+                    var invalidEndTime = DateTime.Compare((DateTime)notification.StartDateTime, (DateTime)notification.EndDateTime) >= 0;
+                    if (invalidEndTime)
+                    {
+                        msg = "End time cannot be ealier than start time.";
+                        return false;
+                    }
                 }
                 if (notification.ApplicationReferenceIDs == null)
                 {

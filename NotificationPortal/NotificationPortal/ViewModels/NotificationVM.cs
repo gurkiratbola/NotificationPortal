@@ -70,7 +70,8 @@ namespace NotificationPortal.ViewModels
         [AllowHtml]
         [Display(Name = "Description")]
         public string NotificationDescription { get; set; }
-        
+
+        [Required]
         [DisplayFormat(DataFormatString = "{0:yyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
         [Display(Name = "Start Date")]
         public DateTime? StartDateTime { get; set; }
