@@ -339,6 +339,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\summernote.js" />
+    <Content Include="Scripts\user-multiselect.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Service\templates\AccountEmailTemplate.html" />
     <Content Include="Service\templates\NotificationEmailTemplate.html" />
@@ -399,7 +400,7 @@
     <Content Include="Views\Client\Edit.cshtml" />
     <Content Include="Views\Client\Details.cshtml" />
     <Content Include="Views\Client\Delete.cshtml" />
-    <Content Include="Views\User\Add.cshtml" />
+    <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />

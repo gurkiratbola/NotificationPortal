@@ -160,7 +160,7 @@ namespace NotificationPortal.ViewModels
         public SelectList RolesList { get; set; }
 
         [Display(Name = "Applications")]
-        public IEnumerable<ApplicationClientOptionVM> ApplicationList { get; set; }
+        public SelectList ApplicationList { get; set; }
     }
 
     public class UserDeleteVM
