@@ -202,13 +202,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\ApiModels.cs" />
-    <Compile Include="Api\ApplicationApiRepo.cs" />
-    <Compile Include="Api\ApplicationController.cs" />
-    <Compile Include="Api\DashboardApiRepo.cs" />
-    <Compile Include="Api\DashboardController.cs" />
-    <Compile Include="Api\NotificationApiRepo.cs" />
-    <Compile Include="Api\NotificationController.cs" />
+    <Compile Include="ApiModels\ApiModels.cs" />
+    <Compile Include="ApiRepositories\ApplicationApiRepo.cs" />
+    <Compile Include="ApiControllers\ApplicationController.cs" />
+    <Compile Include="ApiRepositories\DashboardApiRepo.cs" />
+    <Compile Include="ApiControllers\DashboardController.cs" />
+    <Compile Include="ApiRepositories\NotificationApiRepo.cs" />
+    <Compile Include="ApiControllers\NotificationController.cs" />
+    <Compile Include="ApiControllers\UserController.cs" />
+    <Compile Include="ApiRepositories\UserApiRepo.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />

@@ -211,7 +211,7 @@ namespace NotificationPortal.Repositories
                 details.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
                 details.ClientList = _selectRepo.GetUserClientList();
                 details.RoleList = _selectRepo.GetRolesList();
-                details.ApplicationList = _selectRepo.GetApplicationList();
+                details.ApplicationList = _selectRepo.GetApplicationListByClient(details.ClientReferenceID);
 
                 return details;
             }

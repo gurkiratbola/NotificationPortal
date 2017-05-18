@@ -49,9 +49,8 @@ namespace NotificationPortal.Controllers
                 StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER),
                 ClientList = _selectRepo.GetUserClientList(),
                 RolesList = _selectRepo.GetRolesList(),
-                ApplicationList = _selectRepo.GetApplicationList()
-            };
-
+                ApplicationList = _selectRepo.GetApplicationListByClient(null)
+        };
             return View(model);
         }
         
@@ -91,7 +90,7 @@ namespace NotificationPortal.Controllers
             model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
             model.ClientList = _selectRepo.GetUserClientList();
             model.RolesList = _selectRepo.GetRolesList();
-            model.ApplicationList = _selectRepo.GetApplicationList();
+            model.ApplicationList = _selectRepo.GetApplicationListByClient(null);
 
             return View(model);
         }
@@ -138,7 +137,7 @@ namespace NotificationPortal.Controllers
             model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
             model.ClientList = _selectRepo.GetUserClientList();
             model.RoleList = _selectRepo.GetRolesList();
-            model.ApplicationList = _selectRepo.GetApplicationList();
+            model.ApplicationList = _selectRepo.GetApplicationListByClient(model.ClientReferenceID);
 
             return View(model);
         }

@@ -1,17 +1,8 @@
-﻿using Microsoft.AspNet.Identity;
-using NotificationPortal.Models;
-using NotificationPortal.Repositories;
-using NotificationPortal.ViewModels;
-using PagedList;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
+﻿using NotificationPortal.ApiModels;
+using NotificationPortal.ApiRepositories;
 using System.Web.Http;
 
-namespace NotificationPortal.Api
+namespace NotificationPortal.ApiControllers
 {
     public class NotificationController : ApiController
     {

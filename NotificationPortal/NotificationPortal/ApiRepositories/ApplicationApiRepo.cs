@@ -1,11 +1,12 @@
-﻿using NotificationPortal.Models;
+﻿using NotificationPortal.ApiModels;
+using NotificationPortal.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
 
-namespace NotificationPortal.Api
+namespace NotificationPortal.ApiRepositories
 {
     public class ApplicationApiRepo
     {
@@ -96,11 +97,11 @@ namespace NotificationPortal.Api
         }
 
         // get all apps associated with input server reference ids
-        public List<Application> GetApplications(string[] serverReferenceIDs)
+        public List<ApplicationListItem> GetApplications(string[] serverReferenceIDs)
         {
-            List<Application> apps = _context.Application
+            List<ApplicationListItem> apps = _context.Application
                 .Where(a => a.Servers.Where(s => serverReferenceIDs.Contains(s.ReferenceID)).Count() > 0)
-                .Select(a=> new Application() {
+                .Select(a=> new ApplicationListItem() {
                     ApplicationName = a.ApplicationName,
                     ReferenceID = a.ReferenceID
                 }).ToList();
