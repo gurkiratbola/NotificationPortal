@@ -1,16 +1,13 @@
-﻿// used for CreateThread,Create,Edit for Notification views
+﻿// used for Create,Edit for User views
 
-// get all app based on selected servers
-var getAppsBasedOnServer = function () {
-    var serverReferenceIDs = $('#ServerList').val();
+// get all app based on selected client
+var getAppsBasedOnClient = function () {
+    var clientReferenceID = $('#ClientReferenceID').val();
     $('#preloader').show();
     $.ajax({
-        type: "POST",
-        dataType: "json",
-        // domain is defined in ~/Scripts/script.js
-        url: domain + "api/Application",
-        data: JSON.stringify(serverReferenceIDs),
-        contentType: 'application/json',
+        type: "GET",
+        // domain is defined in ~/Scripts/Custom/script.js
+        url: domain + "api/User/" + clientReferenceID,
         success: function (data) {
             refreshApplicationSelectOption(data);
             setupApplicationFilterDropDown()
@@ -24,24 +21,24 @@ var getAppsBasedOnServer = function () {
     });
 }
 
-// setup the multi select plugin for the Server dropdown
-// also disable the server dropdown menu items when value is changed (i.e. send new request)
-var setupServerFilterDropDown = function () {
-    $('#ServerList').multiselect({
+// setup the multi select plugin for the Client dropdown
+// also disable the client dropdown menu items when value is changed (i.e. send new request)
+var setupClientFilterDropDown = function () {
+    $('#ClientReferenceID').multiselect({
         enableCaseInsensitiveFiltering: true,
         includeSelectAllOption: true,
         maxHeight: 200,
         buttonText: function (options, select) {
-            return 'Server (' + options.length + ')';
+            return 'Client (' + options.length + ')';
         }
     });
-    $('#ServerList').change(function (option, checked, select) {
-        $('#ServerList option').each(function () {
+    $('#ClientReferenceID').change(function (option, checked, select) {
+        $('#ClientReferenceID option').each(function () {
             var input = $('input[value="' + $(this).val() + '"]');
             input.prop('disabled', true);
             input.parent('li').addClass('disabled');
         });
-        getAppsBasedOnServer();
+        getAppsBasedOnClient();
     });
 };
 
@@ -69,7 +66,7 @@ var setupApplicationFilterDropDown = function () {
         }
     });
 
-    $('#ServerList option').each(function () {
+    $('#ClientReferenceID option').each(function () {
         var input = $('input[value="' + $(this).val() + '"]');
         input.prop('disabled', false);
         input.parent('li').addClass('disabled');
@@ -82,6 +79,6 @@ var hidePreloader = function () {
 }
 
 $(document).ready(function () {
-    setupServerFilterDropDown();
+    setupClientFilterDropDown();
     setupApplicationFilterDropDown();
 });

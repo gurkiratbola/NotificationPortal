@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNet.Identity;
+using NotificationPortal.ApiModels;
 using NotificationPortal.Models;
 using NotificationPortal.Repositories;
-using NotificationPortal.ViewModels;
 using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace NotificationPortal.Api
+namespace NotificationPortal.ApiRepositories
 {
     public class NotificationApiRepo
     {

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using NotificationPortal.ApiModels;
+using NotificationPortal.ApiRepositories;
 using System.Web.Http;
 
-namespace NotificationPortal.Api
+namespace NotificationPortal.ApiControllers
 {
     public class DashboardController : ApiController
     {

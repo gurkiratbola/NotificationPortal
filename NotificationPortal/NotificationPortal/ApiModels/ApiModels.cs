@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace NotificationPortal.Api
+namespace NotificationPortal.ApiModels
 {
     public class IndexFiltered
     {
@@ -29,7 +29,7 @@ namespace NotificationPortal.Api
         public string Status { get; set; }
     }
 
-    public class Application
+    public class ApplicationListItem
     {
         public string ReferenceID { get; set; }
         public string ApplicationName { get; set; }

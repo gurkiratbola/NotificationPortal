@@ -1,19 +1,23 @@
-﻿using System;
+﻿using NotificationPortal.ApiModels;
+using NotificationPortal.ApiRepositories;
+using NotificationPortal.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace NotificationPortal.Api
+namespace NotificationPortal.ApiControllers
 {
     public class ApplicationController : ApiController
     {
         ApplicationApiRepo _aApiRepo = new ApplicationApiRepo();
 
-        public List<Application> POST(string[] serverReferenceIDs)
+        // POST: api/Application
+        public List<ApplicationListItem> POST(string[] serverReferenceIDs)
         {
-            List<Application> apps=new List<Application>();
+            List<ApplicationListItem> apps=new List<ApplicationListItem>();
             if (serverReferenceIDs != null)
             {
                 apps = _aApiRepo.GetApplications(serverReferenceIDs);
@@ -21,6 +25,7 @@ namespace NotificationPortal.Api
             return apps;
         }
 
+        // PUT: api/Application
         public List<ApplicationStatus> PUT(string[] applicationReferenceIDs)
         {
             List<ApplicationStatus> appStatuses = _aApiRepo.RefreshApplicationStatuses(applicationReferenceIDs);

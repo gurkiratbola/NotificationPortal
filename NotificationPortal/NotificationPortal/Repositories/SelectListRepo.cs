@@ -103,6 +103,22 @@ namespace NotificationPortal.Repositories
             return new SelectList(appList, "Value", "Text");
         }
 
+        public SelectList GetApplicationListByClient(string clientReferenceID)
+        {
+            SelectList apps = new SelectList(new List<SelectListItem>());
+            if (clientReferenceID != null)
+            {
+                apps = GetApplicationList();
+                var applicationReferenceIDs = _context.Application
+                    .Where(a => clientReferenceID == a.Client.ReferenceID)
+                    .Select(a => a.ReferenceID);
+                var filteredList = apps.Where(i => applicationReferenceIDs.Contains(i.Value))
+                    .Select(i => new SelectListItem() { Text = i.Text, Value = i.Value }).ToList();
+                apps = new SelectList(filteredList, "Value", "Text");
+            }
+            return apps;
+        }
+
         // Get application select list by server
         public SelectList GetApplicationListByServer(string[] serverReferenceIDs)
         {

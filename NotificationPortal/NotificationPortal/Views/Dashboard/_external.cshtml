@@ -8,12 +8,30 @@
         <!-- loop to see all the notifications associated with this external user-->
         foreach (var item in Model)
         {
-        var impactClass = item.LevelOfImpact == NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING ? "badge badge-success" : "badge badge-danger";
+            var impactClass = "";
+
+            switch (item.LevelOfImpact) {
+                case NotificationPortal.Models.Key.LEVEL_OF_IMPACT_NON_IMPACTING:
+                    impactClass = "badge badge-green";
+                    break;
+                case NotificationPortal.Models.Key.LEVEL_OF_IMPACT_IMPACTING:
+                    impactClass = "badge badge-orange";
+                    break;
+                case NotificationPortal.Models.Key.LEVEL_OF_IMPACT_OUTAGE:
+                    impactClass = "badge badge-red";
+                    break;
+                case NotificationPortal.Models.Key.LEVEL_OF_IMPACT_REDUNDANCY:
+                    impactClass = "badge badge-yellow";
+                    break;
+                default:
+                    impactClass = "badge badge-grey";
+                    break;
+            }
         <div class="card-deck pb-3">
             <div class="card">
                 <div class="card-header card-inverse card-deck">
                     <!-- notification heading -->
-                    <div class="col-sm-10">
+                    <div class="col-sm-9">
                             <h5>
                                 <a href="@Url.Action("DetailsThread", "Notification", new { id = item.ThreadID })">
                                     @Html.DisplayFor(modelItem => item.ThreadHeading)
@@ -21,7 +39,7 @@
                             </h5>
                     </div>
                     <!-- notification level of impact -->
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <span class="float-right external-status @impactClass">
                                 @Html.DisplayFor(modelItem => item.LevelOfImpact)
                         </span>

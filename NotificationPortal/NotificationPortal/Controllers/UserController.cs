@@ -29,8 +29,7 @@ namespace NotificationPortal.Controllers
                 _userManager = value;
             }
         }
-
-        // GET: UserDetails/Index
+        
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -39,11 +38,10 @@ namespace NotificationPortal.Controllers
 
             return View(model);
         }
-
-        // GET: UserDetails/Add
+        
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpGet]
-        public ActionResult Add()
+        public ActionResult Create()
         {
             // Load the dropdown / select list from the selectlistrepo to populate the fields
             var model = new AddUserVM()
@@ -51,19 +49,17 @@ namespace NotificationPortal.Controllers
                 StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER),
                 ClientList = _selectRepo.GetUserClientList(),
                 RolesList = _selectRepo.GetRolesList(),
-                ApplicationList = _userRepo.GetApplicationList()
-            };
-
+                ApplicationList = _selectRepo.GetApplicationListByClient(null)
+        };
             return View(model);
         }
-
-        // POST: UserDetails/Add
+        
         // This action is async because we are sending emails asynchronously from App_Start/IdentityConfig.cs
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Add(AddUserVM model)
+        public async Task<ActionResult> Create(AddUserVM model)
         {
             // If success then proceed
             if (ModelState.IsValid)
@@ -94,76 +90,11 @@ namespace NotificationPortal.Controllers
             model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
             model.ClientList = _selectRepo.GetUserClientList();
             model.RolesList = _selectRepo.GetRolesList();
-            model.ApplicationList = _userRepo.GetApplicationList();
+            model.ApplicationList = _selectRepo.GetApplicationListByClient(null);
 
             return View(model);
         }
-
-        // GET: /User/
-        // This method is asynchronous to accept email confirmation because it was sent asynchronously from adduser
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(string userId, string code)
-        {
-            // Check if the required userId and code values are null 
-            // Otherwise redirect to login page and show the error message
-            if (userId == null || code == null)
-            {
-                TempData["ErrorMsg"] = "Something went wrong, please contact an admin.";
-                return RedirectToAction("Login", "Account");
-            }            
-
-            // If no errors at this point, confirm the email with usermanager
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
-
-            // If there is an error confirming the email, redirect to login page with error message
-            if (!result.Succeeded)
-            {
-                TempData["ErrorMsg"] = "Something went wrong, please contact an admin.";
-                return RedirectToAction("Login", "Account");
-            }
-
-            return View();
-        }
-
-        // POST: User/SetPassword
-        // This method is asynchronous to accept email confirmation because it was sent asynchronously from adduser
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ConfirmEmail(SetPasswordVM model, string userId)
-        {
-            // check if there were any errors
-            if(ModelState.IsValid)
-            {
-                // Find the user which email was confirmed in the GET method
-                var user = await UserManager.FindByIdAsync(userId);
-
-                // Check the database to check if the user exists and email is confirmed, if false redirect to different page with error msg
-                if(user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                {
-                    TempData["ErrorMsg"] = "Something went wrong, please contact an admin";
-                    return RedirectToAction("ForgotPassword", "Account");
-                }
-
-                // Save the user's password from the model after email was confirmed and form submitted
-                var result = await UserManager.AddPasswordAsync(user.Id, model.Password);
-
-                // If above succeeded, redirect the user to login page 
-                if(result.Succeeded)
-                {
-                    TempData["SuccessMsg"] = "Password set successfully, you may login";
-                    return RedirectToAction("Login", "Account");
-                }
-
-                // If above failed, show error message on the current page
-                TempData["ErrorMsg"] = "Something went wrong, please contact an admin";
-            }
-
-            return View(model);
-        }
-
-        // GET: UserDetails/Edit
+        
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Edit(string id)
@@ -180,8 +111,7 @@ namespace NotificationPortal.Controllers
 
             return View(user);
         }
-
-        // POST: UserDetails/Edit
+        
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -207,12 +137,11 @@ namespace NotificationPortal.Controllers
             model.StatusList = _selectRepo.GetStatusList(Key.STATUS_TYPE_USER);
             model.ClientList = _selectRepo.GetUserClientList();
             model.RoleList = _selectRepo.GetRolesList();
-            model.ApplicationList = _userRepo.GetApplicationList();
+            model.ApplicationList = _selectRepo.GetApplicationListByClient(model.ClientReferenceID);
 
             return View(model);
         }
-
-        // GET: UserDetails/Details
+        
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Details(string id)
@@ -229,8 +158,7 @@ namespace NotificationPortal.Controllers
 
             return View(user);
         }
-
-        // GET: UserDetails/Delete
+    
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Delete(string id)
@@ -247,8 +175,7 @@ namespace NotificationPortal.Controllers
 
             return View(user);
         }
-
-        // POST: UserDetails/Delete
+        
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -269,6 +196,69 @@ namespace NotificationPortal.Controllers
 
             // load the view with same information if the deletion failed
             return View(_userRepo.GetDeleteUser(model.ReferenceID));
+        }
+
+
+        // This method is asynchronous to accept email confirmation because it was sent asynchronously from adduser
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        {
+            // Check if the required userId and code values are null 
+            // Otherwise redirect to login page and show the error message
+            if (userId == null || code == null)
+            {
+                TempData["ErrorMsg"] = "Something went wrong, please contact an admin.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            // If no errors at this point, confirm the email with usermanager
+            var result = await UserManager.ConfirmEmailAsync(userId, code);
+
+            // If there is an error confirming the email, redirect to login page with error message
+            if (!result.Succeeded)
+            {
+                TempData["ErrorMsg"] = "Something went wrong, please contact an admin.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            return View();
+        }
+
+        // This method is asynchronous to accept email confirmation because it was sent asynchronously from adduser
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ConfirmEmail(SetPasswordVM model, string userId)
+        {
+            // check if there were any errors
+            if (ModelState.IsValid)
+            {
+                // Find the user which email was confirmed in the GET method
+                var user = await UserManager.FindByIdAsync(userId);
+
+                // Check the database to check if the user exists and email is confirmed, if false redirect to different page with error msg
+                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                {
+                    TempData["ErrorMsg"] = "Something went wrong, please contact an admin";
+                    return RedirectToAction("ForgotPassword", "Account");
+                }
+
+                // Save the user's password from the model after email was confirmed and form submitted
+                var result = await UserManager.AddPasswordAsync(user.Id, model.Password);
+
+                // If above succeeded, redirect the user to login page 
+                if (result.Succeeded)
+                {
+                    TempData["SuccessMsg"] = "Password set successfully, you may login";
+                    return RedirectToAction("Login", "Account");
+                }
+
+                // If above failed, show error message on the current page
+                TempData["ErrorMsg"] = "Something went wrong, please contact an admin";
+            }
+
+            return View(model);
         }
     }
 }
