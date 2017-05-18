@@ -61,7 +61,6 @@ namespace NotificationPortal.Repositories
 
                         model = new DashboardIndexVM
                         {
-                            Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
                             CurrentFilter = searchString,
                             CurrentSort = sortOrder,
                             TotalItemCount = totalNumOfNotifications,
@@ -160,18 +159,29 @@ namespace NotificationPortal.Repositories
                                             Status = n.Status.StatusName
                                         }))
                                         .OrderBy(x => x.LevelOfImpact).ToList();
-            foreach (var item in notifications)
-            {
-                item.ThreadHeading = GetFirstHeading(item.ThreadID);
-            }
 
             dashboard = notifications
+                    .GroupBy(n => n.ThreadID)
+                    .Select(t => t.OrderBy(i => i.SentDateTime))
+                    .Select(n => new { First = n.FirstOrDefault(), Last = n.LastOrDefault() })
+                    .Select(
+                        t => new DashboardVM()
+                        {
+                            ThreadID = t.First.ThreadID,
+                            AppName = t.Last.AppName,
+                            LevelOfImpact = t.Last.LevelOfImpact,
+                            ImpactValue = t.Last.ImpactValue,
+                            ThreadHeading = t.First.ThreadHeading,
+                            NotificationType = t.Last.NotificationType,
+                            SentDateTime = t.Last.SentDateTime,
+                            Status = t.Last.Status,
+                        })
                         .GroupBy(n => n.ThreadID)
                         .Select(
                             t => t.OrderByDescending(i => i.SentDateTime).FirstOrDefault()
                         );
 
-            dashboard = from n in dashboard where n.Status == Key.STATUS_NOTIFICATION_OPEN select n;
+            dashboard = from n in dashboard where n.Status != Key.STATUS_NOTIFICATION_CLOSED select n;
 
             dashboard = dashboard.ToList();
 
@@ -180,14 +190,6 @@ namespace NotificationPortal.Repositories
                 item.ThreadDetail = GetThreadDetails(item.ThreadID);
             }
             return dashboard;
-        }
-
-        public string GetFirstHeading(string threadID) {
-            string firstHeading = "";
-            firstHeading = _context.Notification
-                            .Where(a => a.IncidentNumber == threadID)
-                            .FirstOrDefault().NotificationHeading;
-            return firstHeading;
         }
 
         public IEnumerable<DashboardVM> Sort(IEnumerable<DashboardVM> list, string sortOrder, string searchString = null)
