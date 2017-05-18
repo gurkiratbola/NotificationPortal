@@ -123,9 +123,6 @@ namespace NotificationPortal.Repositories
                     users = users.Where(u => u.RoleName != Key.ROLE_ADMIN && u.RoleName != Key.ROLE_STAFF && u.RoleName != Key.ROLE_CLIENT && u.ClientName == getClientId);
                 }
 
-                // get the current users in the database count
-                int totalNumOfUsers = users.Count();
-
                 // initilize the sorting, searching and filtering options
                 page = searchString == null ? page : 1;
                 int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
@@ -133,18 +130,24 @@ namespace NotificationPortal.Repositories
                 int pageNumber = (page ?? 1);
                 int defaultPageSize = ConstantsRepo.PAGE_SIZE;
 
+                var sorted = Sort(users, sortOrder, searchString);
+
+                // get the current users in the database count
+                int totalNumOfUsers = sorted.Count();
+
                 // sort by status name by default
-                sortOrder = sortOrder == null ? ConstantsRepo.SORT_STATUS_BY_NAME_DESC : sortOrder;
+                sortOrder = sortOrder ?? ConstantsRepo.SORT_STATUS_BY_NAME_DESC;
 
                 // store the users information info ipagedlist userindexvm viewmodel and sort it
                 UserIndexVM model = new UserIndexVM
                 {
-                    Users = Sort(users, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
+                    Users = sorted.ToPagedList(pageNumber, defaultPageSize),
                     CurrentFilter = searchString,
                     CurrentSort = sortOrder,
                     TotalItemCount = totalNumOfUsers,
-                    ItemStart = currentPageIndex * 10 + 1,
-                    ItemEnd = totalNumOfUsers - (10 * currentPageIndex) >= 10 ? 10 * (currentPageIndex + 1) : totalNumOfUsers,
+                    ItemStart = currentPageIndex * defaultPageSize + 1,
+                    ItemEnd = totalNumOfUsers - (defaultPageSize * currentPageIndex) >= defaultPageSize ? defaultPageSize * (currentPageIndex + 1) : totalNumOfUsers,
+
                     // get the properties from the viewmodel and assign the sorting parameters to them
                     RoleNameSort = sortOrder == ConstantsRepo.SORT_ROLE_NAME_BY_DESC ? ConstantsRepo.SORT_ROLE_NAME_BY_ASCE : ConstantsRepo.SORT_ROLE_NAME_BY_DESC,
                     EmailSort = sortOrder == ConstantsRepo.SORT_EMAIL_BY_DESC ? ConstantsRepo.SORT_EMAIL_BY_ASCE : ConstantsRepo.SORT_EMAIL_BY_DESC,
