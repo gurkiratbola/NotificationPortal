@@ -95,17 +95,17 @@
         <table class="table table-bordered">
             @{ var serverModel = Model.Servers.FirstOrDefault();}
             <thead>
-                <tr class="bg-inverse text-white text-center">
-                    <th class="text-center">
+                <tr class="bg-inverse text-white">
+                    <th>
                         @Html.DisplayNameFor(model => serverModel.ServerName)
                     </th>
-                    <th class="text-center">
+                    <th>
                         @Html.DisplayNameFor(model => serverModel.ServerType)
                     </th>
-                    <th class="text-center">
+                    <th>
                         @Html.DisplayNameFor(model => serverModel.Status)
                     </th>
-                    <th class="text-center">
+                    <th>
                         @Html.DisplayNameFor(model => serverModel.Location)
                     </th>
                 </tr>
@@ -201,21 +201,24 @@
             @foreach (var item in Model.Notifications)
             {
                 var notificationStatus = "";
-                if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED.ToUpper()) {
-                    notificationStatus = "badge badge-closed";
+                switch (item.Status) {
+                    case NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED:
+                        notificationStatus = "badge badge-grey";
+                        break;
+                    case NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN:
+                        notificationStatus = "badge badge-red";
+                        break;
+                    case NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING:
+                        notificationStatus = "badge badge-orange";
+                        break;
+                    case NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED:
+                        notificationStatus = "badge badge-green";
+                        break;
+                    default:
+                        notificationStatus = "badge badge-grey";
+                        break;
                 }
-                if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN.ToUpper())
-                {
-                    notificationStatus = "badge badge-open";
-                }
-                if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING.ToUpper())
-                {
-                    notificationStatus = "badge badge-invest";
-                }
-                if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED.ToUpper())
-                {
-                    notificationStatus = "badge badge-resolved";
-                }
+
                 <tr class="clickable-row" id="@item.IncidentNumber" data-href="/Notification/DetailsThread/@item.IncidentNumber">
                     <td data-title="@Html.DisplayNameFor(model => item.IncidentNumber)" class="first-row">
                         @Html.DisplayFor(modelItem => item.IncidentNumber)

@@ -244,8 +244,6 @@ button:focus {
 @media (min-width: 992px) {
     .container {
         width: 100% !important;
-        margin-left: -36px;
-
     }
 }
 
@@ -403,9 +401,14 @@ td a:hover {
 
 .filter-arrows {
     float: right;
-    font-size: 1.6em;
     line-height: 0.8;
     color: rgba(255, 255, 255, 0.5);
+}
+
+@media screen and (min-width: 992px) {
+    .filter-arrows {
+        font-size: 1.6em;
+    }
 }
 
 .filter-arrows .fa-caret-up {
@@ -436,9 +439,6 @@ button.multiselect.dropdown-toggle.btn.btn-default {
     border: 1px solid #adadad;
     width: 100%;
     text-align: left;
-}
-
-ul.multiselect-container.dropdown-menu {
 }
 
 .caret-container {
@@ -473,6 +473,12 @@ ul.multiselect-container.dropdown-menu {
     right: 15px;
     top: 16px;
     position: absolute;
+}
+
+.filter-row .dropdown-toggle::after {
+    right: 0;
+    top: 0;
+    position: relative;
 }
 
 
@@ -619,9 +625,24 @@ ul.multiselect-container.dropdown-menu {
     transform: rotate(180deg);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
     .col-md-1 {
         max-width: 11.333333% !important;
+    }
+    .offset-md-1 {
+        margin-left: 13% !important;
+    }
+    .col-md-11 {
+        max-width: 86% !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .offset-md-1 {
+        margin-left: 0 !important;
+    }
+    .col-md-11 {
+        max-width: 100% !important;
     }
 }
 
@@ -1159,7 +1180,7 @@ h3.heading-padding.text-muted:hover {
 ========================================================================== */
 .form-block {
     border-radius: 10px;
-    border: .5px dashed #adadad;
+    border: 1px dashed #adadad;
     padding: 15px;
     margin-bottom: 20px;
 }

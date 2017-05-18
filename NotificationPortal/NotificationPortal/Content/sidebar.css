@@ -270,6 +270,7 @@ body.Home {
 
     .container td {
         padding-left: 42%;
+        overflow-wrap:break-word;
     }
 }
 
