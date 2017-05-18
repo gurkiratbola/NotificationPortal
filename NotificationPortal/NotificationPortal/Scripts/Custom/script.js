@@ -6,9 +6,6 @@ if (window.location.origin.indexOf('localhost') === -1) {
 }
 // used for clickable row and ajax scripts (for right-click on all tables)
 var domain = window.location.origin + subdir;
-var pressTimer;
-const PRESSED = true;
-const RIGHT_CLICK = false;
 var clickableRow = function () {
     $(".hidden-menu").hide();
     $(".clickable-row").click(function () {
@@ -22,24 +19,13 @@ var clickableRow = function () {
         }
     });
     $(".clickable-row").contextmenu(function (e) {
-        displayHiddenMenu(e, RIGHT_CLICK);
-        return false;
-    });
-    $(".clickable-row").mouseup(function () {
-        clearTimeout(pressTimer);
-        // Clear timeout
-        return false;
-    })
-    $(".clickable-row").mousedown(function (e) {
-        // Set timeout
-        pressTimer = window.setTimeout(function () { displayHiddenMenu(e, PRESSED) }, 1000);
+        displayHiddenMenu(e);
         return false;
     });
 }
-var displayHiddenMenu = function (e, isPress) {
-    var extraOffset = isPress ? { x: $('.hidden-menu').first().width() / 2, y: $('.hidden-menu').first().height() / 2 } : { x: 0, y: 0 };
-    var hidden_menu_width_offset = $('table').offset().left - 15 + extraOffset.x; //absolute position of table + ???
-    var hidden_menu_height_offset = 54 - 3 + extraOffset.y; // height of navbar + ???
+var displayHiddenMenu = function (e) {
+    var hidden_menu_width_offset = $('table').offset().left - 15; //absolute position of table + ???
+    var hidden_menu_height_offset = 54 - 3; // height of navbar + ???
     var rowId = $(this).attr("id");
     $('.hidden-menu li a').attr('href', function (i, str) {
         if (str.indexOf(rowId) >= 0) {
