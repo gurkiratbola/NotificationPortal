@@ -29,7 +29,7 @@ namespace NotificationPortal.Controllers
                 _userManager = value;
             }
         }
-        
+
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -38,7 +38,7 @@ namespace NotificationPortal.Controllers
 
             return View(model);
         }
-        
+
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Create()
@@ -50,10 +50,11 @@ namespace NotificationPortal.Controllers
                 ClientList = _selectRepo.GetUserClientList(),
                 RolesList = _selectRepo.GetRolesList(),
                 ApplicationList = _selectRepo.GetApplicationListByClient(null)
-        };
+            };
+
             return View(model);
         }
-        
+
         // This action is async because we are sending emails asynchronously from App_Start/IdentityConfig.cs
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpPost]
@@ -94,7 +95,7 @@ namespace NotificationPortal.Controllers
 
             return View(model);
         }
-        
+
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Edit(string id)
@@ -103,7 +104,7 @@ namespace NotificationPortal.Controllers
             var user = _userRepo.GetUserDetails(id);
 
             // if there were errors in getting the user direct to index page and show error
-            if(user == null)
+            if (user == null)
             {
                 TempData["ErrorMsg"] = "Cannot edit this user at this time";
                 return RedirectToAction("Index");
@@ -111,7 +112,7 @@ namespace NotificationPortal.Controllers
 
             return View(user);
         }
-        
+
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -141,7 +142,7 @@ namespace NotificationPortal.Controllers
 
             return View(model);
         }
-        
+
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Details(string id)
@@ -150,7 +151,7 @@ namespace NotificationPortal.Controllers
             var user = _userRepo.GetUserDetails(id);
 
             // if cannot find information redirect the user to index page and show error msg
-            if(user == null)
+            if (user == null)
             {
                 TempData["ErrorMsg"] = "Cannot get this user at this time";
                 return RedirectToAction("Index");
@@ -158,7 +159,7 @@ namespace NotificationPortal.Controllers
 
             return View(user);
         }
-    
+
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpGet]
         public ActionResult Delete(string id)
@@ -167,7 +168,7 @@ namespace NotificationPortal.Controllers
             var user = _userRepo.GetDeleteUser(id);
 
             // if cannot find user show error msg and redirect back to index
-            if(user == null)
+            if (user == null)
             {
                 TempData["ErrorMsg"] = "Cannot delete this user at this time";
                 return RedirectToAction("Index");
@@ -175,7 +176,7 @@ namespace NotificationPortal.Controllers
 
             return View(user);
         }
-        
+
         [Authorize(Roles = Key.ROLE_ADMIN + ", " + Key.ROLE_STAFF + ", " + Key.ROLE_CLIENT)]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -197,7 +198,6 @@ namespace NotificationPortal.Controllers
             // load the view with same information if the deletion failed
             return View(_userRepo.GetDeleteUser(model.ReferenceID));
         }
-
 
         // This method is asynchronous to accept email confirmation because it was sent asynchronously from adduser
         [HttpGet]
