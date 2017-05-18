@@ -82,7 +82,9 @@ Manage Clients (CRUD) | ✓ | ✓
 Manage Applications (CRUD) | ✓ | ✓
 Manage Notifications | ✓ | ✓
 Read Notifications (CUD) | ✓ | ✓ | ✓ | ✓
-Read Server Status | ✓ | ✓ | ✓ | 
+Read Server Status | ✓ | ✓ |  | 
+
+![alt text](https://github.com/gurkiratbola/NotificationPortal/blob/master/docs/entity_relationship_diagram.png "Entity Relationship Diagram")
 
 Features
 ============
