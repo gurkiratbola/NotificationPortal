@@ -18,25 +18,37 @@ namespace NotificationPortal.Repositories
         {
             if (!String.IsNullOrEmpty(searchString))
             {
-                list = list.Where(c => c.ServerName.ToUpper().Contains(searchString.ToUpper()));
+                list = list.Where(c => c.ServerName.ToUpper().Contains(searchString.ToUpper()) || c.StatusName.ToUpper().Contains(searchString.ToUpper()) || c.ServerTypeName.ToUpper().Contains(searchString.ToUpper()) || c.LocationName.ToUpper().Contains(searchString.ToUpper()));
             }
 
             switch (sortOrder)
             {
                 case ConstantsRepo.SORT_SERVER_BY_NAME_DESC:
+                    list = list.OrderByDescending(c => c.ServerName);
+                    break;
+                case ConstantsRepo.SORT_SERVER_BY_STATUS_NAME_DESC:
                     list = list.OrderByDescending(c => c.StatusName);
                     break;
-                case ConstantsRepo.SORT_STATUS_BY_NAME_DESC:
-                    list = list.OrderByDescending(c => c.Description);
-                    break;
-                case ConstantsRepo.SORT_STATUS_BY_NAME_ASCE:
-                    list = list.OrderBy(c => c.LocationName);
+                case ConstantsRepo.SORT_SERVER_BY_STATUS_NAME_ASCE:
+                    list = list.OrderBy(c => c.StatusName);
                     break;
                 case ConstantsRepo.SORT_SERVERTYPE_BY_NAME_ASCE:
                     list = list.OrderBy(c => c.ServerTypeName);
                     break;
                 case ConstantsRepo.SORT_SERVERTYPE_BY_NAME_DESC:
-                    list = list.OrderByDescending(c => c.ServerName);
+                    list = list.OrderByDescending(c => c.ServerTypeName);
+                    break;
+                case ConstantsRepo.SORT_SERVER_BY_DESCRIPTION_ASCE:
+                    list = list.OrderBy(c => c.Description);
+                    break;
+                case ConstantsRepo.SORT_SERVER_BY_DESCRIPTION_DESC:
+                    list = list.OrderByDescending(c => c.Description);
+                    break;
+                case ConstantsRepo.SORT_SERVER_BY_LOCATION_NAME_ASCE:
+                    list = list.OrderBy(c => c.LocationName);
+                    break;
+                case ConstantsRepo.SORT_SERVER_BY_LOCATION_NAME_DESC:
+                    list = list.OrderByDescending(c => c.LocationName);
                     break;
                 default:
                     list = list.OrderBy(c => c.ServerName);
@@ -61,25 +73,26 @@ namespace NotificationPortal.Repositories
                                                     Description = c.Description
                                                 });
 
-                int totalNumOfServers = serverList.Count();
                 page = searchString == null ? page : 1;
                 int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
                 searchString = searchString ?? currentFilter;
                 int pageNumber = (page ?? 1);
-
                 int defaultPageSize = ConstantsRepo.PAGE_SIZE;
 
+                var sorted = Sort(serverList, sortOrder, searchString);
+                int totalNumOfServers = sorted.Count();
+
                 // sort by status name default
-                sortOrder = sortOrder ?? ConstantsRepo.SORT_SERVER_BY_STATUS_NAME_DESC;
+                sortOrder = sortOrder ?? ConstantsRepo.SORT_SERVER_BY_NAME_DESC;
 
                 ServerIndexVM model = new ServerIndexVM
                 {
-                    Servers = Sort(serverList, sortOrder, searchString).ToPagedList(pageNumber, defaultPageSize),
+                    Servers = sorted.ToPagedList(pageNumber, defaultPageSize),
                     CurrentFilter = searchString,
                     CurrentSort = sortOrder,
                     TotalItemCount = totalNumOfServers,
-                    ItemStart = currentPageIndex * 10 + 1,
-                    ItemEnd = totalNumOfServers - (10 * currentPageIndex) >= 10 ? 10 * (currentPageIndex + 1) : totalNumOfServers,
+                    ItemStart = currentPageIndex * defaultPageSize + 1,
+                    ItemEnd = totalNumOfServers - (defaultPageSize * currentPageIndex) >= defaultPageSize ? defaultPageSize * (currentPageIndex + 1) : totalNumOfServers,
 
                     DescriptionSort = sortOrder == ConstantsRepo.SORT_SERVER_BY_DESCRIPTION_DESC ? ConstantsRepo.SORT_SERVER_BY_DESCRIPTION_ASCE : ConstantsRepo.SORT_SERVER_BY_DESCRIPTION_DESC,
                     StatusSort = sortOrder == ConstantsRepo.SORT_SERVER_BY_STATUS_NAME_DESC ? ConstantsRepo.SORT_SERVER_BY_STATUS_NAME_ASCE : ConstantsRepo.SORT_SERVER_BY_STATUS_NAME_DESC,
@@ -97,23 +110,6 @@ namespace NotificationPortal.Repositories
 
                 return null;
             }
-        }
-
-        // Delete later
-        public ServerVM GetServer(string referenceID)
-        {
-            ServerVM server = _context.Server.Where(a => a.ReferenceID == referenceID)
-            .Select(b => new ServerVM
-            {
-                ServerName = b.ServerName,
-                ReferenceID = b.ReferenceID,
-                Description = b.Description,
-                StatusID = b.StatusID,
-                LocationID = b.LocationID,
-                ServerTypeID = b.ServerTypeID,
-            }).FirstOrDefault();
-
-            return server;
         }
 
         public ServerDetailVM GetServerDetails(string referenceID)
@@ -369,7 +365,7 @@ namespace NotificationPortal.Repositories
             {
                 Value = sv.StatusID.ToString(),
                 Text = sv.StatusName
-            }).OrderByDescending(s => s.Value);
+            }).OrderBy(s => s.Value);
 
             return new SelectList(statusList, "Value", "Text");
         }
@@ -396,21 +392,6 @@ namespace NotificationPortal.Repositories
             });
 
             return new SelectList(serverTypeList, "Value", "Text");
-        }
-
-        // Delete later
-        public IEnumerable<ServerApplicationVM> GetApplicationList()
-        {
-            var apps = _context.Application.Select(a => new ServerApplicationVM
-            {
-                ApplicationName = a.ApplicationName,
-                ApplicationReferenceID = a.ReferenceID,
-                ClientID = a.Client.ClientName,
-                Description = a.Description,
-                Status = a.Status.StatusName,
-            });
-
-            return apps;
         }
     }
 }
