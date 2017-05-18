@@ -156,8 +156,11 @@ namespace NotificationPortal.Repositories
                     ServerName = server.ServerName,
                     ReferenceID = server.ReferenceID,
                     Description = server.Description,
+                    StatusID = server.Status.StatusID,
                     Status = server.Status.StatusName,
+                    LocationID = server.DataCenterLocation.LocationID,
                     Location = server.DataCenterLocation.Location,
+                    ServerTypeID = server.ServerType.ServerTypeID,
                     ServerType = server.ServerType.ServerTypeName,
                     Threads = serverThreads,
                     Applications = serverApplication,
@@ -366,7 +369,7 @@ namespace NotificationPortal.Repositories
             {
                 Value = sv.StatusID.ToString(),
                 Text = sv.StatusName
-            });
+            }).OrderByDescending(s => s.Value);
 
             return new SelectList(statusList, "Value", "Text");
         }

@@ -2,13 +2,12 @@
 
 @{
     ViewBag.Title = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @{
-
     var className = Model.Status == "Offline" ? "badge badge-danger" : "badge badge-success";
 }
+
 <h1 class="text-center display-4 pb-3">@Model.ServerName <span class="@className">@Html.DisplayFor(modelItem => Model.Status)</span></h1>
 
 <ol class="breadcrumb bg-faded">
