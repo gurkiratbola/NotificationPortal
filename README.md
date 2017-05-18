@@ -7,7 +7,7 @@ Table of Contents
 * [Project Structure](#project-structure)
     * [Constants](#constants)
     * [API](#api)
-    * [Reference Id](#reference-Id)
+    * [Reference Id](#reference-id)
     * [Centralized Status Control](#centralized-status-control)
     * [Custom Javascript Files](#custom-javascript-files)
     * [Static File Locations](#static-file-locations)
@@ -51,7 +51,7 @@ Note*: Notification Index and Dashboard Index has inline script tags for handlin
 ### Reference Id
 Reference IDs are used in forms and models to be passed back and forth instead of using primary keys. In this case, GUIDs are used.
 
-### Cenntralized Status Control
+### Centralized Status Control
 User/Application/Server/Notification/Client each has status and all of which are editable in the Status Controller. 
 
 ### Custom Javascript Files
@@ -63,7 +63,7 @@ Total of six Javascript files are created to support the functionality mentioned
 5. **refresh-index-helper.js**:	Re-populate table and pagination info on dashboard and notification index
 6. **script.js**: Custom scripts for front-end purposes
 
-### Static File Location
+### Static File Locations
 Locations for static files:
 * All CSS files are stored in Content
 * Custom CSS files: sidebar.css and Site.css
