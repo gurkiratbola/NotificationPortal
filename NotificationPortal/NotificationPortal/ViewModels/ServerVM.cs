@@ -51,6 +51,7 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Status")]
         public int StatusID { get; set; }
 
+        [Required]
         [Display(Name = "Applications")]
         public string[] ApplicationReferenceIDs { get; set; }
         public SelectList ApplicationList { get; set; }
