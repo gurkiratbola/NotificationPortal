@@ -12,9 +12,9 @@ namespace NotificationPortal.Migrations
                 c => new
                     {
                         ApplicationID = c.Int(nullable: false, identity: true),
-                        ApplicationName = c.String(),
+                        ApplicationName = c.String(maxLength: 100),
                         Description = c.String(),
-                        URL = c.String(),
+                        URL = c.String(maxLength: 100),
                         ClientID = c.Int(nullable: false),
                         StatusID = c.Int(nullable: false),
                         ReferenceID = c.String(maxLength: 100),
@@ -22,23 +22,23 @@ namespace NotificationPortal.Migrations
                 .PrimaryKey(t => t.ApplicationID)
                 .ForeignKey("dbo.Clients", t => t.ClientID, cascadeDelete: true)
                 .ForeignKey("dbo.Status", t => t.StatusID)
+                .Index(t => new { t.ApplicationName, t.URL, t.ReferenceID }, unique: true, name: "IX_ApplicationUniqueness")
                 .Index(t => t.ClientID)
-                .Index(t => t.StatusID)
-                .Index(t => t.ReferenceID, unique: true);
+                .Index(t => t.StatusID);
             
             CreateTable(
                 "dbo.Clients",
                 c => new
                     {
                         ClientID = c.Int(nullable: false, identity: true),
-                        ClientName = c.String(),
+                        ClientName = c.String(maxLength: 50),
                         StatusID = c.Int(nullable: false),
                         ReferenceID = c.String(maxLength: 100),
                     })
                 .PrimaryKey(t => t.ClientID)
                 .ForeignKey("dbo.Status", t => t.StatusID)
-                .Index(t => t.StatusID)
-                .Index(t => t.ReferenceID, unique: true);
+                .Index(t => new { t.ClientName, t.ReferenceID }, unique: true, name: "IX_ClientUniqueness")
+                .Index(t => t.StatusID);
             
             CreateTable(
                 "dbo.Status",
@@ -68,7 +68,7 @@ namespace NotificationPortal.Migrations
                         NotificationTypeID = c.Int(nullable: false),
                         PriorityID = c.Int(nullable: false),
                         UserID = c.String(maxLength: 128),
-                        ReferenceID = c.String(maxLength: 100),
+                        ReferenceID = c.String(maxLength: 50),
                     })
                 .PrimaryKey(t => t.NotificationID)
                 .ForeignKey("dbo.LevelOfImpacts", t => t.LevelOfImpactID, cascadeDelete: true)
@@ -88,38 +88,39 @@ namespace NotificationPortal.Migrations
                 c => new
                     {
                         LevelOfImpactID = c.Int(nullable: false, identity: true),
-                        LevelName = c.String(),
+                        LevelName = c.String(maxLength: 50),
                         LevelValue = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.LevelOfImpactID)
-                .Index(t => t.LevelValue, unique: true);
+                .Index(t => new { t.LevelName, t.LevelValue }, unique: true, name: "IX_LevelOfImpactUniqueness");
             
             CreateTable(
                 "dbo.NotificationTypes",
                 c => new
                     {
                         NotificationTypeID = c.Int(nullable: false, identity: true),
-                        NotificationTypeName = c.String(),
+                        NotificationTypeName = c.String(maxLength: 50),
                     })
-                .PrimaryKey(t => t.NotificationTypeID);
+                .PrimaryKey(t => t.NotificationTypeID)
+                .Index(t => t.NotificationTypeName, unique: true);
             
             CreateTable(
                 "dbo.Priorities",
                 c => new
                     {
                         PriorityID = c.Int(nullable: false, identity: true),
-                        PriorityName = c.String(),
+                        PriorityName = c.String(maxLength: 50),
                         PriorityValue = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.PriorityID)
-                .Index(t => t.PriorityValue, unique: true);
+                .Index(t => new { t.PriorityName, t.PriorityValue }, unique: true, name: "IX_PriorityUniqueness");
             
             CreateTable(
                 "dbo.Servers",
                 c => new
                     {
                         ServerID = c.Int(nullable: false, identity: true),
-                        ServerName = c.String(),
+                        ServerName = c.String(maxLength: 100),
                         Description = c.String(),
                         StatusID = c.Int(nullable: false),
                         LocationID = c.Int(nullable: false),
@@ -130,28 +131,30 @@ namespace NotificationPortal.Migrations
                 .ForeignKey("dbo.DataCenterLocations", t => t.LocationID, cascadeDelete: true)
                 .ForeignKey("dbo.ServerTypes", t => t.ServerTypeID, cascadeDelete: true)
                 .ForeignKey("dbo.Status", t => t.StatusID)
+                .Index(t => new { t.ServerName, t.ReferenceID }, unique: true, name: "IX_ServerUniqueness")
                 .Index(t => t.StatusID)
                 .Index(t => t.LocationID)
-                .Index(t => t.ServerTypeID)
-                .Index(t => t.ReferenceID, unique: true);
+                .Index(t => t.ServerTypeID);
             
             CreateTable(
                 "dbo.DataCenterLocations",
                 c => new
                     {
                         LocationID = c.Int(nullable: false, identity: true),
-                        Location = c.String(),
+                        Location = c.String(maxLength: 50),
                     })
-                .PrimaryKey(t => t.LocationID);
+                .PrimaryKey(t => t.LocationID)
+                .Index(t => t.Location, unique: true);
             
             CreateTable(
                 "dbo.ServerTypes",
                 c => new
                     {
                         ServerTypeID = c.Int(nullable: false, identity: true),
-                        ServerTypeName = c.String(),
+                        ServerTypeName = c.String(maxLength: 50),
                     })
-                .PrimaryKey(t => t.ServerTypeID);
+                .PrimaryKey(t => t.ServerTypeID)
+                .Index(t => t.ServerTypeName, unique: true);
             
             CreateTable(
                 "dbo.UserDetails",
@@ -185,9 +188,10 @@ namespace NotificationPortal.Migrations
                 c => new
                     {
                         SendMethodID = c.Int(nullable: false, identity: true),
-                        SendMethodName = c.String(),
+                        SendMethodName = c.String(maxLength: 50),
                     })
-                .PrimaryKey(t => t.SendMethodID);
+                .PrimaryKey(t => t.SendMethodID)
+                .Index(t => t.SendMethodName, unique: true);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -252,19 +256,21 @@ namespace NotificationPortal.Migrations
                 c => new
                     {
                         StatusTypeID = c.Int(nullable: false, identity: true),
-                        StatusTypeName = c.String(),
+                        StatusTypeName = c.String(maxLength: 50),
                     })
-                .PrimaryKey(t => t.StatusTypeID);
+                .PrimaryKey(t => t.StatusTypeID)
+                .Index(t => t.StatusTypeName, unique: true);
             
             CreateTable(
                 "dbo.Groups",
                 c => new
                     {
                         GroupID = c.Int(nullable: false, identity: true),
-                        GroupName = c.String(),
+                        GroupName = c.String(maxLength: 50),
                         GroupDescription = c.String(),
                     })
-                .PrimaryKey(t => t.GroupID);
+                .PrimaryKey(t => t.GroupID)
+                .Index(t => t.GroupName, unique: true);
             
             CreateTable(
                 "dbo.RoleDetails",
@@ -388,22 +394,28 @@ namespace NotificationPortal.Migrations
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.RoleDetails", new[] { "GroupID" });
             DropIndex("dbo.RoleDetails", new[] { "RoleID" });
+            DropIndex("dbo.Groups", new[] { "GroupName" });
+            DropIndex("dbo.StatusTypes", new[] { "StatusTypeName" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
+            DropIndex("dbo.SendMethods", new[] { "SendMethodName" });
             DropIndex("dbo.UserDetails", new[] { "ReferenceID" });
             DropIndex("dbo.UserDetails", new[] { "StatusID" });
             DropIndex("dbo.UserDetails", new[] { "SendMethodID" });
             DropIndex("dbo.UserDetails", new[] { "ClientID" });
             DropIndex("dbo.UserDetails", new[] { "UserID" });
-            DropIndex("dbo.Servers", new[] { "ReferenceID" });
+            DropIndex("dbo.ServerTypes", new[] { "ServerTypeName" });
+            DropIndex("dbo.DataCenterLocations", new[] { "Location" });
             DropIndex("dbo.Servers", new[] { "ServerTypeID" });
             DropIndex("dbo.Servers", new[] { "LocationID" });
             DropIndex("dbo.Servers", new[] { "StatusID" });
-            DropIndex("dbo.Priorities", new[] { "PriorityValue" });
-            DropIndex("dbo.LevelOfImpacts", new[] { "LevelValue" });
+            DropIndex("dbo.Servers", "IX_ServerUniqueness");
+            DropIndex("dbo.Priorities", "IX_PriorityUniqueness");
+            DropIndex("dbo.NotificationTypes", new[] { "NotificationTypeName" });
+            DropIndex("dbo.LevelOfImpacts", "IX_LevelOfImpactUniqueness");
             DropIndex("dbo.Notifications", new[] { "ReferenceID" });
             DropIndex("dbo.Notifications", new[] { "UserID" });
             DropIndex("dbo.Notifications", new[] { "PriorityID" });
@@ -411,11 +423,11 @@ namespace NotificationPortal.Migrations
             DropIndex("dbo.Notifications", new[] { "LevelOfImpactID" });
             DropIndex("dbo.Notifications", new[] { "StatusID" });
             DropIndex("dbo.Status", new[] { "StatusTypeID" });
-            DropIndex("dbo.Clients", new[] { "ReferenceID" });
             DropIndex("dbo.Clients", new[] { "StatusID" });
-            DropIndex("dbo.Applications", new[] { "ReferenceID" });
+            DropIndex("dbo.Clients", "IX_ClientUniqueness");
             DropIndex("dbo.Applications", new[] { "StatusID" });
             DropIndex("dbo.Applications", new[] { "ClientID" });
+            DropIndex("dbo.Applications", "IX_ApplicationUniqueness");
             DropTable("dbo.UserDetailApplications");
             DropTable("dbo.ServerNotifications");
             DropTable("dbo.ServerApplications");
