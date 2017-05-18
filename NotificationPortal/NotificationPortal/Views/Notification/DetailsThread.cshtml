@@ -93,34 +93,37 @@
         @foreach (var item in Model.Thread)
         {
             var statusClass = "";
-            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED.ToUpper()) {
-                statusClass = "badge badge-closed";
+            switch (item.Status) {
+                case NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED:
+                    statusClass = "badge badge-grey";
+                    break;
+                case NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN:
+                    statusClass = "badge badge-red";
+                    break;
+                case NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING:
+                    statusClass = "badge badge-orange";
+                    break;
+                case NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED:
+                    statusClass = "badge badge-green";
+                    break;
+                default:
+                    statusClass = "badge badge-grey";
+                    break;
             }
-            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN.ToUpper())
-            {
-                statusClass = "badge badge-open";
-            }
-            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING.ToUpper())
-            {
-                statusClass = "badge badge-invest";
-            }
-            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED.ToUpper())
-            {
-                statusClass = "badge badge-resolved";
-            }
+
             <div class="col-sm-12 single-thread">
                 <span class="thread-status-bar">
                     @Html.Raw(item.SentDateTime)
                     <span class="@statusClass">@Html.Raw(item.Status)</span>
                     @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
                      User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
-                    {
+                {
                         <a class="" href="@Url.Action("Edit", "Notification", new { id = @item.ReferenceID })">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </a>
                     }
                     @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN))
-                    {
+            {
                         <a class="" href="@Url.Action("Delete", "Notification", new { id = @item.ReferenceID })">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </a>
@@ -153,8 +156,8 @@
             </thead>
             <tbody>
             @foreach (var item in Model.Servers)
-            {
-                var serverStatusClass = item.ServerStatus.ToUpper() == NotificationPortal.Models.Key.STATUS_SERVER_OFFLINE.ToUpper()?"badge badge-danger": "badge badge-success";
+        {
+            var serverStatusClass = item.ServerStatus.ToUpper() == NotificationPortal.Models.Key.STATUS_SERVER_OFFLINE.ToUpper()?"badge badge-danger": "badge badge-success";
                 <tr class="clickable-row" id="@item.ReferenceID" data-href="Server/Details/@item.ReferenceID">
                     <td data-title="@Html.DisplayNameFor(model => serverModel.ServerName)" class="first-row">
                         @Html.DisplayFor(modelItem => item.ServerName)
