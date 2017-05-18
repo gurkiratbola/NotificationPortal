@@ -111,23 +111,34 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model.Servers)
+            @if (Model.Servers.Count() > 0)
             {
-                var statusClass = item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_SERVER_OFFLINE.ToUpper() ? "badge badge-danger" : "badge badge-success";
-                <tr class="clickable-row" id="@item.ReferenceID" data-href="/Server/Details/@item.ReferenceID">
-                    <td data-title="@Html.DisplayNameFor(model => item.ServerName)" class="first-row">
-                        @Html.DisplayFor(modelItem => item.ServerName)
-                    </td>
-                    <td data-title="@Html.DisplayNameFor(model => item.ServerType)">
-                        @Html.DisplayFor(modelItem => item.ServerType)
-                    </td>
-                    <td data-title="@Html.DisplayNameFor(model => item.Status)" >
-                        <span class="@statusClass ml-1">
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </span>
-                    </td>
-                    <td data-title="@Html.DisplayNameFor(model => item.Location)">
-                        @Html.DisplayFor(modelItem => item.Location)
+                foreach (var item in Model.Servers)
+                {
+                    var statusClass = item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_SERVER_OFFLINE.ToUpper() ? "badge badge-danger" : "badge badge-success";
+                    <tr class="clickable-row" id="@item.ReferenceID" data-href="/Server/Details/@item.ReferenceID">
+                        <td data-title="@Html.DisplayNameFor(model => item.ServerName)" class="first-row">
+                            @Html.DisplayFor(modelItem => item.ServerName)
+                        </td>
+                        <td data-title="@Html.DisplayNameFor(model => item.ServerType)">
+                            @Html.DisplayFor(modelItem => item.ServerType)
+                        </td>
+                        <td data-title="@Html.DisplayNameFor(model => item.Status)" >
+                            <span class="@statusClass ml-1">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </span>
+                        </td>
+                        <td data-title="@Html.DisplayNameFor(model => item.Location)">
+                            @Html.DisplayFor(modelItem => item.Location)
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4">
+                        There are no servers associated currently.
                     </td>
                 </tr>
             }
@@ -157,26 +168,36 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model.Users)
+            @if (Model.Users.Count() > 0)
             {
-                <tr class="clickable-row" id="@item.ReferenceID" data-href="/User/Details/@item.ReferenceID">
-                    <td data-title="@Html.DisplayNameFor(model => item.FirstName)" class="first-row">
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                    </td>
-                    <td data-title="@Html.DisplayNameFor(model => item.LastName)">
-                        @Html.DisplayFor(modelItem => item.LastName)
-                    </td>
-                    <td data-title="@Html.DisplayNameFor(model => item.Email)">
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td data-title="@Html.DisplayNameFor(model => item.RoleName)">
-                        @Html.DisplayFor(modelItem => item.RoleName)
-                    </td>
-                    <td data-title="@Html.DisplayNameFor(model => item.BusinessPhone)">
-                        @Html.DisplayFor(modelItem => item.BusinessPhone)
+                foreach (var item in Model.Users)
+                {
+                    <tr class="clickable-row" id="@item.ReferenceID" data-href="/User/Details/@item.ReferenceID">
+                        <td data-title="@Html.DisplayNameFor(model => item.FirstName)" class="first-row">
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td data-title="@Html.DisplayNameFor(model => item.LastName)">
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td data-title="@Html.DisplayNameFor(model => item.Email)">
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td data-title="@Html.DisplayNameFor(model => item.RoleName)">
+                            @Html.DisplayFor(modelItem => item.RoleName)
+                        </td>
+                        <td data-title="@Html.DisplayNameFor(model => item.BusinessPhone)">
+                            @Html.DisplayFor(modelItem => item.BusinessPhone)
+                        </td>
+                    </tr>
+                }
+            }
+            else {
+                <tr>
+                    <td colspan="5">
+                        There are no users associated currently.
                     </td>
                 </tr>
-                }
+            }
             </tbody>
         </table>
     </div>
@@ -198,10 +219,13 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model.Notifications)
+        @if (Model.Notifications.Count() > 0)
+        {
+            foreach (var item in Model.Notifications)
             {
                 var notificationStatus = "";
-                switch (item.Status) {
+                switch (item.Status)
+                {
                     case NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED:
                         notificationStatus = "badge badge-grey";
                         break;
@@ -224,7 +248,7 @@
                         @Html.DisplayFor(modelItem => item.IncidentNumber)
                     </td>
                     <td data-title="@Html.DisplayNameFor(model => item.Status)" >
-                        <span class="@notificationStatus ml-1">
+                        <span class="@notificationStatus">
                             @Html.DisplayFor(modelItem => item.Status)
                         </span>
                     </td>
@@ -233,6 +257,15 @@
                     </td>
                 </tr>
             }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3">
+                    There are no notifications currently.
+                </td>
+            </tr>
+        }
             </tbody>
         </table>
     </div>

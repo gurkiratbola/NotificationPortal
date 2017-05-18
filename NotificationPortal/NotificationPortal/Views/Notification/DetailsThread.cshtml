@@ -97,20 +97,23 @@
         @foreach (var item in Model.Thread)
         {
             var statusClass = "";
-            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED.ToUpper()) {
-                statusClass = "badge badge-closed";
-            }
-            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN.ToUpper())
+            switch (item.Status)
             {
-                statusClass = "badge badge-open";
-            }
-            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING.ToUpper())
-            {
-                statusClass = "badge badge-invest";
-            }
-            if (item.Status.ToUpper() == NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED.ToUpper())
-            {
-                statusClass = "badge badge-resolved";
+                case NotificationPortal.Models.Key.STATUS_NOTIFICATION_CLOSED:
+                    statusClass = "badge badge-grey";
+                    break;
+                case NotificationPortal.Models.Key.STATUS_NOTIFICATION_OPEN:
+                    statusClass = "badge badge-red";
+                    break;
+                case NotificationPortal.Models.Key.STATUS_NOTIFICATION_INVESTIGATING:
+                    statusClass = "badge badge-orange";
+                    break;
+                case NotificationPortal.Models.Key.STATUS_NOTIFICATION_RESOLVED:
+                    statusClass = "badge badge-green";
+                    break;
+                default:
+                    statusClass = "badge badge-grey";
+                    break;
             }
             <div class="col-sm-12 single-thread">
                 <span class="thread-status-bar">
