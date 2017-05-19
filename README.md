@@ -195,13 +195,17 @@ Reference IDs are used in forms and models to be passed back and forth instead o
 User/Application/Server/Notification/Client each has status and all of which are editable in the Status Controller. 
 
 ### Custom Javascript Files
-Total of six Javascript files are created to support the functionality mentioned:
+Total of nine Javascript files are created to support the functionality mentioned:
 1. **add-notification.js**: Customizing rich text editor plugin
-2. **application-multiselect.js**: Handles multi-select inputs on application views 
-3. **refresh-application-dropdown.js**:	Filtering application select list based on server selection 
-4. **refresh-application-status.js**: Dynamically checks the status of the application
-5. **refresh-index-helper.js**:	Re-populate table and pagination info on dashboard and notification index
-6. **script.js**: Custom scripts for front-end purposes
+1. **notification-refresh-dropdown**: Handles applications and servers list dropdown for notifications
+1. **application-multiselect.js**: Handles multi-select inputs on application views 
+1. **refresh-application-dropdown.js**:	Filtering application select list based on server selection 
+1. **refresh-application-status.js**: Dynamically checks the status of the application
+1. **refresh-index-helper.js**:	Re-populate table and pagination info on dashboard and notification index
+1. **script.js**: Custom scripts for front-end purposes
+1. **server-multiselect.js**: Handles applications dropdown list for servers.
+1. **user-multiselect.js**: Handles applications multiselect for users
+1. **user-refresh-dropdown.js**: Handles getting the application based on the client selected for users
 
 ### Static File Locations
 Locations for static files:
@@ -214,7 +218,7 @@ Locations for static files:
 * Scripts -> Plugin folder for all plugin .js files
 
 ### Service
-* **EncryptionHelper.cs**: Customizing rich text editor plugin
-* **NotificationService.cs**: For sending Email and SMS by creating/updating notification
+* **EncryptionHelper.cs**: For encrypting sensitive information in the web.config file, such as connection string and app settings
+* **NotificationService.cs**: For sending Email and SMS by creating / updating notification and for user email confirmation and password reset
 * **StringHelper.cs**: For stripping tags created by rich text editor
 * **TemplateService.cs**: For Email and SMS templates used
