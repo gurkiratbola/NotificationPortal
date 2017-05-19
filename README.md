@@ -13,6 +13,7 @@ Table of Contents
     * [Specifications](#specifications)
     * [Program Features](#program-features)
     * [Tasks By Roles](#tasks-by-roles)
+    * [Entity Relationship Diagram](#entity-relationship-diagram)
 * [Features](#features)
 * [Project Structure](#project-structure)
     * [Constants](#constants)
@@ -91,7 +92,7 @@ Open the project solution in Visual Studio and navigate to **Web.Config** file. 
 1. In the Web.config file, find connectionStrings and add name to **DefaultConnection** or the other steps will fail.
 1. After adding the connection string, build the solution.
 1. To populate the database with seed data, go to the /Migrations folder and delete all the files except **Configuration.cs**. Don't worry if the file does not exist.
-1. Open the NuGet Package Manager Console and type `Update-Database -TargetMigration:0 -Force`
+1. Open the NuGet Package Manager Console and type `Update-Database –TargetMigration: $InitialDatabase`
 1. Then type `Add-Migration Initial`
 1. Lastly, type `Update-Database`
 1. And that will seed the database and you're good to go!
@@ -102,12 +103,12 @@ Functional Requirements
 ### Overview
 Notification Portal is a notification system that allows organizations to communicate with clients regarding application/server updates. For example, contacting client regarding hosting services when issues arise suddenly or when maintenance is scheduled to be performed in the near future. 
 
-This system is independent from any external database. Notifications are manually managed by internal employees and are only viewable to client users. Four type of users are required:
+This system is independent from any external database. Notifications are manually managed by internal employees and are only viewable to external users. Four type of users are required:
 
 * Internal Admin (Internal)
 * Internal User (Internal)
 * External Admin (Client)
-* External User (Client)
+* External Users (Client)
 
 Internal roles will manage all clients, apps, users, servers, and notification delivery while external roles will manage users associated with their company. 
 
@@ -117,27 +118,22 @@ Internal roles will manage all clients, apps, users, servers, and notification d
 * Role management is not required (without ability to edit/delete user roles)
 * All notifications are sent out immediately after creation 
 * Notifications are not saved as drafts and are not auto scheduled
-* Notifications are sent in the form of emails only
-* Notification is generated either by application or by server
+* Notifications are sent in the form of Emails and SMS
+* Notification is created with association to servers, and further association applications are optional
 * Server status is manually tracked and updated by the internal users 
 
 ### Program Features
 Task | Essential | Nice To Have
 ------------ | ------------- | -------------
-Internal Send/Manage Notifications (Incidents and Maintenance) | ✓ | 
-External Manage Notifications | ✓ | 
+Internal Send / Manage Notifications (Incidents and Maintenance) | ✓ | 
+External Users can view Notifications | ✓ | 
 Notifications are threaded | ✓ |
 Manage Internal / External Users (CRUD) | ✓ |
-Manage External Admin (CRUD) | ✓ |
 Manage Clients, Applications and Servers | ✓ | 
-Internal Manage Groups and Roles (RU) | ✓ |
-Internal View Server Dependencies | ✓ |
 External Registration | | ✓
-Two way communicate through notification | | ✓
 Search on Client, Application | ✓ |
-Text Messaging | | ✓
-Dashboard (Internal Admin) shows application availability throughout month | | ✓
-Advance Search | | ✓
+Notification by SMS | | ✓
+Full Index / Advanced Search | | ✓
 
 ### Tasks By Roles
 Task | Internal Admin | Internal User | External Admin | External User
@@ -151,7 +147,7 @@ Manage Notifications | ✓ | ✓
 Read Notifications (CUD) | ✓ | ✓ | ✓ | ✓
 Read Server Status | ✓ | ✓ |  | 
 
-
+### Entity Relationship Diagram
 ![alt text](https://github.com/gurkiratbola/NotificationPortal/blob/master/docs/entity_relationship_diagram.png "Entity Relationship Diagram")
 
 Features
