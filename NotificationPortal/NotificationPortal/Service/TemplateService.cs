@@ -10,6 +10,10 @@ namespace NotificationPortal.Service
 {
     public static class TemplateService
     {
+        /// define subdirectory here
+        /// just "/" if using domain or subdomain
+        /// "/subdirectory" if subdirectory
+        private const string SUB_DIRECTORY = "/";
         public static string AccountEmail(string callBackUrl, string body, string buttonText)
         {
             // load the html template and read the content to be replaced later.
@@ -54,7 +58,7 @@ namespace NotificationPortal.Service
                       .Replace("{StartTime}", model.StartDateTime == null ? DateTime.Now.ToString() : model.StartDateTime.ToString())
                       .Replace("{EndTime}", model.EndDateTime == null ? "Not available at this time" : model.EndDateTime.ToString())
                       .Replace("{Duration}", model.StartDateTime == null || model.EndDateTime == null ? "Not available at this time" : duration.ToString())
-                      .Replace("{URL}", "http://" + HttpContext.Current.Request.Url.Authority + "/Notification/DetailsThread/" + model.IncidentNumber);
+                      .Replace("{URL}", "http://" + HttpContext.Current.Request.Url.Authority + SUB_DIRECTORY +"Notification/DetailsThread/" + model.IncidentNumber);
 
             return message;
         }
@@ -71,7 +75,7 @@ namespace NotificationPortal.Service
                    .Replace("{IncidentNumber}", model.IncidentNumber)
                    .Replace("{LevelOfImpact}", levelOfImpact)
                    .Replace("{Status}", status)
-                   .Replace("{Url}", "http://" + HttpContext.Current.Request.Url.Authority + "/Notification/DetailsThread/" + model.IncidentNumber);
+                   .Replace("{Url}", "http://" + HttpContext.Current.Request.Url.Authority + SUB_DIRECTORY + "Notification/DetailsThread/" + model.IncidentNumber);
 
             return message;
         }
