@@ -1,6 +1,10 @@
 ﻿var subdir = '/';
 if (window.location.origin.indexOf('localhost') === -1) {
-    subdir = '/notificationportal/'
+    // just '/' if using domin or subdomain
+    subdir = '/'
+
+    // add your subdirectory here if you are using subdirectory
+    // subdir = '/subdirectory-path/'
 } else {
     subdir = '/';
 }
@@ -40,7 +44,7 @@ var sidebarDropdown = function () {
         localStorage.setItem("isDropdownVisible", false);
 
     } else {
-        if (localStorage.getItem("isDropdownVisible") == false) {
+        if (JSON.parse(localStorage.getItem("isDropdownVisible")) == false) {
             $(".sidebar-dropdown").hide();
         } else {
             $(".sidebar-dropdown").show();
@@ -48,7 +52,7 @@ var sidebarDropdown = function () {
     }
 
     $(".sidebar-dropdown-button").click(function () {
-        if ($(".sidebar-dropdown").is(":hidden")) {
+        if (!JSON.parse(localStorage.getItem("isDropdownVisible"))) {
             localStorage.setItem("isDropdownVisible", true);
             $(".sidebar-dropdown-button .fa-caret-down").addClass("arrow-rotate");
             $(".sidebar-dropdown").slideDown();
@@ -56,8 +60,11 @@ var sidebarDropdown = function () {
             $(".sidebar-dropdown").slideUp();
             if ($(".sidebar-dropdown-button .fa-caret-down").hasClass("arrow-rotate")) {
                 $(".sidebar-dropdown-button .fa-caret-down").removeClass("arrow-rotate");
+            } else {
+                $(".sidebar-dropdown-button .fa-caret-down").addClass("arrow-rotate");
             }
-            localStorage.removeItem("isDropdownVisible");
+            //localStorage.removeItem("isDropdownVisible");
+            localStorage.setItem("isDropdownVisible", false);
         }
     })
 }
