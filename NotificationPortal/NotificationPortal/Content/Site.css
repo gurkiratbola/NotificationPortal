@@ -235,6 +235,7 @@ button:focus {
 
 .badge {
     font-size: 0.9em;
+    transform: translateY(-1px);
 }
 
 .card ul {
@@ -582,9 +583,11 @@ button.multiselect.dropdown-toggle.btn.btn-default {
                         Sidebar Styles
 ========================================================================== */
 
-i.fa.fa-cog {
-    display: inline-block;
-    transform: translateX(-4px);
+@media screen and (min-width: 1200px) {
+    i.fa.fa-cog {
+        display: inline-block;
+        transform: translateX(-4px);
+    }
 }
 
 .nav-pills > li {
@@ -985,6 +988,7 @@ h5.col-12 {
 i.fa.fa-pencil-square-o {
     font-size: 1.1em;
     transform: translateY(2px);
+    margin-left: 3px;
 }
 
 i.fa.fa-trash {
