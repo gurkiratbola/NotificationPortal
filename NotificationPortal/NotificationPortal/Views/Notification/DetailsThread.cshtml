@@ -141,7 +141,9 @@
                 </span>
 
                 <span class="thread-description">
-                    @Html.Raw(item.NotificationDescription)
+                    <div class="card p-3 bg-light-grey font-small">
+                        @Html.Raw(item.NotificationDescription)
+                    </div>
                 </span>
             </div>
         }

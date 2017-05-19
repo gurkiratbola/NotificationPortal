@@ -74,11 +74,20 @@ dd.col-sm-10 {
 .fa-spinner {
     font-size: 24px;
 }
+
+.font-small {
+    font-size: 0.9em;
+    color: #6d6b69;
+}
 /* ==========================================================================
                             Color Styles
 ========================================================================== */
 .bg-mint {
     background-color: #36c2dd;
+}
+
+.bg-light-grey {
+    background-color: #ededed;
 }
 
 .bg-impact {
@@ -238,7 +247,7 @@ button:focus {
     transform: translateY(-1px);
 }
 
-.card ul {
+.card-deck > .card ul {
     list-style: none;
     padding-left: 0;
 }
@@ -1074,7 +1083,7 @@ i.fa.fa-trash {
     display: block;
 }
 
-.card a:hover {
+.card-deck > .card a:hover {
     text-decoration: none;
 }
 
