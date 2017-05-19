@@ -180,7 +180,15 @@ if (Model.Users.Count() > 0)
                             @Html.DisplayFor(modelItem => item.LastName)
                         </td>
                         <td data-title="Client">
+                        @if (item.ClientName != null)
+                        {
                             @Html.DisplayFor(modelItem => item.ClientName)
+                        }
+                        else
+                        {
+                            @*<span>&mdash;</span>*@
+                            <i class="fa fa-leaf" aria-hidden="true"></i>
+                        }
                         </td>
                         <td data-title="Status">
                             <span>@Html.Raw(statusIcon)</span>
@@ -190,26 +198,26 @@ if (Model.Users.Count() > 0)
                         </td>
                     </tr>
                 }
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 
-        <!-- ========================= pagination ========================= -->
-            if (Model.TotalItemCount > NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)
-            {
-                <!-- hide pagination if only 1 page -->
-                @Html.PagedListPager(Model.Users, page => Url.Action("Index",
-                new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
-            }
-
-            <div class="pageinfo-display">
-                <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
-            </div>
-
-        }
-        else
+<!-- ========================= pagination ========================= -->
+        if (Model.TotalItemCount > NotificationPortal.Repositories.ConstantsRepo.PAGE_SIZE)
         {
-                <p> There are no such users in the database at the moment.</p>
+            <!-- hide pagination if only 1 page -->
+            @Html.PagedListPager(Model.Users, page => Url.Action("Index",
+            new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
         }
+
+        <div class="pageinfo-display">
+            <p>Displaying @Model.ItemStart - @Model.ItemEnd of @Model.TotalItemCount item(s)</p>
+        </div>
+
+    }
+    else
+    {
+        <p> There are no such users in the database at the moment.</p>
+    }
 }
 
 <div class="hidden-menu">
