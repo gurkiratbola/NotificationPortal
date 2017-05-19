@@ -1,6 +1,10 @@
 ﻿var subdir = '/';
 if (window.location.origin.indexOf('localhost') === -1) {
-    subdir = '/notificationportal/'
+    // just '/' if using domin or subdomain
+    subdir = '/'
+
+    // add your subdirectory here if you are using subdirectory
+    // subdir = '/subdirectory-path/'
 } else {
     subdir = '/';
 }
