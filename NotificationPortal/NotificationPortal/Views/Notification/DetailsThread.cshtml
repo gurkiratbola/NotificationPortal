@@ -123,6 +123,7 @@
             <div class="col-sm-12 single-thread">
                 <span class="thread-status-bar">
                     @Html.Raw(item.SentDateTime)
+                    <br />
                     <span class="@statusClass">@Html.Raw(item.Status)</span>
                     @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN) ||
                      User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
