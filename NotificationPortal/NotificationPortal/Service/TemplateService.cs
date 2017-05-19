@@ -13,7 +13,7 @@ namespace NotificationPortal.Service
         /// define subdirectory here
         /// just "/" if using domain or subdomain
         /// "/directory_path/" if using subdirectory
-        private const string SUB_DIRECTORY = "/";
+        private const string SUB_DIRECTORY = "/notificationportal/";
         public static string AccountEmail(string callBackUrl, string body, string buttonText)
         {
             // load the html template and read the content to be replaced later.
