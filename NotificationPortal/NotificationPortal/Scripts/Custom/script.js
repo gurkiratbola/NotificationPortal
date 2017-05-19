@@ -14,7 +14,7 @@ var clickableRow = function () {
     $(".hidden-menu").hide();
     $(".clickable-row").click(function () {
         var x = $(this).data("href");
-        window.location =  domain + $(this).data("href");
+        window.location = domain + $(this).data("href");
     });
 
     $('*').click(function (e) {
