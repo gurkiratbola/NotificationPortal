@@ -7,7 +7,8 @@ Table of Contents
     * [Requirements](#requirements)
     * [Configuring SMTP Account](#configuring-smtp-account)    
     * [Configuring Twilio Account](#configuring-twilio-account)   
-    * [Configuring SQL Server](#configuring-sql-server)             
+    * [Configuring SQL Server](#configuring-sql-server)       
+    * [Additional Configurations](#additional-configurations)      
 * [Functional Requirements](#functional-requirements)
     * [Overview](#overview)
     * [Specifications](#specifications)
@@ -34,11 +35,11 @@ Installation
 ============
 
 ### Requirements
-* MS SQL Server
+* Microsoft SQL Server
 * SMTP Account
 * Twilio Account SID and Phone Number
 
-All of these will be configured in **Web.Config** of the project.
+All of these will be configured in the **Web.Config** of the project.
 
 ### Configuring SMTP Account
 Open the project solution in Visual Studio and navigate to **Web.Config** file. In the appSettings, do the following:
@@ -49,9 +50,9 @@ Open the project solution in Visual Studio and navigate to **Web.Config** file. 
     <add key="SmtpPassword" value="Smtp Password Goes Here" />
     <add key="SmtpNoReplyEmail" value="no-reply@notification-portal.com" />
 ```
-1. Change the **SmtpHost Goes Here** value to your SmtpHost
-1. Change the **SmtpEmail Goes Here** value to your SmtpEmail
-1. Change the **SmtpPassword Goes Here** value to your SmtpPassword
+1. Change the **"SmtpHost Goes Here"** value to your SmtpHost
+1. Change the **"SmtpEmail Goes Here"** value to your SmtpEmail
+1. Change the **"SmtpPassword Goes Here"** value to your SmtpPassword
 1. SmtpNoRepyEmail does not need to be changed unless you want to
 
 ### Configuring Twilio Account
@@ -71,17 +72,17 @@ Open the project solution in Visual Studio and navigate to **Web.Config** file. 
 
 ![alt text](https://github.com/gurkiratbola/NotificationPortal/blob/master/docs/step2.png "Step 2 Twilio")
 
-4. Change the **Twilio SID Goes Here** value to your Twilio SID
-5. Change the **Twilio Auth Token Here** value to your Twilio Auth Token 
+4. Change the **"Twilio SID Goes Here"** value to your Twilio Account SID
+5. Change the **"Twilio Auth Token Here"** value to your Twilio Auth Token 
 
-6. Then, go to `https://www.twilio.com/console/phone-numbers/incoming` or follow the image below
+6. Then go to `https://www.twilio.com/console/phone-numbers/incoming` or follow the image below
 
 ![alt text](https://github.com/gurkiratbola/NotificationPortal/blob/master/docs/step3.png "Step 3 Twilio")
 ![alt text](https://github.com/gurkiratbola/NotificationPortal/blob/master/docs/step4.png "Step 4 Twilio")
 
 7. Generate a phone number
-8. Change the **Twilio Number Here** value to your Twilio Number
-9. Now, Twilio is configured
+8. Change the **"Twilio Number Here"** value to your Twilio Number
+9. Now, Twilio is configured.
 
 ### Configuring SQL Server
 1. Set up a SQL Server Database. Make sure it's empty and full privileges are granted for it.
@@ -96,6 +97,14 @@ Open the project solution in Visual Studio and navigate to **Web.Config** file. 
 1. Then type `Add-Migration Initial`
 1. Lastly, type `Update-Database`
 1. And that will seed the database and you're good to go!
+
+### Additional Configurations
+If you plan to host the project to a server, some other configurations needs to be adjusted. If this project will be hosted on a **regular domain** or a **sub-domain**, these changes will not apply to you, otherwise do the following:
+1. Navigate to the `Scripts/Custom/script.js` within Visual Studio
+1. On line 4, `subdir = '/'` add your sub-directory here like **`subdir = '/directory_path/`** 
+1. After completing the above step navigate to `Service/TemplateService.cs` 
+1. On line 16, `private const string SUB_DIRECTORY = "/";` add your sub-directory path similar to Step 2 like **`private const string SUB_DIRECTORY = "/directory_path/";`**
+1. After completing all of these steps, you should be good to deploy the application on a sub-directory successfully.
 
 Functional Requirements
 ============
