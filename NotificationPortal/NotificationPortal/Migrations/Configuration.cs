@@ -363,7 +363,7 @@ namespace NotificationPortal.Migrations
 
             };
             
-            userManager.Create(admin, sampleAdminPassword);
+            userManager.Create(admin, adminPassword);
 
             userManager.AddToRoles(admin.Id, Key.ROLE_ADMIN);
         }
