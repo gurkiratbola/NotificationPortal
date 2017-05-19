@@ -160,13 +160,10 @@
                         @Html.DisplayFor(modelItem => item.ClientName)
                     </td>
                     <td data-title="Status">
-                        <i class="preloader fa fa-spinner fa-spin" style="display:none"></i>
-                        <span class="failed-status badge badge-danger" style="display:none">
-                            Failed Refresh
-                        </span>
                         <span class="current-status @statusClass">
                             @Html.DisplayFor(modelItem => item.StatusName)
                         </span>
+                        <i class="preloader fa fa-spinner fa-spin" style="display:none"></i>
                     </td>
                 </tr>
             }

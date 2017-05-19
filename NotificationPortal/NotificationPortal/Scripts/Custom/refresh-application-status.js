@@ -31,15 +31,13 @@ var sendRequest = function (refIds) {
 var showPreloader = function (refIds) {
     waiting = true;
     $('.preloader').show();
-    $('.failed-status').hide();
-
-    $('.current-status').remove();
 }
 
 // hide the preloader and display 
 var displayNewStatus = function (data) {
     waiting = false;
     $('.preloader').hide();
+    $('.current-status').remove();
     $.each(data, function (index, appStatus) {
         if (appStatus.Status == "Online") {
             $('<span class="current-status badge badge-success">Online</span>').appendTo($('#' + appStatus.ReferenceID).find('[data-title="Status"]'));
@@ -53,7 +51,6 @@ var displayNewStatus = function (data) {
 var displayFailedStatus = function () {
     waiting = false;
     $('.preloader').hide();
-    $('.failed-status').show();
 }
 
 // refresh application statuses displayed on the page
