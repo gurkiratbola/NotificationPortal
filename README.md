@@ -92,7 +92,7 @@ Open the project solution in Visual Studio and navigate to **Web.Config** file. 
 1. In the Web.config file, find connectionStrings and add name to **DefaultConnection** or the other steps will fail.
 1. After adding the connection string, build the solution.
 1. To populate the database with seed data, go to the /Migrations folder and delete all the files except **Configuration.cs**. Don't worry if the file does not exist.
-1. Open the NuGet Package Manager Console and type `Update-Database -TargetMigration:0 -Force`
+1. Open the NuGet Package Manager Console and type `Update-Database –TargetMigration: $InitialDatabase`
 1. Then type `Add-Migration Initial`
 1. Lastly, type `Update-Database`
 1. And that will seed the database and you're good to go!
