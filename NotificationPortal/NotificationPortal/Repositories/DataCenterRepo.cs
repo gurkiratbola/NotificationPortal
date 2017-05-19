@@ -12,7 +12,7 @@ namespace NotificationPortal.Repositories
 {
     public class DataCenterRepo
     {
-        const string APP_STATUS_TYPE_NAME = "DataCenter";
+        const string APP_STATUS_TYPE_NAME = Key.STATUS_TYPE_DATACENTER;
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
         // sort function for data center

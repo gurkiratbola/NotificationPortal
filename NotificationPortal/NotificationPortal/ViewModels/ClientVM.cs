@@ -10,7 +10,8 @@ using System.Web.Mvc;
 namespace NotificationPortal.ViewModels
 {
     // view model for index page only
-    public class ClientIndexVM {
+    public class ClientIndexVM
+    {
         public IPagedList<ClientVM> Clients { get; set; }
 
         public string CurrentFilter { get; set; }

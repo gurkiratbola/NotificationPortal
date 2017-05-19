@@ -58,7 +58,7 @@ namespace NotificationPortal.Service
                       .Replace("{StartTime}", model.StartDateTime == null ? DateTime.Now.ToString() : model.StartDateTime.ToString())
                       .Replace("{EndTime}", model.EndDateTime == null ? "Not available at this time" : model.EndDateTime.ToString())
                       .Replace("{Duration}", model.StartDateTime == null || model.EndDateTime == null ? "Not available at this time" : duration.ToString())
-                      .Replace("{URL}", "http://" + HttpContext.Current.Request.Url.Authority + SUB_DIRECTORY +"Notification/DetailsThread/" + model.IncidentNumber);
+                      .Replace("{URL}", "http://" + HttpContext.Current.Request.Url.Authority + SUB_DIRECTORY + "Notification/DetailsThread/" + model.IncidentNumber);
 
             return message;
         }

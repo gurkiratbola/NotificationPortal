@@ -52,7 +52,7 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Status")]
         public int StatusID { get; set; }
 
-        
+
         [Display(Name = "Applications")]
         public string[] ApplicationReferenceIDs { get; set; }
         public SelectList ApplicationList { get; set; }
@@ -63,8 +63,8 @@ namespace NotificationPortal.ViewModels
     }
     //server view model for delete server
     public class ServerDetailVM
-    { 
-        
+    {
+
         public string ReferenceID { get; set; }
 
         [Required]
@@ -95,7 +95,7 @@ namespace NotificationPortal.ViewModels
         [DisplayName("Status")]
         public int StatusID { get; set; }
 
-    
+
         [Display(Name = "Applications")]
         public string[] ApplicationReferenceIDs { get; set; }
         public SelectList ApplicationList { get; set; }

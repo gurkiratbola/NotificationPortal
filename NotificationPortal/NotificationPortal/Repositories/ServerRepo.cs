@@ -105,7 +105,7 @@ namespace NotificationPortal.Repositories
             }
             catch (Exception e)
             {
-                if(e is SqlException)
+                if (e is SqlException)
                 { }
 
                 return null;
@@ -172,7 +172,7 @@ namespace NotificationPortal.Repositories
             }
             catch (Exception e)
             {
-                if(e is SqlException)
+                if (e is SqlException)
                 { }
 
                 return null;
@@ -216,7 +216,7 @@ namespace NotificationPortal.Repositories
             }
             catch (Exception e)
             {
-                if(e is SqlException)
+                if (e is SqlException)
                 { }
 
                 msg = "Failed to add server.";
@@ -232,7 +232,7 @@ namespace NotificationPortal.Repositories
 
                 if (s != null)
                 {
-                    if(s.ReferenceID != s.ReferenceID)
+                    if (s.ReferenceID != s.ReferenceID)
                     {
                         msg = "Server name already exist.";
                         return false;
@@ -290,7 +290,7 @@ namespace NotificationPortal.Repositories
             }
             catch (Exception e)
             {
-                if(e is SqlException)
+                if (e is SqlException)
                 { }
 
                 return null;
@@ -303,7 +303,7 @@ namespace NotificationPortal.Repositories
             Server serverToBeDeleted = _context.Server.Where(a => a.ReferenceID == referenceID).FirstOrDefault();
 
             // check applications associated with server
-       
+
             IEnumerable<Application> allServerApplications = serverToBeDeleted.Applications;
 
             // check notifications associated with server
@@ -342,7 +342,7 @@ namespace NotificationPortal.Repositories
             }
             catch (Exception e)
             {
-                if(e is SqlException)
+                if (e is SqlException)
                 { }
 
                 msg = "Failed to update server.";

@@ -5,6 +5,7 @@ using System.Web;
 
 namespace NotificationPortal.Models
 {
+    // This file defines the constants used throughout the controllers, seed and repositories.
     public static class Key
     {
         public const string DATA_CENTER_LOCATION_TORONTO = "Toronto";
@@ -52,6 +53,8 @@ namespace NotificationPortal.Models
         public const string STATUS_TYPE_NOTIFICATION = "Notification";
         public const string STATUS_TYPE_SERVER = "Server";
         public const string STATUS_TYPE_USER = "User";
+        public const string STATUS_TYPE_DATACENTER = "DataCenter";
+        public const string STATUS_TYPE_STATUS = "Status";
 
         public const string STATUS_APPLICATION_OFFLINE = "Offline";
         public const string STATUS_APPLICATION_ONLINE = "Online";

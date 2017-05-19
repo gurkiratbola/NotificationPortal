@@ -15,7 +15,7 @@ namespace NotificationPortal.ViewModels
         public int ItemStart { get; set; }
         public int ItemEnd { get; set; }
 
-        public string RoleNameSort { get; set; }     
+        public string RoleNameSort { get; set; }
         public string EmailSort { get; set; }
         public string FirstNameSort { get; set; }
         public string LastNameSort { get; set; }
@@ -36,7 +36,7 @@ namespace NotificationPortal.ViewModels
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
-    
+
     public class UserVM
     {
         public string UserID { get; set; }
@@ -53,7 +53,7 @@ namespace NotificationPortal.ViewModels
 
         [Required]
         [EmailAddress]
-        public string Email  { get; set; }
+        public string Email { get; set; }
 
         [Display(Name = "Applications")]
         public string[] ApplicationReferenceIDs { get; set; }

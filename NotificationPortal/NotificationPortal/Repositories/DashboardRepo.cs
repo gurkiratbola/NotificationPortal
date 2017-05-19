@@ -47,7 +47,7 @@ namespace NotificationPortal.Repositories
                         );
 
                         dashboard = from n in dashboard where n.Status == Key.STATUS_NOTIFICATION_OPEN select n;
-                     
+
                         int totalNumOfNotifications = dashboard.Count();
                         page = searchString == null ? page : 1;
                         int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
@@ -69,7 +69,8 @@ namespace NotificationPortal.Repositories
                             SenderSort = sortOrder == ConstantsRepo.SORT_NOTIFICATION_BY_SENDER_DESC ? ConstantsRepo.SORT_NOTIFICATION_BY_SENDER_ASCE : ConstantsRepo.SORT_NOTIFICATION_BY_SENDER_DESC,
                         };
                     }
-                    catch {
+                    catch
+                    {
                         // something wrong with db, catch it by returning null
                         model = null;
                     }
@@ -95,12 +96,14 @@ namespace NotificationPortal.Repositories
                             Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(1, dashboard.Count()),
                         };
                     }
-                    catch {
+                    catch
+                    {
                         // something wrong with db, catch it by returning null
                         model = null;
                     }
                 }
-                else {
+                else
+                {
                     // if it's external user
                     try
                     {
@@ -115,7 +118,8 @@ namespace NotificationPortal.Repositories
                             Notifications = Sort(dashboard, sortOrder, searchString).ToPagedList(1, dashboard.Count()),
                         };
                     }
-                    catch {
+                    catch
+                    {
                         // something wrong with db, catch it by returning null
                         model = null;
                     }
@@ -133,7 +137,7 @@ namespace NotificationPortal.Repositories
                                                            {
                                                                SentDateTime = c.SentDateTime,
                                                                NotificationDetail = c.NotificationDescription
-                                                            }).OrderByDescending(a => a.SentDateTime).ToList()
+                                                           }).OrderByDescending(a => a.SentDateTime).ToList()
                                                            .Take(ConstantsRepo.DASHBOARD_CLENT_SIDE_LIMIT);
             foreach (var item in details)
             {
@@ -142,10 +146,11 @@ namespace NotificationPortal.Repositories
             return details;
         }
 
-        public IEnumerable<DashboardVM> GetAppNotifications(IEnumerable<DashboardVM> dashboard, ICollection<Application> apps) {
+        public IEnumerable<DashboardVM> GetAppNotifications(IEnumerable<DashboardVM> dashboard, ICollection<Application> apps)
+        {
             IEnumerable<DashboardVM> notifications = apps
-                                        .Select(x=> new { Application = x, x.Servers })
-                                        .SelectMany(x => x.Servers.SelectMany(n => n.Notifications.Where(a=>a.Applications.Contains(x.Application)||a.Applications.Count()==0))
+                                        .Select(x => new { Application = x, x.Servers })
+                                        .SelectMany(x => x.Servers.SelectMany(n => n.Notifications.Where(a => a.Applications.Contains(x.Application) || a.Applications.Count() == 0))
                                         .Select(n => new DashboardVM()
                                         {
                                             ThreadID = n.IncidentNumber,

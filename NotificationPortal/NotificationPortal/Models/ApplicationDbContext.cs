@@ -46,6 +46,7 @@ namespace NotificationPortal.Models
                 .WillCascadeOnDelete(false);
         }
 
+        // Generate all the database tables 
         public DbSet<Application> Application { get; set; }
         public DbSet<Client> Client { get; set; }
         public DbSet<DataCenterLocation> DataCenterLocation { get; set; }

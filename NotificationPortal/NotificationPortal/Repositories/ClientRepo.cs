@@ -14,7 +14,8 @@ namespace NotificationPortal.Repositories
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
         // sort function for client: only name and status are sortable at this time
-        public IEnumerable<ClientVM> Sort(IEnumerable<ClientVM> list, string sortOrder, string searchString = null) {
+        public IEnumerable<ClientVM> Sort(IEnumerable<ClientVM> list, string sortOrder, string searchString = null)
+        {
             if (!String.IsNullOrEmpty(searchString))
             {
                 list = list.Where(c => c.ClientName.ToUpper().Contains(searchString.ToUpper()));
@@ -59,7 +60,7 @@ namespace NotificationPortal.Repositories
                                                     NumOfApps = c.Applications.Count()
                                                 });
 
-                
+
                 page = searchString == null ? page : 1;
                 searchString = searchString ?? currentFilter;
                 int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
@@ -76,7 +77,7 @@ namespace NotificationPortal.Repositories
                     CurrentSort = sortOrder,
                     TotalItemCount = totalNumOfClients,
                     ItemStart = currentPageIndex * defaultPageSize + 1,
-                    ItemEnd = totalNumOfClients - (defaultPageSize * currentPageIndex) >= defaultPageSize ? defaultPageSize * (currentPageIndex + 1): totalNumOfClients,
+                    ItemEnd = totalNumOfClients - (defaultPageSize * currentPageIndex) >= defaultPageSize ? defaultPageSize * (currentPageIndex + 1) : totalNumOfClients,
                     ClientHeadingSort = sortOrder == ConstantsRepo.SORT_CLIENT_BY_NAME_DESC ? ConstantsRepo.SORT_CLIENT_BY_NAME_ASCE : ConstantsRepo.SORT_CLIENT_BY_NAME_DESC,
                     StatusSort = sortOrder == ConstantsRepo.SORT_STATUS_BY_NAME_DESC ? ConstantsRepo.SORT_STATUS_BY_NAME_ASCE : ConstantsRepo.SORT_STATUS_BY_NAME_DESC,
                 };
@@ -108,7 +109,8 @@ namespace NotificationPortal.Repositories
             // check if a client with same name exists
             Client c = _context.Client.Where(a => a.ClientName == client.ClientName)
                             .FirstOrDefault();
-            if (c != null) {
+            if (c != null)
+            {
                 msg = "Client name already exist.";
                 return false;
             }
@@ -132,8 +134,10 @@ namespace NotificationPortal.Repositories
             }
         }
         // get client detail by querying with referenceID
-        public ClientVM GetClient(string referenceID) {
-            try {
+        public ClientVM GetClient(string referenceID)
+        {
+            try
+            {
                 ClientVM client = _context.Client
                 .Where(a => a.ReferenceID == referenceID)
                 .Select(b => new ClientVM
@@ -158,7 +162,8 @@ namespace NotificationPortal.Repositories
         public bool EditClient(ClientVM client, out string msg)
         {
             Client c = _context.Client.Where(a => a.ClientName == client.ClientName).FirstOrDefault();
-            if (c != null) {
+            if (c != null)
+            {
                 if (c.ReferenceID != client.ReferenceID)
                 {
                     msg = "Client name already exist.";
@@ -189,13 +194,15 @@ namespace NotificationPortal.Repositories
                     return false;
                 }
             }
-            else {
+            else
+            {
                 msg = "Information is identical, no update performed.";
                 return false;
             }
         }
 
-        public bool DeleteClient(string referenceID, out string msg) {
+        public bool DeleteClient(string referenceID, out string msg)
+        {
             Client clientToBeDeleted = _context.Client
                                     .Where(a => a.ReferenceID == referenceID)
                                     .FirstOrDefault();
@@ -214,12 +221,15 @@ namespace NotificationPortal.Repositories
                 return false;
             }
 
-            try {
+            try
+            {
                 _context.Client.Remove(clientToBeDeleted);
                 _context.SaveChanges();
                 msg = "Client Successfully Deleted";
                 return true;
-            } catch {
+            }
+            catch
+            {
                 msg = "Failed to update client.";
                 return false;
             }

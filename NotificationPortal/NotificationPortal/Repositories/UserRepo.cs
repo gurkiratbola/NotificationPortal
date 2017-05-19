@@ -19,9 +19,9 @@ namespace NotificationPortal.Repositories
         private readonly SelectListRepo _selectRepo = new SelectListRepo();
 
         //Create add user view model
-        public AddUserVM CreateAddUserVM(AddUserVM model=null)
+        public AddUserVM CreateAddUserVM(AddUserVM model = null)
         {
-            if (model==null)
+            if (model == null)
             {
                 model = new AddUserVM();
             }
@@ -275,7 +275,7 @@ namespace NotificationPortal.Repositories
                     };
 
                     // find the client id with the reference id passed with the viewmodel and add the new client to that
-                    int? clientId = model.ClientReferenceID ==null? null:(int?)_context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
+                    int? clientId = model.ClientReferenceID == null ? null : (int?)_context.Client.Where(c => c.ReferenceID == model.ClientReferenceID)
                                    .Select(client => client.ClientID).FirstOrDefault();
 
                     // get default send method (Email)
@@ -318,7 +318,7 @@ namespace NotificationPortal.Repositories
                             return false;
                         }
                     }
-                    
+
                     // get the application reference ids from the multiselect
                     if (model.ApplicationReferenceIDs == null)
                     {
@@ -362,7 +362,7 @@ namespace NotificationPortal.Repositories
             {
                 if (e is SqlException)
                 { }
-                
+
                 // if something breaks show this message or exception is caught
                 msg = "Failed to add the user";
                 userId = "";
