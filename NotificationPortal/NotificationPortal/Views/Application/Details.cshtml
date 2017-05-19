@@ -61,50 +61,10 @@
 
 <!-- Tab panes -->
 <div class="tab-content">
-    <div class="tab-pane active" id="Applications" role="tabpanel">
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ApplicationName)
-            </dt>
-
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ApplicationName)
-            </dd>
-
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.URL)
-            </dt>
-
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.URL)
-            </dd>
-
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Client)
-            </dt>
-
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Client)
-            </dd>
-
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Status)
-            </dt>
-
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Status)
-            </dd>
-
-        </dl>
-    </div>
+    @if(User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN)
+        || User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+    {
+    <!-- server pane -->
     <div class="tab-pane" id="Servers" role="tabpanel">
         @if (Model.Servers.Count() > 0)
         {
@@ -149,13 +109,60 @@
                     }
                 </tbody>
             </table>
-            }
-            else
-            {
-                <p>There are no servers associated currently.</p>
-            }
+                    }
+                    else
+                    {
+                        <p>There are no servers associated currently.</p>
+                    }
 
     </div>
+    }
+    <!-- application pane -->
+    <div class="tab-pane active" id="Applications" role="tabpanel">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ApplicationName)
+            </dt>
+
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ApplicationName)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.URL)
+            </dt>
+
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.URL)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Client)
+            </dt>
+
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Client)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+
+        </dl>
+    </div>
+    <!-- user pane -->
     <div class="tab-pane" id="Users" role="tabpanel">
         @if (Model.Users.Count() > 0)
         {
@@ -211,7 +218,7 @@
                 </p>
             }
     </div>
-
+    <!-- notification pane -->
     <div class="tab-pane" id="Notifications" role="tabpanel">
         @if (Model.Notifications.Count() > 0)
         {
@@ -278,6 +285,10 @@
 </div>
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-success" })
+    @if (User.IsInRole(NotificationPortal.Models.Key.ROLE_ADMIN)
+        || User.IsInRole(NotificationPortal.Models.Key.ROLE_STAFF))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ReferenceID }, new { @class = "btn btn-success" })
+    }
     @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger" })
 </p>
