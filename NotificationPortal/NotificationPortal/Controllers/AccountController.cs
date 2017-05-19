@@ -88,6 +88,12 @@ namespace NotificationPortal.Controllers
             }
 
             var getUser = await UserManager.FindByEmailAsync(model.Email);
+            // no such user
+            if (getUser==null)
+            {
+                TempData["ErrorMsg"] = "Invalid login attempt.";
+                return View(model);
+            }
             var checkUserStatus = _context.UserDetail.Where(u => getUser.Id == u.UserID).Select(s => s.Status.StatusName).FirstOrDefault();
 
             if(checkUserStatus == Key.STATUS_USER_DISABLED)
