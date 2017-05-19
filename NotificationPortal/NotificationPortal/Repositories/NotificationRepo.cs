@@ -93,10 +93,10 @@ namespace NotificationPortal.Repositories
                             Status = n.Status.StatusName
                         });
 
-                Notification lastestNotification = notifications.LastOrDefault();
+                Notification latestNotification = notifications.LastOrDefault();
 
                 IEnumerable<NotificationServerVM> servers =
-                    lastestNotification.Servers.Select(
+                    latestNotification.Servers.Select(
                         s => new NotificationServerVM
                         {
                             ServerName = s.ServerName,
@@ -105,8 +105,16 @@ namespace NotificationPortal.Repositories
                             ReferenceID = s.ReferenceID
                         });
 
+
+                // check and get all application associated to the server if latest notification is not app specific
+                IEnumerable<Application> associatedNotificationApplications = latestNotification.Applications;
+                if (associatedNotificationApplications.Count()==0)
+                {
+                    associatedNotificationApplications = latestNotification.Servers.SelectMany(s => s.Applications).Distinct();
+                }
+
+
                 // Get Applications that are associated to this notification
-                IEnumerable<Application> associatedNotificationApplications;
                 if (HttpContext.Current.User.IsInRole(Key.ROLE_USER))
                 {
                     string userId = HttpContext.Current.User.Identity.GetUserId();
@@ -114,7 +122,7 @@ namespace NotificationPortal.Repositories
                         .Where(u => u.UserID == userId)
                         .FirstOrDefault().Applications;
 
-                    associatedNotificationApplications = lastestNotification.Applications
+                    associatedNotificationApplications = associatedNotificationApplications
                         .Where(a => userApps.Contains(a));
                 }
                 else if (HttpContext.Current.User.IsInRole(Key.ROLE_CLIENT))
@@ -123,12 +131,8 @@ namespace NotificationPortal.Repositories
                     var userApps = _context.UserDetail
                         .Where(u => u.UserID == userId)
                         .FirstOrDefault().Client.Applications;
-                    associatedNotificationApplications = lastestNotification.Applications
+                    associatedNotificationApplications = associatedNotificationApplications
                         .Where(a => userApps.Contains(a));
-                }
-                else
-                {
-                    associatedNotificationApplications = lastestNotification.Applications;
                 }
 
                 IEnumerable<NotificationApplicationVM> apps =
@@ -141,35 +145,14 @@ namespace NotificationPortal.Repositories
                             ReferenceID = a.ReferenceID
                         }).OrderByDescending(a => a.ApplicationName);
 
-                // If there are no applications associated to this notification
-                // get all application associated with server(s)
-                // only for admin and staff
-                if (apps.Count() == 0
-                    && HttpContext.Current.User.IsInRole(Key.ROLE_ADMIN)
-                    && HttpContext.Current.User.IsInRole(Key.ROLE_STAFF))
-                {
-                    apps =
-                    lastestNotification.Servers.SelectMany(s => s.Applications.Select(
-                        a => new NotificationApplicationVM
-                        {
-                            ApplicationName = a.ApplicationName,
-                            ApplicationURL = a.URL,
-                            ApplicationStatus = a.Status.StatusName,
-                            ReferenceID = a.ReferenceID
-                        })).GroupBy(a => a.ReferenceID)
-                        .Select(
-                            a => a.FirstOrDefault()
-                    ).OrderByDescending(a => a.ApplicationName);
-                }
-
                 ThreadDetailVM model = new ThreadDetailVM()
                 {
                     IncidentNumber = incidentNumber,
-                    NotificationType = lastestNotification.NotificationType.NotificationTypeName,
-                    LevelOfImpact = lastestNotification.LevelOfImpact.LevelName,
-                    Status = lastestNotification.Status.StatusName,
-                    StartDateTime = lastestNotification.StartDateTime,
-                    EndDateTime = lastestNotification.EndDateTime,
+                    NotificationType = latestNotification.NotificationType.NotificationTypeName,
+                    LevelOfImpact = latestNotification.LevelOfImpact.LevelName,
+                    Status = latestNotification.Status.StatusName,
+                    StartDateTime = latestNotification.StartDateTime,
+                    EndDateTime = latestNotification.EndDateTime,
                     Thread = thread,
                     Servers = servers,
                     Applications = apps,
