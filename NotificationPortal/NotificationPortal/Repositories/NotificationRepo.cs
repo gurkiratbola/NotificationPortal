@@ -21,6 +21,7 @@ namespace NotificationPortal.Repositories
         ApplicationDbContext _context = new ApplicationDbContext();
         SelectListRepo _slRepo = new SelectListRepo();
 
+        // create model for Index view
         public NotificationIndexVM CreateIndexModel()
         {
             try
@@ -47,10 +48,12 @@ namespace NotificationPortal.Repositories
             catch (Exception)
             {
                 // something went while quering the database
+                // handle null values in controller
                 return null;
             }
         }
 
+        // create model for CreateThread view
         public NotificationCreateVM CreateAddModel(NotificationCreateVM model = null)
         {
             if (model == null)
@@ -70,6 +73,7 @@ namespace NotificationPortal.Repositories
             return model;
         }
 
+        // create model for Detail view
         public ThreadDetailVM CreateDetailModel(string incidentNumber)
         {
             try
@@ -176,10 +180,13 @@ namespace NotificationPortal.Repositories
             }
             catch (Exception)
             {
+                // something went while quering the database
+                // handle null values in controller
                 return null;
             }
         }
 
+        // create model for Create view
         public NotificationCreateVM CreateUpdateModel(string incidentNumber, NotificationCreateVM model = null)
         {
             var lastestNotification =
@@ -212,6 +219,7 @@ namespace NotificationPortal.Repositories
             return model;
         }
 
+        // create model for Edit view
         public NotificationEditVM CreateEditModel(string notificationReferenceID, NotificationEditVM model = null)
         {
             var editingNotification =
@@ -245,6 +253,7 @@ namespace NotificationPortal.Repositories
             return model;
         }
 
+        // create model for Delete view
         public NotificationDetailVM CreateDeleteModel(string notificationReferenceID)
         {
             var deletingNotification =
