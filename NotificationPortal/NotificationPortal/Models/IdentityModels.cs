@@ -19,11 +19,13 @@ namespace NotificationPortal.Models
             return userIdentity;
         }
 
+        // add the navigation property to aspnet users table
         public virtual UserDetail UserDetail { get; set; }
     }
 
     public class ApplicationRole : IdentityRole
     {
+        // add the navigation property to aspnet roles table
         public virtual RoleDetail RoleDetail { get; set; }
     }
 }

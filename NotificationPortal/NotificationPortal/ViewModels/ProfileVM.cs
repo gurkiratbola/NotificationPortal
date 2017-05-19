@@ -32,7 +32,7 @@ namespace NotificationPortal.ViewModels
         [Required]
         public int SendMethodID { get; set; }
 
-        [Display(Name ="Notification Send Method")]
+        [Display(Name = "Notification Send Method")]
         public SelectList SendMethodList { get; set; }
 
         [Display(Name = "Home Phone")]

@@ -75,7 +75,7 @@ namespace NotificationPortal.ViewModels
         [DisplayFormat(DataFormatString = "{0:yyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
         [Display(Name = "Start Date")]
         public DateTime? StartDateTime { get; set; }
-        
+
         [DisplayFormat(DataFormatString = "{0:yyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
         [Display(Name = "End Date")]
         public DateTime? EndDateTime { get; set; }
@@ -163,7 +163,7 @@ namespace NotificationPortal.ViewModels
     // for Server tab on notification detail view
     public class NotificationServerVM
     {
-        [Display(Name ="Server")]
+        [Display(Name = "Server")]
         public string ServerName { get; set; }
         [Display(Name = "Type")]
         public string ServerType { get; set; }

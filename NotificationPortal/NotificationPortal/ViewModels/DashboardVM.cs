@@ -59,7 +59,7 @@ namespace NotificationPortal.ViewModels
 
     public class DashboardThreadDetailVM
     {
-        public string NotificationDetail{ get; set; }
+        public string NotificationDetail { get; set; }
         public DateTime SentDateTime { get; set; }
     }
 }

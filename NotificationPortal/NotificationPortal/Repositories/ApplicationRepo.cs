@@ -17,7 +17,7 @@ namespace NotificationPortal.Repositories
 {
     public class ApplicationRepo
     {
-        const string APP_STATUS_TYPE_NAME = "Application";
+        const string APP_STATUS_TYPE_NAME = Key.STATUS_TYPE_APPLICATION;
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
         // sort function for the index page
         public IEnumerable<ApplicationListVM> Sort(IEnumerable<ApplicationListVM> list, string sortOrder, string searchString = null)

@@ -42,7 +42,7 @@ namespace NotificationPortal.Service
             string fromNumber = System.Configuration.ConfigurationManager.AppSettings["TwilioFromNumber"];
 
             TwilioClient.Init(accountSid, authToken);
-            
+
             var message = MessageResource.CreateAsync(
                 phoneNumber,
                 from: new PhoneNumber(fromNumber),

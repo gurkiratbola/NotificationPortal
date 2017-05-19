@@ -5,6 +5,7 @@ using System.Web;
 
 namespace NotificationPortal.Repositories
 {
+    // These constants are used throughout the repositories and the views for the sorting and other functionality
     public static class ConstantsRepo
     {
         public const int PAGE_SIZE = 10;

@@ -108,7 +108,7 @@ namespace NotificationPortal.Repositories
 
                 // check and get all application associated to the server if latest notification is not app specific
                 IEnumerable<Application> associatedNotificationApplications = latestNotification.Applications;
-                if (associatedNotificationApplications.Count()==0)
+                if (associatedNotificationApplications.Count() == 0)
                 {
                     associatedNotificationApplications = latestNotification.Servers.SelectMany(s => s.Applications).Distinct();
                 }

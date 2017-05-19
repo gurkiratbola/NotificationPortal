@@ -34,7 +34,7 @@ namespace NotificationPortal.Repositories
                                 MobilePhone = a.MobilePhone,
                                 SendMethodID = a.SendMethodID
                             }).FirstOrDefault();
-                
+
                 return user;
             }
             else
@@ -59,16 +59,18 @@ namespace NotificationPortal.Repositories
             {
                 bool emailAvailable = true;
                 //check if the email already exist in the database
-                if (original.User.Email != model.Email) {
+                if (original.User.Email != model.Email)
+                {
                     var user = _context.Users.Where(a => a.Email == model.Email).FirstOrDefault();
-                    if (user != null && user.UserDetail.ReferenceID != model.ReferenceID) {
+                    if (user != null && user.UserDetail.ReferenceID != model.ReferenceID)
+                    {
                         emailAvailable = false;
                     }
                 }
 
                 // if SendMethod is not email then mobile phone must be defined
                 int sendMethodEmail = _context.SendMethod.Where(m => m.SendMethodName == Key.SEND_METHOD_EMAIL).FirstOrDefault().SendMethodID;
-                if (model.SendMethodID != sendMethodEmail && model.MobilePhone==null)
+                if (model.SendMethodID != sendMethodEmail && model.MobilePhone == null)
                 {
                     msg = "You current preference requires mobile number.";
                     return false;
@@ -92,12 +94,14 @@ namespace NotificationPortal.Repositories
                         userUpdated.SendMethodID = model.SendMethodID;
 
                         _context.SaveChanges();
-                        
+
                         if (email != model.Email)
                         {
                             // if the username/email has been updated successfully
                             msg = USERNAME_UPDATED;
-                        }else {
+                        }
+                        else
+                        {
                             msg = "User profile updated.";
                         }
                         return true;
@@ -108,7 +112,8 @@ namespace NotificationPortal.Repositories
                         return false;
                     }
                 }
-                else {
+                else
+                {
                     msg = "This email is associated with another user.";
                     return false;
                 }

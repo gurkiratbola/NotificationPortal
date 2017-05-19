@@ -8,6 +8,8 @@ using System.Web;
 
 namespace NotificationPortal.Models
 {
+    // This file is for the database models from tables are generated
+    //For better visual take a look the documentation in the README.md in the root of the project
     public class Application
     {
         [Key]

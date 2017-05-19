@@ -14,7 +14,7 @@ namespace NotificationPortal.Repositories
 {
     public class StatusRepo
     {
-        const string APP_STATUS_TYPE_NAME = "Status";
+        const string APP_STATUS_TYPE_NAME = Key.STATUS_TYPE_STATUS;
         private readonly ApplicationDbContext _context = new ApplicationDbContext();
         // sort function for status
         public IEnumerable<StatusVM> Sort(IEnumerable<StatusVM> list, string sortOrder, string searchString = null)
@@ -94,7 +94,7 @@ namespace NotificationPortal.Repositories
         {
             Status s = _context.Status.Where(e => e.StatusName == status.StatusName)
                             .FirstOrDefault();
-        
+
             if (s != null)
             {
                 msg = "Status name already exist.";
@@ -105,7 +105,7 @@ namespace NotificationPortal.Repositories
                 Status newStatus = new Status();
                 newStatus.StatusName = status.StatusName;
                 newStatus.StatusTypeID = status.StatusTypeID;
-   
+
                 _context.Status.Add(newStatus);
                 _context.SaveChanges();
                 msg = "Status successfully created";
@@ -153,7 +153,7 @@ namespace NotificationPortal.Repositories
                                         .FirstOrDefault();
                 statusUpdated.StatusName = status.StatusName;
                 statusUpdated.StatusTypeID = status.StatusTypeID;
-                
+
                 _context.SaveChanges();
                 msg = "Status succesfully updated.";
                 return true;
@@ -176,7 +176,7 @@ namespace NotificationPortal.Repositories
                 msg = "Status could not be deleted.";
                 return false;
             }
-          
+
             try
             {
                 _context.Status.Remove(statusToBeDeleted);

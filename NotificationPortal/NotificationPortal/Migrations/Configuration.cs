@@ -8,6 +8,7 @@ namespace NotificationPortal.Migrations
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
+    // This is where the database gets seeded with the table values, refer to Models/Key.cs to see the constant values
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         private string adminEmail = "admin@portal.com";
@@ -362,7 +363,7 @@ namespace NotificationPortal.Migrations
                 SendMethodID = sendMethodEmail.SendMethodID
 
             };
-            
+
             userManager.Create(admin, adminPassword);
 
             userManager.AddToRoles(admin.Id, Key.ROLE_ADMIN);

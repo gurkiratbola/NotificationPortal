@@ -92,7 +92,7 @@ Open the project solution in Visual Studio and navigate to **Web.Config** file. 
 1. In the Solution Explorer, Go to Properties > Settings. Add a connection to the database by changing the connection string to the database you created in **Step 1**.
 1. In the Web.config file, find connectionStrings and add name to **DefaultConnection** or the other steps will fail.
 1. After adding the connection string, build the solution.
-1. To populate the database with seed data, go to the /Migrations folder and delete all the files except **Configuration.cs**. Don't worry if the file does not exist.
+1. To populate the database with seed data, go to the /Migrations folder and delete all the files except **Configuration.cs**. Don't worry if other files except **Configuration.cs** does not exist.
 1. Open the NuGet Package Manager Console and type `Update-Database –TargetMigration: $InitialDatabase`
 1. Then type `Add-Migration Initial`
 1. Lastly, type `Update-Database`
@@ -142,7 +142,7 @@ Manage Clients, Applications and Servers | ✓ |
 External Registration | | ✓
 Search on Client, Application | ✓ |
 Notification by SMS | | ✓
-Full Index / Advanced Search | | ✓
+Full Index / Advance Search | | ✓
 
 ### Tasks By Roles
 Task | Internal Admin | Internal User | External Admin | External User
@@ -184,15 +184,15 @@ There are three types of shared constants:
 3. **File specific constants**: These constants exist in specific files and are defined within the file.
 
 ### API
-AJAX is used for loading Notification Index, Application Index and Dashboard. All related logic is hosted in API folder. For the application page, AJAX is used to check all app status on load. 
+AJAX is used for loading Notification Index, Application Index and Dashboard. All related logic is hosted in API Controllers, Models and Repositories folders. For the application page, AJAX is used to check all application domain status on load. 
 
 **Note**: Notification Index and Dashboard Index has inline script tags for handling the AJAX calls using constants defined in ConstantsRepo.cs and Key.cs
 
 ### Reference Id
-Reference IDs are used in forms and models to be passed back and forth instead of using primary keys. In this case, GUIDs are used.
+Reference IDs are used in forms and models to be passed back and forth instead of using sensitive primary keys. In this case, GUIDs are used.
 
 ### Centralized Status Control
-User/Application/Server/Notification/Client each has status and all of which are editable in the Status Controller. 
+User / Application / Server / Notification / Client each has status and all of which are editable in the Status Controller. 
 
 ### Custom Javascript Files
 Total of nine Javascript files are created to support the functionality mentioned:
